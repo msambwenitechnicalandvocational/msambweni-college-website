@@ -1371,399 +1371,199 @@ function renderCourseChart(){
 </section>
 
 
-<!-- News & Announcements with Bubbles + Sparkles + Parallax -->
+<!-- 🌐 Modern College News & Announcements -->
 <section id="news">
-  <h2>📢 News & Announcements</h2>
-  
-  <ul>
-    <li class="news-item">
-      <img src="logo.jpg" alt="Calendar" class="thumb">
-      New semester begins on 1st October 2025
-    </li>
-    <li class="news-item">
-      <img src="logo.jpg" alt="Application" class="thumb">
-      Applications for new students are now open
-    </li>
-    <li class="news-item">
-      <img src="logo.jpg" alt="Celebration" class="thumb">
-      College open day scheduled for 20th September 2025
-    </li>
-  </ul>
+  <h2>📢 College News & Announcements</h2>
 
+  <!-- News Ticker with Ribbon -->
+  <div class="news-ticker">
+    <span class="ribbon">🔥 Breaking News</span>
+    <div class="ticker-track">
+      <div class="ticker-item">
+        <img src="logo.jpg" alt="Calendar" class="thumb">
+        <p><strong>New Semester</strong> begins on <em>1st October 2025</em>.</p>
+      </div>
+      <div class="ticker-item">
+        <img src="logo.jpg" alt="Application" class="thumb">
+        <p><strong>Applications</strong> for new students are <em>now open</em>.</p>
+      </div>
+      <div class="ticker-item">
+        <img src="logo.jpg" alt="Celebration" class="thumb">
+        <p><strong>Open Day</strong> scheduled for <em>20th September 2025</em>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Links Grid -->
   <div class="nav-buttons">
-  <div class="nav-card">
-    <img src="spo.JPEG" alt="Sports" class="nav-img">
-    <h3>⚽ Sports</h3>
-    <p>All sports events, tournaments, and college competitions. Join your team and stay active!</p>
+    <div class="nav-card">
+      <img src="spo.jpg" alt="Sports" class="nav-img">
+      <h3>⚽ Sports</h3>
+      <p>Stay updated on tournaments, matches, and fitness activities.</p>
+    </div>
+    <div class="nav-card">
+      <img src="knec.png" alt="Exams" class="nav-img">
+      <h3>📚 Exams</h3>
+      <p>Check timetables, guidelines, and past results instantly.</p>
+    </div>
+    <div class="nav-card">
+      <img src="cul.jpg" alt="Cultural" class="nav-img">
+      <h3>🎭 Cultural Events</h3>
+      <p>Celebrate diversity with performances and exhibitions.</p>
+    </div>
+    <div class="nav-card">
+      <img src="beach1.jpg" alt="Clubs" class="nav-img">
+      <h3>🎉 Clubs & Activities</h3>
+      <p>Join student organizations, clubs, and fun activities.</p>
+    </div>
   </div>
 
-  <div class="nav-card">
-    <img src="knec.PNG" alt="Exams" class="nav-img">
-    <h3>📚 Exams</h3>
-    <p>Check exam schedules, results, and guidelines. Stay prepared and track your academic progress.</p>
-  </div>
-
-  <div class="nav-card">
-    <img src="cul.JPEG" alt="Cultural Days" class="nav-img">
-    <h3>🎭 Cultural Days</h3>
-    <p>Participate in cultural events, performances, and exhibitions celebrating diversity at college.</p>
-  </div>
-
-  <div class="nav-card">
-    <img src="beach1.jpg" alt="Activities" class="nav-img">
-    <h3>🎉 Activities</h3>
-    <p>Explore clubs, events, and extracurricular activities to engage with the college community.</p>
-  </div>
-</div>
-
-<style>
-.nav-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 40px;
-}
-
-/* ---------- Card ---------- */
-.nav-card {
-  background: linear-gradient(145deg, #ffffff, #e6f0ff);
-  border-radius: 20px;
-  padding: 25px 20px;
-  width: 240px;
-  text-align: center;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-  transition: all 0.5s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-card::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(60deg, rgba(255,105,180,0.2), rgba(102,187,106,0.2), rgba(33,150,243,0.2), rgba(255,152,0,0.2));
-  background-size: 300% 300%;
-  transform: rotate(25deg);
-  z-index: 0;
-}
-
-.nav-card:hover::before {
-  transform: rotate(45deg) scale(1.05);
-}
-
-.nav-card:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.22);
-  background: linear-gradient(145deg, #ffffff, #e6f0ff);
-  z-index: 1;
-}
-
-/* ---------- Image ---------- */
-.nav-img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  position: relative;
-  z-index: 2;
-}
-
-.nav-card:hover .nav-img {
-  transform: scale(1.15);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-}
-
-/* ---------- Title ---------- */
-.nav-card h3 {
-  font-size: 1.35rem;
-  margin-bottom: 10px;
-  color: #1a1a1a;
-  font-weight: 700;
-  position: relative;
-  z-index: 2;
-}
-
-/* ---------- Description ---------- */
-.nav-card p {
-  font-size: 0.95rem;
-  color: #555;
-  line-height: 1.5;
-  position: relative;
-  z-index: 2;
-}
-
-/* ---------- Responsive ---------- */
-@media (max-width: 1000px) {
-  .nav-card {
-    width: 200px;
-    padding: 20px 15px;
-  }
-
-  .nav-card h3 {
-    font-size: 1.2rem;
-  }
-
-  .nav-card p {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 700px) {
-  .nav-buttons {
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
-  }
-
-  .nav-card {
-    width: 90%;
-    max-width: 300px;
-  }
-}
-</style>
-
-<script>
-// ---------- Scroll-based gradient parallax ----------
-const cards = document.querySelectorAll('.nav-card');
-
-window.addEventListener('scroll', () => {
-  let scrollY = window.scrollY;
-
-  cards.forEach((card, index) => {
-    const speed = (index + 1) * 0.3; // each card moves at slightly different speed
-    card.style.setProperty('--scroll-offset', `${scrollY * speed}px`);
-    card.querySelector('::before'); // For reference, but we will use transform in JS
-    const overlay = card.querySelector(':before');
-    card.style.backgroundPosition = `calc(50% + ${scrollY*0.1}px) calc(50% + ${scrollY*0.1}px)`;
-  });
-});
-</script>
-
-  <!-- Floating Bubbles & Sparkles -->
-  <div class="bubbles">
-    <span style="--i:11;"></span>
-    <span style="--i:15;"></span>
-    <span style="--i:20;"></span>
-    <span style="--i:25;"></span>
-    <span style="--i:18;"></span>
-    <span style="--i:12;"></span>
-    <span style="--i:22;"></span>
-  </div>
-  <div class="sparkles">
-    <span style="--s:8;"></span>
-    <span style="--s:12;"></span>
-    <span style="--s:6;"></span>
-    <span style="--s:10;"></span>
-    <span style="--s:14;"></span>
-  </div>
+  <!-- View All Button -->
+  <a href="announcements.html" class="view-btn">✨ View All Announcements ✨</a>
 </section>
 
 <style>
-/* ---------- Section Container ---------- */
+/* Section Container */
 #news {
   position: relative;
-  padding: 60px 20px;
-  max-width: 900px;
-  margin: 60px auto;
-  border-radius: 25px;
-  overflow: hidden;
+  padding: 70px 20px;
   text-align: center;
+  background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+  border-radius: 25px;
+  max-width: 1000px;
+  margin: 50px auto;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #fdfbfb, #ebf0f7);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
 }
 
-/* ---------- Floating Bubbles ---------- */
-.bubbles span {
-  position: absolute;
-  bottom: -50px;
-  width: 15px;
-  height: 15px;
-  background: rgba(255, 105, 180, 0.2);
-  border-radius: 50%;
-  animation: rise 15s linear infinite;
-  left: calc(var(--i) * 5%);
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.bubbles span:nth-child(2) { width: 20px; height: 20px; background: rgba(102, 187, 106, 0.2); animation-duration: 12s; }
-.bubbles span:nth-child(3) { width: 18px; height: 18px; background: rgba(33, 150, 243, 0.2); animation-duration: 17s; }
-.bubbles span:nth-child(4) { width: 22px; height: 22px; background: rgba(255, 152, 0, 0.2); animation-duration: 14s; }
-.bubbles span:nth-child(5) { width: 16px; height: 16px; background: rgba(156, 39, 176, 0.2); animation-duration: 16s; }
-.bubbles span:nth-child(6) { width: 20px; height: 20px; background: rgba(255, 193, 7, 0.2); animation-duration: 13s; }
-.bubbles span:nth-child(7) { width: 18px; height: 18px; background: rgba(0, 188, 212, 0.2); animation-duration: 15s; }
-
-@keyframes rise {
-  0% { transform: translateY(0) scale(1); opacity: 0.7; }
-  50% { transform: translateY(-200px) scale(1.2); opacity: 0.9; }
-  100% { transform: translateY(-400px) scale(0.8); opacity: 0; }
-}
-
-/* ---------- Glowing Sparkles ---------- */
-.sparkles span {
-  position: absolute;
-  width: calc(var(--s) * 1px);
-  height: calc(var(--s) * 1px);
-  background: white;
-  border-radius: 50%;
-  top: calc(10% + var(--s) * 2px);
-  left: calc(20% + var(--s) * 3px);
-  box-shadow: 0 0 10px rgba(255,255,255,0.8);
-  animation: sparkle 5s linear infinite alternate;
-}
-
-.sparkles span:nth-child(2) { animation-delay: 1s; }
-.sparkles span:nth-child(3) { animation-delay: 2s; }
-.sparkles span:nth-child(4) { animation-delay: 3s; }
-.sparkles span:nth-child(5) { animation-delay: 4s; }
-
-@keyframes sparkle {
-  0% { transform: translate(0,0) scale(1); opacity: 0.8; }
-  50% { transform: translate(50px,-50px) scale(1.5); opacity: 1; }
-  100% { transform: translate(-30px,-80px) scale(1); opacity: 0; }
-}
-
-/* ---------- Interactive Bubble Effect on Hover ---------- */
-.news-item:hover ~ .bubbles span,
-.nav-item:hover ~ .bubbles span {
-  transform: translateY(-450px) scale(1.5) !important;
-  opacity: 1 !important;
-  animation-duration: 8s !important;
-}
-
-/* ---------- Section Heading ---------- */
+/* Heading */
 #news h2 {
-  font-size: 2.6rem;
-  color: #333;
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: #222;
   margin-bottom: 40px;
-  font-weight: 900;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
-  position: relative;
-  z-index: 2;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.1);
 }
 
-/* ---------- News Items ---------- */
-#news ul {
-  list-style: none;
-  padding: 0;
-  margin: 0 auto 35px auto;
+/* 🔥 News Ticker with Ribbon */
+.news-ticker {
   max-width: 700px;
+  margin: 0 auto 50px;
+  overflow: hidden;
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.5);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.1);
   position: relative;
-  z-index: 2;
 }
-
-.news-item {
-  background: rgba(255, 255, 255, 0.95);
-  margin: 18px 0;
-  padding: 18px 22px;
-  border-radius: 20px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-  font-size: 1.15rem;
-  color: #444;
+.ribbon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(135deg, #ff1744, #d50000);
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  padding: 6px 16px;
+  border-radius: 0 0 12px 0;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  letter-spacing: 0.5px;
+}
+.ticker-track {
+  display: flex;
+  flex-direction: column;
+  animation: slideNews 12s linear infinite;
+}
+.news-ticker:hover .ticker-track {
+  animation-play-state: paused; /* ⏸ Pause on hover */
+}
+.ticker-item {
   display: flex;
   align-items: center;
   gap: 15px;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 0.8s forwards;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  padding: 20px;
+  font-size: 1.1rem;
+  color: #333;
 }
-
-.news-item:nth-child(1) { animation-delay: 0.2s; }
-.news-item:nth-child(2) { animation-delay: 0.4s; }
-.news-item:nth-child(3) { animation-delay: 0.6s; }
-
-.news-item:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-  background: rgba(255,255,255,1);
-}
-
-/* ---------- Thumbnails ---------- */
+.ticker-item strong { color: #0d47a1; }
 .thumb {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
+  width: 45px; height: 45px;
   border-radius: 12px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
 }
-.thumb:hover {
-  transform: scale(1.25) rotate(3deg);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+.ticker-item:hover .thumb { transform: scale(1.15) rotate(3deg); }
+
+/* Ticker Animation */
+@keyframes slideNews {
+  0%   { transform: translateY(0); }
+  25%  { transform: translateY(0); }
+  33%  { transform: translateY(-100%); }
+  58%  { transform: translateY(-100%); }
+  66%  { transform: translateY(-200%); }
+  91%  { transform: translateY(-200%); }
+  100% { transform: translateY(0); }
 }
 
-/* ---------- Navigation Buttons ---------- */
+/* Quick Links Grid */
 .nav-buttons {
-  margin-top: 35px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
-  position: relative;
-  z-index: 2;
+  gap: 25px;
 }
-
-.nav-item {
-  background: linear-gradient(135deg, #ff6a00, #ee0979);
-  color: white;
-  padding: 14px 28px;
+.nav-card {
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(12px);
   border-radius: 20px;
-  border: none;
-  font-weight: bold;
-  font-size: 1.05rem;
+  width: 220px;
+  padding: 25px 20px;
+  text-align: center;
+  transition: all 0.4s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
   cursor: pointer;
+}
+.nav-card:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+.nav-img {
+  width: 60px; height: 60px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.nav-card:hover .nav-img { transform: scale(1.15); }
+.nav-card h3 { font-size: 1.3rem; margin-bottom: 8px; color: #111; }
+.nav-card p { font-size: 0.95rem; color: #555; }
+
+/* Button */
+.view-btn {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 14px 32px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white;
+  background: linear-gradient(135deg, #ff6a00, #ee0979);
+  border-radius: 30px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeUp 0.8s forwards;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
-.nav-item:nth-child(1) { animation-delay: 0.8s; }
-.nav-item:nth-child(2) { animation-delay: 1s; }
-.nav-item:nth-child(3) { animation-delay: 1.2s; }
-.nav-item:nth-child(4) { animation-delay: 1.4s; }
-
-.nav-item:hover {
-  transform: translateY(-3px) scale(1.05);
+.view-btn:hover {
+  transform: translateY(-4px) scale(1.05);
   box-shadow: 0 12px 35px rgba(0,0,0,0.3);
-  background: linear-gradient(135deg, #ee0979, #ff6a00);
 }
 
-/* ---------- Animation Keyframes ---------- */
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Responsive */
+@media (max-width: 768px) {
+  #news h2 { font-size: 1.8rem; }
+  .nav-card { width: 100%; max-width: 320px; }
 }
 </style>
-
-<!-- ---------- Parallax JS ---------- -->
-<script>
-const bubbles = document.querySelectorAll('.bubbles span');
-const sparkles = document.querySelectorAll('.sparkles span');
-
-window.addEventListener('scroll', () => {
-  let scroll = window.scrollY;
-
-  bubbles.forEach((bubble, i) => {
-    bubble.style.transform = `translateY(${-scroll*0.1 - i*20}px) scale(1)`;
-  });
-
-  sparkles.forEach((sparkle, i) => {
-    sparkle.style.transform = `translate(${i*5}px, ${-scroll*0.15 - i*10}px) scale(1)`;
-  });
-});
-</script>
 
 
 
@@ -2144,6 +1944,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
