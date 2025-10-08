@@ -1611,7 +1611,7 @@ function renderCourseChart(){
 <!-- Staff Portal -->
 <section id="staff-portal">
   <h2>Staff Portal - Msambweni Technical & Vocational College</h2>
-  <p><em>Vision:</em> Welcome to the Staff Portal – Empowering Staff, Enhancing Excellence. This secure platform provides lecturers and administrators with convenient access to academic resources, communication tools, and institutional services. It simplifies work processes, strengthens collaboration, and supports efficient management for quality education delivery.</p>
+  <p><em>Vision:</em> Empowering Staff, Enhancing Excellence. This secure platform provides lecturers and administrators with direct access to academic resources, reports, payrolls, and essential institutional downloads.</p>
 
   <div class="portal-card">
     <div class="tabs">
@@ -1640,13 +1640,14 @@ function renderCourseChart(){
     <div id="dashboard" class="portal-form" style="display:none; flex-direction: column;">
       <h3 id="welcomeMessage"></h3>
       <div class="dashboard-modules">
-        <button onclick="showModule('profileModule')">👤 Profile Management</button>
-        <button onclick="showModule('attendanceModule')">🗓 Attendance</button>
+        <button onclick="showModule('profileModule')">👤 Profile</button>
+        <button onclick="showModule('attendanceModule')">🗓 Attendance Register</button>
         <button onclick="showModule('timetableModule')">📋 Timetable</button>
-        <button onclick="showModule('documentsModule')">📂 Documents</button>
+        <button onclick="showModule('documentsModule')">📂 Staff Documents</button>
+        <button onclick="showModule('learningResourcesModule')">📘 Learning Resources</button>
+        <button onclick="showModule('leaveModule')">📝 Leave Application Forms</button>
         <button onclick="showModule('payrollModule')">💰 Payroll</button>
         <button onclick="showModule('reportsModule')">📊 Reports</button>
-        <button onclick="showModule('academicModule')">🎓 Academic</button>
         <button onclick="logout(event)">🚪 Logout</button>
       </div>
 
@@ -1659,51 +1660,77 @@ function renderCourseChart(){
           <p><b>Username:</b> <span id="profileUsername"></span></p>
         </div>
 
-        <!-- Attendance -->
+        <!-- Attendance Register -->
         <div id="attendanceModule" class="module" style="display:none;">
-          <h4>Attendance</h4>
-          <button onclick="addAttendance()">➕ Add Attendance</button>
-          <ul id="attendanceList"></ul>
+          <h4>Attendance Register</h4>
+          <ul id="attendanceList">
+            <li><a href="files/Attendance_Register_January.xlsx" download>📅 January Attendance Register</a></li>
+            <li><a href="files/Attendance_Register_February.xlsx" download>📅 February Attendance Register</a></li>
+            <li><a href="files/Attendance_Register_March.xlsx" download>📅 March Attendance Register</a></li>
+          </ul>
         </div>
 
         <!-- Timetable -->
         <div id="timetableModule" class="module" style="display:none;">
-          <h4>Timetable</h4>
-          <button onclick="addTimetable()">➕ Add Schedule</button>
-          <ul id="timetableList"></ul>
+          <h4>Teaching Timetables</h4>
+          <ul id="timetableList">
+            <li><a href="files/Timetable_Term1.pdf" download>📋 Term 1 Timetable</a></li>
+            <li><a href="files/Timetable_Term2.pdf" download>📋 Term 2 Timetable</a></li>
+          </ul>
         </div>
 
         <!-- Documents -->
         <div id="documentsModule" class="module" style="display:none;">
-          <h4>Documents</h4>
-          <button onclick="addDocument()">➕ Add Document</button>
-          <ul id="documentList"></ul>
+          <h4>Staff Documents</h4>
+          <ul id="documentList">
+            <li><a href="files/Staff_Guidelines.pdf" download>📄 Staff Guidelines</a></li>
+            <li><a href="files/Code_of_Conduct.pdf" download>📄 Code of Conduct</a></li>
+          </ul>
+        </div>
+
+        <!-- Learning Resources -->
+        <div id="learningResourcesModule" class="module" style="display:none;">
+          <h4>Learning Resources</h4>
+          <ul id="resourceList">
+            <li><a href="files/Cyber_Security_Basics.pdf" download>📘 Cyber Security Basics</a></li>
+            <li><a href="files/ICT_Networking_Guide.docx" download>📘 ICT Networking Guide</a></li>
+            <li><a href="files/Teaching_Notes.zip" download>📘 Teaching Notes (ZIP)</a></li>
+          </ul>
+        </div>
+
+        <!-- Leave Applications -->
+        <div id="leaveModule" class="module" style="display:none;">
+          <h4>Leave Application Forms</h4>
+          <ul id="leaveList">
+            <li><a href="files/Annual_Leave_Form.pdf" download>📝 Annual Leave Form</a></li>
+            <li><a href="files/Sick_Leave_Form.pdf" download>📝 Sick Leave Form</a></li>
+            <li><a href="files/Leave_Guidelines.pdf" download>📄 Leave Guidelines</a></li>
+          </ul>
         </div>
 
         <!-- Payroll -->
         <div id="payrollModule" class="module" style="display:none;">
           <h4>Payroll</h4>
-          <button onclick="addPayroll()">➕ Add Payroll</button>
-          <ul id="payrollList"></ul>
+          <ul id="payrollList">
+            <li><a href="files/Payroll_January_2025.pdf" download>💰 January 2025 Payroll</a></li>
+            <li><a href="files/Payroll_February_2025.pdf" download>💰 February 2025 Payroll</a></li>
+          </ul>
         </div>
 
         <!-- Reports -->
         <div id="reportsModule" class="module" style="display:none;">
           <h4>Reports</h4>
-          <button onclick="addReport()">➕ Add Report</button>
-          <ul id="reportList"></ul>
-        </div>
-
-        <!-- Academic -->
-        <div id="academicModule" class="module" style="display:none;">
-          <h4>Academic</h4>
-          <button onclick="addAcademic()">➕ Add Academic Entry</button>
-          <ul id="academicList"></ul>
+          <ul id="reportList">
+            <li><a href="files/Monthly_Report_Jan.pdf" download>📊 January Report</a></li>
+            <li><a href="files/Monthly_Report_Feb.pdf" download>📊 February Report</a></li>
+            <li><a href="files/Annual_Report_2025.pdf" download>📊 Annual Report 2025</a></li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- Script -->
 <script>
@@ -2144,6 +2171,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
