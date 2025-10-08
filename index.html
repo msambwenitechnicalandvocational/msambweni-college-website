@@ -1608,11 +1608,10 @@ function renderCourseChart(){
 </style>
 
 
-
 <!-- Staff Portal -->
 <section id="staff-portal">
   <h2>Staff Portal - Msambweni Technical & Vocational College</h2>
-  <p><em>Vision:</em> Welcome to the Staff Portal – Empowering Staff, Enhancing Excellence. This secure platform provides lecturers and administrators with convenient access to academic resources, communication tools, and institutional services. It is designed to simplify work processes, strengthen collaboration, and support efficient management, enabling staff to focus on delivering quality education and services.</p>
+  <p><em>Vision:</em> Welcome to the Staff Portal – Empowering Staff, Enhancing Excellence. This secure platform provides lecturers and administrators with convenient access to academic resources, communication tools, and institutional services. It simplifies work processes, strengthens collaboration, and supports efficient management for quality education delivery.</p>
 
   <div class="portal-card">
     <div class="tabs">
@@ -1643,15 +1642,14 @@ function renderCourseChart(){
       <div class="dashboard-modules">
         <button onclick="showModule('profileModule')">👤 Profile Management</button>
         <button onclick="showModule('attendanceModule')">🗓 Attendance</button>
-        <button onclick="showModule('timetableModule')">📋 Timetable & Scheduling</button>
-        <button onclick="showModule('documentsModule')">📂 Documents & Resources</button>
-        <button onclick="showModule('payrollModule')">💰 Payroll & Finance</button>
-        <button onclick="showModule('reportsModule')">📊 Reports & Analytics</button>
-        <button onclick="showModule('academicModule')">🎓 Academic System</button>
+        <button onclick="showModule('timetableModule')">📋 Timetable</button>
+        <button onclick="showModule('documentsModule')">📂 Documents</button>
+        <button onclick="showModule('payrollModule')">💰 Payroll</button>
+        <button onclick="showModule('reportsModule')">📊 Reports</button>
+        <button onclick="showModule('academicModule')">🎓 Academic</button>
         <button onclick="logout(event)">🚪 Logout</button>
       </div>
 
-      <!-- Modules -->
       <div id="modulesContainer">
         <!-- Profile -->
         <div id="profileModule" class="module" style="display:none;">
@@ -1663,42 +1661,42 @@ function renderCourseChart(){
 
         <!-- Attendance -->
         <div id="attendanceModule" class="module" style="display:none;">
-          <h4>Attendance Records</h4>
+          <h4>Attendance</h4>
           <button onclick="addAttendance()">➕ Add Attendance</button>
           <ul id="attendanceList"></ul>
         </div>
 
         <!-- Timetable -->
         <div id="timetableModule" class="module" style="display:none;">
-          <h4>Timetable & Scheduling</h4>
+          <h4>Timetable</h4>
           <button onclick="addTimetable()">➕ Add Schedule</button>
           <ul id="timetableList"></ul>
         </div>
 
         <!-- Documents -->
         <div id="documentsModule" class="module" style="display:none;">
-          <h4>Documents & Resources</h4>
+          <h4>Documents</h4>
           <button onclick="addDocument()">➕ Add Document</button>
           <ul id="documentList"></ul>
         </div>
 
         <!-- Payroll -->
         <div id="payrollModule" class="module" style="display:none;">
-          <h4>Payroll & Finance</h4>
-          <button onclick="addPayroll()">➕ Add Payroll Entry</button>
+          <h4>Payroll</h4>
+          <button onclick="addPayroll()">➕ Add Payroll</button>
           <ul id="payrollList"></ul>
         </div>
 
         <!-- Reports -->
         <div id="reportsModule" class="module" style="display:none;">
-          <h4>Reports & Analytics</h4>
+          <h4>Reports</h4>
           <button onclick="addReport()">➕ Add Report</button>
           <ul id="reportList"></ul>
         </div>
 
         <!-- Academic -->
         <div id="academicModule" class="module" style="display:none;">
-          <h4>Academic System Integration</h4>
+          <h4>Academic</h4>
           <button onclick="addAcademic()">➕ Add Academic Entry</button>
           <ul id="academicList"></ul>
         </div>
@@ -1706,6 +1704,166 @@ function renderCourseChart(){
     </div>
   </div>
 </section>
+
+<!-- Script -->
+<script>
+  function staffSignup() {
+    const name = document.getElementById("signupFullName").value;
+    const staffID = document.getElementById("signupStaffID").value;
+    const username = document.getElementById("signupUsername").value;
+    const password = document.getElementById("signupPassword").value;
+    if (!name || !staffID || !username || !password) return alert("Fill all fields!");
+
+    localStorage.setItem("staff_" + username, JSON.stringify({ fullName: name, staffID, username, password }));
+    alert("Account created successfully!");
+    openTab(event, 'login');
+  }
+
+  function staffLogin(event) {
+    event.preventDefault();
+    const username = loginUsername.value;
+    const password = loginPassword.value;
+    const data = JSON.parse(localStorage.getItem("staff_" + username) || "{}");
+
+    if (data.password === password) {
+      localStorage.setItem("currentUser", username);
+      welcomeMessage.innerText = `Welcome, ${data.fullName} (${data.staffID})`;
+      profileName.innerText = data.fullName;
+      profileID.innerText = data.staffID;
+      profileUsername.innerText = data.username;
+      openTab(event, 'dashboard');
+      loadAllData();
+    } else alert("Invalid login.");
+  }
+
+  function logout(e) {
+    e.preventDefault();
+    localStorage.removeItem("currentUser");
+    alert("Logged out.");
+    openTab(e, 'login');
+  }
+
+  function openTab(e, tab) {
+    document.querySelectorAll('.portal-form').forEach(f => f.style.display = 'none');
+    document.getElementById(tab).style.display = 'flex';
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+  }
+
+  function showModule(id) {
+    document.querySelectorAll('.module').forEach(m => m.style.display = 'none');
+    document.getElementById(id).style.display = 'block';
+  }
+
+  // Utility Functions
+  function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+  function loadData(key) { return JSON.parse(localStorage.getItem(key)) || []; }
+
+  function displayList(elementId, list, key) {
+    const ul = document.getElementById(elementId);
+    ul.innerHTML = list.map((item, i) =>
+      `<li>${item} <button onclick="deleteItem('${key}', ${i}, '${elementId}')">🗑 Delete</button></li>`
+    ).join("");
+  }
+
+  function deleteItem(key, index, listId) {
+    const data = loadData(key);
+    data.splice(index, 1);
+    saveData(key, data);
+    displayList(listId, data.map(formatItem), key);
+  }
+
+  function formatItem(item) {
+    if (typeof item === "string") return item;
+    if (item.date && item.status) return `${item.date} - ${item.status}`;
+    if (item.subject && item.time) return `${item.subject} - ${item.time}`;
+    if (item.month && item.amount) return `${item.month} - Ksh ${item.amount}`;
+    if (item.course && item.code) return `${item.course} (${item.code})`;
+    return JSON.stringify(item);
+  }
+
+  // Add Functions
+  function addAttendance() {
+    const username = localStorage.getItem("currentUser");
+    const key = username + "_attendance";
+    const list = loadData(key);
+    const date = prompt("Enter Date:");
+    const status = prompt("Enter Status:");
+    if (!date || !status) return;
+    list.push({ date, status });
+    saveData(key, list);
+    displayList("attendanceList", list.map(formatItem), key);
+  }
+
+  function addTimetable() {
+    const username = localStorage.getItem("currentUser");
+    const key = username + "_timetable";
+    const list = loadData(key);
+    const subject = prompt("Enter Subject:");
+    const time = prompt("Enter Time:");
+    if (!subject || !time) return;
+    list.push({ subject, time });
+    saveData(key, list);
+    displayList("timetableList", list.map(formatItem), key);
+  }
+
+  function addDocument() {
+    const username = localStorage.getItem("currentUser");
+    const key = username + "_documents";
+    const list = loadData(key);
+    const doc = prompt("Enter Document Name:");
+    if (!doc) return;
+    list.push(doc);
+    saveData(key, list);
+    displayList("documentList", list.map(formatItem), key);
+  }
+
+  function addPayroll() {
+    const username = localStorage.getItem("currentUser");
+    const key = username + "_payroll";
+    const list = loadData(key);
+    const month = prompt("Enter Month:");
+    const amount = prompt("Enter Amount:");
+    if (!month || !amount) return;
+    list.push({ month, amount });
+    saveData(key, list);
+    displayList("payrollList", list.map(formatItem), key);
+  }
+
+  function addReport() {
+    const username = localStorage.getItem("currentUser");
+    const key = username + "_reports";
+    const list = loadData(key);
+    const title = prompt("Enter Report Title:");
+    if (!title) return;
+    list.push(title);
+    saveData(key, list);
+    displayList("reportList", list.map(formatItem), key);
+  }
+
+  function addAcademic() {
+    const username = localStorage.getItem("currentUser");
+    const key = username + "_academic";
+    const list = loadData(key);
+    const course = prompt("Enter Course Name:");
+    const code = prompt("Enter Course Code:");
+    if (!course || !code) return;
+    list.push({ course, code });
+    saveData(key, list);
+    displayList("academicList", list.map(formatItem), key);
+  }
+
+  function loadAllData() {
+    const username = localStorage.getItem("currentUser");
+    if (!username) return;
+    displayList("attendanceList", loadData(username + "_attendance").map(formatItem), username + "_attendance");
+    displayList("timetableList", loadData(username + "_timetable").map(formatItem), username + "_timetable");
+    displayList("documentList", loadData(username + "_documents").map(formatItem), username + "_documents");
+    displayList("payrollList", loadData(username + "_payroll").map(formatItem), username + "_payroll");
+    displayList("reportList", loadData(username + "_reports").map(formatItem), username + "_reports");
+    displayList("academicList", loadData(username + "_academic").map(formatItem), username + "_academic");
+  }
+</script>
 
 <style>
 #staff-portal { text-align:center; margin:40px auto; max-width:900px; font-family: Arial,sans-serif; }
@@ -1986,6 +2144,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
