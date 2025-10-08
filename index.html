@@ -1611,7 +1611,7 @@ function renderCourseChart(){
 <!-- Staff Portal -->
 <section id="staff-portal">
   <h2>Staff Portal - Msambweni Technical & Vocational College</h2>
-  <p><em>Vision:</em> Empowering Staff, Enhancing Excellence. This secure platform provides lecturers and administrators with direct access to academic resources, reports, payrolls, and essential institutional downloads.</p>
+  <p><em>Vision:</em> Empowering Staff, Enhancing Excellence. This secure platform provides lecturers and administrators with direct access to academic resources, documents, timetables, attendance registers, and essential institutional downloads.</p>
 
   <div class="portal-card">
     <div class="tabs">
@@ -1644,10 +1644,8 @@ function renderCourseChart(){
         <button onclick="showModule('attendanceModule')">🗓 Attendance</button>
         <button onclick="showModule('timetableModule')">📋 Timetable</button>
         <button onclick="showModule('documentsModule')">📂 Documents</button>
-        <button onclick="showModule('learningResourcesModule')">📘 Resources</button>
+        <button onclick="showModule('learningResourcesModule')">📘 Learning Resources</button>
         <button onclick="showModule('leaveModule')">📝 Leave Application</button>
-        <button onclick="showModule('payrollModule')">💰 Payroll</button>
-        <button onclick="showModule('reportsModule')">📊 Reports</button>
         <button onclick="logout(event)">🚪 Logout</button>
       </div>
 
@@ -1696,7 +1694,7 @@ function renderCourseChart(){
           </ul>
         </div>
 
-        <!-- Leave Application (Online Form + Downloads) -->
+        <!-- Leave Application -->
         <div id="leaveModule" class="module" style="display:none;">
           <h4>Online Leave Application</h4>
           <form id="leaveForm">
@@ -1733,30 +1731,72 @@ function renderCourseChart(){
             <ul id="leaveList"></ul>
           </div>
         </div>
-
-        <!-- Payroll -->
-        <div id="payrollModule" class="module" style="display:none;">
-          <h4>Payroll</h4>
-          <ul>
-            <li><a href="files/Payroll_January_2025.pdf" download>💰 January 2025 Payroll</a></li>
-            <li><a href="files/Payroll_February_2025.pdf" download>💰 February 2025 Payroll</a></li>
-          </ul>
-        </div>
-
-        <!-- Reports -->
-        <div id="reportsModule" class="module" style="display:none;">
-          <h4>Reports</h4>
-          <ul>
-            <li><a href="files/Monthly_Report_Jan.pdf" download>📊 January Report</a></li>
-            <li><a href="files/Annual_Report_2025.pdf" download>📊 Annual Report 2025</a></li>
-          </ul>
-        </div>
       </div>
     </div>
   </div>
 </section>
 
 <script>
+function openTab(evt, tabName) {
+  document.querySelectorAll('.portal-form').forEach(div => div.style.display = 'none');
+  document.getElementById(tabName).style.display = 'flex';
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  evt.currentTarget.classList.add('active');
+}
+
+function staffSignup() {
+  const name = document.getElementById("signupFullName").value;
+  const staffID = document.getElementById("signupStaffID").value;
+  const username = document.getElementById("signupUsername").value;
+  const password = document.getElementById("signupPassword").value;
+
+  if (!name || !staffID || !username || !password) {
+    alert("Please fill in all fields.");
+    return;
+  }
+
+  const staff = { name, staffID, username, password };
+  localStorage.setItem("staffAccount", JSON.stringify(staff));
+  alert("Account created successfully! You can now log in.");
+  document.querySelector('.tab-btn:nth-child(2)').click();
+}
+
+function staffLogin() {
+  const username = document.getElementById("loginUsername").value;
+  const password = document.getElementById("loginPassword").value;
+  const staff = JSON.parse(localStorage.getItem("staffAccount"));
+
+  if (!staff || staff.username !== username || staff.password !== password) {
+    alert("Invalid login credentials!");
+    return;
+  }
+
+  localStorage.setItem("loggedInStaff", JSON.stringify(staff));
+  document.querySelector('.tab-btn:nth-child(3)').click();
+  loadDashboard();
+}
+
+function loadDashboard() {
+  const staff = JSON.parse(localStorage.getItem("loggedInStaff"));
+  if (staff) {
+    document.getElementById("welcomeMessage").innerText = `Welcome, ${staff.name}!`;
+    document.getElementById("profileName").innerText = staff.name;
+    document.getElementById("profileID").innerText = staff.staffID;
+    document.getElementById("profileUsername").innerText = staff.username;
+  }
+}
+
+function logout() {
+  localStorage.removeItem("loggedInStaff");
+  alert("You have been logged out.");
+  document.querySelector('.tab-btn:nth-child(2)').click();
+}
+
+function showModule(moduleID) {
+  document.querySelectorAll('.module').forEach(m => m.style.display = 'none');
+  document.getElementById(moduleID).style.display = 'block';
+}
+
 function submitLeaveForm() {
   const type = document.getElementById("leaveType").value;
   const start = document.getElementById("leaveStart").value;
@@ -2331,6 +2371,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
