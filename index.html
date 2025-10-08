@@ -1641,11 +1641,11 @@ function renderCourseChart(){
       <h3 id="welcomeMessage"></h3>
       <div class="dashboard-modules">
         <button onclick="showModule('profileModule')">👤 Profile</button>
-        <button onclick="showModule('attendanceModule')">🗓 Attendance Register</button>
+        <button onclick="showModule('attendanceModule')">🗓 Attendance</button>
         <button onclick="showModule('timetableModule')">📋 Timetable</button>
-        <button onclick="showModule('documentsModule')">📂 Staff Documents</button>
-        <button onclick="showModule('learningResourcesModule')">📘 Learning Resources</button>
-        <button onclick="showModule('leaveModule')">📝 Leave Application Forms</button>
+        <button onclick="showModule('documentsModule')">📂 Documents</button>
+        <button onclick="showModule('learningResourcesModule')">📘 Resources</button>
+        <button onclick="showModule('leaveModule')">📝 Leave Application</button>
         <button onclick="showModule('payrollModule')">💰 Payroll</button>
         <button onclick="showModule('reportsModule')">📊 Reports</button>
         <button onclick="logout(event)">🚪 Logout</button>
@@ -1660,13 +1660,12 @@ function renderCourseChart(){
           <p><b>Username:</b> <span id="profileUsername"></span></p>
         </div>
 
-        <!-- Attendance Register -->
+        <!-- Attendance -->
         <div id="attendanceModule" class="module" style="display:none;">
           <h4>Attendance Register</h4>
           <ul id="attendanceList">
-            <li><a href="files/Attendance_Register_January.xlsx" download>📅 January Attendance Register</a></li>
-            <li><a href="files/Attendance_Register_February.xlsx" download>📅 February Attendance Register</a></li>
-            <li><a href="files/Attendance_Register_March.xlsx" download>📅 March Attendance Register</a></li>
+            <li><a href="files/Attendance_Register_January.xlsx" download>📅 January Register</a></li>
+            <li><a href="files/Attendance_Register_February.xlsx" download>📅 February Register</a></li>
           </ul>
         </div>
 
@@ -1682,7 +1681,7 @@ function renderCourseChart(){
         <!-- Documents -->
         <div id="documentsModule" class="module" style="display:none;">
           <h4>Staff Documents</h4>
-          <ul id="documentList">
+          <ul>
             <li><a href="files/Staff_Guidelines.pdf" download>📄 Staff Guidelines</a></li>
             <li><a href="files/Code_of_Conduct.pdf" download>📄 Code of Conduct</a></li>
           </ul>
@@ -1691,27 +1690,54 @@ function renderCourseChart(){
         <!-- Learning Resources -->
         <div id="learningResourcesModule" class="module" style="display:none;">
           <h4>Learning Resources</h4>
-          <ul id="resourceList">
+          <ul>
             <li><a href="files/Cyber_Security_Basics.pdf" download>📘 Cyber Security Basics</a></li>
             <li><a href="files/ICT_Networking_Guide.docx" download>📘 ICT Networking Guide</a></li>
-            <li><a href="files/Teaching_Notes.zip" download>📘 Teaching Notes (ZIP)</a></li>
           </ul>
         </div>
 
-        <!-- Leave Applications -->
+        <!-- Leave Application (Online Form + Downloads) -->
         <div id="leaveModule" class="module" style="display:none;">
-          <h4>Leave Application Forms</h4>
-          <ul id="leaveList">
+          <h4>Online Leave Application</h4>
+          <form id="leaveForm">
+            <label for="leaveType">Leave Type:</label>
+            <select id="leaveType" required>
+              <option value="">Select Leave Type</option>
+              <option>Annual Leave</option>
+              <option>Sick Leave</option>
+              <option>Study Leave</option>
+              <option>Maternity/Paternity Leave</option>
+            </select>
+
+            <label for="leaveStart">Start Date:</label>
+            <input type="date" id="leaveStart" required>
+
+            <label for="leaveEnd">End Date:</label>
+            <input type="date" id="leaveEnd" required>
+
+            <label for="leaveReason">Reason:</label>
+            <textarea id="leaveReason" rows="3" placeholder="Enter your reason..." required></textarea>
+
+            <button type="button" class="action-btn" onclick="submitLeaveForm()">Submit Leave Application</button>
+          </form>
+
+          <h4>📄 Leave Documents</h4>
+          <ul>
             <li><a href="files/Annual_Leave_Form.pdf" download>📝 Annual Leave Form</a></li>
             <li><a href="files/Sick_Leave_Form.pdf" download>📝 Sick Leave Form</a></li>
             <li><a href="files/Leave_Guidelines.pdf" download>📄 Leave Guidelines</a></li>
           </ul>
+
+          <div id="submittedLeaves" style="margin-top:20px;">
+            <h4>🗂 My Submitted Leave Requests</h4>
+            <ul id="leaveList"></ul>
+          </div>
         </div>
 
         <!-- Payroll -->
         <div id="payrollModule" class="module" style="display:none;">
           <h4>Payroll</h4>
-          <ul id="payrollList">
+          <ul>
             <li><a href="files/Payroll_January_2025.pdf" download>💰 January 2025 Payroll</a></li>
             <li><a href="files/Payroll_February_2025.pdf" download>💰 February 2025 Payroll</a></li>
           </ul>
@@ -1720,9 +1746,8 @@ function renderCourseChart(){
         <!-- Reports -->
         <div id="reportsModule" class="module" style="display:none;">
           <h4>Reports</h4>
-          <ul id="reportList">
+          <ul>
             <li><a href="files/Monthly_Report_Jan.pdf" download>📊 January Report</a></li>
-            <li><a href="files/Monthly_Report_Feb.pdf" download>📊 February Report</a></li>
             <li><a href="files/Annual_Report_2025.pdf" download>📊 Annual Report 2025</a></li>
           </ul>
         </div>
@@ -1731,6 +1756,141 @@ function renderCourseChart(){
   </div>
 </section>
 
+<script>
+function submitLeaveForm() {
+  const type = document.getElementById("leaveType").value;
+  const start = document.getElementById("leaveStart").value;
+  const end = document.getElementById("leaveEnd").value;
+  const reason = document.getElementById("leaveReason").value;
+
+  if (!type || !start || !end || !reason) {
+    alert("Please fill all fields.");
+    return;
+  }
+
+  const leave = { type, start, end, reason };
+  const leaves = JSON.parse(localStorage.getItem("staffLeaves") || "[]");
+  leaves.push(leave);
+  localStorage.setItem("staffLeaves", JSON.stringify(leaves));
+  alert("Leave application submitted successfully!");
+  document.getElementById("leaveForm").reset();
+  displayLeaves();
+}
+
+function displayLeaves() {
+  const list = document.getElementById("leaveList");
+  const leaves = JSON.parse(localStorage.getItem("staffLeaves") || "[]");
+  list.innerHTML = leaves.map(l => 
+    `<li>📅 ${l.start} to ${l.end} — <b>${l.type}</b> (${l.reason})</li>`
+  ).join("");
+}
+
+document.addEventListener("DOMContentLoaded", displayLeaves);
+</script>
+
+<style>
+#staff-portal {
+  text-align: center;
+  margin: 40px auto;
+  max-width: 950px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.portal-card {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.tabs { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
+.tab-btn {
+  background:#f2f2f2;
+  border:none;
+  padding:12px 22px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+.tab-btn.active, .tab-btn:hover { background:#004080; color:white; }
+
+.portal-form input, select, textarea {
+  padding:10px;
+  border:1px solid #ccc;
+  border-radius:8px;
+  width:100%;
+  font-size:15px;
+}
+
+.portal-form { display:flex; flex-direction:column; gap:12px; }
+
+.action-btn {
+  background:#004080;
+  color:white;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+.action-btn:hover { background:#0073e6; }
+
+.dashboard-modules button {
+  margin:5px;
+  padding:10px 15px;
+  border:none;
+  border-radius:10px;
+  background:#f1f1f1;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.3s;
+}
+.dashboard-modules button:hover { background:#004080; color:#fff; }
+
+.module {
+  margin-top:25px;
+  text-align:left;
+  background:#fafafa;
+  padding:20px;
+  border-radius:12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.module h4 {
+  color:#004080;
+  margin-bottom:10px;
+  border-bottom:2px solid #004080;
+  padding-bottom:5px;
+}
+
+.module ul { list-style:none; padding:0; }
+.module ul li {
+  background:#f9f9f9;
+  margin:6px 0;
+  padding:10px;
+  border-radius:8px;
+}
+.module a { color:#004080; text-decoration:none; font-weight:500; }
+.module a:hover { text-decoration:underline; }
+
+#leaveForm {
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  background:#f1f5ff;
+  padding:15px;
+  border-radius:10px;
+  box-shadow:inset 0 1px 4px rgba(0,0,0,0.1);
+}
+#leaveList li {
+  background:#e8f0ff;
+  padding:8px;
+  border-radius:6px;
+  margin:5px 0;
+}
+</style>
 
 <!-- Script -->
 <script>
@@ -2171,6 +2331,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
