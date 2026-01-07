@@ -1685,606 +1685,213 @@ function renderCourseChart(){
 </style>
 
 
-<!-- Staff Portal -->
+<!-- ================= STAFF PORTAL ================= -->
 <section id="staff-portal">
-  <h2>Staff Portal - Msambweni Technical & Vocational College</h2>
-  <p><em>Vision:</em> Empowering Staff, Enhancing Excellence. This secure platform provides lecturers and administrators with direct access to academic resources, documents, timetables, attendance registers, and essential institutional downloads.</p>
+  <h2>Staff Portal – Msambweni Technical & Vocational College</h2>
+  <p><em>Vision:</em> Empowering Staff, Enhancing Excellence.</p>
 
   <div class="portal-card">
+
+    <!-- TABS -->
     <div class="tabs">
       <button class="tab-btn active" onclick="openTab(event,'signup')">Sign Up</button>
       <button class="tab-btn" onclick="openTab(event,'login')">Login</button>
       <button class="tab-btn" onclick="openTab(event,'dashboard')">Dashboard</button>
     </div>
 
-    <!-- Sign Up -->
+    <!-- SIGN UP -->
     <div id="signup" class="portal-form">
-      <input type="text" placeholder="Full Name" id="signupFullName" required>
-      <input type="text" placeholder="Staff ID" id="signupStaffID" required>
-      <input type="text" placeholder="Username" id="signupUsername" required>
-      <input type="password" placeholder="Password" id="signupPassword" required>
+      <input id="signupFullName" placeholder="Full Name">
+      <input id="signupStaffID" placeholder="Staff ID">
+      <input id="signupUsername" placeholder="Username (admin_ / hod_)">
+      <input id="signupPassword" type="password" placeholder="Password">
       <button class="action-btn" onclick="staffSignup()">Create Account</button>
     </div>
 
-    <!-- Login -->
+    <!-- LOGIN -->
     <div id="login" class="portal-form" style="display:none;">
-      <input type="text" placeholder="Username" id="loginUsername" required>
-      <input type="password" placeholder="Password" id="loginPassword" required>
+      <input id="loginUsername" placeholder="Username">
+      <input id="loginPassword" type="password" placeholder="Password">
       <button class="action-btn" onclick="staffLogin(event)">Login</button>
     </div>
 
-    <!-- Dashboard -->
-    <div id="dashboard" class="portal-form" style="display:none; flex-direction: column;">
+    <!-- DASHBOARD -->
+    <div id="dashboard" class="portal-form" style="display:none;">
       <h3 id="welcomeMessage"></h3>
+
       <div class="dashboard-modules">
         <button onclick="showModule('profileModule')">👤 Profile</button>
         <button onclick="showModule('attendanceModule')">🗓 Attendance</button>
-        <button onclick="showModule('timetableModule')">📋 Timetable</button>
         <button onclick="showModule('documentsModule')">📂 Documents</button>
-        <button onclick="showModule('learningResourcesModule')">📘 Learning Resources</button>
-        <button onclick="showModule('leaveModule')">📝 Leave Application</button>
-        <button onclick="logout(event)">🚪 Logout</button>
+        <button onclick="showModule('leaveModule')">📝 Leave</button>
+        <button class="admin-only" onclick="showModule('adminModule')">🛡 Admin</button>
+        <button onclick="logout(event)" style="background:#f44336;color:white;">Logout</button>
       </div>
 
+      <!-- MODULES -->
       <div id="modulesContainer">
-        <!-- Profile -->
-        <div id="profileModule" class="module" style="display:none;">
-          <h4>Staff Profile</h4>
+
+        <!-- PROFILE -->
+        <div id="profileModule" class="module">
           <p><b>Name:</b> <span id="profileName"></span></p>
           <p><b>Staff ID:</b> <span id="profileID"></span></p>
           <p><b>Username:</b> <span id="profileUsername"></span></p>
         </div>
 
-        <!-- Attendance -->
+        <!-- ATTENDANCE -->
         <div id="attendanceModule" class="module" style="display:none;">
-          <h4>Attendance Register</h4>
-          <ul id="attendanceList">
-            <li><a href="files/Attendance_Register_January.xlsx" download>📅 January Register</a></li>
-            <li><a href="files/Attendance_Register_February.xlsx" download>📅 February Register</a></li>
-          </ul>
+          <h4>Attendance</h4>
+          <button onclick="addAttendance()">Add Attendance</button>
+          <ul id="attendanceList"></ul>
         </div>
 
-        <!-- Timetable -->
-        <div id="timetableModule" class="module" style="display:none;">
-          <h4>Teaching Timetables</h4>
-          <ul id="timetableList">
-            <li><a href="files/Timetable_Term1.pdf" download>📋 Term 1 Timetable</a></li>
-            <li><a href="files/Timetable_Term2.pdf" download>📋 Term 2 Timetable</a></li>
-          </ul>
-        </div>
-
-        <!-- Documents -->
+        <!-- DOCUMENTS -->
         <div id="documentsModule" class="module" style="display:none;">
-          <h4>Staff Documents</h4>
-          <ul>
-            <li><a href="files/Staff_Guidelines.pdf" download>📄 Staff Guidelines</a></li>
-            <li><a href="files/Code_of_Conduct.pdf" download>📄 Code of Conduct</a></li>
-          </ul>
+          <h4>Documents</h4>
+          <button onclick="addDocument()">Add Document</button>
+          <ul id="documentList"></ul>
         </div>
 
-        <!-- Learning Resources -->
-        <div id="learningResourcesModule" class="module" style="display:none;">
-          <h4>Learning Resources</h4>
-          <ul>
-            <li><a href="files/Cyber_Security_Basics.pdf" download>📘 Cyber Security Basics</a></li>
-            <li><a href="files/ICT_Networking_Guide.docx" download>📘 ICT Networking Guide</a></li>
-          </ul>
-        </div>
-
-        <!-- Leave Application -->
+        <!-- LEAVE -->
         <div id="leaveModule" class="module" style="display:none;">
-          <h4>Online Leave Application</h4>
-          <form id="leaveForm">
-            <label for="leaveType">Leave Type:</label>
-            <select id="leaveType" required>
-              <option value="">Select Leave Type</option>
-              <option>Annual Leave</option>
-              <option>Sick Leave</option>
-              <option>Study Leave</option>
-              <option>Maternity/Paternity Leave</option>
-            </select>
-
-            <label for="leaveStart">Start Date:</label>
-            <input type="date" id="leaveStart" required>
-
-            <label for="leaveEnd">End Date:</label>
-            <input type="date" id="leaveEnd" required>
-
-            <label for="leaveReason">Reason:</label>
-            <textarea id="leaveReason" rows="3" placeholder="Enter your reason..." required></textarea>
-
-            <button type="button" class="action-btn" onclick="submitLeaveForm()">Submit Leave Application</button>
-          </form>
-
-          <h4>📄 Leave Documents</h4>
-          <ul>
-            <li><a href="files/Annual_Leave_Form.pdf" download>📝 Annual Leave Form</a></li>
-            <li><a href="files/Sick_Leave_Form.pdf" download>📝 Sick Leave Form</a></li>
-            <li><a href="files/Leave_Guidelines.pdf" download>📄 Leave Guidelines</a></li>
-          </ul>
-
-          <div id="submittedLeaves" style="margin-top:20px;">
-            <h4>🗂 My Submitted Leave Requests</h4>
-            <ul id="leaveList"></ul>
-          </div>
+          <select id="leaveType">
+            <option value="">Leave Type</option>
+            <option>Annual</option>
+            <option>Sick</option>
+            <option>Study</option>
+          </select>
+          <input type="date" id="leaveStart">
+          <input type="date" id="leaveEnd">
+          <textarea id="leaveReason" placeholder="Reason"></textarea>
+          <button onclick="submitLeave()">Submit Leave</button>
+          <ul id="leaveList"></ul>
         </div>
+
+        <!-- ADMIN -->
+        <div id="adminModule" class="module" style="display:none;">
+          <h4>Admin – All Leave Requests</h4>
+          <ul id="allLeaves"></ul>
+        </div>
+
       </div>
     </div>
   </div>
 </section>
 
+<!-- ================= SCRIPT ================= -->
 <script>
-function openTab(evt, tabName) {
-  document.querySelectorAll('.portal-form').forEach(div => div.style.display = 'none');
-  document.getElementById(tabName).style.display = 'flex';
-  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-  evt.currentTarget.classList.add('active');
+const $ = id => document.getElementById(id);
+const load = k => JSON.parse(localStorage.getItem(k) || "[]");
+const save = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+
+function openTab(e,tab){
+  document.querySelectorAll('.portal-form').forEach(f=>f.style.display="none");
+  $(tab).style.display="flex";
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove("active"));
+  e.target.classList.add("active");
 }
 
-function staffSignup() {
-  const name = document.getElementById("signupFullName").value;
-  const staffID = document.getElementById("signupStaffID").value;
-  const username = document.getElementById("signupUsername").value;
-  const password = document.getElementById("signupPassword").value;
+function staffSignup(){
+  let name=signupFullName.value,id=signupStaffID.value,user=signupUsername.value,pass=signupPassword.value;
+  if(!name||!id||!user||!pass) return alert("Fill all fields");
+  let users=load("staffUsers");
+  if(users.some(u=>u.username===user)) return alert("Username exists");
 
-  if (!name || !staffID || !username || !password) {
-    alert("Please fill in all fields.");
-    return;
-  }
-
-  const staff = { name, staffID, username, password };
-  localStorage.setItem("staffAccount", JSON.stringify(staff));
-  alert("Account created successfully! You can now log in.");
-  document.querySelector('.tab-btn:nth-child(2)').click();
+  let role=user.startsWith("admin_")?"Admin":user.startsWith("hod_")?"HOD":"Staff";
+  users.push({name,id,username:user,password:pass,role});
+  save("staffUsers",users);
+  alert("Account created ("+role+")");
 }
 
-function staffLogin() {
-  const username = document.getElementById("loginUsername").value;
-  const password = document.getElementById("loginPassword").value;
-  const staff = JSON.parse(localStorage.getItem("staffAccount"));
-
-  if (!staff || staff.username !== username || staff.password !== password) {
-    alert("Invalid login credentials!");
-    return;
-  }
-
-  localStorage.setItem("loggedInStaff", JSON.stringify(staff));
-  document.querySelector('.tab-btn:nth-child(3)').click();
+function staffLogin(e){
+  e.preventDefault();
+  let u=load("staffUsers").find(x=>x.username===loginUsername.value && x.password===loginPassword.value);
+  if(!u) return alert("Invalid login");
+  localStorage.setItem("currentStaff",JSON.stringify(u));
+  openTab(e,"dashboard");
   loadDashboard();
 }
 
-function loadDashboard() {
-  const staff = JSON.parse(localStorage.getItem("loggedInStaff"));
-  if (staff) {
-    document.getElementById("welcomeMessage").innerText = `Welcome, ${staff.name}!`;
-    document.getElementById("profileName").innerText = staff.name;
-    document.getElementById("profileID").innerText = staff.staffID;
-    document.getElementById("profileUsername").innerText = staff.username;
-  }
+function loadDashboard(){
+  let u=JSON.parse(localStorage.getItem("currentStaff"));
+  welcomeMessage.innerText=`Welcome ${u.name} (${u.role})`;
+  profileName.innerText=u.name;
+  profileID.innerText=u.id;
+  profileUsername.innerText=u.username;
+  if(u.role!=="Admin") document.querySelectorAll(".admin-only").forEach(b=>b.style.display="none");
 }
 
-function logout() {
-  localStorage.removeItem("loggedInStaff");
-  alert("You have been logged out.");
-  document.querySelector('.tab-btn:nth-child(2)').click();
+function logout(e){
+  e.preventDefault();
+  localStorage.removeItem("currentStaff");
+  openTab(e,"login");
 }
 
-function showModule(moduleID) {
-  document.querySelectorAll('.module').forEach(m => m.style.display = 'none');
-  document.getElementById(moduleID).style.display = 'block';
+function showModule(id){
+  document.querySelectorAll(".module").forEach(m=>m.style.display="none");
+  $(id).style.display="block";
+  if(id==="attendanceModule") render("attendance");
+  if(id==="documentsModule") render("documents");
+  if(id==="leaveModule") renderLeaves();
+  if(id==="adminModule") renderAllLeaves();
 }
 
-function submitLeaveForm() {
-  const type = document.getElementById("leaveType").value;
-  const start = document.getElementById("leaveStart").value;
-  const end = document.getElementById("leaveEnd").value;
-  const reason = document.getElementById("leaveReason").value;
-
-  if (!type || !start || !end || !reason) {
-    alert("Please fill all fields.");
-    return;
-  }
-
-  const leave = { type, start, end, reason };
-  const leaves = JSON.parse(localStorage.getItem("staffLeaves") || "[]");
-  leaves.push(leave);
-  localStorage.setItem("staffLeaves", JSON.stringify(leaves));
-  alert("Leave application submitted successfully!");
-  document.getElementById("leaveForm").reset();
-  displayLeaves();
+function addAttendance(){
+  let u=JSON.parse(localStorage.getItem("currentStaff"));
+  let data=load(u.username+"_attendance");
+  let val=prompt("Enter attendance:");
+  if(val){ data.push(val); save(u.username+"_attendance",data); render("attendance"); }
 }
 
-function displayLeaves() {
-  const list = document.getElementById("leaveList");
-  const leaves = JSON.parse(localStorage.getItem("staffLeaves") || "[]");
-  list.innerHTML = leaves.map(l => 
-    `<li>📅 ${l.start} to ${l.end} — <b>${l.type}</b> (${l.reason})</li>`
-  ).join("");
+function addDocument(){
+  let u=JSON.parse(localStorage.getItem("currentStaff"));
+  let data=load(u.username+"_documents");
+  let val=prompt("Document name:");
+  if(val){ data.push(val); save(u.username+"_documents",data); render("documents"); }
 }
 
-document.addEventListener("DOMContentLoaded", displayLeaves);
+function render(type){
+  let u=JSON.parse(localStorage.getItem("currentStaff"));
+  let list=$(type==="attendance"?"attendanceList":"documentList");
+  let data=load(u.username+"_"+type);
+  list.innerHTML=data.map((v,i)=>`<li>${v}</li>`).join("");
+}
+
+function submitLeave(){
+  let u=JSON.parse(localStorage.getItem("currentStaff"));
+  let leaves=load("staffLeaves");
+  leaves.push({staff:u.username,type:leaveType.value,start:leaveStart.value,end:leaveEnd.value,reason:leaveReason.value});
+  save("staffLeaves",leaves);
+  renderLeaves();
+}
+
+function renderLeaves(){
+  let u=JSON.parse(localStorage.getItem("currentStaff"));
+  let leaves=load("staffLeaves").filter(l=>l.staff===u.username);
+  leaveList.innerHTML=leaves.map(l=>`<li>${l.type} | ${l.start}–${l.end}</li>`).join("");
+}
+
+function renderAllLeaves(){
+  allLeaves.innerHTML=load("staffLeaves").map(l=>`<li>${l.staff}: ${l.type} (${l.start}–${l.end})</li>`).join("");
+}
 </script>
 
+<!-- ================= STYLE ================= -->
 <style>
-#staff-portal {
-  text-align: center;
-  margin: 40px auto;
-  max-width: 950px;
-  font-family: 'Segoe UI', Arial, sans-serif;
-}
-
-.portal-card {
-  background: #ffffff;
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-
-.tabs { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
-.tab-btn {
-  background:#f2f2f2;
-  border:none;
-  padding:12px 22px;
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
-  transition:0.3s;
-}
-.tab-btn.active, .tab-btn:hover { background:#004080; color:white; }
-
-.portal-form input, select, textarea {
-  padding:10px;
-  border:1px solid #ccc;
-  border-radius:8px;
-  width:100%;
-  font-size:15px;
-}
-
-.portal-form { display:flex; flex-direction:column; gap:12px; }
-
-.action-btn {
-  background:#004080;
-  color:white;
-  padding:12px;
-  border:none;
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
-  transition:0.3s;
-}
-.action-btn:hover { background:#0073e6; }
-
-.dashboard-modules button {
-  margin:5px;
-  padding:10px 15px;
-  border:none;
-  border-radius:10px;
-  background:#f1f1f1;
-  cursor:pointer;
-  font-weight:600;
-  transition:0.3s;
-}
-.dashboard-modules button:hover { background:#004080; color:#fff; }
-
-.module {
-  margin-top:25px;
-  text-align:left;
-  background:#fafafa;
-  padding:20px;
-  border-radius:12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.module h4 {
-  color:#004080;
-  margin-bottom:10px;
-  border-bottom:2px solid #004080;
-  padding-bottom:5px;
-}
-
-.module ul { list-style:none; padding:0; }
-.module ul li {
-  background:#f9f9f9;
-  margin:6px 0;
-  padding:10px;
-  border-radius:8px;
-}
-.module a { color:#004080; text-decoration:none; font-weight:500; }
-.module a:hover { text-decoration:underline; }
-
-#leaveForm {
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  background:#f1f5ff;
-  padding:15px;
-  border-radius:10px;
-  box-shadow:inset 0 1px 4px rgba(0,0,0,0.1);
-}
-#leaveList li {
-  background:#e8f0ff;
-  padding:8px;
-  border-radius:6px;
-  margin:5px 0;
-}
+#staff-portal{max-width:900px;margin:auto;font-family:Arial}
+.portal-card{background:#fff;padding:25px;border-radius:15px;box-shadow:0 8px 25px rgba(0,0,0,.1)}
+.tabs{display:flex;gap:10px;justify-content:center;margin-bottom:15px}
+.tab-btn{padding:10px 18px;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
+.tab-btn.active{background:#004080;color:#fff}
+.portal-form{display:flex;flex-direction:column;gap:10px}
+input,select,textarea{padding:10px;border-radius:8px;border:1px solid #ccc}
+.action-btn{background:#004080;color:#fff;padding:10px;border:none;border-radius:8px;font-weight:bold}
+.dashboard-modules button{margin:5px;padding:8px 12px;border:none;border-radius:8px}
+.module{background:#f9f9f9;padding:15px;border-radius:10px;margin-top:15px}
+ul{list-style:none;padding:0}
+ul li{background:#eee;margin:5px 0;padding:8px;border-radius:6px}
 </style>
 
-<!-- Script -->
-<script>
-  function staffSignup() {
-    const name = document.getElementById("signupFullName").value;
-    const staffID = document.getElementById("signupStaffID").value;
-    const username = document.getElementById("signupUsername").value;
-    const password = document.getElementById("signupPassword").value;
-    if (!name || !staffID || !username || !password) return alert("Fill all fields!");
-
-    localStorage.setItem("staff_" + username, JSON.stringify({ fullName: name, staffID, username, password }));
-    alert("Account created successfully!");
-    openTab(event, 'login');
-  }
-
-  function staffLogin(event) {
-    event.preventDefault();
-    const username = loginUsername.value;
-    const password = loginPassword.value;
-    const data = JSON.parse(localStorage.getItem("staff_" + username) || "{}");
-
-    if (data.password === password) {
-      localStorage.setItem("currentUser", username);
-      welcomeMessage.innerText = `Welcome, ${data.fullName} (${data.staffID})`;
-      profileName.innerText = data.fullName;
-      profileID.innerText = data.staffID;
-      profileUsername.innerText = data.username;
-      openTab(event, 'dashboard');
-      loadAllData();
-    } else alert("Invalid login.");
-  }
-
-  function logout(e) {
-    e.preventDefault();
-    localStorage.removeItem("currentUser");
-    alert("Logged out.");
-    openTab(e, 'login');
-  }
-
-  function openTab(e, tab) {
-    document.querySelectorAll('.portal-form').forEach(f => f.style.display = 'none');
-    document.getElementById(tab).style.display = 'flex';
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    e.currentTarget.classList.add('active');
-  }
-
-  function showModule(id) {
-    document.querySelectorAll('.module').forEach(m => m.style.display = 'none');
-    document.getElementById(id).style.display = 'block';
-  }
-
-  // Utility Functions
-  function saveData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
-  function loadData(key) { return JSON.parse(localStorage.getItem(key)) || []; }
-
-  function displayList(elementId, list, key) {
-    const ul = document.getElementById(elementId);
-    ul.innerHTML = list.map((item, i) =>
-      `<li>${item} <button onclick="deleteItem('${key}', ${i}, '${elementId}')">🗑 Delete</button></li>`
-    ).join("");
-  }
-
-  function deleteItem(key, index, listId) {
-    const data = loadData(key);
-    data.splice(index, 1);
-    saveData(key, data);
-    displayList(listId, data.map(formatItem), key);
-  }
-
-  function formatItem(item) {
-    if (typeof item === "string") return item;
-    if (item.date && item.status) return `${item.date} - ${item.status}`;
-    if (item.subject && item.time) return `${item.subject} - ${item.time}`;
-    if (item.month && item.amount) return `${item.month} - Ksh ${item.amount}`;
-    if (item.course && item.code) return `${item.course} (${item.code})`;
-    return JSON.stringify(item);
-  }
-
-  // Add Functions
-  function addAttendance() {
-    const username = localStorage.getItem("currentUser");
-    const key = username + "_attendance";
-    const list = loadData(key);
-    const date = prompt("Enter Date:");
-    const status = prompt("Enter Status:");
-    if (!date || !status) return;
-    list.push({ date, status });
-    saveData(key, list);
-    displayList("attendanceList", list.map(formatItem), key);
-  }
-
-  function addTimetable() {
-    const username = localStorage.getItem("currentUser");
-    const key = username + "_timetable";
-    const list = loadData(key);
-    const subject = prompt("Enter Subject:");
-    const time = prompt("Enter Time:");
-    if (!subject || !time) return;
-    list.push({ subject, time });
-    saveData(key, list);
-    displayList("timetableList", list.map(formatItem), key);
-  }
-
-  function addDocument() {
-    const username = localStorage.getItem("currentUser");
-    const key = username + "_documents";
-    const list = loadData(key);
-    const doc = prompt("Enter Document Name:");
-    if (!doc) return;
-    list.push(doc);
-    saveData(key, list);
-    displayList("documentList", list.map(formatItem), key);
-  }
-
-  function addPayroll() {
-    const username = localStorage.getItem("currentUser");
-    const key = username + "_payroll";
-    const list = loadData(key);
-    const month = prompt("Enter Month:");
-    const amount = prompt("Enter Amount:");
-    if (!month || !amount) return;
-    list.push({ month, amount });
-    saveData(key, list);
-    displayList("payrollList", list.map(formatItem), key);
-  }
-
-  function addReport() {
-    const username = localStorage.getItem("currentUser");
-    const key = username + "_reports";
-    const list = loadData(key);
-    const title = prompt("Enter Report Title:");
-    if (!title) return;
-    list.push(title);
-    saveData(key, list);
-    displayList("reportList", list.map(formatItem), key);
-  }
-
-  function addAcademic() {
-    const username = localStorage.getItem("currentUser");
-    const key = username + "_academic";
-    const list = loadData(key);
-    const course = prompt("Enter Course Name:");
-    const code = prompt("Enter Course Code:");
-    if (!course || !code) return;
-    list.push({ course, code });
-    saveData(key, list);
-    displayList("academicList", list.map(formatItem), key);
-  }
-
-  function loadAllData() {
-    const username = localStorage.getItem("currentUser");
-    if (!username) return;
-    displayList("attendanceList", loadData(username + "_attendance").map(formatItem), username + "_attendance");
-    displayList("timetableList", loadData(username + "_timetable").map(formatItem), username + "_timetable");
-    displayList("documentList", loadData(username + "_documents").map(formatItem), username + "_documents");
-    displayList("payrollList", loadData(username + "_payroll").map(formatItem), username + "_payroll");
-    displayList("reportList", loadData(username + "_reports").map(formatItem), username + "_reports");
-    displayList("academicList", loadData(username + "_academic").map(formatItem), username + "_academic");
-  }
-</script>
-
-<style>
-#staff-portal { text-align:center; margin:40px auto; max-width:900px; font-family: Arial,sans-serif; }
-.portal-card { background:#fff; border-radius:15px; padding:25px; box-shadow:0 8px 25px rgba(0,0,0,0.1); }
-.tabs { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-bottom:20px; }
-.tab-btn { background:#eee; border:none; padding:12px 20px; border-radius:8px; cursor:pointer; font-weight:bold; transition:0.3s; }
-.tab-btn.active,.tab-btn:hover { background:#004080; color:#fff; }
-.portal-form { display:flex; flex-direction:column; gap:12px; }
-.portal-form input, .portal-form select, .portal-form textarea { padding:10px; border:1px solid #ccc; border-radius:8px; font-size:14px; width:100%; }
-.action-btn { background:#004080; color:white; padding:12px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; transition:0.3s; }
-.action-btn:hover { background:#0066cc; }
-.dashboard-modules button { margin:5px; padding:10px 16px; border:none; border-radius:8px; background:#eee; cursor:pointer; font-weight:bold; transition:0.3s; }
-.dashboard-modules button:hover { background:#004080; color:#fff; }
-.module { margin-top:20px; text-align:left; }
-.module ul { list-style:none; padding:0; }
-.module ul li { background:#f0f0f0; margin:5px 0; padding:8px; border-radius:6px; display:flex; justify-content:space-between; }
-.module ul li button { background:red; color:white; border:none; border-radius:5px; cursor:pointer; padding:2px 6px; }
-</style>
-
-<script>
-document.addEventListener("DOMContentLoaded", function(){
-
-  function saveToStorage(key, data){ localStorage.setItem(key, JSON.stringify(data)); }
-  function loadFromStorage(key){ return JSON.parse(localStorage.getItem(key)) || []; }
-
-  // Tab Switching
-  window.openTab = function(evt, tabId){
-    document.querySelectorAll(".portal-form").forEach(f=>f.style.display="none");
-    document.getElementById(tabId).style.display="flex";
-    document.querySelectorAll(".tab-btn").forEach(btn=>btn.classList.remove("active"));
-    evt.target.classList.add("active");
-    if(tabId==="dashboard"){ renderDashboard(); }
-  }
-
-  // Signup
-  window.staffSignup = function(){
-    let name = document.getElementById("signupFullName").value.trim();
-    let id = document.getElementById("signupStaffID").value.trim();
-    let username = document.getElementById("signupUsername").value.trim();
-    let password = document.getElementById("signupPassword").value.trim();
-    if(!name||!id||!username||!password){ alert("Fill all fields."); return; }
-    let users = loadFromStorage("staffUsers");
-    if(users.some(u=>u.username===username)){ alert("Username exists!"); return; }
-    users.push({name,id,username,password}); saveToStorage("staffUsers",users);
-    alert("Account created successfully!");
-    document.getElementById("signupFullName").value="";
-    document.getElementById("signupStaffID").value="";
-    document.getElementById("signupUsername").value="";
-    document.getElementById("signupPassword").value="";
-  }
-
-  // Login
-  window.staffLogin = function(evt){
-    let username=document.getElementById("loginUsername").value.trim();
-    let password=document.getElementById("loginPassword").value.trim();
-    let users=loadFromStorage("staffUsers");
-    let user=users.find(u=>u.username===username && u.password===password);
-    if(!user){ alert("Invalid credentials!"); return; }
-    localStorage.setItem("loggedInUser",JSON.stringify(user));
-    alert("Login successful!");
-    document.getElementById("loginUsername").value=""; document.getElementById("loginPassword").value="";
-    openTab(evt,"dashboard");
-  }
-
-  // Logout
-  window.logout = function(evt){
-    localStorage.removeItem("loggedInUser");
-    alert("Logged out successfully.");
-    openTab(evt,"login");
-  }
-
-  // Render Dashboard
-  function renderDashboard(){
-    let user = JSON.parse(localStorage.getItem("loggedInUser"));
-    if(!user){ alert("Please login first!"); return; }
-    document.getElementById("welcomeMessage").innerText=`Welcome, ${user.name} (${user.username})`;
-    document.getElementById("profileName").innerText=user.name;
-    document.getElementById("profileID").innerText=user.id;
-    document.getElementById("profileUsername").innerText=user.username;
-  }
-
-  // Module Helpers
-  function renderList(key,listId){ 
-    let items=loadFromStorage(key); 
-    let ul=document.getElementById(listId); ul.innerHTML=""; 
-    items.forEach((item,index)=>{ 
-      let li=document.createElement("li"); 
-      li.innerHTML=`${item} <button onclick="deleteItem('${key}',${index},'${listId}')">❌</button>`; 
-      ul.appendChild(li); 
-    });
-  }
-
-  window.deleteItem=function(key,index,listId){ 
-    let items=loadFromStorage(key); items.splice(index,1); saveToStorage(key,items); renderList(key,listId); 
-  }
-
-  window.showModule=function(moduleId){
-    document.querySelectorAll(".module").forEach(m=>m.style.display="none");
-    document.getElementById(moduleId).style.display="block";
-    // Render lists
-    if(moduleId==="attendanceModule") renderList("attendanceList","attendanceList");
-    if(moduleId==="timetableModule") renderList("timetableList","timetableList");
-    if(moduleId==="documentsModule") renderList("documentList","documentList");
-    if(moduleId==="payrollModule") renderList("payrollList","payrollList");
-    if(moduleId==="reportsModule") renderList("reportList","reportList");
-    if(moduleId==="academicModule") renderList("academicList","academicList");
-  }
-
-  window.addAttendance=function(){ let val=prompt("Enter attendance info:"); if(val){ let arr=loadFromStorage("attendanceList"); arr.push(val); saveToStorage("attendanceList",arr); renderList("attendanceList","attendanceList"); } }
-  window.addTimetable=function(){ let val=prompt("Enter timetable entry:"); if(val){ let arr=loadFromStorage("timetableList"); arr.push(val); saveToStorage("timetableList",arr); renderList("timetableList","timetableList"); } }
-  window.addDocument=function(){ let val=prompt("Enter document/resource name:"); if(val){ let arr=loadFromStorage("documentList"); arr.push(val); saveToStorage("documentList",arr); renderList("documentList","documentList"); } }
-  window.addPayroll=function(){ let val=prompt("Enter payroll info:"); if(val){ let arr=loadFromStorage("payrollList"); arr.push(val); saveToStorage("payrollList",arr); renderList("payrollList","payrollList"); } }
-  window.addReport=function(){ let val=prompt("Enter report info:"); if(val){ let arr=loadFromStorage("reportList"); arr.push(val); saveToStorage("reportList",arr); renderList("reportList","reportList"); } }
-  window.addAcademic=function(){ let val=prompt("Enter academic system info:"); if(val){ let arr=loadFromStorage("academicList"); arr.push(val); saveToStorage("academicList",arr); renderList("academicList","academicList"); } }
-
-});
-</script>
 
 
  <!-- Footer -->
@@ -2448,6 +2055,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
