@@ -1683,6 +1683,147 @@ function renderCourseChart(){
   .nav-card { width: 100%; max-width: 320px; }
 }
 </style>
+ <!-- ================= LOGIN ================= -->
+<div id="loginBox" style="max-width:400px;margin:auto;background:white;padding:30px;border-radius:15px;">
+  <h2 style="text-align:center;">🔐 Staff Portal Login</h2>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button type="button" onclick="login()">Login</button>
+  <p id="loginError" style="color:red;text-align:center;"></p>
+</div>
+
+<!-- ================= PORTAL ================= -->
+<div id="portal" style="display:none;max-width:1000px;margin:auto;">
+
+<h2 id="welcome"></h2>
+
+<nav style="text-align:center;">
+  <button onclick="showSection('profile')">Profile</button>
+  <button onclick="showSection('attendance')">Attendance</button>
+  <button onclick="showSection('leave')">Leave</button>
+  <button id="adminBtn" onclick="showSection('admin')" style="display:none;">Admin Panel</button>
+  <button onclick="logout()" style="background:#f44336;">Logout</button>
+</nav>
+
+<section id="profile">
+  <h3>👤 Profile</h3>
+  <p><b>Role:</b> <span id="roleText"></span></p>
+</section>
+
+<section id="attendance" style="display:none;">
+  <h3>🗓 Attendance</h3>
+  <button onclick="addAttendance()">Mark Attendance</button>
+  <ul id="attendanceList"></ul>
+</section>
+
+<section id="leave" style="display:none;">
+  <h3>📝 Leave Application</h3>
+  <select id="leaveType">
+    <option value="">Select Leave</option>
+    <option>Annual</option>
+    <option>Sick</option>
+    <option>Study</option>
+  </select>
+  <input type="date" id="leaveStart">
+  <input type="date" id="leaveEnd">
+  <textarea id="leaveReason" placeholder="Reason"></textarea>
+  <button onclick="applyLeave()">Submit</button>
+  <ul id="leaveList"></ul>
+</section>
+
+<section id="admin" style="display:none;">
+  <h3>🛡 Admin Panel</h3>
+  <ul id="allLeaves"></ul>
+</section>
+
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+const USERS = {
+  admin:{password:"admin@123",role:"Admin"},
+  hod:{password:"hod@123",role:"HOD"},
+  staff:{password:"staff@123",role:"Staff"}
+};
+
+let currentUser=null;
+
+function login(){
+  let u=document.getElementById("username").value.trim();
+  let p=document.getElementById("password").value.trim();
+
+  if(!USERS[u] || USERS[u].password!==p){
+    document.getElementById("loginError").innerText="Invalid username or password";
+    return;
+  }
+
+  currentUser={username:u,role:USERS[u].role};
+
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("portal").style.display="block";
+  document.getElementById("welcome").innerText="Welcome "+u;
+  document.getElementById("roleText").innerText=currentUser.role;
+
+  if(currentUser.role==="Admin"){
+    document.getElementById("adminBtn").style.display="inline-block";
+  }
+}
+
+function logout(){ location.reload(); }
+
+function showSection(id){
+  ["profile","attendance","leave","admin"].forEach(s=>{
+    document.getElementById(s).style.display="none";
+  });
+  document.getElementById(id).style.display="block";
+  if(id==="attendance") loadAttendance();
+  if(id==="leave") loadLeaves();
+  if(id==="admin") loadAllLeaves();
+}
+
+function addAttendance(){
+  let key=currentUser.username+"_att";
+  let data=JSON.parse(localStorage.getItem(key)||"[]");
+  data.push(new Date().toLocaleString());
+  localStorage.setItem(key,JSON.stringify(data));
+  loadAttendance();
+}
+
+function loadAttendance(){
+  let key=currentUser.username+"_att";
+  let data=JSON.parse(localStorage.getItem(key)||"[]");
+  document.getElementById("attendanceList").innerHTML=
+    data.map(d=>`<li>${d}</li>`).join("");
+}
+
+function applyLeave(){
+  let leaves=JSON.parse(localStorage.getItem("leaves")||"[]");
+  leaves.push({
+    user:currentUser.username,
+    role:currentUser.role,
+    type:leaveType.value,
+    start:leaveStart.value,
+    end:leaveEnd.value,
+    reason:leaveReason.value
+  });
+  localStorage.setItem("leaves",JSON.stringify(leaves));
+  loadLeaves();
+}
+
+function loadLeaves(){
+  let leaves=JSON.parse(localStorage.getItem("leaves")||"[]")
+    .filter(l=>l.user===currentUser.username);
+  document.getElementById("leaveList").innerHTML=
+    leaves.map(l=>`<li>${l.type} (${l.start} - ${l.end})</li>`).join("");
+}
+
+function loadAllLeaves(){
+  let leaves=JSON.parse(localStorage.getItem("leaves")||"[]");
+  document.getElementById("allLeaves").innerHTML=
+    leaves.map(l=>`<li>${l.user} (${l.role}) - ${l.type}</li>`).join("");
+}
+</script>
+
 
 
 
@@ -1847,6 +1988,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
