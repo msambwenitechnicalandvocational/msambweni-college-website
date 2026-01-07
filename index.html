@@ -1081,75 +1081,6 @@ function breakup3D(image, callback) {
 <button type="button" onclick="logout()" style="background:#f44336;color:white;">Logout</button>
 </nav>
 
-<!-- PAYMENTS -->
-<section id="paymentsSection">
-<h2>💳 Payments</h2>
-<form id="paymentForm">
-<input id="studentName" placeholder="Student Name" required>
-<input id="paymentAmount" type="number" placeholder="Amount" required>
-<select id="paymentMethod" required>
-<option value="">Payment Method</option>
-<option>Cash</option>
-<option>Mpesa</option>
-<option>Bank</option>
-</select>
-<button type="submit">Add Payment</button>
-</form>
-<table id="paymentsTable">
-<thead><tr><th>Student</th><th>Amount</th><th>Method</th><th>Date</th><th>Actions</th></tr></thead>
-<tbody></tbody>
-</table>
-<button type="button" onclick="manualDownload('payments','Payments Report')">Download Word</button>
-<button type="button" onclick="printReport('payments')">Print</button>
-</section>
-
-<!-- EXPENSES -->
-<section id="expensesSection" style="display:none;">
-<h2>💸 Expenses</h2>
-<form id="expenseForm">
-<input id="expenseCategory" placeholder="Category" required>
-<input id="expenseDescription" placeholder="Description" required>
-<input id="expenseAmount" type="number" placeholder="Amount" required>
-<button type="submit">Add Expense</button>
-</form>
-<table id="expensesTable">
-<thead><tr><th>Category</th><th>Description</th><th>Amount</th><th>Date</th><th>Actions</th></tr></thead>
-<tbody></tbody>
-</table>
-<button type="button" onclick="manualDownload('expenses','Expenses Report')">Download Word</button>
-<button type="button" onclick="printReport('expenses')">Print</button>
-</section>
-
-<!-- ACCOUNTS -->
-<section id="accountsSection" style="display:none;">
-<h2 style="text-align:center; color:#5d4037;">🏦 Accounts Management</h2>
-<form id="accountsForm">
-<input type="text" id="accountName" placeholder="Account Name (Payable/Receivable)" required>
-<input type="number" id="accountAmount" placeholder="Amount" required>
-<select id="accountType" required>
-<option value="">Select Type</option>
-<option value="Payable">Payable</option>
-<option value="Receivable">Receivable</option>
-</select>
-<button type="submit">Add Account</button>
-<button type="button" onclick="clearTable('accounts')" style="background:#f44336;color:white;">Clear Accounts</button>
-</form>
-<table id="accountsTable">
-<thead><tr><th>Name</th><th>Amount</th><th>Type</th><th>Date</th><th>Actions</th></tr></thead>
-<tbody></tbody>
-</table>
-<button type="button" onclick="manualDownload('accounts','Accounts Report')">Download Word</button>
-<button type="button" onclick="printReport('accounts')">Print</button>
-</section>
-
-<!-- REPORTS / DASHBOARD -->
-<section id="reportsSection" style="display:none;">
-<h2>📑 Reports & Dashboard</h2>
-<div id="paymentDashboard" style="padding:10px;background:#ffeb3b;border-radius:8px;margin:10px 0;"></div>
-</section>
-
-</div>
-
 <script>
 // =================== LOGIN ===================
 const FIXED_USER="finance";
@@ -2457,6 +2388,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
