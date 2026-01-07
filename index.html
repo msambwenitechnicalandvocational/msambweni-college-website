@@ -1059,46 +1059,7 @@ function breakup3D(image, callback) {
 
 <div style="max-width:900px; margin:40px auto; font-family:Arial, sans-serif;">
 
-  <!-- Payments Section -->
-  <section id="paymentsSection" style="display:none; background:white; padding:30px; border-radius:20px; box-shadow:0 12px 30px rgba(0,0,0,0.15); margin-bottom:40px;">
-    <h2 style="text-align:center; color:#0d47a1;">💰 Record Payment</h2>
-    <form id="paymentForm">
-      <input type="text" id="studentName" placeholder="Student Name" required style="width:100%; padding:14px; margin-bottom:18px; border-radius:12px; border:1px solid #ccc;">
-      <input type="number" id="paymentAmount" placeholder="Amount" required style="width:100%; padding:14px; margin-bottom:18px; border-radius:12px; border:1px solid #ccc;">
-      <select id="paymentMethod" required style="width:100%; padding:14px; margin-bottom:18px; border-radius:12px; border:1px solid #ccc;">
-        <option value="">Select Method</option>
-        <option value="Cash">Cash</option>
-        <option value="Bank">Bank</option>
-        <option value="Mobile Money">Mobile Money</option>
-      </select>
-      <button type="submit" style="width:100%; padding:14px; background:linear-gradient(90deg,#42a5f5,#478ed1); color:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">Add Payment</button>
-      <button type="button" onclick="clearTable('payments')" style="width:100%; margin-top:12px; padding:14px; background:#f44336; color:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">Clear All Payments</button>
-    </form>
-    <h3 style="color:#0d47a1; margin-top:30px;">Payments Records</h3>
-    <table id="paymentsTable" style="width:100%; border-collapse:separate; border-spacing:0; border-radius:12px; overflow:hidden;">
-      <thead><tr style="background:#42a5f5; color:white;"><th>Student</th><th>Amount</th><th>Method</th><th>Date</th><th>Actions</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </section>
-
-  <!-- Expenses Section -->
-  <section id="expensesSection" style="display:none; background:white; padding:30px; border-radius:20px; box-shadow:0 12px 30px rgba(0,0,0,0.15); margin-bottom:40px;">
-    <h2 style="text-align:center; color:#388e3c;">📊 Record Expense</h2>
-    <form id="expenseForm">
-      <input type="text" id="expenseCategory" placeholder="Category" required style="width:100%; padding:14px; margin-bottom:18px; border-radius:12px; border:1px solid #ccc;">
-      <input type="text" id="expenseDescription" placeholder="Description" required style="width:100%; padding:14px; margin-bottom:18px; border-radius:12px; border:1px solid #ccc;">
-      <input type="number" id="expenseAmount" placeholder="Amount" required style="width:100%; padding:14px; margin-bottom:18px; border-radius:12px; border:1px solid #ccc;">
-      <button type="submit" style="width:100%; padding:14px; background:linear-gradient(90deg,#66bb6a,#388e3c); color:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">Add Expense</button>
-      <button type="button" onclick="clearTable('expenses')" style="width:100%; margin-top:12px; padding:14px; background:#f44336; color:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer;">Clear All Expenses</button>
-    </form>
-    <h3 style="color:#388e3c; margin-top:30px;">Expenses Records</h3>
-    <table id="expensesTable" style="width:100%; border-collapse:separate; border-spacing:0; border-radius:12px; overflow:hidden;">
-      <thead><tr style="background:#66bb6a; color:white;"><th>Category</th><th>Description</th><th>Amount</th><th>Date</th><th>Actions</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </section>
-
- <!-- LOGIN -->
+  <!-- LOGIN -->
 <div id="loginBox" style="max-width:400px;margin:auto;background:white;padding:30px;border-radius:20px;">
 <h2 style="text-align:center;color:#5d4037;">🔐 Finance Login</h2>
 <input id="loginUser" placeholder="Username">
@@ -1117,7 +1078,7 @@ function breakup3D(image, callback) {
 <button onclick="showSection('expensesSection')">Expenses</button>
 <button onclick="showSection('accountsSection')">Accounts</button>
 <button onclick="showSection('reportsSection')">Reports</button>
-<button onclick="logout()" style="background:#f44336;">Logout</button>
+<button onclick="logout()" style="background:#f44336;color:white;">Logout</button>
 </nav>
 
 <!-- PAYMENTS -->
@@ -1138,6 +1099,8 @@ function breakup3D(image, callback) {
 <thead><tr><th>Student</th><th>Amount</th><th>Method</th><th>Date</th><th>Actions</th></tr></thead>
 <tbody></tbody>
 </table>
+<button onclick="manualDownload('payments','Payments Report')">Download Word</button>
+<button onclick="printReport('payments')">Print</button>
 </section>
 
 <!-- EXPENSES -->
@@ -1153,70 +1116,41 @@ function breakup3D(image, callback) {
 <thead><tr><th>Category</th><th>Description</th><th>Amount</th><th>Date</th><th>Actions</th></tr></thead>
 <tbody></tbody>
 </table>
+<button onclick="manualDownload('expenses','Expenses Report')">Download Word</button>
+<button onclick="printReport('expenses')">Print</button>
 </section>
 
-<!-- ================== YOUR CODE INCLUDED BELOW (UNCHANGED) ================== -->
-
-<!-- Accounts Section -->
-<section id="accountsSection" style="display:none; background:white; padding:30px; border-radius:20px; box-shadow:0 12px 30px rgba(0,0,0,0.15); margin-bottom:40px;">
-  <h2 style="text-align:center; color:#5d4037;">🏦 Accounts Management</h2>
-  <form id="accountsForm">
-    <input type="text" id="accountName" placeholder="Account Name (Payable/Receivable)" required>
-    <input type="number" id="accountAmount" placeholder="Amount" required>
-    <select id="accountType" required>
-      <option value="">Select Type</option>
-      <option value="Payable">Payable</option>
-      <option value="Receivable">Receivable</option>
-    </select>
-    <button type="submit">Add Account</button>
-    <button type="button" onclick="clearTable('accounts')" style="background:#f44336;color:white;">Clear Accounts</button>
-  </form>
-  <table id="accountsTable">
-    <thead><tr><th>Name</th><th>Amount</th><th>Type</th><th>Date</th><th>Actions</th></tr></thead>
-    <tbody></tbody>
-  </table>
+<!-- ACCOUNTS -->
+<section id="accountsSection" style="display:none; background:white; padding:20px; border-radius:12px;">
+<h2 style="text-align:center; color:#5d4037;">🏦 Accounts Management</h2>
+<form id="accountsForm">
+<input type="text" id="accountName" placeholder="Account Name (Payable/Receivable)" required>
+<input type="number" id="accountAmount" placeholder="Amount" required>
+<select id="accountType" required>
+<option value="">Select Type</option>
+<option value="Payable">Payable</option>
+<option value="Receivable">Receivable</option>
+</select>
+<button type="submit">Add Account</button>
+<button type="button" onclick="clearTable('accounts')" style="background:#f44336;color:white;">Clear Accounts</button>
+</form>
+<table id="accountsTable">
+<thead><tr><th>Name</th><th>Amount</th><th>Type</th><th>Date</th><th>Actions</th></tr></thead>
+<tbody></tbody>
+</table>
+<button onclick="manualDownload('accounts','Accounts Report')">Download Word</button>
+<button onclick="printReport('accounts')">Print</button>
 </section>
 
-<!-- Reports Section -->
-<section id="reportsSection" style="display:none; background:white; padding:30px; border-radius:20px;">
-  <h2>📑 Reports & Dashboard</h2>
-  <div id="paymentDashboard"></div>
-  <button onclick="downloadPayments()">Payments</button>
-  <button onclick="downloadExpenses()">Expenses</button>
-  <button onclick="downloadAccounts()">Accounts</button>
-  <button onclick="downloadStudents()">Paid Students</button>
+<!-- REPORTS / DASHBOARD -->
+<section id="reportsSection" style="display:none; background:white; padding:20px; border-radius:12px;">
+<h2>📑 Reports & Dashboard</h2>
+<div id="paymentDashboard" style="padding:10px;background:#ffeb3b;border-radius:8px;margin:10px 0;"></div>
 </section>
 
 </div>
 
-<!-- ================== SCRIPT ================== -->
 <script>
-const FIXED_USER="finance";
-const FIXED_PASS="finance@123";
-
-function login(){
-  if(loginUser.value===FIXED_USER && loginPass.value===FIXED_PASS){
-    loginBox.style.display="none";
-    portal.style.display="block";
-    showSection("paymentsSection");
-  }else{
-    loginError.innerText="Invalid login details";
-  }
-}
-function logout(){location.reload();}
-</script>
-
-<!-- ================== YOUR FULL SCRIPT LOGIC ================== -->
-<script>
-/* YOUR SCRIPT — EXACTLY AS PROVIDED */
-const schoolName = "Msambweni Technical & Vocational College";
-const schoolVision = "Vision: Empowering students with technical excellence";
-
-const sections = ["paymentsSection","expensesSection","accountsSection","reportsSection"];
-function showSection(id){ sections.forEach(s=>document.getElementById(s).style.display="none"); document.getElementById(id).style.display="block"; }
-
-/* (rest of your JS logic continues unchanged) */
-</script>
 
 
 
@@ -2390,6 +2324,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
