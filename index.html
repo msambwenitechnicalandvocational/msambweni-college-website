@@ -1683,213 +1683,147 @@ function renderCourseChart(){
   .nav-card { width: 100%; max-width: 320px; }
 }
 </style>
-
-
 <!-- ================= STAFF PORTAL ================= -->
-<section id="staff-portal">
-  <h2>Staff Portal – Msambweni Technical & Vocational College</h2>
-  <p><em>Vision:</em> Empowering Staff, Enhancing Excellence.</p>
+<div id="loginBox" style="max-width:400px;margin:auto;background:white;padding:30px;border-radius:15px;">
+  <h2 style="text-align:center;">🔐 Staff Portal Login</h2>
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <p id="loginError" style="color:red;text-align:center;"></p>
+</div>
 
-  <div class="portal-card">
+<div id="portal" style="display:none;max-width:1000px;margin:auto;">
 
-    <!-- TABS -->
-    <div class="tabs">
-      <button class="tab-btn active" onclick="openTab(event,'signup')">Sign Up</button>
-      <button class="tab-btn" onclick="openTab(event,'login')">Login</button>
-      <button class="tab-btn" onclick="openTab(event,'dashboard')">Dashboard</button>
-    </div>
+<h2 id="welcome"></h2>
 
-    <!-- SIGN UP -->
-    <div id="signup" class="portal-form">
-      <input id="signupFullName" placeholder="Full Name">
-      <input id="signupStaffID" placeholder="Staff ID">
-      <input id="signupUsername" placeholder="Username (admin_ / hod_)">
-      <input id="signupPassword" type="password" placeholder="Password">
-      <button class="action-btn" onclick="staffSignup()">Create Account</button>
-    </div>
+<nav style="text-align:center;margin-bottom:20px;">
+  <button onclick="show('profile')">Profile</button>
+  <button onclick="show('attendance')">Attendance</button>
+  <button onclick="show('leave')">Leave</button>
+  <button id="adminBtn" onclick="show('admin')" style="display:none;">Admin Panel</button>
+  <button onclick="logout()" style="background:#f44336;color:white;">Logout</button>
+</nav>
 
-    <!-- LOGIN -->
-    <div id="login" class="portal-form" style="display:none;">
-      <input id="loginUsername" placeholder="Username">
-      <input id="loginPassword" type="password" placeholder="Password">
-      <button class="action-btn" onclick="staffLogin(event)">Login</button>
-    </div>
-
-    <!-- DASHBOARD -->
-    <div id="dashboard" class="portal-form" style="display:none;">
-      <h3 id="welcomeMessage"></h3>
-
-      <div class="dashboard-modules">
-        <button onclick="showModule('profileModule')">👤 Profile</button>
-        <button onclick="showModule('attendanceModule')">🗓 Attendance</button>
-        <button onclick="showModule('documentsModule')">📂 Documents</button>
-        <button onclick="showModule('leaveModule')">📝 Leave</button>
-        <button class="admin-only" onclick="showModule('adminModule')">🛡 Admin</button>
-        <button onclick="logout(event)" style="background:#f44336;color:white;">Logout</button>
-      </div>
-
-      <!-- MODULES -->
-      <div id="modulesContainer">
-
-        <!-- PROFILE -->
-        <div id="profileModule" class="module">
-          <p><b>Name:</b> <span id="profileName"></span></p>
-          <p><b>Staff ID:</b> <span id="profileID"></span></p>
-          <p><b>Username:</b> <span id="profileUsername"></span></p>
-        </div>
-
-        <!-- ATTENDANCE -->
-        <div id="attendanceModule" class="module" style="display:none;">
-          <h4>Attendance</h4>
-          <button onclick="addAttendance()">Add Attendance</button>
-          <ul id="attendanceList"></ul>
-        </div>
-
-        <!-- DOCUMENTS -->
-        <div id="documentsModule" class="module" style="display:none;">
-          <h4>Documents</h4>
-          <button onclick="addDocument()">Add Document</button>
-          <ul id="documentList"></ul>
-        </div>
-
-        <!-- LEAVE -->
-        <div id="leaveModule" class="module" style="display:none;">
-          <select id="leaveType">
-            <option value="">Leave Type</option>
-            <option>Annual</option>
-            <option>Sick</option>
-            <option>Study</option>
-          </select>
-          <input type="date" id="leaveStart">
-          <input type="date" id="leaveEnd">
-          <textarea id="leaveReason" placeholder="Reason"></textarea>
-          <button onclick="submitLeave()">Submit Leave</button>
-          <ul id="leaveList"></ul>
-        </div>
-
-        <!-- ADMIN -->
-        <div id="adminModule" class="module" style="display:none;">
-          <h4>Admin – All Leave Requests</h4>
-          <ul id="allLeaves"></ul>
-        </div>
-
-      </div>
-    </div>
-  </div>
+<!-- PROFILE -->
+<section id="profile">
+  <h3>👤 Profile</h3>
+  <p><b>Role:</b> <span id="roleText"></span></p>
 </section>
+
+<!-- ATTENDANCE -->
+<section id="attendance" style="display:none;">
+  <h3>🗓 Attendance</h3>
+  <button onclick="addAttendance()">Add Attendance</button>
+  <ul id="attendanceList"></ul>
+</section>
+
+<!-- LEAVE -->
+<section id="leave" style="display:none;">
+  <h3>📝 Leave Application</h3>
+  <select id="leaveType">
+    <option value="">Select Leave</option>
+    <option>Annual</option>
+    <option>Sick</option>
+    <option>Study</option>
+  </select>
+  <input type="date" id="leaveStart">
+  <input type="date" id="leaveEnd">
+  <textarea id="leaveReason" placeholder="Reason"></textarea>
+  <button onclick="applyLeave()">Submit</button>
+  <ul id="leaveList"></ul>
+</section>
+
+<!-- ADMIN -->
+<section id="admin" style="display:none;">
+  <h3>🛡 Admin Panel</h3>
+  <ul id="allLeaves"></ul>
+</section>
+
+</div>
 
 <!-- ================= SCRIPT ================= -->
 <script>
-const $ = id => document.getElementById(id);
-const load = k => JSON.parse(localStorage.getItem(k) || "[]");
-const save = (k,v) => localStorage.setItem(k, JSON.stringify(v));
+const USERS = {
+  admin: {password:"admin@123", role:"Admin"},
+  hod: {password:"hod@123", role:"HOD"},
+  staff: {password:"staff@123", role:"Staff"}
+};
 
-function openTab(e,tab){
-  document.querySelectorAll('.portal-form').forEach(f=>f.style.display="none");
-  $(tab).style.display="flex";
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove("active"));
-  e.target.classList.add("active");
+let currentUser = null;
+
+function login(){
+  let u=username.value, p=password.value;
+  if(USERS[u] && USERS[u].password===p){
+    currentUser={username:u, role:USERS[u].role};
+    loginBox.style.display="none";
+    portal.style.display="block";
+    welcome.innerText="Welcome "+u;
+    roleText.innerText=currentUser.role;
+    if(currentUser.role==="Admin") adminBtn.style.display="inline-block";
+  }else{
+    loginError.innerText="Invalid username or password";
+  }
 }
 
-function staffSignup(){
-  let name=signupFullName.value,id=signupStaffID.value,user=signupUsername.value,pass=signupPassword.value;
-  if(!name||!id||!user||!pass) return alert("Fill all fields");
-  let users=load("staffUsers");
-  if(users.some(u=>u.username===user)) return alert("Username exists");
+function logout(){ location.reload(); }
 
-  let role=user.startsWith("admin_")?"Admin":user.startsWith("hod_")?"HOD":"Staff";
-  users.push({name,id,username:user,password:pass,role});
-  save("staffUsers",users);
-  alert("Account created ("+role+")");
-}
-
-function staffLogin(e){
-  e.preventDefault();
-  let u=load("staffUsers").find(x=>x.username===loginUsername.value && x.password===loginPassword.value);
-  if(!u) return alert("Invalid login");
-  localStorage.setItem("currentStaff",JSON.stringify(u));
-  openTab(e,"dashboard");
-  loadDashboard();
-}
-
-function loadDashboard(){
-  let u=JSON.parse(localStorage.getItem("currentStaff"));
-  welcomeMessage.innerText=`Welcome ${u.name} (${u.role})`;
-  profileName.innerText=u.name;
-  profileID.innerText=u.id;
-  profileUsername.innerText=u.username;
-  if(u.role!=="Admin") document.querySelectorAll(".admin-only").forEach(b=>b.style.display="none");
-}
-
-function logout(e){
-  e.preventDefault();
-  localStorage.removeItem("currentStaff");
-  openTab(e,"login");
-}
-
-function showModule(id){
-  document.querySelectorAll(".module").forEach(m=>m.style.display="none");
-  $(id).style.display="block";
-  if(id==="attendanceModule") render("attendance");
-  if(id==="documentsModule") render("documents");
-  if(id==="leaveModule") renderLeaves();
-  if(id==="adminModule") renderAllLeaves();
+function show(id){
+  ["profile","attendance","leave","admin"].forEach(s=>document.getElementById(s).style.display="none");
+  document.getElementById(id).style.display="block";
+  if(id==="attendance") loadAttendance();
+  if(id==="leave") loadLeaves();
+  if(id==="admin") loadAllLeaves();
 }
 
 function addAttendance(){
-  let u=JSON.parse(localStorage.getItem("currentStaff"));
-  let data=load(u.username+"_attendance");
-  let val=prompt("Enter attendance:");
-  if(val){ data.push(val); save(u.username+"_attendance",data); render("attendance"); }
+  let data=JSON.parse(localStorage.getItem(currentUser.username+"_att")||"[]");
+  let entry=new Date().toLocaleString();
+  data.push(entry);
+  localStorage.setItem(currentUser.username+"_att",JSON.stringify(data));
+  loadAttendance();
 }
 
-function addDocument(){
-  let u=JSON.parse(localStorage.getItem("currentStaff"));
-  let data=load(u.username+"_documents");
-  let val=prompt("Document name:");
-  if(val){ data.push(val); save(u.username+"_documents",data); render("documents"); }
+function loadAttendance(){
+  let list=document.getElementById("attendanceList");
+  let data=JSON.parse(localStorage.getItem(currentUser.username+"_att")||"[]");
+  list.innerHTML=data.map(d=>`<li>${d}</li>`).join("");
 }
 
-function render(type){
-  let u=JSON.parse(localStorage.getItem("currentStaff"));
-  let list=$(type==="attendance"?"attendanceList":"documentList");
-  let data=load(u.username+"_"+type);
-  list.innerHTML=data.map((v,i)=>`<li>${v}</li>`).join("");
+function applyLeave(){
+  let leaves=JSON.parse(localStorage.getItem("leaves")||"[]");
+  leaves.push({
+    user:currentUser.username,
+    role:currentUser.role,
+    type:leaveType.value,
+    start:leaveStart.value,
+    end:leaveEnd.value,
+    reason:leaveReason.value
+  });
+  localStorage.setItem("leaves",JSON.stringify(leaves));
+  loadLeaves();
 }
 
-function submitLeave(){
-  let u=JSON.parse(localStorage.getItem("currentStaff"));
-  let leaves=load("staffLeaves");
-  leaves.push({staff:u.username,type:leaveType.value,start:leaveStart.value,end:leaveEnd.value,reason:leaveReason.value});
-  save("staffLeaves",leaves);
-  renderLeaves();
+function loadLeaves(){
+  let leaves=JSON.parse(localStorage.getItem("leaves")||"[]")
+    .filter(l=>l.user===currentUser.username);
+  leaveList.innerHTML=leaves.map(l=>`<li>${l.type} (${l.start} - ${l.end})</li>`).join("");
 }
 
-function renderLeaves(){
-  let u=JSON.parse(localStorage.getItem("currentStaff"));
-  let leaves=load("staffLeaves").filter(l=>l.staff===u.username);
-  leaveList.innerHTML=leaves.map(l=>`<li>${l.type} | ${l.start}–${l.end}</li>`).join("");
-}
-
-function renderAllLeaves(){
-  allLeaves.innerHTML=load("staffLeaves").map(l=>`<li>${l.staff}: ${l.type} (${l.start}–${l.end})</li>`).join("");
+function loadAllLeaves(){
+  let leaves=JSON.parse(localStorage.getItem("leaves")||"[]");
+  allLeaves.innerHTML=leaves.map(l=>`<li>${l.user} (${l.role}) - ${l.type}</li>`).join("");
 }
 </script>
 
 <!-- ================= STYLE ================= -->
 <style>
-#staff-portal{max-width:900px;margin:auto;font-family:Arial}
-.portal-card{background:#fff;padding:25px;border-radius:15px;box-shadow:0 8px 25px rgba(0,0,0,.1)}
-.tabs{display:flex;gap:10px;justify-content:center;margin-bottom:15px}
-.tab-btn{padding:10px 18px;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
-.tab-btn.active{background:#004080;color:#fff}
-.portal-form{display:flex;flex-direction:column;gap:10px}
-input,select,textarea{padding:10px;border-radius:8px;border:1px solid #ccc}
-.action-btn{background:#004080;color:#fff;padding:10px;border:none;border-radius:8px;font-weight:bold}
-.dashboard-modules button{margin:5px;padding:8px 12px;border:none;border-radius:8px}
-.module{background:#f9f9f9;padding:15px;border-radius:10px;margin-top:15px}
+body{font-family:Arial;background:#f4f6f8}
+input,select,textarea,button{padding:10px;border-radius:8px;border:1px solid #ccc;width:100%}
+button{background:#004080;color:white;font-weight:bold}
+section{background:white;padding:20px;border-radius:15px;margin-bottom:15px}
 ul{list-style:none;padding:0}
-ul li{background:#eee;margin:5px 0;padding:8px;border-radius:6px}
+ul li{background:#eee;padding:8px;margin:5px 0;border-radius:6px}
+nav button{margin:5px}
 </style>
 
 
@@ -2055,6 +1989,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
