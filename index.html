@@ -1049,167 +1049,7 @@ function breakup3D(image, callback) {
   .delete { background: #dc3545; color: #fff; }
 </style>
 
-<!-- Top Navigation -->
-<nav style="width:100%; background:linear-gradient(90deg,#0d47a1,#1976d2); padding:15px 0; text-align:center; box-shadow:0 6px 20px rgba(0,0,0,0.25); position:sticky; top:0; z-index:100;">
-  <button onclick="showSection('paymentsSection')" style="margin:0 12px; padding:10px 22px; border:none; border-radius:12px; background:linear-gradient(90deg,#42a5f5,#478ed1); color:white; font-weight:bold; cursor:pointer;">💰 Payments</button>
-  <button onclick="showSection('expensesSection')" style="margin:0 12px; padding:10px 22px; border:none; border-radius:12px; background:linear-gradient(90deg,#66bb6a,#388e3c); color:white; font-weight:bold; cursor:pointer;">📊 Expenses</button>
-  <button onclick="showSection('accountsSection')" style="margin:0 12px; padding:10px 22px; border:none; border-radius:12px; background:linear-gradient(90deg,#8d6e63,#5d4037); color:white; font-weight:bold; cursor:pointer;">🏦 Accounts</button>
-  <button onclick="showSection('reportsSection')" style="margin:0 12px; padding:10px 22px; border:none; border-radius:12px; background:linear-gradient(90deg,#ffb74d,#ffa726); color:white; font-weight:bold; cursor:pointer;">📑 Reports</button>
-</nav>
-
-<div style="max-width:900px; margin:40px auto; font-family:Arial, sans-serif;">
-
-  <!-- LOGIN -->
-<div id="loginBox" style="max-width:400px;margin:auto;background:white;padding:30px;border-radius:20px;">
-<h2 style="text-align:center;color:#5d4037;">🔐 Finance Login</h2>
-<input id="loginUser" placeholder="Username">
-<input id="loginPass" type="password" placeholder="Password">
-<button type="button" onclick="login()">Login</button>
-<p id="loginError" style="color:red;text-align:center;"></p>
-</div>
-
-<!-- FINANCE PORTAL -->
-<div id="portal" style="display:none;">
-
-<h1 style="text-align:center;color:#5d4037;">🏦 Finance Management Portal</h1>
-
-<nav style="text-align:center;">
-<button type="button" onclick="showSection('paymentsSection')">Payments</button>
-<button type="button" onclick="showSection('expensesSection')">Expenses</button>
-<button type="button" onclick="showSection('accountsSection')">Accounts</button>
-<button type="button" onclick="showSection('reportsSection')">Reports</button>
-<button type="button" onclick="logout()" style="background:#f44336;color:white;">Logout</button>
-</nav>
-
-<script>
-// =================== LOGIN ===================
-const FIXED_USER="finance";
-const FIXED_PASS="finance@123";
-
-function login(){
-  if(loginUser.value===FIXED_USER && loginPass.value===FIXED_PASS){
-    loginBox.style.display="none";
-    portal.style.display="block";
-    showSection("paymentsSection");
-    ["payments","expenses","accounts"].forEach(loadTable);
-    updateDashboard();
-  }else{
-    loginError.innerText="Invalid login details";
-  }
-}
-function logout(){ location.reload(); }
-
-// =================== NAVIGATION ===================
-const sections=["paymentsSection","expensesSection","accountsSection","reportsSection"];
-function showSection(id){
-  sections.forEach(s=>document.getElementById(s).style.display="none");
-  document.getElementById(id).style.display="block";
-}
-
-// =================== DATA MANAGEMENT ===================
-const schoolName="Msambweni Technical & Vocational College";
-const schoolVision="Vision: Empowering students with technical excellence.";
-
-function saveItem(key,item){
-  let data=JSON.parse(localStorage.getItem(key)||"[]");
-  data.push(item);
-  localStorage.setItem(key,JSON.stringify(data));
-  loadTable(key);
-  updateDashboard();
-}
-
-function loadTable(key){
-  let data=JSON.parse(localStorage.getItem(key)||"[]");
-  let tbody=document.getElementById(key+"Table").querySelector("tbody");
-  tbody.innerHTML="";
-  data.forEach((item,i)=>{
-    let tr=document.createElement("tr");
-    Object.values(item).forEach(v=>{ let td=document.createElement("td"); td.innerText=v; tr.appendChild(td); });
-    let td=document.createElement("td");
-    let edit=document.createElement("button"); edit.innerText="Edit"; edit.type="button"; edit.onclick=()=>editItem(key,i);
-    let del=document.createElement("button"); del.innerText="Delete"; del.type="button"; del.onclick=()=>deleteItem(key,i);
-    td.appendChild(edit); td.appendChild(del); tr.appendChild(td); tbody.appendChild(tr);
-  });
-}
-
-function editItem(key,index){
-  let data=JSON.parse(localStorage.getItem(key)||"[]"); let item=data[index];
-  if(key==="payments"){ document.getElementById("studentName").value=item.student; document.getElementById("paymentAmount").value=item.amount; document.getElementById("paymentMethod").value=item.method; }
-  if(key==="expenses"){ document.getElementById("expenseCategory").value=item.category; document.getElementById("expenseDescription").value=item.description; document.getElementById("expenseAmount").value=item.amount; }
-  if(key==="accounts"){ document.getElementById("accountName").value=item.name; document.getElementById("accountAmount").value=item.amount; document.getElementById("accountType").value=item.type; }
-  deleteItem(key,index);
-}
-
-function deleteItem(key,index){
-  let data=JSON.parse(localStorage.getItem(key)||"[]"); 
-  data.splice(index,1); 
-  localStorage.setItem(key,JSON.stringify(data)); 
-  loadTable(key); 
-  updateDashboard();
-}
-
-function clearTable(key){
-  localStorage.removeItem(key);
-  loadTable(key);
-  updateDashboard();
-}
-
-// =================== FORM SUBMISSION ===================
-document.getElementById("paymentForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  saveItem("payments",{student:document.getElementById("studentName").value, amount:parseFloat(document.getElementById("paymentAmount").value), method:document.getElementById("paymentMethod").value, date:new Date().toLocaleDateString()});
-  e.target.reset();
-});
-
-document.getElementById("expenseForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  saveItem("expenses",{category:document.getElementById("expenseCategory").value, description:document.getElementById("expenseDescription").value, amount:parseFloat(document.getElementById("expenseAmount").value), date:new Date().toLocaleDateString()});
-  e.target.reset();
-});
-
-document.getElementById("accountsForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  saveItem("accounts",{name:document.getElementById("accountName").value, amount:parseFloat(document.getElementById("accountAmount").value), type:document.getElementById("accountType").value, date:new Date().toLocaleDateString()});
-  e.target.reset();
-});
-
-// =================== DASHBOARD ===================
-function updateDashboard(){
-  let payments=JSON.parse(localStorage.getItem("payments")||"[]"); 
-  let expenses=JSON.parse(localStorage.getItem("expenses")||"[]");
-  let totalPayments=payments.reduce((s,p)=>s+p.amount,0);
-  let totalExpenses=expenses.reduce((s,e)=>s+e.amount,0);
-  document.getElementById("paymentDashboard").innerText=`💳 Total Payments: KES ${totalPayments.toLocaleString()} | 💸 Total Expenses: KES ${totalExpenses.toLocaleString()} | 🏦 Net Balance: KES ${(totalPayments-totalExpenses).toLocaleString()}`;
-}
-
-// =================== DOWNLOAD / PRINT ===================
-function manualDownload(key,title){
-  let data=JSON.parse(localStorage.getItem(key)||"[]");
-  if(data.length===0){ alert("No records found"); return; }
-  let html=`<h1>${schoolName}</h1><h3>${schoolVision}</h3><h2>${title}</h2>`;
-  html+=`<table border="1" style="width:100%;border-collapse:collapse;"><tr>`;
-  Object.keys(data[0]).forEach(k=>html+=`<th>${k}</th>`);
-  html+="</tr>";
-  data.forEach(r=>{ html+="<tr>"; Object.values(r).forEach(v=>html+=`<td>${v}</td>`); html+="</tr>"; });
-  html+="</table>";
-  let blob=new Blob([html],{type:"application/msword"});
-  let a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download=title.replace(/\s/g,"_")+".doc";
-  a.click();
-}
-
-function printReport(key){
-  let data=JSON.parse(localStorage.getItem(key)||"[]");
-  if(data.length===0){ alert("No records to print"); return; }
-  let win=window.open("","","width=900,height=650");
-  win.document.write(`<h1>${schoolName}</h1><h3>${schoolVision}</h3>`);
-  win.document.write(`<table border="1" style="width:100%;border-collapse:collapse;"><tr>`);
-  Object.keys(data[0]).forEach(k=>win.document.write(`<th>${k}</th>`));
-  win.document.write("</tr>");
-  data.forEach(r=>{
-    win.document.write("<tr>");
-    Object.values(r).forEach(v=>win.document.write(`<td>${v}</td>`));
+ach(v=>win.document.write(`<td>${v}</td>`));
     win.document.write("</tr>");
   });
   win.document.write("</table>");
@@ -1217,7 +1057,6 @@ function printReport(key){
   win.print();
 }
 </script>
-
 
  <!-- Msambweni Technical & Vocational College Student Portal -->
 <section id="student-portal" style="font-family:'Segoe UI',sans-serif; max-width:900px; margin:40px auto;">
@@ -2388,6 +2227,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
