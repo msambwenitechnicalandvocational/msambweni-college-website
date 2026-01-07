@@ -1683,41 +1683,39 @@ function renderCourseChart(){
   .nav-card { width: 100%; max-width: 320px; }
 }
 </style>
-<!-- ================= STAFF PORTAL ================= -->
+<!-- ================= LOGIN ================= -->
 <div id="loginBox" style="max-width:400px;margin:auto;background:white;padding:30px;border-radius:15px;">
   <h2 style="text-align:center;">🔐 Staff Portal Login</h2>
-  <input id="username" placeholder="Username">
-  <input id="password" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button type="button" onclick="login()">Login</button>
   <p id="loginError" style="color:red;text-align:center;"></p>
 </div>
 
+<!-- ================= PORTAL ================= -->
 <div id="portal" style="display:none;max-width:1000px;margin:auto;">
 
 <h2 id="welcome"></h2>
 
-<nav style="text-align:center;margin-bottom:20px;">
-  <button onclick="show('profile')">Profile</button>
-  <button onclick="show('attendance')">Attendance</button>
-  <button onclick="show('leave')">Leave</button>
-  <button id="adminBtn" onclick="show('admin')" style="display:none;">Admin Panel</button>
-  <button onclick="logout()" style="background:#f44336;color:white;">Logout</button>
+<nav style="text-align:center;">
+  <button onclick="showSection('profile')">Profile</button>
+  <button onclick="showSection('attendance')">Attendance</button>
+  <button onclick="showSection('leave')">Leave</button>
+  <button id="adminBtn" onclick="showSection('admin')" style="display:none;">Admin Panel</button>
+  <button onclick="logout()" style="background:#f44336;">Logout</button>
 </nav>
 
-<!-- PROFILE -->
 <section id="profile">
   <h3>👤 Profile</h3>
   <p><b>Role:</b> <span id="roleText"></span></p>
 </section>
 
-<!-- ATTENDANCE -->
 <section id="attendance" style="display:none;">
   <h3>🗓 Attendance</h3>
-  <button onclick="addAttendance()">Add Attendance</button>
+  <button onclick="addAttendance()">Mark Attendance</button>
   <ul id="attendanceList"></ul>
 </section>
 
-<!-- LEAVE -->
 <section id="leave" style="display:none;">
   <h3>📝 Leave Application</h3>
   <select id="leaveType">
@@ -1733,7 +1731,6 @@ function renderCourseChart(){
   <ul id="leaveList"></ul>
 </section>
 
-<!-- ADMIN -->
 <section id="admin" style="display:none;">
   <h3>🛡 Admin Panel</h3>
   <ul id="allLeaves"></ul>
@@ -1744,31 +1741,40 @@ function renderCourseChart(){
 <!-- ================= SCRIPT ================= -->
 <script>
 const USERS = {
-  admin: {password:"admin@123", role:"Admin"},
-  hod: {password:"hod@123", role:"HOD"},
-  staff: {password:"staff@123", role:"Staff"}
+  admin:{password:"admin@123",role:"Admin"},
+  hod:{password:"hod@123",role:"HOD"},
+  staff:{password:"staff@123",role:"Staff"}
 };
 
-let currentUser = null;
+let currentUser=null;
 
 function login(){
-  let u=username.value, p=password.value;
-  if(USERS[u] && USERS[u].password===p){
-    currentUser={username:u, role:USERS[u].role};
-    loginBox.style.display="none";
-    portal.style.display="block";
-    welcome.innerText="Welcome "+u;
-    roleText.innerText=currentUser.role;
-    if(currentUser.role==="Admin") adminBtn.style.display="inline-block";
-  }else{
-    loginError.innerText="Invalid username or password";
+  let u=document.getElementById("username").value.trim();
+  let p=document.getElementById("password").value.trim();
+
+  if(!USERS[u] || USERS[u].password!==p){
+    document.getElementById("loginError").innerText="Invalid username or password";
+    return;
+  }
+
+  currentUser={username:u,role:USERS[u].role};
+
+  document.getElementById("loginBox").style.display="none";
+  document.getElementById("portal").style.display="block";
+  document.getElementById("welcome").innerText="Welcome "+u;
+  document.getElementById("roleText").innerText=currentUser.role;
+
+  if(currentUser.role==="Admin"){
+    document.getElementById("adminBtn").style.display="inline-block";
   }
 }
 
 function logout(){ location.reload(); }
 
-function show(id){
-  ["profile","attendance","leave","admin"].forEach(s=>document.getElementById(s).style.display="none");
+function showSection(id){
+  ["profile","attendance","leave","admin"].forEach(s=>{
+    document.getElementById(s).style.display="none";
+  });
   document.getElementById(id).style.display="block";
   if(id==="attendance") loadAttendance();
   if(id==="leave") loadLeaves();
@@ -1776,17 +1782,18 @@ function show(id){
 }
 
 function addAttendance(){
-  let data=JSON.parse(localStorage.getItem(currentUser.username+"_att")||"[]");
-  let entry=new Date().toLocaleString();
-  data.push(entry);
-  localStorage.setItem(currentUser.username+"_att",JSON.stringify(data));
+  let key=currentUser.username+"_att";
+  let data=JSON.parse(localStorage.getItem(key)||"[]");
+  data.push(new Date().toLocaleString());
+  localStorage.setItem(key,JSON.stringify(data));
   loadAttendance();
 }
 
 function loadAttendance(){
-  let list=document.getElementById("attendanceList");
-  let data=JSON.parse(localStorage.getItem(currentUser.username+"_att")||"[]");
-  list.innerHTML=data.map(d=>`<li>${d}</li>`).join("");
+  let key=currentUser.username+"_att";
+  let data=JSON.parse(localStorage.getItem(key)||"[]");
+  document.getElementById("attendanceList").innerHTML=
+    data.map(d=>`<li>${d}</li>`).join("");
 }
 
 function applyLeave(){
@@ -1806,26 +1813,16 @@ function applyLeave(){
 function loadLeaves(){
   let leaves=JSON.parse(localStorage.getItem("leaves")||"[]")
     .filter(l=>l.user===currentUser.username);
-  leaveList.innerHTML=leaves.map(l=>`<li>${l.type} (${l.start} - ${l.end})</li>`).join("");
+  document.getElementById("leaveList").innerHTML=
+    leaves.map(l=>`<li>${l.type} (${l.start} - ${l.end})</li>`).join("");
 }
 
 function loadAllLeaves(){
   let leaves=JSON.parse(localStorage.getItem("leaves")||"[]");
-  allLeaves.innerHTML=leaves.map(l=>`<li>${l.user} (${l.role}) - ${l.type}</li>`).join("");
+  document.getElementById("allLeaves").innerHTML=
+    leaves.map(l=>`<li>${l.user} (${l.role}) - ${l.type}</li>`).join("");
 }
 </script>
-
-<!-- ================= STYLE ================= -->
-<style>
-body{font-family:Arial;background:#f4f6f8}
-input,select,textarea,button{padding:10px;border-radius:8px;border:1px solid #ccc;width:100%}
-button{background:#004080;color:white;font-weight:bold}
-section{background:white;padding:20px;border-radius:15px;margin-bottom:15px}
-ul{list-style:none;padding:0}
-ul li{background:#eee;padding:8px;margin:5px 0;border-radius:6px}
-nav button{margin:5px}
-</style>
-
 
 
  <!-- Footer -->
@@ -1989,6 +1986,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
