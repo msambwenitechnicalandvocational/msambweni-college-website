@@ -1683,6 +1683,27 @@ function renderCourseChart(){
   .nav-card { width: 100%; max-width: 320px; }
 }
 </style>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Staff Portal</title>
+<style>
+body{font-family:Arial;background:#f4f6f8}
+input,select,textarea,button{
+  padding:10px;border-radius:8px;border:1px solid #ccc;width:100%;margin:6px 0
+}
+button{background:#004080;color:white;font-weight:bold;cursor:pointer}
+section{background:white;padding:20px;border-radius:15px;margin:15px 0}
+ul{list-style:none;padding:0}
+ul li{background:#eee;padding:8px;margin:5px 0;border-radius:6px}
+nav button{margin:5px}
+</style>
+</head>
+
+<body>
+
 <!-- ================= LOGIN ================= -->
 <div id="loginBox" style="max-width:400px;margin:auto;background:white;padding:30px;border-radius:15px;">
   <h2 style="text-align:center;">🔐 Staff Portal Login</h2>
@@ -1823,6 +1844,9 @@ function loadAllLeaves(){
     leaves.map(l=>`<li>${l.user} (${l.role}) - ${l.type}</li>`).join("");
 }
 </script>
+
+</body>
+</html>
 
 
  <!-- Footer -->
@@ -1986,6 +2010,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
