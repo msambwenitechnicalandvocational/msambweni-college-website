@@ -1051,144 +1051,129 @@ function breakup3D(image, callback) {
 
 
 </script>
+
 <!-- ================= LOGIN ================= -->
-<div id="loginBox" style="max-width:400px;margin:auto;background:white;padding:30px;border-radius:20px;">
-  <h2 style="text-align:center;color:#5d4037;">🔐 Finance Login</h2>
+<div id="loginBox" style="max-width:400px;margin:auto;background:#fff;padding:30px;border-radius:10px">
+  <h2 style="text-align:center">🔐 Finance Login</h2>
   <input id="loginUser" placeholder="Username">
   <input id="loginPass" type="password" placeholder="Password">
   <button type="button" onclick="login()">Login</button>
-  <p id="loginError" style="color:red;text-align:center;"></p>
+  <p id="loginError" style="color:red;text-align:center"></p>
 </div>
 
 <!-- ================= PORTAL ================= -->
-<div id="portal" style="display:none;">
+<div id="portal" style="display:none">
 
-<h1 style="text-align:center;color:#5d4037;">🏦 Finance Management Portal</h1>
+<h1 style="text-align:center">🏦 Finance Management Portal</h1>
 
-<nav style="text-align:center;">
-  <button type="button" onclick="showSection('paymentsSection')">Payments</button>
-  <button type="button" onclick="showSection('expensesSection')">Expenses</button>
-  <button type="button" onclick="showSection('accountsSection')">Accounts</button>
-  <button type="button" onclick="showSection('reportsSection')">Reports</button>
-  <button type="button" onclick="logout()" style="background:#f44336;color:white;">Logout</button>
+<nav style="text-align:center">
+  <button onclick="showSection('paymentsSection')">Payments</button>
+  <button onclick="showSection('expensesSection')">Expenses</button>
+  <button onclick="showSection('accountsSection')">Accounts</button>
+  <button onclick="showSection('reportsSection')">Reports</button>
+  <button onclick="logout()" style="background:red;color:white">Logout</button>
 </nav>
 
-<!-- ================= PAYMENTS ================= -->
+<!-- PAYMENTS -->
 <section id="paymentsSection">
-  <h2>💳 Payments</h2>
-  <form id="paymentForm">
-    <input id="studentName" placeholder="Student Name" required>
-    <input id="paymentAmount" type="number" placeholder="Amount" required>
-    <select id="paymentMethod" required>
-      <option value="">Payment Method</option>
-      <option>Cash</option>
-      <option>Mpesa</option>
-      <option>Bank</option>
-    </select>
-    <button type="submit">Add Payment</button>
-  </form>
-
-  <table id="paymentsTable">
-    <thead>
-      <tr><th>Student</th><th>Amount</th><th>Method</th><th>Date</th><th>Actions</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <button onclick="manualDownload('payments','Payments Report')">Download Word</button>
-  <button onclick="printReport('payments')">Print</button>
+<h2>Payments</h2>
+<form id="paymentForm">
+<input id="studentName" placeholder="Student Name" required>
+<input id="paymentAmount" type="number" placeholder="Amount" required>
+<select id="paymentMethod" required>
+<option value="">Method</option>
+<option>Cash</option>
+<option>Mpesa</option>
+<option>Bank</option>
+</select>
+<button type="submit">Add Payment</button>
+</form>
+<table id="paymentsTable">
+<thead><tr><th>Student</th><th>Amount</th><th>Method</th><th>Date</th><th>Action</th></tr></thead>
+<tbody></tbody>
+</table>
+<button onclick="downloadWord('payments','Payments Report')">Download Word</button>
+<button onclick="printReport('payments')">Print</button>
 </section>
 
-<!-- ================= EXPENSES ================= -->
-<section id="expensesSection" style="display:none;">
-  <h2>💸 Expenses</h2>
-  <form id="expenseForm">
-    <input id="expenseCategory" placeholder="Category" required>
-    <input id="expenseDescription" placeholder="Description" required>
-    <input id="expenseAmount" type="number" placeholder="Amount" required>
-    <button type="submit">Add Expense</button>
-  </form>
-
-  <table id="expensesTable">
-    <thead>
-      <tr><th>Category</th><th>Description</th><th>Amount</th><th>Date</th><th>Actions</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <button onclick="manualDownload('expenses','Expenses Report')">Download Word</button>
-  <button onclick="printReport('expenses')">Print</button>
+<!-- EXPENSES -->
+<section id="expensesSection" style="display:none">
+<h2>Expenses</h2>
+<form id="expenseForm">
+<input id="expenseCategory" placeholder="Category" required>
+<input id="expenseDescription" placeholder="Description" required>
+<input id="expenseAmount" type="number" placeholder="Amount" required>
+<button type="submit">Add Expense</button>
+</form>
+<table id="expensesTable">
+<thead><tr><th>Category</th><th>Description</th><th>Amount</th><th>Date</th><th>Action</th></tr></thead>
+<tbody></tbody>
+</table>
+<button onclick="downloadWord('expenses','Expenses Report')">Download Word</button>
+<button onclick="printReport('expenses')">Print</button>
 </section>
 
-<!-- ================= ACCOUNTS ================= -->
-<section id="accountsSection" style="display:none;">
-  <h2>🏦 Accounts</h2>
-  <form id="accountsForm">
-    <input id="accountName" placeholder="Account Name" required>
-    <input id="accountAmount" type="number" placeholder="Amount" required>
-    <select id="accountType" required>
-      <option value="">Type</option>
-      <option>Payable</option>
-      <option>Receivable</option>
-    </select>
-    <button type="submit">Add Account</button>
-  </form>
-
-  <table id="accountsTable">
-    <thead>
-      <tr><th>Name</th><th>Amount</th><th>Type</th><th>Date</th><th>Actions</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <button onclick="manualDownload('accounts','Accounts Report')">Download Word</button>
-  <button onclick="printReport('accounts')">Print</button>
+<!-- ACCOUNTS -->
+<section id="accountsSection" style="display:none">
+<h2>Accounts</h2>
+<form id="accountsForm">
+<input id="accountName" placeholder="Account Name" required>
+<input id="accountAmount" type="number" placeholder="Amount" required>
+<select id="accountType" required>
+<option value="">Type</option>
+<option>Payable</option>
+<option>Receivable</option>
+</select>
+<button type="submit">Add Account</button>
+</form>
+<table id="accountsTable">
+<thead><tr><th>Name</th><th>Amount</th><th>Type</th><th>Date</th><th>Action</th></tr></thead>
+<tbody></tbody>
+</table>
+<button onclick="downloadWord('accounts','Accounts Report')">Download Word</button>
+<button onclick="printReport('accounts')">Print</button>
 </section>
 
-<!-- ================= REPORTS ================= -->
-<section id="reportsSection" style="display:none;">
-  <h2>📊 Dashboard</h2>
-  <div id="paymentDashboard" style="background:#ffeb3b;padding:15px;border-radius:8px;"></div>
+<!-- REPORTS -->
+<section id="reportsSection" style="display:none">
+<h2>Dashboard</h2>
+<div id="dashboard"></div>
 </section>
 
 </div>
 
-<!-- ================= SCRIPT ================= -->
 <script>
-/* ===== LOGIN FIX ===== */
-const FIXED_USER = "FATUMA BEGE";
-const FIXED_PASS = "FINANCE@123";
+// ================= FIXED LOGIN =================
+const FIXED_USER = "FINANCE";
+const FIXED_PASS = "finance@123";
 
 function login(){
-  const user = document.getElementById("loginUser").value.trim();
-  const pass = document.getElementById("loginPass").value.trim();
+  const u = document.getElementById("loginUser").value.trim().toUpperCase();
+  const p = document.getElementById("loginPass").value.trim();
 
-  if(user === FIXED_USER && pass === FIXED_PASS){
-    document.getElementById("loginBox").style.display = "none";
-    document.getElementById("portal").style.display = "block";
+  if(u === FIXED_USER && p === FIXED_PASS){
+    loginBox.style.display="none";
+    portal.style.display="block";
     showSection("paymentsSection");
     ["payments","expenses","accounts"].forEach(loadTable);
     updateDashboard();
-  } else {
-    document.getElementById("loginError").innerText = "Invalid login details";
+  }else{
+    loginError.innerText="Invalid username or password";
   }
 }
 
 function logout(){ location.reload(); }
 
-/* ===== NAV ===== */
-const sections = ["paymentsSection","expensesSection","accountsSection","reportsSection"];
+// ================= NAV =================
+const sections=["paymentsSection","expensesSection","accountsSection","reportsSection"];
 function showSection(id){
-  sections.forEach(s => document.getElementById(s).style.display="none");
+  sections.forEach(s=>document.getElementById(s).style.display="none");
   document.getElementById(id).style.display="block";
 }
 
-/* ===== DATA ===== */
-const schoolName = "Msambweni Technical & Vocational College";
-const schoolVision = "Vision: Empowering students with technical excellence";
-
+// ================= DATA =================
 function saveItem(key,item){
-  let data = JSON.parse(localStorage.getItem(key)||"[]");
+  const data=JSON.parse(localStorage.getItem(key)||"[]");
   data.push(item);
   localStorage.setItem(key,JSON.stringify(data));
   loadTable(key);
@@ -1196,107 +1181,69 @@ function saveItem(key,item){
 }
 
 function loadTable(key){
-  let data = JSON.parse(localStorage.getItem(key)||"[]");
-  let tbody = document.getElementById(key+"Table").querySelector("tbody");
+  const data=JSON.parse(localStorage.getItem(key)||"[]");
+  const tbody=document.getElementById(key+"Table").querySelector("tbody");
   tbody.innerHTML="";
-  data.forEach((item,i)=>{
+  data.forEach((r,i)=>{
     let tr=document.createElement("tr");
-    Object.values(item).forEach(v=>{
-      let td=document.createElement("td");
-      td.textContent=v;
-      tr.appendChild(td);
+    Object.values(r).forEach(v=>{
+      let td=document.createElement("td"); td.innerText=v; tr.appendChild(td);
     });
     let td=document.createElement("td");
-    td.innerHTML=`<button onclick="deleteItem('${key}',${i})">Delete</button>`;
-    tr.appendChild(td);
+    let b=document.createElement("button");
+    b.innerText="Delete";
+    b.onclick=()=>{data.splice(i,1);localStorage.setItem(key,JSON.stringify(data));loadTable(key);updateDashboard();}
+    td.appendChild(b); tr.appendChild(td);
     tbody.appendChild(tr);
   });
 }
 
-function deleteItem(key,i){
-  let data = JSON.parse(localStorage.getItem(key)||"[]");
-  data.splice(i,1);
-  localStorage.setItem(key,JSON.stringify(data));
-  loadTable(key);
-  updateDashboard();
-}
-
-/* ===== FORMS ===== */
+// ================= FORMS =================
 paymentForm.onsubmit=e=>{
-  e.preventDefault();
-  saveItem("payments",{
-    student:studentName.value,
-    amount:+paymentAmount.value,
-    method:paymentMethod.value,
-    date:new Date().toLocaleDateString()
-  });
-  e.target.reset();
+e.preventDefault();
+saveItem("payments",{student:studentName.value,amount:+paymentAmount.value,method:paymentMethod.value,date:new Date().toLocaleDateString()});
+e.target.reset();
 };
 
 expenseForm.onsubmit=e=>{
-  e.preventDefault();
-  saveItem("expenses",{
-    category:expenseCategory.value,
-    description:expenseDescription.value,
-    amount:+expenseAmount.value,
-    date:new Date().toLocaleDateString()
-  });
-  e.target.reset();
+e.preventDefault();
+saveItem("expenses",{category:expenseCategory.value,description:expenseDescription.value,amount:+expenseAmount.value,date:new Date().toLocaleDateString()});
+e.target.reset();
 };
 
 accountsForm.onsubmit=e=>{
-  e.preventDefault();
-  saveItem("accounts",{
-    name:accountName.value,
-    amount:+accountAmount.value,
-    type:accountType.value,
-    date:new Date().toLocaleDateString()
-  });
-  e.target.reset();
+e.preventDefault();
+saveItem("accounts",{name:accountName.value,amount:+accountAmount.value,type:accountType.value,date:new Date().toLocaleDateString()});
+e.target.reset();
 };
 
-/* ===== DASHBOARD ===== */
+// ================= DASHBOARD =================
 function updateDashboard(){
-  let p=JSON.parse(localStorage.getItem("payments")||"[]");
-  let e=JSON.parse(localStorage.getItem("expenses")||"[]");
-  let tp=p.reduce((s,x)=>s+x.amount,0);
-  let te=e.reduce((s,x)=>s+x.amount,0);
-  paymentDashboard.innerText =
-    `💳 Payments: KES ${tp} | 💸 Expenses: KES ${te} | 🏦 Balance: KES ${tp-te}`;
+  const p=JSON.parse(localStorage.getItem("payments")||"[]").reduce((s,x)=>s+x.amount,0);
+  const e=JSON.parse(localStorage.getItem("expenses")||"[]").reduce((s,x)=>s+x.amount,0);
+  dashboard.innerText=`Payments: KES ${p} | Expenses: KES ${e} | Balance: KES ${p-e}`;
 }
 
-/* ===== DOWNLOAD & PRINT ===== */
-function manualDownload(key,title){
-  let data=JSON.parse(localStorage.getItem(key)||"[]");
-  if(!data.length) return alert("No records");
-  let html=`<h1>${schoolName}</h1><h3>${schoolVision}</h3><h2>${title}</h2><table border="1"><tr>`;
-  Object.keys(data[0]).forEach(k=>html+=`<th>${k}</th>`);
-  html+="</tr>";
-  data.forEach(r=>{
-    html+="<tr>";
-    Object.values(r).forEach(v=>html+=`<td>${v}</td>`);
-    html+="</tr>";
-  });
+// ================= DOWNLOAD / PRINT =================
+function downloadWord(key,title){
+  const d=JSON.parse(localStorage.getItem(key)||"[]");
+  if(!d.length)return alert("No data");
+  let html=`<h2>${title}</h2><table border=1><tr>`;
+  Object.keys(d[0]).forEach(k=>html+=`<th>${k}</th>`); html+="</tr>";
+  d.forEach(r=>{html+="<tr>";Object.values(r).forEach(v=>html+=`<td>${v}</td>`);html+="</tr>";});
   html+="</table>";
-  let blob=new Blob([html],{type:"application/msword"});
-  let a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download=title.replace(/\s/g,"_")+".doc";
-  a.click();
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([html],{type:"application/msword"}));
+  a.download=title+".doc"; a.click();
 }
 
 function printReport(key){
-  let data=JSON.parse(localStorage.getItem(key)||"[]");
-  if(!data.length) return alert("No records");
+  const d=JSON.parse(localStorage.getItem(key)||"[]");
+  if(!d.length)return alert("No data");
   let w=window.open("");
-  w.document.write(`<h1>${schoolName}</h1><table border="1">`);
-  Object.keys(data[0]).forEach(k=>w.document.write(`<th>${k}</th>`));
-  data.forEach(r=>{
-    w.document.write("<tr>");
-    Object.values(r).forEach(v=>w.document.write(`<td>${v}</td>`));
-    w.document.write("</tr>");
-  });
-  w.document.write("</table>");
+  w.document.write("<table border=1>");
+  Object.keys(d[0]).forEach(k=>w.document.write("<th>"+k+"</th>"));
+  d.forEach(r=>{w.document.write("<tr>");Object.values(r).forEach(v=>w.document.write("<td>"+v+"</td>"));w.document.write("</tr>")});
   w.print();
 }
 </script>
@@ -2061,6 +2008,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
