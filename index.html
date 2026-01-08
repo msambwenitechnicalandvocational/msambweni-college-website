@@ -1652,6 +1652,80 @@ function printReport(key){
   w.print();
 }
 </script>
+ <!-- ICT Technician Portal -->
+<div id="ictLoginBox" style="max-width:400px;margin:auto;background:white;padding:30px;border-radius:20px;">
+  <h2 style="text-align:center;color:#006064;">💻 ICT Technician Login</h2>
+  <input id="ictUser" placeholder="Username" style="width:100%;padding:10px;margin:10px 0;border-radius:8px;border:1px solid #ccc;">
+  <input id="ictPass" type="password" placeholder="Password" style="width:100%;padding:10px;margin:10px 0;border-radius:8px;border:1px solid #ccc;">
+  <button type="button" onclick="ictLogin()" style="width:100%;padding:12px;border:none;border-radius:8px;background:#006064;color:white;font-weight:bold;">Login</button>
+  <p id="ictError" style="color:red;text-align:center;"></p>
+</div>
+
+<div id="ictPortal" style="display:none; max-width:900px;margin:auto;background:#e0f7fa;padding:30px;border-radius:20px;">
+  <h1 style="text-align:center;color:#006064;">ICT Technician Portal</h1>
+  <p style="text-align:center;color:#004d40;">🔧 Manage systems, networks, and technical resources efficiently.</p>
+  <div style="text-align:center;margin-bottom:20px;">
+    <button onclick="showICTSection('network')" style="padding:10px 15px;margin:5px;border:none;border-radius:8px;background:#004d40;color:white;cursor:pointer;">Network</button>
+    <button onclick="showICTSection('systems')" style="padding:10px 15px;margin:5px;border:none;border-radius:8px;background:#004d40;color:white;cursor:pointer;">Systems</button>
+    <button onclick="showICTSection('reports')" style="padding:10px 15px;margin:5px;border:none;border-radius:8px;background:#004d40;color:white;cursor:pointer;">Reports</button>
+    <button onclick="ictLogout()" style="padding:10px 15px;margin:5px;border:none;border-radius:8px;background:#d32f2f;color:white;cursor:pointer;">Logout</button>
+  </div>
+
+  <div id="ictSections">
+    <section id="network" style="display:none;background:#b2ebf2;padding:20px;border-radius:12px;margin-bottom:15px;">
+      <h3>🌐 Network Management</h3>
+      <p>Manage Wi-Fi, LAN, and network devices here.</p>
+    </section>
+
+    <section id="systems" style="display:none;background:#b2dfdb;padding:20px;border-radius:12px;margin-bottom:15px;">
+      <h3>💻 Systems Management</h3>
+      <p>Monitor servers, PCs, and technical resources.</p>
+    </section>
+
+    <section id="reports" style="display:none;background:#c8e6c9;padding:20px;border-radius:12px;margin-bottom:15px;">
+      <h3>📊 Reports</h3>
+      <p>View system logs, network stats, and maintenance reports.</p>
+    </section>
+  </div>
+</div>
+
+<script>
+  // ===== FIXED LOGIN =====
+  const ICT_USER = "ICTSAMSON";
+  const ICT_PASS = "ICT@123";
+
+  function ictLogin(){
+    const user = document.getElementById("ictUser").value.trim();
+    const pass = document.getElementById("ictPass").value.trim();
+    if(user === ICT_USER && pass === ICT_PASS){
+      document.getElementById("ictLoginBox").style.display = "none";
+      document.getElementById("ictPortal").style.display = "block";
+      document.getElementById("ictError").innerText = "";
+    } else {
+      document.getElementById("ictError").innerText = "Invalid username or password";
+    }
+  }
+
+  function ictLogout(){
+    document.getElementById("ictPortal").style.display = "none";
+    document.getElementById("ictLoginBox").style.display = "block";
+  }
+
+  function showICTSection(id){
+    ["network","systems","reports"].forEach(sec => document.getElementById(sec).style.display = "none");
+    document.getElementById(id).style.display = "block";
+  }
+</script>
+
+<style>
+  /* Hover effects for section buttons */
+  #ictPortal button:hover {
+    opacity:0.85;
+    transform:scale(1.05);
+    transition:0.3s;
+  }
+</style>
+
  
 
  <!-- Footer -->
@@ -1815,6 +1889,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
