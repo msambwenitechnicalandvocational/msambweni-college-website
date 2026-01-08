@@ -1672,10 +1672,89 @@ function printReport(key){
   </div>
 
   <div id="ictSections">
-    <section id="network" style="display:none;background:#b2ebf2;padding:20px;border-radius:12px;margin-bottom:15px;">
-      <h3>🌐 Network Management</h3>
-      <p>Manage Wi-Fi, LAN, and network devices here.</p>
-    </section>
+  <section id="network" style="display:none; background:#b2ebf2; padding:25px; border-radius:12px; margin-bottom:15px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: transform 0.2s;">
+    <h3 style="font-family:Arial, sans-serif; color:#00796b; margin-bottom:15px;">🌐 STUDENTS DATA</h3>
+    <p style="font-size:16px; color:#004d40; margin-bottom:20px;">
+      STUDENT PROFILES / DETAILS, RESULTS AND ATTENDANCE.
+    </p>
+    
+    <div id="downloadButtons" style="display:flex; gap:15px; flex-wrap:wrap;">
+      <!-- Buttons inserted dynamically here -->
+    </div>
+  </section>
+</div>
+
+<!-- Dynamic JavaScript -->
+<script>
+  // Example files fetched from server/database
+  const studentFiles = [
+    { type: 'Results', name: 'Term 1 Results', url: 'results_term1.pdf' },
+    { type: 'Results', name: 'Term 2 Results', url: 'results_term2.pdf' },
+    { type: 'Attendance', name: 'Term 1 Attendance', url: 'attendance_term1.pdf' },
+    { type: 'Attendance', name: 'Term 2 Attendance', url: 'attendance_term2.pdf' }
+  ];
+
+  const downloadContainer = document.getElementById('downloadButtons');
+
+  studentFiles.forEach(file => {
+    // Container for each file
+    const fileDiv = document.createElement('div');
+    fileDiv.style.cssText = 'display:flex; gap:10px; flex-direction:column; flex:1 1 200px;';
+
+    // Download Button
+    const downloadBtn = document.createElement('a');
+    downloadBtn.href = file.url;
+    downloadBtn.download = file.name;
+    downloadBtn.textContent = (file.type === 'Results' ? '📄 ' : '🗓️ ') + 'Download ' + file.name;
+    downloadBtn.style.cssText = `
+      text-align:center; 
+      text-decoration:none; 
+      background:${file.type === 'Results' ? '#00796b' : '#004d40'}; 
+      color:white; 
+      padding:12px 15px; 
+      border-radius:10px; 
+      font-weight:bold; 
+      box-shadow:0 4px 6px rgba(0,0,0,0.1); 
+      transition:0.3s;
+    `;
+    downloadBtn.onmouseover = () => downloadBtn.style.transform = 'translateY(-3px)';
+    downloadBtn.onmouseout = () => downloadBtn.style.transform = 'translateY(0)';
+
+    // Print Button
+    const printBtn = document.createElement('button');
+    printBtn.textContent = (file.type === 'Results' ? '🖨️ ' : '🖨️ ') + 'Print ' + file.name;
+    printBtn.style.cssText = `
+      text-align:center; 
+      background:#ff9800; 
+      color:white; 
+      padding:12px 15px; 
+      border:none; 
+      border-radius:10px; 
+      font-weight:bold; 
+      cursor:pointer; 
+      box-shadow:0 4px 6px rgba(0,0,0,0.1); 
+      transition:0.3s;
+    `;
+    printBtn.onmouseover = () => printBtn.style.transform = 'translateY(-3px)';
+    printBtn.onmouseout = () => printBtn.style.transform = 'translateY(0)';
+    printBtn.onclick = () => {
+      const printWindow = window.open(file.url, '_blank');
+      printWindow.focus();
+      printWindow.print();
+    };
+
+    // Add buttons to fileDiv
+    fileDiv.appendChild(downloadBtn);
+    fileDiv.appendChild(printBtn);
+
+    // Append to container
+    downloadContainer.appendChild(fileDiv);
+  });
+
+  // Show section
+  document.getElementById('network').style.display = 'block';
+</script>
+
 
     <section id="systems" style="display:none;background:#b2dfdb;padding:20px;border-radius:12px;margin-bottom:15px;">
       <h3>💻 Systems Management</h3>
@@ -1889,6 +1968,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
