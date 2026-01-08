@@ -1897,12 +1897,243 @@ document.getElementById('printBtn').addEventListener('click', () => {
 </script>
 
 
-    <section id="reports" style="display:none;background:#c8e6c9;padding:20px;border-radius:12px;margin-bottom:15px;">
-      <h3>📊 Reports</h3>
-      <p>View system logs, network stats, and maintenance reports.</p>
-    </section>
+   <section id="reports" style="display:none;">
+
+  <h3 class="admin-title">📊 ADMINISTRATION DATA MANAGEMENT SYSTEM</h3>
+  <p class="admin-sub">Students per Department • Gender • Course • Year of Admission</p>
+
+  <!-- ADMIN FORM -->
+  <form id="adminForm" class="admin-form">
+    <input type="text" id="admName" placeholder="Student Full Name" required>
+    <input type="text" id="admDept" placeholder="Department" required>
+
+    <select id="admGender" required>
+      <option value="">Select Gender</option>
+      <option>Male</option>
+      <option>Female</option>
+    </select>
+
+    <input type="text" id="admCourse" placeholder="Course Taken" required>
+    <input type="number" id="admYear" placeholder="Year of Admission" required>
+
+    <button type="submit" class="btn-save">Save Student</button>
+  </form>
+
+  <!-- ACTION BUTTONS -->
+  <div class="admin-actions">
+    <button onclick="printAdmin()" class="btn-print">🖨️ Print</button>
+    <button onclick="downloadAdmin()" class="btn-download">⬇️ Download CSV</button>
   </div>
-</div>
+
+  <!-- TABLE -->
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Gender</th>
+        <th>Course</th>
+        <th>Year</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="adminList"></tbody>
+  </table>
+
+</section>
+
+<style>
+.admin-title{
+  text-align:center;
+  color:#1b5e20;
+  font-size:24px;
+}
+.admin-sub{
+  text-align:center;
+  color:#2e7d32;
+  margin-bottom:20px;
+}
+
+.admin-form{
+  max-width:900px;
+  margin:auto;
+  background:#e8f5e9;
+  padding:20px;
+  border-radius:15px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  box-shadow:0 6px 12px rgba(0,0,0,0.15);
+}
+
+.admin-form input,
+.admin-form select{
+  padding:12px;
+  border-radius:8px;
+  border:1px solid #a5d6a7;
+  font-size:15px;
+}
+
+.btn-save{
+  grid-column:1/-1;
+  padding:12px;
+  background:#2e7d32;
+  color:white;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.admin-actions{
+  text-align:center;
+  margin:20px 0;
+}
+
+.btn-print{
+  background:#ef6c00;
+  color:white;
+  padding:10px 18px;
+  border:none;
+  border-radius:8px;
+  margin:5px;
+  cursor:pointer;
+}
+
+.btn-download{
+  background:#1565c0;
+  color:white;
+  padding:10px 18px;
+  border:none;
+  border-radius:8px;
+  margin:5px;
+  cursor:pointer;
+}
+
+.admin-table{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 4px 10px rgba(0,0,0,0.15);
+}
+
+.admin-table th{
+  background:#2e7d32;
+  color:white;
+  padding:10px;
+}
+
+.admin-table td{
+  padding:10px;
+  border-bottom:1px solid #e0e0e0;
+  text-align:center;
+}
+
+.btn-edit{
+  background:#ff9800;
+  color:white;
+  border:none;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.btn-delete{
+  background:#d32f2f;
+  color:white;
+  border:none;
+  padding:6px 10px;
+  border-radius:6px;
+  cursor:pointer;
+}
+</style>
+
+<script>
+const adminForm = document.getElementById("adminForm");
+const adminList = document.getElementById("adminList");
+
+let students = JSON.parse(localStorage.getItem("adminStudents")) || [];
+let editIndex = null;
+
+renderAdmin();
+
+adminForm.addEventListener("submit", e => {
+  e.preventDefault();
+
+  const student = {
+    name: admName.value,
+    dept: admDept.value,
+    gender: admGender.value,
+    course: admCourse.value,
+    year: admYear.value
+  };
+
+  editIndex !== null ? students[editIndex] = student : students.push(student);
+  editIndex = null;
+
+  localStorage.setItem("adminStudents", JSON.stringify(students));
+  adminForm.reset();
+  renderAdmin();
+});
+
+function renderAdmin(){
+  adminList.innerHTML = students.map((s,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td>${s.name}</td>
+      <td>${s.dept}</td>
+      <td>${s.gender}</td>
+      <td>${s.course}</td>
+      <td>${s.year}</td>
+      <td>
+        <button class="btn-edit" onclick="editAdmin(${i})">Edit</button>
+        <button class="btn-delete" onclick="deleteAdmin(${i})">Delete</button>
+      </td>
+    </tr>
+  `).join("");
+}
+
+function editAdmin(i){
+  const s = students[i];
+  admName.value = s.name;
+  admDept.value = s.dept;
+  admGender.value = s.gender;
+  admCourse.value = s.course;
+  admYear.value = s.year;
+  editIndex = i;
+}
+
+function deleteAdmin(i){
+  if(confirm("Delete this student record?")){
+    students.splice(i,1);
+    localStorage.setItem("adminStudents", JSON.stringify(students));
+    renderAdmin();
+  }
+}
+
+function printAdmin(){
+  const w = window.open("");
+  w.document.write("<h2>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h2>");
+  w.document.write(document.querySelector(".admin-table").outerHTML);
+  w.print();
+}
+
+function downloadAdmin(){
+  let csv = "Name,Department,Gender,Course,Year\n";
+  students.forEach(s=>{
+    csv += `${s.name},${s.dept},${s.gender},${s.course},${s.year}\n`;
+  });
+  const blob = new Blob([csv],{type:"text/csv"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "Administration_Data.csv";
+  a.click();
+}
+</script>
+
 
 <script>
   // ===== FIXED LOGIN =====
@@ -2104,6 +2335,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
