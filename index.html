@@ -1672,45 +1672,210 @@ function printReport(key){
     <button onclick="ictLogout()" style="padding:12px 18px;margin:5px;border:none;border-radius:8px;background:#d32f2f;color:white;cursor:pointer;">Logout</button>
   </div>
 
-  <!-- ===================== ADMINISTRATION FORM ===================== -->
-  <section id="ADMINISTRATION" style="display:none;background:#c8e6c9;padding:25px;border-radius:12px;margin-bottom:15px;">
-    <h3 style="text-align:center;">📊 ADMINISTRATION FORM</h3>
-    <p style="text-align:center;">Manage student data: department, gender, course, year of admission.</p>
+  <!-- ===================== MODERN ADMINISTRATION FORM ===================== -->
+<section id="ADMINISTRATION" style="display:none;background:#f0f4f8;padding:25px;border-radius:15px;margin-bottom:20px; box-shadow: 0 6px 15px rgba(0,0,0,0.1);">
+  <h3 style="text-align:center; color:#004d40; font-weight:bold;">📊 ADMINISTRATION FORM</h3>
+  <p style="text-align:center; color:#006064;">Manage student data: department, gender, course, year of admission, and documents.</p>
 
-    <form id="adminForm" style="max-width:800px;margin:auto; background:#ffffff; padding:20px; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
-      <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <input type="text" id="admName" placeholder="Full Name" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-        <input type="text" id="admReg" placeholder="Registration Number" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-      </div>
+  <form id="adminForm" style="max-width:850px;margin:auto; background:white; padding:25px; border-radius:12px; box-shadow:0 6px 15px rgba(0,0,0,0.15);">
+    
+    <!-- Name & Reg -->
+    <div style="display:flex; gap:15px; flex-wrap:wrap;">
+      <input type="text" id="admName" placeholder="Full Name" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+      <input type="text" id="admReg" placeholder="Registration Number" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+    </div>
 
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-        <select id="admDept" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-          <option value="">Select Department</option>
-          <option value="ICT">ICT</option>
-          <option value="Business">Business</option>
-          <option value="Engineering">Engineering</option>
-        </select>
+    <!-- Department & Gender -->
+    <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:15px;">
+      <select id="admDept" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+        <option value="">Select Department</option>
+        <option value="ICT">ICT</option>
+        <option value="Business">Business</option>
+        <option value="Engineering">Engineering</option>
+      </select>
 
-        <select id="admGender" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-          <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-      </div>
+      <select id="admGender" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
 
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-        <input type="text" id="admCourse" placeholder="Course Taken" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-        <input type="number" id="admYear" placeholder="Year of Admission" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-      </div>
+    <!-- Course & Year -->
+    <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:15px;">
+      <input type="text" id="admCourse" placeholder="Course Taken" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+      <input type="number" id="admYear" placeholder="Year of Admission" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+    </div>
 
-      <div style="text-align:center; margin-top:15px;">
-        <button type="submit" style="padding:10px 22px; background:#004d40; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Submit</button>
-        <button type="button" id="admDownload" style="padding:10px 22px; background:#00796b; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Download Word</button>
-        <button type="button" id="admPrint" style="padding:10px 22px; background:#00695c; color:white; border:none; border-radius:6px; cursor:pointer;">Print</button>
-      </div>
-    </form>
-    <div id="adminList" style="max-width:800px;margin:20px auto;"></div>
-  </section>
+    <!-- Document Upload -->
+    <div style="margin-top:15px;">
+      <label style="font-weight:bold;">Upload Document (PDF, DOCX):</label>
+      <input type="file" id="admDoc" accept=".pdf,.doc,.docx" style="display:block; margin-top:5px;">
+    </div>
+
+    <!-- Buttons -->
+    <div style="text-align:center; margin-top:20px;">
+      <button type="submit" style="padding:12px 25px; background:#004d40; color:white; border:none; border-radius:8px; cursor:pointer; margin-right:10px;">Submit</button>
+      <button type="button" id="admDownload" style="padding:12px 25px; background:#00796b; color:white; border:none; border-radius:8px; cursor:pointer; margin-right:10px;">Download Word</button>
+      <button type="button" id="admPrint" style="padding:12px 25px; background:#00695c; color:white; border:none; border-radius:8px; cursor:pointer;">Print</button>
+    </div>
+  </form>
+
+  <!-- List of Students -->
+  <div id="adminList" style="max-width:850px;margin:25px auto; display:flex; flex-direction:column; gap:12px;"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.7.0/docx.umd.js"></script>
+  <script>
+  const adminForm = document.getElementById('adminForm');
+  const adminList = document.getElementById('adminList');
+  let adminData = [];
+
+  // Submit form
+  adminForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const student = {
+      name: document.getElementById('admName').value,
+      reg: document.getElementById('admReg').value,
+      dept: document.getElementById('admDept').value,
+      gender: document.getElementById('admGender').value,
+      course: document.getElementById('admCourse').value,
+      year: document.getElementById('admYear').value,
+      doc: document.getElementById('admDoc').files[0] ? document.getElementById('admDoc').files[0].name : 'No File'
+    };
+    adminData.push(student);
+    displayAdmin();
+    adminForm.reset();
+  });
+
+  // Display entries
+  function displayAdmin(){
+    adminList.innerHTML = '';
+    adminData.forEach((s, i) => {
+      const div = document.createElement('div');
+      div.style.cssText = "background:#e0f7fa; padding:15px; border-radius:8px; box-shadow:0 3px 6px rgba(0,0,0,0.1); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;";
+      div.innerHTML = `
+        <div>
+          <strong>${i+1}. ${s.name}</strong> | ${s.reg} | ${s.dept} | ${s.gender} | ${s.course} | ${s.year} <br>
+          Document: <em>${s.doc}</em>
+        </div>
+        <div style="display:flex; gap:10px; margin-top:5px;">
+          <button onclick="editAdmin(${i})" style="padding:5px 10px; background:#ffc107; color:white; border:none; border-radius:5px; cursor:pointer;">Edit</button>
+          <button onclick="deleteAdmin(${i})" style="padding:5px 10px; background:#f44336; color:white; border:none; border-radius:5px; cursor:pointer;">Delete</button>
+        </div>
+      `;
+      adminList.appendChild(div);
+    });
+  }
+
+  // Edit
+  function editAdmin(i){
+    const s = adminData[i];
+    document.getElementById('admName').value = s.name;
+    document.getElementById('admReg').value = s.reg;
+    document.getElementById('admDept').value = s.dept;
+    document.getElementById('admGender').value = s.gender;
+    document.getElementById('admCourse').value = s.course;
+    document.getElementById('admYear').value = s.year;
+    adminData.splice(i,1);
+    displayAdmin();
+  }
+
+  // Delete
+  function deleteAdmin(i){
+    if(confirm('Are you sure you want to delete this entry?')){
+      adminData.splice(i,1);
+      displayAdmin();
+    }
+  }
+
+  // Download Word
+  document.getElementById('admDownload').addEventListener('click', async ()=>{
+    if(adminData.length===0){ alert('No data to download'); return;}
+    const { Document, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType } = docx;
+
+    const rows = [new TableRow({ children: [
+      new TableCell({ children:[new Paragraph({ text:"#", bold:true })] }),
+      new TableCell({ children:[new Paragraph({ text:"Name", bold:true })] }),
+      new TableCell({ children:[new Paragraph({ text:"Reg No", bold:true })] }),
+      new TableCell({ children:[new Paragraph({ text:"Dept", bold:true })] }),
+      new TableCell({ children:[new Paragraph({ text:"Gender", bold:true })] }),
+      new TableCell({ children:[new Paragraph({ text:"Course", bold:true })] }),
+      new TableCell({ children:[new Paragraph({ text:"Year", bold:true })] }),
+      new TableCell({ children:[new Paragraph({ text:"Document", bold:true })] })
+    ]})];
+
+    adminData.forEach((s,i)=>{
+      rows.push(new TableRow({ children:[
+        new TableCell({ children:[new Paragraph((i+1).toString())] }),
+        new TableCell({ children:[new Paragraph(s.name)] }),
+        new TableCell({ children:[new Paragraph(s.reg)] }),
+        new TableCell({ children:[new Paragraph(s.dept)] }),
+        new TableCell({ children:[new Paragraph(s.gender)] }),
+        new TableCell({ children:[new Paragraph(s.course)] }),
+        new TableCell({ children:[new Paragraph(s.year.toString())] }),
+        new TableCell({ children:[new Paragraph(s.doc)] })
+      ]}));
+    });
+
+    const doc = new Document({
+      sections:[{
+        children:[
+          new Paragraph({ text:"MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE", bold:true, underline:{}, alignment:AlignmentType.CENTER, spacing:{after:300} }),
+          new Paragraph({ text:"Administration Data", bold:true, size:26, alignment:AlignmentType.CENTER, spacing:{after:200} }),
+          new Table({ rows, width:{size:100, type:WidthType.PERCENTAGE} })
+        ]
+      }]
+    });
+
+    const blob = await Packer.toBlob(doc);
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Administration_Data.docx';
+    link.click();
+  });
+
+  // Print
+  document.getElementById('admPrint').addEventListener('click', ()=>{
+    if(adminData.length===0){ alert('No data to print'); return;}
+    const printWindow = window.open('','_blank','height=600,width=900');
+    printWindow.document.write('<html><head><title>Administration Data</title></head><body>');
+    printWindow.document.write('<h2 style="text-align:center; font-weight:bold;">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>');
+    printWindow.document.write('<h3 style="text-align:center;">Administration Data</h3>');
+    printWindow.document.write('<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse; width:100%;">');
+    printWindow.document.write('<tr><th>#</th><th>Name</th><th>Reg No</th><th>Dept</th><th>Gender</th><th>Course</th><th>Year</th><th>Document</th></tr>');
+    adminData.forEach((s,i)=>{
+      printWindow.document.write(`<tr>
+        <td>${i+1}</td>
+        <td>${s.name}</td>
+        <td>${s.reg}</td>
+        <td>${s.dept}</td>
+        <td>${s.gender}</td>
+        <td>${s.course}</td>
+        <td>${s.year}</td>
+        <td>${s.doc}</td>
+      </tr>`);
+    });
+    printWindow.document.write('</table></body></html>');
+    printWindow.document.close();
+    printWindow.print();
+  });
+  </script>
+
+  <style>
+    /* Modern button hover effects */
+    #ADMINISTRATION button:hover {
+      opacity:0.9;
+      transform:scale(1.05);
+      transition:0.3s;
+    }
+    /* Inputs & selects focus */
+    #ADMINISTRATION input:focus, #ADMINISTRATION select:focus {
+      outline:none;
+      border-color:#004d40;
+      box-shadow:0 0 5px rgba(0,77,64,0.5);
+    }
+  </style>
+</section>
 
   <!-- ===================== ACADEMICS FORM ===================== -->
   <section id="ACADEMICS" style="display:none;background:#d1c4e9;padding:25px;border-radius:12px;margin-bottom:15px;">
@@ -1967,6 +2132,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
