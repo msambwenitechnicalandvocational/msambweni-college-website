@@ -1652,113 +1652,6 @@ function printReport(key){
   w.print();
 }
 </script>
-<div id="ictPortal" style="display:none; max-width:900px;margin:auto;background:#e0f7fa;padding:30px;border-radius:20px;">
-  <h1 style="text-align:center;color:#006064;">ICT Technician Portal</h1>
-  <p style="text-align:center;color:#004d40;">🔧 ADMINISTRATION DATA MANAGEMENT SYSTEM, networks, and technical resources efficiently.</p>
-
-  <div style="text-align:center;margin-bottom:20px;">
-    <button onclick="showICTSection('ADMINISTRATION')" style="padding:10px 15px;margin:5px;border:none;border-radius:8px;background:#004d40;color:white;cursor:pointer;">Administration</button>
-    <button onclick="showICTSection('ACADEMICS')" style="padding:10px 15px;margin:5px;border:none;border-radius:8px;background:#004d40;color:white;cursor:pointer;">Academics</button>
-    <button onclick="showICTSection('STUDENTS')" style="padding:10px 15px;margin:5px;border:none;border-radius:8px;background:#004d40;color:white;cursor:pointer;">Students</button>
-    <button onclick="ictLogout()" style="padding:10px 15px;margin:5px;border:none;border-radius:8px;background:#d32f2f;color:white;cursor:pointer;">Logout</button>
-  </div>
-
-  <!-- ===================== ADMINISTRATION FORM ===================== -->
-  <section id="ADMINISTRATION" style="display:none;background:#c8e6c9;padding:20px;border-radius:12px;margin-bottom:15px;">
-    <h3 style="text-align:center;">📊 ADMINISTRATION FORM</h3>
-    <p style="text-align:center;">Manage student data: department, gender, course, year of admission.</p>
-
-    <form id="adminForm" style="max-width:800px;margin:auto; background:#ffffff; padding:20px; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
-      <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <input type="text" id="admName" placeholder="Full Name" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-        <input type="text" id="admReg" placeholder="Registration Number" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-      </div>
-
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-        <select id="admDept" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-          <option value="">Select Department</option>
-          <option value="ICT">ICT</option>
-          <option value="Business">Business</option>
-          <option value="Engineering">Engineering</option>
-        </select>
-
-        <select id="admGender" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-          <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-      </div>
-
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
-        <input type="text" id="admCourse" placeholder="Course Taken" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-        <input type="number" id="admYear" placeholder="Year of Admission" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-      </div>
-
-      <div style="text-align:center; margin-top:15px;">
-        <button type="submit" style="padding:10px 20px; background:#004d40; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Submit</button>
-        <button type="button" id="admDownload" style="padding:10px 20px; background:#00796b; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Download Word</button>
-        <button type="button" id="admPrint" style="padding:10px 20px; background:#00695c; color:white; border:none; border-radius:6px; cursor:pointer;">Print</button>
-      </div>
-    </form>
-    <div id="adminList" style="max-width:800px;margin:20px auto;"></div>
-  </section>
-
-  <!-- ===================== ACADEMICS FORM ===================== -->
-  <section id="ACADEMICS" style="display:none;background:#d1c4e9;padding:20px;border-radius:12px;margin-bottom:15px;">
-    <h3 style="text-align:center;">📊 ACADEMICS FORM</h3>
-    <p style="text-align:center;">Record results, CATs, and end-of-term exams with grade calculation.</p>
-
-    <form id="academicsForm" style="max-width:800px;margin:auto;background:#ffffff;padding:20px;border-radius:12px;box-shadow:0 4px 8px rgba(0,0,0,0.1);">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <input type="text" id="acadName" placeholder="Student Name" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-        <input type="text" id="acadReg" placeholder="Registration Number" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-      </div>
-
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
-        <input type="number" id="catScore" placeholder="CAT Score" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-        <input type="number" id="examScore" placeholder="End-Term Score" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-      </div>
-
-      <div style="margin-top:10px;">
-        <select id="grade" disabled style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc; background:#eee;">
-          <option value="">Grade will be calculated (Mastery, Proficient, Competent, Not Competent)</option>
-        </select>
-      </div>
-
-      <div style="text-align:center; margin-top:15px;">
-        <button type="submit" style="padding:10px 20px; background:#673ab7; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Submit</button>
-        <button type="button" id="acadDownload" style="padding:10px 20px; background:#5e35b1; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Download Word</button>
-        <button type="button" id="acadPrint" style="padding:10px 20px; background:#4527a0; color:white; border:none; border-radius:6px; cursor:pointer;">Print</button>
-      </div>
-    </form>
-    <div id="academicsList" style="max-width:800px;margin:20px auto;"></div>
-  </section>
-
-  <!-- ===================== STUDENTS FORM ===================== -->
-  <section id="STUDENTS" style="display:none;background:#b2dfdb;padding:20px;border-radius:12px;margin-bottom:15px;">
-    <h3 style="text-align:center;">👨‍🎓 STUDENTS FORM</h3>
-    <p style="text-align:center;">Register new students with basic information.</p>
-
-    <form id="studentsForm" style="max-width:800px;margin:auto;background:#ffffff;padding:20px;border-radius:12px;box-shadow:0 4px 8px rgba(0,0,0,0.1);">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <input type="text" id="stuName" placeholder="Full Name" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-        <input type="text" id="stuReg" placeholder="Registration Number" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-      </div>
-
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
-        <input type="text" id="stuDept" placeholder="Department" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-        <input type="number" id="stuYear" placeholder="Year of Admission" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-      </div>
-
-      <div style="text-align:center; margin-top:15px;">
-        <button type="submit" style="padding:10px 20px; background:#00796b; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Submit</button>
-        <button type="button" id="stuDownload" style="padding:10px 20px; background:#004d40; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Download Word</button>
-        <button type="button" id="stuPrint" style="padding:10px 20px; background:#00695c; color:white; border:none; border-radius:6px; cursor:pointer;">Print</button>
-      </div>
-    </form>
-    <div id="studentsList" style="max-width:800px;margin:20px auto;"></div>
-  </section>
-</div>
 
  <!-- Footer -->
 <footer class="footer">
@@ -1921,6 +1814,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
