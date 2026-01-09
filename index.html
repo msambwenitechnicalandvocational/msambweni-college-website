@@ -1881,36 +1881,144 @@ function printReport(key){
 </section>
 
 
-  <!-- ===================== ACADEMICS FORM ===================== -->
-  <section id="ACADEMICS" style="display:none;background:#d1c4e9;padding:25px;border-radius:12px;margin-bottom:15px;">
-    <h3 style="text-align:center;">📊 ACADEMICS FORM</h3>
-    <p style="text-align:center;">Record results, CATs, and end-of-term exams with grade calculation.</p>
+  <section id="ACADEMICS" style="display:none;background:#e3f2fd;padding:25px;border-radius:16px;margin-bottom:20px;box-shadow:0 6px 15px rgba(0,0,0,0.15);">
 
-    <form id="academicsForm" style="max-width:800px;margin:auto;background:#ffffff;padding:20px;border-radius:12px;box-shadow:0 4px 8px rgba(0,0,0,0.1);">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <input type="text" id="acadName" placeholder="Student Name" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-        <input type="text" id="acadReg" placeholder="Registration Number" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-      </div>
+<h3 style="text-align:center;color:#0d47a1;font-weight:bold;">📘 ACADEMICS RESULTS FORM</h3>
+<p style="text-align:center;color:#1565c0;">Automatic score, GPA & grade calculation</p>
 
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
-        <input type="number" id="catScore" placeholder="CAT Score" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-        <input type="number" id="examScore" placeholder="End-Term Score" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
-      </div>
+<form id="acadForm" style="max-width:900px;margin:auto;background:#ffffff;padding:25px;border-radius:14px;box-shadow:0 5px 12px rgba(0,0,0,0.15);">
 
-      <div style="margin-top:10px;">
-        <select id="grade" disabled style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc; background:#eee;">
-          <option value="">Grade will be calculated (Mastery, Proficient, Competent, Not Competent)</option>
-        </select>
-      </div>
+<div style="display:flex;gap:15px;flex-wrap:wrap;">
+  <input id="stName" placeholder="Student Name" required style="flex:1;padding:12px;border-radius:8px;border:1px solid #90caf9;">
+  <input id="regNo" placeholder="Registration Number" required style="flex:1;padding:12px;border-radius:8px;border:1px solid #90caf9;">
+</div>
 
-      <div style="text-align:center; margin-top:15px;">
-        <button type="submit" style="padding:10px 22px; background:#673ab7; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Submit</button>
-        <button type="button" id="acadDownload" style="padding:10px 22px; background:#5e35b1; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Download Word</button>
-        <button type="button" id="acadPrint" style="padding:10px 22px; background:#4527a0; color:white; border:none; border-radius:6px; cursor:pointer;">Print</button>
-      </div>
-    </form>
-    <div id="academicsList" style="max-width:800px;margin:20px auto;"></div>
-  </section>
+<div style="display:flex;gap:15px;flex-wrap:wrap;margin-top:12px;">
+  <input type="number" id="cat" placeholder="CAT Marks (30)" max="30" required style="flex:1;padding:12px;border-radius:8px;border:1px solid #90caf9;">
+  <input type="number" id="exam" placeholder="Exam Marks (70)" max="70" required style="flex:1;padding:12px;border-radius:8px;border:1px solid #90caf9;">
+</div>
+
+<div style="display:flex;gap:15px;flex-wrap:wrap;margin-top:12px;">
+  <input id="total" placeholder="Total Score" readonly style="flex:1;padding:12px;border-radius:8px;background:#e8f5e9;border:1px solid #4caf50;">
+  <input id="gpa" placeholder="GPA" readonly style="flex:1;padding:12px;border-radius:8px;background:#e3f2fd;border:1px solid #2196f3;">
+</div>
+
+<div style="margin-top:12px;">
+  <input id="grade" placeholder="Grade" readonly style="width:100%;padding:12px;border-radius:8px;background:#e0f2f1;border:1px solid #009688;font-weight:bold;">
+</div>
+
+<div style="text-align:center;margin-top:20px;">
+  <button type="submit" style="padding:12px 28px;background:#1565c0;color:white;border:none;border-radius:8px;cursor:pointer;">Save</button>
+  <button type="button" onclick="downloadWord()" style="padding:12px 28px;background:#2e7d32;color:white;border:none;border-radius:8px;cursor:pointer;">Download Word</button>
+  <button type="button" onclick="printResults()" style="padding:12px 28px;background:#0277bd;color:white;border:none;border-radius:8px;cursor:pointer;">Print</button>
+</div>
+
+</form>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.7.0/docx.umd.js"></script>
+
+<script>
+let resultData = {};
+
+document.getElementById("acadForm").addEventListener("input", ()=>{
+  let cat = Number(document.getElementById("cat").value) || 0;
+  let exam = Number(document.getElementById("exam").value) || 0;
+  let total = cat + exam;
+
+  document.getElementById("total").value = total;
+
+  let gpa = (total / 25).toFixed(2);
+  document.getElementById("gpa").value = gpa;
+
+  let grade = "Not Competent";
+  if(total >= 80) grade = "Mastery";
+  else if(total >= 65) grade = "Proficient";
+  else if(total >= 50) grade = "Competent";
+
+  document.getElementById("grade").value = grade;
+
+  resultData = {
+    name: stName.value,
+    reg: regNo.value,
+    cat, exam, total, gpa, grade
+  };
+});
+
+async function downloadWord(){
+  const { Document, Packer, Paragraph, Table, TableRow, TableCell, AlignmentType } = docx;
+  const today = new Date().toLocaleDateString();
+
+  const doc = new Document({
+    sections:[{
+      children:[
+        new Paragraph({ text:"MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE", bold:true, underline:{}, alignment:AlignmentType.CENTER }),
+        new Paragraph({ text:"ACADEMIC RESULTS REPORT", bold:true, alignment:AlignmentType.CENTER }),
+        new Paragraph({ text:"Date: "+today, italics:true, alignment:AlignmentType.CENTER }),
+
+        new Table({
+          rows:[
+            row("Student Name", resultData.name),
+            row("Registration Number", resultData.reg),
+            row("CAT Marks", resultData.cat),
+            row("Exam Marks", resultData.exam),
+            row("Total Score", resultData.total),
+            row("GPA", resultData.gpa),
+            row("Grade", resultData.grade),
+          ]
+        })
+      ]
+    }]
+  });
+
+  const blob = await Packer.toBlob(doc);
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "Academics_Report_MSAMBWENI.docx";
+  link.click();
+}
+
+function row(a,b){
+  return new docx.TableRow({
+    children:[
+      new docx.TableCell({ children:[new docx.Paragraph(a)] }),
+      new docx.TableCell({ children:[new docx.Paragraph(String(b))] })
+    ]
+  });
+}
+
+function printResults(){
+  const w = window.open("", "", "width=900,height=600");
+  w.document.write(`
+    <h2 style="text-align:center;color:#0d47a1;">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>
+    <h3 style="text-align:center;">Academic Results</h3>
+    <p style="text-align:center;">Date: ${new Date().toLocaleDateString()}</p>
+    <table border="1" width="100%" cellpadding="8">
+      <tr><th>Item</th><th>Value</th></tr>
+      <tr><td>Name</td><td>${resultData.name}</td></tr>
+      <tr><td>Reg No</td><td>${resultData.reg}</td></tr>
+      <tr><td>CAT</td><td>${resultData.cat}</td></tr>
+      <tr><td>Exam</td><td>${resultData.exam}</td></tr>
+      <tr><td>Total</td><td>${resultData.total}</td></tr>
+      <tr><td>GPA</td><td>${resultData.gpa}</td></tr>
+      <tr><td>Grade</td><td>${resultData.grade}</td></tr>
+    </table>
+  `);
+  w.print();
+}
+</script>
+
+<style>
+#ACADEMICS input:focus {
+  outline:none;
+  box-shadow:0 0 6px rgba(33,150,243,0.6);
+}
+#ACADEMICS button:hover {
+  transform:scale(1.05);
+  opacity:0.9;
+}
+</style>
+
+</section>
 
   <!-- ===================== STUDENTS FORM ===================== -->
   <section id="STUDENTS" style="display:none;background:#b2dfdb;padding:25px;border-radius:12px;margin-bottom:15px;">
@@ -2136,6 +2244,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
