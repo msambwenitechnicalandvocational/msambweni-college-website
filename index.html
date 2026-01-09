@@ -1661,39 +1661,11 @@ function printReport(key){
   <p id="ictError" style="color:red;text-align:center;"></p>
 </div>
 
-<div id="ictPortal" style="display:none; max-width:900px;margin:auto;background:#e0f7fa;padding:30px;border-radius:20px;">
-  <h1 style="text-align:center;color:#006064;">ICT Technician Portal</h1>
-  <p style="text-align:center;color:#004d40;">🔧 ADMINISTRATION DATA MANAGEMENT SYSTEM, networks, and technical resources efficiently.</p>
-  <div style="text-align:center;margin-bottom:20px;">
-    <button onclick="showICTSection('ADMINISTRATION DATA MANAGEMENT SYSTEM')" style="padding:10px 15px;margin:5px;border:none;border-radius:8px;background:#004d40;color:white;cursor:pointer;">ADMINISTRATION DATA MANAGEMENT SYSTEM</button>
-    <button onclick="showICTSection('systems')" style="padding:10px 15px;margin:5px;border:none;border-radius:8px;background:#004d40;color:white;cursor:pointer;">Systems</button>
-    <button onclick="showICTSection('reports')" style="padding:10px 15px;margin:5px;border:none;border-radius:8px;background:#004d40;color:white;cursor:pointer;">Reports</button>
-    <button onclick="ictLogout()" style="padding:10px 15px;margin:5px;border:none;border-radius:8px;background:#d32f2f;color:white;cursor:pointer;">Logout</button>
-  </div>
-<section id="reports" style="display:none;background:#c8e6c9;padding:20px;border-radius:12px;margin-bottom:15px;">
-  <h3 style="text-align:center;">📊 ADMINISTRATION DATA MANAGEMENT SYSTEM</h3>
-  <p style="text-align:center;">TOTAL NUMBER OF STUDENTS, GENDER BASED, COURSES OFFERED, YEAR OF ADMISSION.</p>
+<!-- ===================== ADMINISTRATION FORM ===================== -->
+<section id="ADMINISTRATION DATA MANAGEMENT SYSTEM" style="display:none;background:#c8e6c9;padding:20px;border-radius:12px;margin-bottom:15px;">
+  <h3 style="text-align:center;">📊 ADMINISTRATION FORM</h3>
+  <p style="text-align:center;">Manage student data: department, gender, course, year of admission.</p>
 
-  <!-- Filters -->
-  <div style="max-width:800px;margin:15px auto; display:flex; gap:10px; flex-wrap:wrap; justify-content:center;">
-    <select id="filterDept" style="padding:8px; border-radius:6px; border:1px solid #ccc;">
-      <option value="">All Departments</option>
-      <option value="ICT">ICT</option>
-      <option value="Business">Business</option>
-      <option value="Engineering">Engineering</option>
-    </select>
-    <select id="filterGender" style="padding:8px; border-radius:6px; border:1px solid #ccc;">
-      <option value="">All Genders</option>
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-    </select>
-    <input type="text" id="filterCourse" placeholder="Course" style="padding:8px; border-radius:6px; border:1px solid #ccc;">
-    <input type="number" id="filterYear" placeholder="Year" style="padding:8px; border-radius:6px; border:1px solid #ccc;">
-    <button onclick="applyFilters()" style="padding:8px 15px; background:#004d40;color:white;border:none;border-radius:6px; cursor:pointer;">Apply</button>
-    <button onclick="resetFilters()" style="padding:8px 15px; background:#00796b;color:white;border:none;border-radius:6px; cursor:pointer;">Reset</button>
-  </div>
-
-  <!-- Administration Form -->
   <form id="adminForm" style="max-width:800px;margin:auto; background:#ffffff; padding:20px; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
       <input type="text" id="admName" placeholder="Full Name" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
@@ -1726,171 +1698,65 @@ function printReport(key){
       <button type="button" id="admPrint" style="padding:10px 20px; background:#00695c; color:white; border:none; border-radius:6px; cursor:pointer;">Print</button>
     </div>
   </form>
-
-  <!-- Display Data -->
   <div id="adminList" style="max-width:800px;margin:20px auto;"></div>
 </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.7.0/docx.umd.js"></script>
-<script>
-let students = [];
-const adminForm = document.getElementById('adminForm');
-const adminList = document.getElementById('adminList');
+<!-- ===================== ACADEMICS FORM ===================== -->
+<section id="ACADEMICS" style="display:none;background:#d1c4e9;padding:20px;border-radius:12px;margin-bottom:15px;">
+  <h3 style="text-align:center;">📊 ACADEMICS FORM</h3>
+  <p style="text-align:center;">Record results, CATs, and end-of-term exams with grade calculation.</p>
 
-adminForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const student = {
-    name: document.getElementById('admName').value,
-    reg: document.getElementById('admReg').value,
-    dept: document.getElementById('admDept').value,
-    gender: document.getElementById('admGender').value,
-    course: document.getElementById('admCourse').value,
-    year: document.getElementById('admYear').value
-  };
-  students.push(student);
-  renderTable(students);
-  adminForm.reset();
-});
+  <form id="academicsForm" style="max-width:800px;margin:auto;background:#ffffff;padding:20px;border-radius:12px;box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <input type="text" id="acadName" placeholder="Student Name" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
+      <input type="text" id="acadReg" placeholder="Registration Number" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
+    </div>
 
-// Render table
-function renderTable(data){
-  adminList.innerHTML = `
-    <table border="1" cellpadding="5" cellspacing="0" style="width:100%; border-collapse:collapse;">
-      <thead style="background:#004d40; color:white;">
-        <tr>
-          <th>#</th><th>Name</th><th>Reg No</th><th>Dept</th><th>Gender</th><th>Course</th><th>Year</th><th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${data.map((s,i)=>`
-          <tr>
-            <td>${i+1}</td>
-            <td>${s.name}</td>
-            <td>${s.reg}</td>
-            <td>${s.dept}</td>
-            <td>${s.gender}</td>
-            <td>${s.course}</td>
-            <td>${s.year}</td>
-            <td>
-              <button onclick="editStudent(${i})" style="padding:3px 8px;background:#ffb74d;border:none;border-radius:4px;cursor:pointer;">Edit</button>
-              <button onclick="deleteStudent(${i})" style="padding:3px 8px;background:#e57373;border:none;border-radius:4px;cursor:pointer;">Delete</button>
-            </td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
-}
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+      <input type="number" id="catScore" placeholder="CAT Score" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
+      <input type="number" id="examScore" placeholder="End-Term Score" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
+    </div>
 
-// Edit / Delete
-function editStudent(i){
-  const s = students[i];
-  document.getElementById('admName').value = s.name;
-  document.getElementById('admReg').value = s.reg;
-  document.getElementById('admDept').value = s.dept;
-  document.getElementById('admGender').value = s.gender;
-  document.getElementById('admCourse').value = s.course;
-  document.getElementById('admYear').value = s.year;
-  students.splice(i,1);
-  renderTable(students);
-}
-function deleteStudent(i){ if(confirm('Delete this entry?')){ students.splice(i,1); renderTable(students); } }
+    <div style="margin-top:10px;">
+      <select id="grade" disabled style="width:100%; padding:10px; border-radius:6px; border:1px solid #ccc; background:#eee;">
+        <option value="">Grade will be calculated (Mastery, Proficient, Competent, Not Competent)</option>
+      </select>
+    </div>
 
-// Filters
-function applyFilters(){
-  const dept = document.getElementById('filterDept').value;
-  const gender = document.getElementById('filterGender').value;
-  const course = document.getElementById('filterCourse').value.toLowerCase();
-  const year = document.getElementById('filterYear').value;
+    <div style="text-align:center; margin-top:15px;">
+      <button type="submit" style="padding:10px 20px; background:#673ab7; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Submit</button>
+      <button type="button" id="acadDownload" style="padding:10px 20px; background:#5e35b1; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Download Word</button>
+      <button type="button" id="acadPrint" style="padding:10px 20px; background:#4527a0; color:white; border:none; border-radius:6px; cursor:pointer;">Print</button>
+    </div>
+  </form>
+  <div id="academicsList" style="max-width:800px;margin:20px auto;"></div>
+</section>
 
-  const filtered = students.filter(s=>{
-    return (!dept || s.dept===dept) &&
-           (!gender || s.gender===gender) &&
-           (!course || s.course.toLowerCase().includes(course)) &&
-           (!year || s.year==year);
-  });
-  renderTable(filtered);
-}
-function resetFilters(){ 
-  document.getElementById('filterDept').value = '';
-  document.getElementById('filterGender').value = '';
-  document.getElementById('filterCourse').value = '';
-  document.getElementById('filterYear').value = '';
-  renderTable(students);
-}
+<!-- ===================== STUDENTS FORM ===================== -->
+<section id="STUDENTS" style="display:none;background:#b2dfdb;padding:20px;border-radius:12px;margin-bottom:15px;">
+  <h3 style="text-align:center;">👨‍🎓 STUDENTS FORM</h3>
+  <p style="text-align:center;">Register new students with basic information.</p>
 
-// Download Word
-document.getElementById('admDownload').addEventListener('click', async ()=>{
-  if(students.length===0){ alert('No data'); return;}
-  const { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType, AlignmentType } = docx;
+  <form id="studentsForm" style="max-width:800px;margin:auto;background:#ffffff;padding:20px;border-radius:12px;box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <input type="text" id="stuName" placeholder="Full Name" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
+      <input type="text" id="stuReg" placeholder="Registration Number" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
+    </div>
 
-  const rows = [
-    new TableRow({
-      children:["No","Name","Reg No","Dept","Gender","Course","Year"].map(h=> new TableCell({ children:[new Paragraph({text:h,bold:true,alignment:AlignmentType.CENTER})]}))
-    })
-  ];
-  const filteredRows = students.map((s,i)=>new TableRow({
-    children:[
-      new TableCell({children:[new Paragraph({text:(i+1).toString(),alignment:AlignmentType.CENTER})]}),
-      new TableCell({children:[new Paragraph(s.name)]}),
-      new TableCell({children:[new Paragraph(s.reg)]}),
-      new TableCell({children:[new Paragraph(s.dept)]}),
-      new TableCell({children:[new Paragraph(s.gender)]}),
-      new TableCell({children:[new Paragraph(s.course)]}),
-      new TableCell({children:[new Paragraph(s.year)]}),
-    ]
-  }));
-  rows.push(...filteredRows);
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+      <input type="text" id="stuDept" placeholder="Department" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
+      <input type="number" id="stuYear" placeholder="Year of Admission" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #ccc;">
+    </div>
 
-  const doc = new Document({ sections:[{ children:[
-    new Paragraph({ text:"MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE", bold:true, alignment:AlignmentType.CENTER }),
-    new Paragraph({ text:"Administration Data", bold:true, alignment:AlignmentType.CENTER, spacing:{after:200} }),
-    new Table({ rows:rows, width:{ size:100, type:WidthType.PERCENTAGE } })
-  ]}] });
+    <div style="text-align:center; margin-top:15px;">
+      <button type="submit" style="padding:10px 20px; background:#00796b; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Submit</button>
+      <button type="button" id="stuDownload" style="padding:10px 20px; background:#004d40; color:white; border:none; border-radius:6px; cursor:pointer; margin-right:10px;">Download Word</button>
+      <button type="button" id="stuPrint" style="padding:10px 20px; background:#00695c; color:white; border:none; border-radius:6px; cursor:pointer;">Print</button>
+    </div>
+  </form>
+  <div id="studentsList" style="max-width:800px;margin:20px auto;"></div>
+</section>
 
-  const blob = await Packer.toBlob(doc);
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(blob);
-  link.download = 'AdminData_MSAMBWENI.docx';
-  link.click();
-});
-
-// Print
-document.getElementById('admPrint').addEventListener('click', ()=>{
-  if(students.length===0){ alert('No data'); return;}
-  const tableHTML = adminList.querySelector('table').outerHTML;
-  const printWin = window.open('','_blank','height=600,width=800');
-  printWin.document.write('<html><head><title>Admin Data</title></head><body>');
-  printWin.document.write('<h2 style="text-align:center;">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>');
-  printWin.document.write('<h3 style="text-align:center;">Administration Data</h3>');
-  printWin.document.write(tableHTML);
-  printWin.document.write('</body></html>');
-  printWin.document.close();
-  printWin.print();
-});
-</script>
-
-<style>
-  /* Table hover effect */
-  #adminList table tbody tr:hover{
-    background:#e0f2f1;
-    transition:0.3s;
-  }
-  /* Button hover */
-  #adminList button:hover, #reports button:hover{
-    opacity:0.85;
-    transform:scale(1.05);
-    transition:0.3s;
-  }
-</style>
-
-
-    <section id="reports" style="display:none;background:#c8e6c9;padding:20px;border-radius:12px;margin-bottom:15px;">
-      <h3>📊 Reports</h3>
-      <p>View system logs, network stats, and maintenance reports.</p>
-    </section>
-  </div>
-</div>
 
 <script>
   // ===== FIXED LOGIN =====
@@ -2090,6 +1956,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
