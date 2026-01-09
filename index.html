@@ -1882,48 +1882,53 @@ function printReport(key){
 
 
  
-<section id="ACADEMICSPORTAL" style="display:block;background:#e3f2fd;padding:25px;border-radius:16px;">
+<section id="ACADEMICS" style="background:#e3f2fd;padding:25px;border-radius:16px;margin-bottom:20px;">
 
 <h2 style="text-align:center;color:#0d47a1;">
-📘 MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE  
+📘 MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE
 </h2>
 <p style="text-align:center;color:#1b5e20;font-weight:bold;">
-ACADEMICS DEPARTMENT – RESULTS MANAGEMENT
+ACADEMICS DEPARTMENT – RESULTS MANAGEMENT SYSTEM
 </p>
 
-<form id="acadForm" style="max-width:900px;margin:auto;background:#ffffff;padding:20px;border-radius:14px;box-shadow:0 6px 15px rgba(0,0,0,0.15);">
+<form id="acadForm" style="max-width:950px;margin:auto;background:#ffffff;padding:20px;border-radius:14px;box-shadow:0 6px 15px rgba(0,0,0,0.15);">
 
 <div class="grid">
-<input id="name" placeholder="Student Name" required>
-<input id="reg" placeholder="Registration Number" required>
-<input id="cat" type="number" placeholder="CAT (30)" required>
-<input id="exam" type="number" placeholder="Exam (70)" required>
+  <input id="name" placeholder="Student Name" required>
+  <input id="reg" placeholder="Registration Number" required>
+  <input id="cat" type="number" placeholder="CAT (30)" required>
+  <input id="exam" type="number" placeholder="Exam (70)" required>
 </div>
 
 <div class="grid">
-<input id="total" placeholder="Total" disabled>
-<input id="gpa" placeholder="GPA" disabled>
-<input id="grade" placeholder="Grade" disabled>
+  <input id="total" placeholder="Total Score" disabled>
+  <input id="gpa" placeholder="GPA" disabled>
+  <input id="grade" placeholder="Grade" disabled>
 </div>
 
 <div class="actions">
-<button type="submit">💾 Save Record</button>
-<button type="button" onclick="printRecords()">🖨 Print</button>
-<button type="button" onclick="exportToWord()">📥 Export Word</button>
+  <button type="submit">💾 Save Record</button>
+  <button type="button" onclick="printRecords()">🖨 Print Records</button>
+  <button type="button" onclick="exportToWord()">📥 Export Word</button>
 </div>
+
 </form>
 
 <table id="recordsTable">
 <thead>
 <tr>
-<th>Name</th><th>Reg</th><th>CAT</th><th>Exam</th>
-<th>Total</th><th>GPA</th><th>Grade</th><th>Action</th>
+<th>Name</th>
+<th>Reg No</th>
+<th>CAT</th>
+<th>Exam</th>
+<th>Total</th>
+<th>GPA</th>
+<th>Grade</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody></tbody>
 </table>
-
-</section>
 
 <style>
 .grid{
@@ -1943,7 +1948,7 @@ text-align:center;
 margin-top:15px;
 }
 .actions button{
-padding:10px 20px;
+padding:10px 22px;
 margin:5px;
 border:none;
 border-radius:8px;
@@ -1957,7 +1962,7 @@ color:white;
 
 table{
 width:100%;
-margin-top:20px;
+margin-top:25px;
 border-collapse:collapse;
 background:white;
 border-radius:10px;
@@ -1972,8 +1977,12 @@ th{
 background:#0d47a1;
 color:white;
 }
-.edit{background:#0288d1;color:white;padding:5px;border:none;border-radius:5px;}
-.delete{background:#c62828;color:white;padding:5px;border:none;border-radius:5px;}
+.edit{
+background:#0288d1;color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;
+}
+.delete{
+background:#c62828;color:white;border:none;padding:6px 10px;border-radius:6px;cursor:pointer;
+}
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.7.0/docx.umd.js"></script>
@@ -1984,119 +1993,183 @@ let editIndex = -1;
 
 const tbody = document.querySelector("#recordsTable tbody");
 
+const nameInput = document.getElementById("name");
+const regInput = document.getElementById("reg");
+const catInput = document.getElementById("cat");
+const examInput = document.getElementById("exam");
+const totalInput = document.getElementById("total");
+const gpaInput = document.getElementById("gpa");
+const gradeInput = document.getElementById("grade");
+
 function calculate(){
-let cat = +catInput.value;
-let exam = +examInput.value;
+let cat = Number(catInput.value) || 0;
+let exam = Number(examInput.value) || 0;
 let total = cat + exam;
-let gpa = (total/100*4).toFixed(2);
+let gpa = ((total/100)*4).toFixed(2);
+
 let grade =
-total>=80?"Mastery":
-total>=65?"Proficient":
-total>=50?"Competent":"Not Competent";
+total >= 80 ? "Mastery" :
+total >= 65 ? "Proficient" :
+total >= 50 ? "Competent" : "Not Competent";
 
 totalInput.value = total;
 gpaInput.value = gpa;
 gradeInput.value = grade;
 }
 
-const nameInput=name;
-const regInput=reg;
-const catInput=cat;
-const examInput=exam;
-const totalInput=total;
-const gpaInput=gpa;
-const gradeInput=grade;
+catInput.oninput = examInput.oninput = calculate;
 
-catInput.oninput=examInput.oninput=calculate;
-
-acadForm.onsubmit=e=>{
+acadForm.onsubmit = e => {
 e.preventDefault();
 calculate();
 
-const data={
-name:nameInput.value,
-reg:regInput.value,
-cat:catInput.value,
-exam:examInput.value,
-total:totalInput.value,
-gpa:gpaInput.value,
-grade:gradeInput.value
+const data = {
+name: nameInput.value,
+reg: regInput.value,
+cat: catInput.value,
+exam: examInput.value,
+total: totalInput.value,
+gpa: gpaInput.value,
+grade: gradeInput.value
 };
 
-if(editIndex==-1) records.push(data);
-else records[editIndex]=data;
+if(editIndex === -1) records.push(data);
+else records[editIndex] = data;
 
-localStorage.setItem("acadRecords",JSON.stringify(records));
+localStorage.setItem("acadRecords", JSON.stringify(records));
 acadForm.reset();
-editIndex=-1;
+editIndex = -1;
 render();
 };
 
 function render(){
-tbody.innerHTML="";
+tbody.innerHTML = "";
 records.forEach((r,i)=>{
-tbody.innerHTML+=`
+tbody.innerHTML += `
 <tr>
-<td>${r.name}</td><td>${r.reg}</td><td>${r.cat}</td>
-<td>${r.exam}</td><td>${r.total}</td>
-<td>${r.gpa}</td><td>${r.grade}</td>
+<td>${r.name}</td>
+<td>${r.reg}</td>
+<td>${r.cat}</td>
+<td>${r.exam}</td>
+<td>${r.total}</td>
+<td>${r.gpa}</td>
+<td>${r.grade}</td>
 <td>
-<button class="edit" onclick="edit(${i})">Edit</button>
-<button class="delete" onclick="del(${i})">Delete</button>
+<button class="edit" onclick="editRecord(${i})">Edit</button>
+<button class="delete" onclick="deleteRecord(${i})">Delete</button>
 </td>
 </tr>`;
 });
 }
 render();
 
-function edit(i){
-const r=records[i];
-nameInput.value=r.name;
-regInput.value=r.reg;
-catInput.value=r.cat;
-examInput.value=r.exam;
+function editRecord(i){
+const r = records[i];
+nameInput.value = r.name;
+regInput.value = r.reg;
+catInput.value = r.cat;
+examInput.value = r.exam;
 calculate();
-editIndex=i;
+editIndex = i;
 }
 
-function del(i){
-if(confirm("Delete record?")){
+function deleteRecord(i){
+if(confirm("Delete this record?")){
 records.splice(i,1);
-localStorage.setItem("acadRecords",JSON.stringify(records));
+localStorage.setItem("acadRecords", JSON.stringify(records));
 render();
 }
 }
 
-async function exportToWord(){
-if(records.length==0)return alert("No records");
+function printRecords(){
+if(records.length === 0){
+alert("No records to print");
+return;
+}
 
-const {Document,Packer,Paragraph,Table,TableRow,TableCell}=docx;
-const rows=[new TableRow({children:["Name","Reg","CAT","Exam","Total","GPA","Grade"].map(h=>new TableCell({children:[new Paragraph({text:h,bold:true})]}))})];
+let win = window.open("", "", "width=900,height=650");
+win.document.write(`
+<html>
+<head>
+<title>Academic Results</title>
+<style>
+body{font-family:Arial;padding:20px;}
+h2,h3{text-align:center;color:#0d47a1;}
+table{width:100%;border-collapse:collapse;margin-top:20px;}
+th,td{border:1px solid #000;padding:8px;text-align:center;}
+th{background:#e3f2fd;}
+</style>
+</head>
+<body>
+<h2>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>
+<h3>ACADEMIC RESULTS REPORT</h3>
+<p style="text-align:center;">Date: ${new Date().toLocaleDateString()}</p>
+<table>
+<tr>
+<th>Name</th><th>Reg</th><th>CAT</th><th>Exam</th>
+<th>Total</th><th>GPA</th><th>Grade</th>
+</tr>
+${records.map(r=>`
+<tr>
+<td>${r.name}</td>
+<td>${r.reg}</td>
+<td>${r.cat}</td>
+<td>${r.exam}</td>
+<td>${r.total}</td>
+<td>${r.gpa}</td>
+<td>${r.grade}</td>
+</tr>`).join("")}
+</table>
+</body></html>
+`);
+win.document.close();
+win.focus();
+win.print();
+}
+
+async function exportToWord(){
+if(records.length === 0){
+alert("No records to export");
+return;
+}
+
+const { Document, Packer, Paragraph, Table, TableRow, TableCell } = docx;
+
+const rows = [
+new TableRow({
+children:["Name","Reg","CAT","Exam","Total","GPA","Grade"]
+.map(h=>new TableCell({children:[new Paragraph({text:h,bold:true})]}))
+})
+];
 
 records.forEach(r=>{
-rows.push(new TableRow({children:Object.values(r).map(v=>new TableCell({children:[new Paragraph(String(v))]}))}));
+rows.push(new TableRow({
+children:[
+r.name,r.reg,r.cat,r.exam,r.total,r.gpa,r.grade
+].map(v=>new TableCell({children:[new Paragraph(String(v))]}))
+}));
 });
 
-const doc=new Document({
-sections:[{children:[
+const doc = new Document({
+sections:[{
+children:[
 new Paragraph({text:"MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE",bold:true}),
-new Paragraph("ACADEMIC RESULTS"),
-new Paragraph("Date: "+new Date().toLocaleDateString()),
+new Paragraph("ACADEMIC RESULTS REPORT"),
+new Paragraph("Date: " + new Date().toLocaleDateString()),
 new Table({rows})
-]}]
+]
+}]
 });
 
-const blob=await Packer.toBlob(doc);
-const a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
-a.download="MSAMBWENI_ACADEMIC_RESULTS.docx";
-a.click();
-}
-
-function printRecords(){
-window.print();
+const blob = await Packer.toBlob(doc);
+const link = document.createElement("a");
+link.href = URL.createObjectURL(blob);
+link.download = "MSAMBWENI_ACADEMIC_RESULTS.docx";
+link.click();
 }
 </script>
+
+</section>
 
   <!-- ===================== STUDENTS FORM ===================== -->
   <section id="STUDENTS" style="display:none;background:#b2dfdb;padding:25px;border-radius:12px;margin-bottom:15px;">
@@ -2322,6 +2395,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
