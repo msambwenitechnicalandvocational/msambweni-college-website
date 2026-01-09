@@ -1881,144 +1881,222 @@ function printReport(key){
 </section>
 
 
-  <section id="ACADEMICS" style="display:none;background:#e3f2fd;padding:25px;border-radius:16px;margin-bottom:20px;box-shadow:0 6px 15px rgba(0,0,0,0.15);">
+ 
+<section id="ACADEMICSPORTAL" style="display:block;background:#e3f2fd;padding:25px;border-radius:16px;">
 
-<h3 style="text-align:center;color:#0d47a1;font-weight:bold;">📘 ACADEMICS RESULTS FORM</h3>
-<p style="text-align:center;color:#1565c0;">Automatic score, GPA & grade calculation</p>
+<h2 style="text-align:center;color:#0d47a1;">
+📘 MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE  
+</h2>
+<p style="text-align:center;color:#1b5e20;font-weight:bold;">
+ACADEMICS DEPARTMENT – RESULTS MANAGEMENT
+</p>
 
-<form id="acadForm" style="max-width:900px;margin:auto;background:#ffffff;padding:25px;border-radius:14px;box-shadow:0 5px 12px rgba(0,0,0,0.15);">
+<form id="acadForm" style="max-width:900px;margin:auto;background:#ffffff;padding:20px;border-radius:14px;box-shadow:0 6px 15px rgba(0,0,0,0.15);">
 
-<div style="display:flex;gap:15px;flex-wrap:wrap;">
-  <input id="stName" placeholder="Student Name" required style="flex:1;padding:12px;border-radius:8px;border:1px solid #90caf9;">
-  <input id="regNo" placeholder="Registration Number" required style="flex:1;padding:12px;border-radius:8px;border:1px solid #90caf9;">
+<div class="grid">
+<input id="name" placeholder="Student Name" required>
+<input id="reg" placeholder="Registration Number" required>
+<input id="cat" type="number" placeholder="CAT (30)" required>
+<input id="exam" type="number" placeholder="Exam (70)" required>
 </div>
 
-<div style="display:flex;gap:15px;flex-wrap:wrap;margin-top:12px;">
-  <input type="number" id="cat" placeholder="CAT Marks (30)" max="30" required style="flex:1;padding:12px;border-radius:8px;border:1px solid #90caf9;">
-  <input type="number" id="exam" placeholder="Exam Marks (70)" max="70" required style="flex:1;padding:12px;border-radius:8px;border:1px solid #90caf9;">
+<div class="grid">
+<input id="total" placeholder="Total" disabled>
+<input id="gpa" placeholder="GPA" disabled>
+<input id="grade" placeholder="Grade" disabled>
 </div>
 
-<div style="display:flex;gap:15px;flex-wrap:wrap;margin-top:12px;">
-  <input id="total" placeholder="Total Score" readonly style="flex:1;padding:12px;border-radius:8px;background:#e8f5e9;border:1px solid #4caf50;">
-  <input id="gpa" placeholder="GPA" readonly style="flex:1;padding:12px;border-radius:8px;background:#e3f2fd;border:1px solid #2196f3;">
+<div class="actions">
+<button type="submit">💾 Save Record</button>
+<button type="button" onclick="printRecords()">🖨 Print</button>
+<button type="button" onclick="exportToWord()">📥 Export Word</button>
 </div>
-
-<div style="margin-top:12px;">
-  <input id="grade" placeholder="Grade" readonly style="width:100%;padding:12px;border-radius:8px;background:#e0f2f1;border:1px solid #009688;font-weight:bold;">
-</div>
-
-<div style="text-align:center;margin-top:20px;">
-  <button type="submit" style="padding:12px 28px;background:#1565c0;color:white;border:none;border-radius:8px;cursor:pointer;">Save</button>
-  <button type="button" onclick="downloadWord()" style="padding:12px 28px;background:#2e7d32;color:white;border:none;border-radius:8px;cursor:pointer;">Download Word</button>
-  <button type="button" onclick="printResults()" style="padding:12px 28px;background:#0277bd;color:white;border:none;border-radius:8px;cursor:pointer;">Print</button>
-</div>
-
 </form>
+
+<table id="recordsTable">
+<thead>
+<tr>
+<th>Name</th><th>Reg</th><th>CAT</th><th>Exam</th>
+<th>Total</th><th>GPA</th><th>Grade</th><th>Action</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+</section>
+
+<style>
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:12px;
+margin-bottom:15px;
+}
+input{
+padding:10px;
+border-radius:8px;
+border:1px solid #90caf9;
+font-size:14px;
+}
+.actions{
+text-align:center;
+margin-top:15px;
+}
+.actions button{
+padding:10px 20px;
+margin:5px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+color:white;
+}
+.actions button:nth-child(1){background:#2e7d32;}
+.actions button:nth-child(2){background:#0277bd;}
+.actions button:nth-child(3){background:#1b5e20;}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+background:white;
+border-radius:10px;
+overflow:hidden;
+}
+th,td{
+border:1px solid #cfd8dc;
+padding:8px;
+text-align:center;
+}
+th{
+background:#0d47a1;
+color:white;
+}
+.edit{background:#0288d1;color:white;padding:5px;border:none;border-radius:5px;}
+.delete{background:#c62828;color:white;padding:5px;border:none;border-radius:5px;}
+</style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.7.0/docx.umd.js"></script>
 
 <script>
-let resultData = {};
+let records = JSON.parse(localStorage.getItem("acadRecords")) || [];
+let editIndex = -1;
 
-document.getElementById("acadForm").addEventListener("input", ()=>{
-  let cat = Number(document.getElementById("cat").value) || 0;
-  let exam = Number(document.getElementById("exam").value) || 0;
-  let total = cat + exam;
+const tbody = document.querySelector("#recordsTable tbody");
 
-  document.getElementById("total").value = total;
+function calculate(){
+let cat = +catInput.value;
+let exam = +examInput.value;
+let total = cat + exam;
+let gpa = (total/100*4).toFixed(2);
+let grade =
+total>=80?"Mastery":
+total>=65?"Proficient":
+total>=50?"Competent":"Not Competent";
 
-  let gpa = (total / 25).toFixed(2);
-  document.getElementById("gpa").value = gpa;
+totalInput.value = total;
+gpaInput.value = gpa;
+gradeInput.value = grade;
+}
 
-  let grade = "Not Competent";
-  if(total >= 80) grade = "Mastery";
-  else if(total >= 65) grade = "Proficient";
-  else if(total >= 50) grade = "Competent";
+const nameInput=name;
+const regInput=reg;
+const catInput=cat;
+const examInput=exam;
+const totalInput=total;
+const gpaInput=gpa;
+const gradeInput=grade;
 
-  document.getElementById("grade").value = grade;
+catInput.oninput=examInput.oninput=calculate;
 
-  resultData = {
-    name: stName.value,
-    reg: regNo.value,
-    cat, exam, total, gpa, grade
-  };
+acadForm.onsubmit=e=>{
+e.preventDefault();
+calculate();
+
+const data={
+name:nameInput.value,
+reg:regInput.value,
+cat:catInput.value,
+exam:examInput.value,
+total:totalInput.value,
+gpa:gpaInput.value,
+grade:gradeInput.value
+};
+
+if(editIndex==-1) records.push(data);
+else records[editIndex]=data;
+
+localStorage.setItem("acadRecords",JSON.stringify(records));
+acadForm.reset();
+editIndex=-1;
+render();
+};
+
+function render(){
+tbody.innerHTML="";
+records.forEach((r,i)=>{
+tbody.innerHTML+=`
+<tr>
+<td>${r.name}</td><td>${r.reg}</td><td>${r.cat}</td>
+<td>${r.exam}</td><td>${r.total}</td>
+<td>${r.gpa}</td><td>${r.grade}</td>
+<td>
+<button class="edit" onclick="edit(${i})">Edit</button>
+<button class="delete" onclick="del(${i})">Delete</button>
+</td>
+</tr>`;
+});
+}
+render();
+
+function edit(i){
+const r=records[i];
+nameInput.value=r.name;
+regInput.value=r.reg;
+catInput.value=r.cat;
+examInput.value=r.exam;
+calculate();
+editIndex=i;
+}
+
+function del(i){
+if(confirm("Delete record?")){
+records.splice(i,1);
+localStorage.setItem("acadRecords",JSON.stringify(records));
+render();
+}
+}
+
+async function exportToWord(){
+if(records.length==0)return alert("No records");
+
+const {Document,Packer,Paragraph,Table,TableRow,TableCell}=docx;
+const rows=[new TableRow({children:["Name","Reg","CAT","Exam","Total","GPA","Grade"].map(h=>new TableCell({children:[new Paragraph({text:h,bold:true})]}))})];
+
+records.forEach(r=>{
+rows.push(new TableRow({children:Object.values(r).map(v=>new TableCell({children:[new Paragraph(String(v))]}))}));
 });
 
-async function downloadWord(){
-  const { Document, Packer, Paragraph, Table, TableRow, TableCell, AlignmentType } = docx;
-  const today = new Date().toLocaleDateString();
+const doc=new Document({
+sections:[{children:[
+new Paragraph({text:"MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE",bold:true}),
+new Paragraph("ACADEMIC RESULTS"),
+new Paragraph("Date: "+new Date().toLocaleDateString()),
+new Table({rows})
+]}]
+});
 
-  const doc = new Document({
-    sections:[{
-      children:[
-        new Paragraph({ text:"MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE", bold:true, underline:{}, alignment:AlignmentType.CENTER }),
-        new Paragraph({ text:"ACADEMIC RESULTS REPORT", bold:true, alignment:AlignmentType.CENTER }),
-        new Paragraph({ text:"Date: "+today, italics:true, alignment:AlignmentType.CENTER }),
-
-        new Table({
-          rows:[
-            row("Student Name", resultData.name),
-            row("Registration Number", resultData.reg),
-            row("CAT Marks", resultData.cat),
-            row("Exam Marks", resultData.exam),
-            row("Total Score", resultData.total),
-            row("GPA", resultData.gpa),
-            row("Grade", resultData.grade),
-          ]
-        })
-      ]
-    }]
-  });
-
-  const blob = await Packer.toBlob(doc);
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "Academics_Report_MSAMBWENI.docx";
-  link.click();
+const blob=await Packer.toBlob(doc);
+const a=document.createElement("a");
+a.href=URL.createObjectURL(blob);
+a.download="MSAMBWENI_ACADEMIC_RESULTS.docx";
+a.click();
 }
 
-function row(a,b){
-  return new docx.TableRow({
-    children:[
-      new docx.TableCell({ children:[new docx.Paragraph(a)] }),
-      new docx.TableCell({ children:[new docx.Paragraph(String(b))] })
-    ]
-  });
-}
-
-function printResults(){
-  const w = window.open("", "", "width=900,height=600");
-  w.document.write(`
-    <h2 style="text-align:center;color:#0d47a1;">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>
-    <h3 style="text-align:center;">Academic Results</h3>
-    <p style="text-align:center;">Date: ${new Date().toLocaleDateString()}</p>
-    <table border="1" width="100%" cellpadding="8">
-      <tr><th>Item</th><th>Value</th></tr>
-      <tr><td>Name</td><td>${resultData.name}</td></tr>
-      <tr><td>Reg No</td><td>${resultData.reg}</td></tr>
-      <tr><td>CAT</td><td>${resultData.cat}</td></tr>
-      <tr><td>Exam</td><td>${resultData.exam}</td></tr>
-      <tr><td>Total</td><td>${resultData.total}</td></tr>
-      <tr><td>GPA</td><td>${resultData.gpa}</td></tr>
-      <tr><td>Grade</td><td>${resultData.grade}</td></tr>
-    </table>
-  `);
-  w.print();
+function printRecords(){
+window.print();
 }
 </script>
-
-<style>
-#ACADEMICS input:focus {
-  outline:none;
-  box-shadow:0 0 6px rgba(33,150,243,0.6);
-}
-#ACADEMICS button:hover {
-  transform:scale(1.05);
-  opacity:0.9;
-}
-</style>
-
-</section>
 
   <!-- ===================== STUDENTS FORM ===================== -->
   <section id="STUDENTS" style="display:none;background:#b2dfdb;padding:25px;border-radius:12px;margin-bottom:15px;">
@@ -2244,6 +2322,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
