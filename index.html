@@ -1471,98 +1471,131 @@ function renderCourseChart(){
 
 
  <!-- ================= LOGIN ================= -->
-<div id="loginBox" style="max-width:400px;margin:auto;background:#fff;padding:30px;border-radius:10px">
-  <h2 style="text-align:center">🔐 Finance Login</h2>
+<div id="loginBox" class="login-box">
+  <h2>🔐 Finance Login</h2>
   <input id="loginUser" placeholder="Username">
   <input id="loginPass" type="password" placeholder="Password">
-  <button type="button" onclick="login()">Login</button>
-  <p id="loginError" style="color:red;text-align:center"></p>
+  <button onclick="login()">Login</button>
+  <p id="loginError"></p>
 </div>
 
 <!-- ================= PORTAL ================= -->
-<div id="portal" style="display:none">
+<div id="portal" class="portal" style="display:none">
 
-<h1 style="text-align:center">🏦 Finance Management Portal</h1>
+<h1>🏦 Finance Management Portal</h1>
 
-<nav style="text-align:center">
+<nav class="portal-nav">
   <button onclick="showSection('paymentsSection')">Payments</button>
   <button onclick="showSection('expensesSection')">Expenses</button>
   <button onclick="showSection('accountsSection')">Accounts</button>
   <button onclick="showSection('reportsSection')">Reports</button>
-  <button onclick="logout()" style="background:red;color:white">Logout</button>
+  <button onclick="logout()" class="logout-btn">Logout</button>
 </nav>
 
 <!-- PAYMENTS -->
-<section id="paymentsSection">
+<section id="paymentsSection" class="section">
 <h2>Payments</h2>
-<form id="paymentForm">
-<input id="studentName" placeholder="Student Name" required>
-<input id="paymentAmount" type="number" placeholder="Amount" required>
-<select id="paymentMethod" required>
-<option value="">Method</option>
-<option>Cash</option>
-<option>Mpesa</option>
-<option>Bank</option>
-</select>
-<button type="submit">Add Payment</button>
+<form id="paymentForm" class="form-inline">
+  <input id="studentName" placeholder="Student Name" required>
+  <input id="paymentAmount" type="number" placeholder="Amount" required>
+  <select id="paymentMethod" required>
+    <option value="">Method</option>
+    <option>Cash</option>
+    <option>Mpesa</option>
+    <option>Bank</option>
+  </select>
+  <button type="submit" id="paymentSubmitBtn">Add Payment</button>
+  <button type="button" id="paymentUpdateBtn">Update Payment</button>
 </form>
-<table id="paymentsTable">
-<thead><tr><th>Student</th><th>Amount</th><th>Method</th><th>Date</th><th>Action</th></tr></thead>
-<tbody></tbody>
+<table id="paymentsTable" class="table-modern">
+  <thead>
+    <tr><th>Student</th><th>Amount</th><th>Method</th><th>Date</th><th>Action</th></tr>
+  </thead>
+  <tbody></tbody>
 </table>
 <button onclick="downloadWord('finance_payments','Payments Report')">Download Word</button>
 <button onclick="printReport('finance_payments')">Print</button>
 </section>
 
 <!-- EXPENSES -->
-<section id="expensesSection" style="display:none">
+<section id="expensesSection" class="section">
 <h2>Expenses</h2>
-<form id="expenseForm">
-<input id="expenseCategory" placeholder="Category" required>
-<input id="expenseDescription" placeholder="Description" required>
-<input id="expenseAmount" type="number" placeholder="Amount" required>
-<button type="submit">Add Expense</button>
+<form id="expenseForm" class="form-inline">
+  <input id="expenseCategory" placeholder="Category" required>
+  <input id="expenseDescription" placeholder="Description" required>
+  <input id="expenseAmount" type="number" placeholder="Amount" required>
+  <button type="submit" id="expenseSubmitBtn">Add Expense</button>
+  <button type="button" id="expenseUpdateBtn">Update Expense</button>
 </form>
-<table id="expensesTable">
-<thead><tr><th>Category</th><th>Description</th><th>Amount</th><th>Date</th><th>Action</th></tr></thead>
-<tbody></tbody>
+<table id="expensesTable" class="table-modern">
+  <thead>
+    <tr><th>Category</th><th>Description</th><th>Amount</th><th>Date</th><th>Action</th></tr>
+  </thead>
+  <tbody></tbody>
 </table>
 <button onclick="downloadWord('finance_expenses','Expenses Report')">Download Word</button>
 <button onclick="printReport('finance_expenses')">Print</button>
 </section>
 
 <!-- ACCOUNTS -->
-<section id="accountsSection" style="display:none">
+<section id="accountsSection" class="section">
 <h2>Accounts</h2>
-<form id="accountsForm">
-<input id="accountName" placeholder="Account Name" required>
-<input id="accountAmount" type="number" placeholder="Amount" required>
-<select id="accountType" required>
-<option value="">Type</option>
-<option>Payable</option>
-<option>Receivable</option>
-</select>
-<button type="submit">Add Account</button>
+<form id="accountsForm" class="form-inline">
+  <input id="accountName" placeholder="Account Name" required>
+  <input id="accountAmount" type="number" placeholder="Amount" required>
+  <select id="accountType" required>
+    <option value="">Type</option>
+    <option>Payable</option>
+    <option>Receivable</option>
+  </select>
+  <button type="submit" id="accountSubmitBtn">Add Account</button>
+  <button type="button" id="accountUpdateBtn">Update Account</button>
 </form>
-<table id="accountsTable">
-<thead><tr><th>Name</th><th>Amount</th><th>Type</th><th>Date</th><th>Action</th></tr></thead>
-<tbody></tbody>
+<table id="accountsTable" class="table-modern">
+  <thead>
+    <tr><th>Name</th><th>Amount</th><th>Type</th><th>Date</th><th>Action</th></tr>
+  </thead>
+  <tbody></tbody>
 </table>
 <button onclick="downloadWord('finance_accounts','Accounts Report')">Download Word</button>
 <button onclick="printReport('finance_accounts')">Print</button>
 </section>
 
-<!-- REPORTS -->
-<section id="reportsSection" style="display:none">
+<!-- DASHBOARD -->
+<section id="reportsSection" class="section">
 <h2>Dashboard</h2>
-<div id="dashboard"></div>
+<div id="dashboard" class="dashboard"></div>
 </section>
 
 </div>
 
-<!-- Firebase SDK -->
+<!-- ================= STYLES ================= -->
+<style>
+body{font-family:sans-serif; background:#e0f7fa; margin:0; padding:0;}
+.login-box{max-width:400px;margin:80px auto;background:white;padding:30px;border-radius:15px;box-shadow:0 5px 15px rgba(0,0,0,0.2);}
+.login-box h2{text-align:center;color:#006064;margin-bottom:20px;}
+.login-box input{width:100%;padding:10px;margin:10px 0;border-radius:8px;border:1px solid #ccc;font-size:16px;}
+.login-box button{width:100%;padding:12px;background:#006064;color:white;border:none;border-radius:10px;font-size:16px;cursor:pointer;}
+.login-box p{color:red;text-align:center;margin-top:10px;}
+.portal h1{text-align:center;color:#006064;margin-top:20px;}
+.portal-nav{text-align:center;margin-bottom:20px;}
+.portal-nav button{padding:10px 18px;margin:5px;border:none;border-radius:8px;background:#004d40;color:white;cursor:pointer;}
+.portal-nav .logout-btn{background:#d32f2f;}
+.section{background:white;padding:20px;border-radius:12px; margin:20px auto; max-width:1000px;box-shadow:0 5px 12px rgba(0,0,0,0.15);}
+.form-inline input, .form-inline select{padding:8px;margin-right:5px;border-radius:6px;border:1px solid #ccc;}
+.form-inline button{padding:8px;margin-right:5px;border:none;border-radius:6px;cursor:pointer;color:white;}
+.form-inline #paymentUpdateBtn,.form-inline #expenseUpdateBtn,.form-inline #accountUpdateBtn{background:#00796b; display:none;}
+.table-modern{width:100%;border-collapse:collapse;margin-top:10px;}
+.table-modern th{background:#004d40;color:white;padding:8px;}
+.table-modern td{padding:8px;border-bottom:1px solid #ccc;}
+.table-modern button{padding:5px 8px;margin-right:5px;border:none;border-radius:5px;cursor:pointer;}
+.table-modern button:first-child{background:#00796b;color:white;}
+.table-modern button:last-child{background:red;color:white;}
+.dashboard{background:#b2dfdb;padding:15px;border-radius:8px;text-align:center;font-weight:bold;color:#004d40;}
+</style>
+
+<!-- ================= FIREBASE SDK ================= -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
@@ -1585,134 +1618,112 @@ const FIXED_PASS = "finance@123";
 function login(){
   const u = document.getElementById("loginUser").value.trim().toUpperCase();
   const p = document.getElementById("loginPass").value.trim();
-
-  if(u === FIXED_USER && p === FIXED_PASS){
-    loginBox.style.display="none";
-    portal.style.display="block";
+  if(u===FIXED_USER && p===FIXED_PASS){
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("portal").style.display="block";
     showSection("paymentsSection");
-    loadPayments();
-    loadExpenses();
-    loadAccounts();
-    updateDashboard();
-  }else{
-    loginError.innerText="Invalid username or password";
-  }
+    loadPayments(); loadExpenses(); loadAccounts(); updateDashboard();
+  }else document.getElementById("loginError").innerText="Invalid username or password";
 }
 
-function logout(){ location.reload(); }
+function logout(){location.reload();}
 
 // ================= NAV =================
 const sections=["paymentsSection","expensesSection","accountsSection","reportsSection"];
-function showSection(id){
-  sections.forEach(s=>document.getElementById(s).style.display="none");
-  document.getElementById(id).style.display="block";
-}
+function showSection(id){sections.forEach(s=>document.getElementById(s).style.display="none");document.getElementById(id).style.display="block";}
+
+// ================= GLOBAL EDIT IDS =================
+let editPaymentId=null, editExpenseId=null, editAccountId=null;
 
 // ================= PAYMENTS =================
-const paymentForm = document.getElementById("paymentForm");
-const paymentsTableBody = document.querySelector("#paymentsTable tbody");
+const paymentForm=document.getElementById("paymentForm");
+const paymentsTableBody=document.querySelector("#paymentsTable tbody");
+const paymentSubmitBtn=document.getElementById("paymentSubmitBtn");
+const paymentUpdateBtn=document.getElementById("paymentUpdateBtn");
 
-paymentForm.onsubmit = async (e) => {
+paymentForm.onsubmit=async(e)=>{
   e.preventDefault();
-  const payment = {
-    student: studentName.value,
-    amount: +paymentAmount.value,
-    method: paymentMethod.value,
-    date: new Date().toLocaleDateString()
-  };
-  await db.collection("finance_payments").add(payment);
-  paymentForm.reset();
-  loadPayments();
+  const payment={student:studentName.value, amount:+paymentAmount.value, method:paymentMethod.value, date:new Date().toLocaleDateString()};
+  if(editPaymentId){await db.collection("finance_payments").doc(editPaymentId).update(payment); editPaymentId=null; paymentSubmitBtn.style.display="inline-block"; paymentUpdateBtn.style.display="none";}
+  else await db.collection("finance_payments").add(payment);
+  paymentForm.reset(); loadPayments(); updateDashboard();
 };
 
+paymentUpdateBtn.onclick=()=>{paymentForm.reset(); editPaymentId=null; paymentSubmitBtn.style.display="inline-block"; paymentUpdateBtn.style.display="none";};
+
 async function loadPayments(){
-  paymentsTableBody.innerHTML = "";
-  const snapshot = await db.collection("finance_payments").get();
-  snapshot.forEach((doc) => {
-    const r = doc.data();
-    const tr = document.createElement("tr");
-    Object.values(r).forEach(v => {
-      const td = document.createElement("td");
-      td.innerText = v;
-      tr.appendChild(td);
-    });
-    const td = document.createElement("td");
-    const btn = document.createElement("button");
-    btn.innerText = "Delete";
-    btn.onclick = async () => {
-      await db.collection("finance_payments").doc(doc.id).delete();
-      loadPayments();
-    };
-    td.appendChild(btn);
-    tr.appendChild(td);
+  paymentsTableBody.innerHTML="";
+  const snapshot=await db.collection("finance_payments").get();
+  snapshot.forEach(doc=>{
+    const r=doc.data(); const tr=document.createElement("tr");
+    Object.values(r).forEach(v=>{const td=document.createElement("td"); td.innerText=v; tr.appendChild(td);});
+    const td=document.createElement("td");
+    const editBtn=document.createElement("button"); editBtn.innerText="Edit";
+    editBtn.onclick=()=>{studentName.value=r.student; paymentAmount.value=r.amount; paymentMethod.value=r.method; editPaymentId=doc.id; paymentSubmitBtn.style.display="none"; paymentUpdateBtn.style.display="inline-block";};
+    const delBtn=document.createElement("button"); delBtn.innerText="Delete"; delBtn.onclick=async()=>{await db.collection("finance_payments").doc(doc.id).delete(); loadPayments(); updateDashboard();};
+    td.appendChild(editBtn); td.appendChild(delBtn); tr.appendChild(td);
     paymentsTableBody.appendChild(tr);
   });
 }
 
 // ================= EXPENSES =================
-const expenseForm = document.getElementById("expenseForm");
-const expensesTableBody = document.querySelector("#expensesTable tbody");
+const expenseForm=document.getElementById("expenseForm");
+const expensesTableBody=document.querySelector("#expensesTable tbody");
+const expenseSubmitBtn=document.getElementById("expenseSubmitBtn");
+const expenseUpdateBtn=document.getElementById("expenseUpdateBtn");
 
-expenseForm.onsubmit = async (e)=>{
+expenseForm.onsubmit=async(e)=>{
   e.preventDefault();
-  const expense = {
-    category: expenseCategory.value,
-    description: expenseDescription.value,
-    amount: +expenseAmount.value,
-    date: new Date().toLocaleDateString()
-  };
-  await db.collection("finance_expenses").add(expense);
-  expenseForm.reset();
-  loadExpenses();
+  const expense={category:expenseCategory.value, description:expenseDescription.value, amount:+expenseAmount.value, date:new Date().toLocaleDateString()};
+  if(editExpenseId){await db.collection("finance_expenses").doc(editExpenseId).update(expense); editExpenseId=null; expenseSubmitBtn.style.display="inline-block"; expenseUpdateBtn.style.display="none";}
+  else await db.collection("finance_expenses").add(expense);
+  expenseForm.reset(); loadExpenses(); updateDashboard();
 };
 
+expenseUpdateBtn.onclick=()=>{expenseForm.reset(); editExpenseId=null; expenseSubmitBtn.style.display="inline-block"; expenseUpdateBtn.style.display="none";};
+
 async function loadExpenses(){
-  expensesTableBody.innerHTML = "";
-  const snapshot = await db.collection("finance_expenses").get();
-  snapshot.forEach((doc) => {
-    const r = doc.data();
-    const tr = document.createElement("tr");
-    Object.values(r).forEach(v=>{
-      const td=document.createElement("td"); td.innerText=v; tr.appendChild(td);
-    });
+  expensesTableBody.innerHTML="";
+  const snapshot=await db.collection("finance_expenses").get();
+  snapshot.forEach(doc=>{
+    const r=doc.data(); const tr=document.createElement("tr");
+    Object.values(r).forEach(v=>{const td=document.createElement("td"); td.innerText=v; tr.appendChild(td);});
     const td=document.createElement("td");
-    const btn=document.createElement("button");
-    btn.innerText="Delete";
-    btn.onclick=async()=>{await db.collection("finance_expenses").doc(doc.id).delete(); loadExpenses();}
-    td.appendChild(btn); tr.appendChild(td);
+    const editBtn=document.createElement("button"); editBtn.innerText="Edit";
+    editBtn.onclick=()=>{expenseCategory.value=r.category; expenseDescription.value=r.description; expenseAmount.value=r.amount; editExpenseId=doc.id; expenseSubmitBtn.style.display="none"; expenseUpdateBtn.style.display="inline-block";};
+    const delBtn=document.createElement("button"); delBtn.innerText="Delete"; delBtn.onclick=async()=>{await db.collection("finance_expenses").doc(doc.id).delete(); loadExpenses(); updateDashboard();};
+    td.appendChild(editBtn); td.appendChild(delBtn); tr.appendChild(td);
     expensesTableBody.appendChild(tr);
   });
 }
 
 // ================= ACCOUNTS =================
-const accountsForm = document.getElementById("accountsForm");
-const accountsTableBody = document.querySelector("#accountsTable tbody");
+const accountsForm=document.getElementById("accountsForm");
+const accountsTableBody=document.querySelector("#accountsTable tbody");
+const accountSubmitBtn=document.getElementById("accountSubmitBtn");
+const accountUpdateBtn=document.getElementById("accountUpdateBtn");
 
-accountsForm.onsubmit = async (e)=>{
+accountsForm.onsubmit=async(e)=>{
   e.preventDefault();
-  const account = {
-    name: accountName.value,
-    amount: +accountAmount.value,
-    type: accountType.value,
-    date: new Date().toLocaleDateString()
-  };
-  await db.collection("finance_accounts").add(account);
-  accountsForm.reset();
-  loadAccounts();
+  const account={name:accountName.value, amount:+accountAmount.value, type:accountType.value, date:new Date().toLocaleDateString()};
+  if(editAccountId){await db.collection("finance_accounts").doc(editAccountId).update(account); editAccountId=null; accountSubmitBtn.style.display="inline-block"; accountUpdateBtn.style.display="none";}
+  else await db.collection("finance_accounts").add(account);
+  accountsForm.reset(); loadAccounts(); updateDashboard();
 };
 
+accountUpdateBtn.onclick=()=>{accountsForm.reset(); editAccountId=null; accountSubmitBtn.style.display="inline-block"; accountUpdateBtn.style.display="none";};
+
 async function loadAccounts(){
-  accountsTableBody.innerHTML = "";
-  const snapshot = await db.collection("finance_accounts").get();
-  snapshot.forEach((doc)=>{
-    const r = doc.data();
-    const tr=document.createElement("tr");
+  accountsTableBody.innerHTML="";
+  const snapshot=await db.collection("finance_accounts").get();
+  snapshot.forEach(doc=>{
+    const r=doc.data(); const tr=document.createElement("tr");
     Object.values(r).forEach(v=>{const td=document.createElement("td"); td.innerText=v; tr.appendChild(td);});
     const td=document.createElement("td");
-    const btn=document.createElement("button");
-    btn.innerText="Delete";
-    btn.onclick=async()=>{await db.collection("finance_accounts").doc(doc.id).delete(); loadAccounts();}
-    td.appendChild(btn); tr.appendChild(td);
+    const editBtn=document.createElement("button"); editBtn.innerText="Edit";
+    editBtn.onclick=()=>{accountName.value=r.name; accountAmount.value=r.amount; accountType.value=r.type; editAccountId=doc.id; accountSubmitBtn.style.display="none"; accountUpdateBtn.style.display="inline-block";};
+    const delBtn=document.createElement("button"); delBtn.innerText="Delete"; delBtn.onclick=async()=>{await db.collection("finance_accounts").doc(doc.id).delete(); loadAccounts(); updateDashboard();};
+    td.appendChild(editBtn); td.appendChild(delBtn); tr.appendChild(td);
     accountsTableBody.appendChild(tr);
   });
 }
@@ -1732,11 +1743,7 @@ function downloadWord(collectionID,title){
     if(snapshot.empty){ alert("No data"); return;}
     let html=`<h2>${title}</h2><table border=1><tr>`;
     Object.keys(snapshot.docs[0].data()).forEach(k=>html+=`<th>${k}</th>`); html+="</tr>";
-    snapshot.docs.forEach(doc=>{
-      html+="<tr>";
-      Object.values(doc.data()).forEach(v=>html+=`<td>${v}</td>`);
-      html+="</tr>";
-    });
+    snapshot.docs.forEach(doc=>{html+="<tr>"; Object.values(doc.data()).forEach(v=>html+=`<td>${v}</td>`); html+="</tr>";});
     html+="</table>";
     const a=document.createElement("a");
     a.href=URL.createObjectURL(new Blob([html],{type:"application/msword"}));
@@ -1750,15 +1757,12 @@ function printReport(collectionID){
     let w=window.open("");
     w.document.write("<table border=1>");
     Object.keys(snapshot.docs[0].data()).forEach(k=>w.document.write("<th>"+k+"</th>"));
-    snapshot.docs.forEach(doc=>{
-      w.document.write("<tr>");
-      Object.values(doc.data()).forEach(v=>w.document.write("<td>"+v+"</td>"));
-      w.document.write("</tr>");
-    });
+    snapshot.docs.forEach(doc=>{ w.document.write("<tr>"); Object.values(doc.data()).forEach(v=>w.document.write("<td>"+v+"</td>")); w.document.write("</tr>");});
     w.print();
   });
 }
 </script>
+
 
  <!-- ICT Technician Portal -->
 <div id="ictLoginBox" style="max-width:400px;margin:80px auto;background:white;padding:40px;border-radius:20px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
@@ -2505,6 +2509,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
