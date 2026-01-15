@@ -1459,6 +1459,10 @@ function renderCourseChart(){
   .nav-card { width: 100%; max-width: 320px; }
 }
 </style>
+
+ 
+
+
  <!-- ================= LOGIN ================= -->
 <div id="loginBox" style="max-width:400px;margin:auto;background:#fff;padding:30px;border-radius:10px">
   <h2 style="text-align:center">🔐 Finance Login</h2>
@@ -1499,8 +1503,8 @@ function renderCourseChart(){
 <thead><tr><th>Student</th><th>Amount</th><th>Method</th><th>Date</th><th>Action</th></tr></thead>
 <tbody></tbody>
 </table>
-<button onclick="downloadWord('payments','Payments Report')">Download Word</button>
-<button onclick="printReport('payments')">Print</button>
+<button onclick="downloadWord('finance_payments','Payments Report')">Download Word</button>
+<button onclick="printReport('finance_payments')">Print</button>
 </section>
 
 <!-- EXPENSES -->
@@ -1516,8 +1520,8 @@ function renderCourseChart(){
 <thead><tr><th>Category</th><th>Description</th><th>Amount</th><th>Date</th><th>Action</th></tr></thead>
 <tbody></tbody>
 </table>
-<button onclick="downloadWord('expenses','Expenses Report')">Download Word</button>
-<button onclick="printReport('expenses')">Print</button>
+<button onclick="downloadWord('finance_expenses','Expenses Report')">Download Word</button>
+<button onclick="printReport('finance_expenses')">Print</button>
 </section>
 
 <!-- ACCOUNTS -->
@@ -1537,8 +1541,8 @@ function renderCourseChart(){
 <thead><tr><th>Name</th><th>Amount</th><th>Type</th><th>Date</th><th>Action</th></tr></thead>
 <tbody></tbody>
 </table>
-<button onclick="downloadWord('accounts','Accounts Report')">Download Word</button>
-<button onclick="printReport('accounts')">Print</button>
+<button onclick="downloadWord('finance_accounts','Accounts Report')">Download Word</button>
+<button onclick="printReport('finance_accounts')">Print</button>
 </section>
 
 <!-- REPORTS -->
@@ -1549,7 +1553,24 @@ function renderCourseChart(){
 
 </div>
 
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script>
+// ================= FIREBASE CONFIG =================
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 // ================= FIXED LOGIN =================
 const FIXED_USER = "FINANCE";
 const FIXED_PASS = "finance@123";
@@ -1562,7 +1583,9 @@ function login(){
     loginBox.style.display="none";
     portal.style.display="block";
     showSection("paymentsSection");
-    ["payments","expenses","accounts"].forEach(loadTable);
+    loadPayments();
+    loadExpenses();
+    loadAccounts();
     updateDashboard();
   }else{
     loginError.innerText="Invalid username or password";
@@ -1578,82 +1601,158 @@ function showSection(id){
   document.getElementById(id).style.display="block";
 }
 
-// ================= DATA =================
-function saveItem(key,item){
-  const data=JSON.parse(localStorage.getItem(key)||"[]");
-  data.push(item);
-  localStorage.setItem(key,JSON.stringify(data));
-  loadTable(key);
-  updateDashboard();
-}
+// ================= PAYMENTS =================
+const paymentForm = document.getElementById("paymentForm");
+const paymentsTableBody = document.querySelector("#paymentsTable tbody");
 
-function loadTable(key){
-  const data=JSON.parse(localStorage.getItem(key)||"[]");
-  const tbody=document.getElementById(key+"Table").querySelector("tbody");
-  tbody.innerHTML="";
-  data.forEach((r,i)=>{
-    let tr=document.createElement("tr");
-    Object.values(r).forEach(v=>{
-      let td=document.createElement("td"); td.innerText=v; tr.appendChild(td);
+paymentForm.onsubmit = async (e) => {
+  e.preventDefault();
+  const payment = {
+    student: studentName.value,
+    amount: +paymentAmount.value,
+    method: paymentMethod.value,
+    date: new Date().toLocaleDateString()
+  };
+  await db.collection("finance_payments").add(payment);
+  paymentForm.reset();
+  loadPayments();
+};
+
+async function loadPayments(){
+  paymentsTableBody.innerHTML = "";
+  const snapshot = await db.collection("finance_payments").get();
+  snapshot.forEach((doc) => {
+    const r = doc.data();
+    const tr = document.createElement("tr");
+    Object.values(r).forEach(v => {
+      const td = document.createElement("td");
+      td.innerText = v;
+      tr.appendChild(td);
     });
-    let td=document.createElement("td");
-    let b=document.createElement("button");
-    b.innerText="Delete";
-    b.onclick=()=>{data.splice(i,1);localStorage.setItem(key,JSON.stringify(data));loadTable(key);updateDashboard();}
-    td.appendChild(b); tr.appendChild(td);
-    tbody.appendChild(tr);
+    const td = document.createElement("td");
+    const btn = document.createElement("button");
+    btn.innerText = "Delete";
+    btn.onclick = async () => {
+      await db.collection("finance_payments").doc(doc.id).delete();
+      loadPayments();
+    };
+    td.appendChild(btn);
+    tr.appendChild(td);
+    paymentsTableBody.appendChild(tr);
   });
 }
 
-// ================= FORMS =================
-paymentForm.onsubmit=e=>{
-e.preventDefault();
-saveItem("payments",{student:studentName.value,amount:+paymentAmount.value,method:paymentMethod.value,date:new Date().toLocaleDateString()});
-e.target.reset();
+// ================= EXPENSES =================
+const expenseForm = document.getElementById("expenseForm");
+const expensesTableBody = document.querySelector("#expensesTable tbody");
+
+expenseForm.onsubmit = async (e)=>{
+  e.preventDefault();
+  const expense = {
+    category: expenseCategory.value,
+    description: expenseDescription.value,
+    amount: +expenseAmount.value,
+    date: new Date().toLocaleDateString()
+  };
+  await db.collection("finance_expenses").add(expense);
+  expenseForm.reset();
+  loadExpenses();
 };
 
-expenseForm.onsubmit=e=>{
-e.preventDefault();
-saveItem("expenses",{category:expenseCategory.value,description:expenseDescription.value,amount:+expenseAmount.value,date:new Date().toLocaleDateString()});
-e.target.reset();
+async function loadExpenses(){
+  expensesTableBody.innerHTML = "";
+  const snapshot = await db.collection("finance_expenses").get();
+  snapshot.forEach((doc) => {
+    const r = doc.data();
+    const tr = document.createElement("tr");
+    Object.values(r).forEach(v=>{
+      const td=document.createElement("td"); td.innerText=v; tr.appendChild(td);
+    });
+    const td=document.createElement("td");
+    const btn=document.createElement("button");
+    btn.innerText="Delete";
+    btn.onclick=async()=>{await db.collection("finance_expenses").doc(doc.id).delete(); loadExpenses();}
+    td.appendChild(btn); tr.appendChild(td);
+    expensesTableBody.appendChild(tr);
+  });
+}
+
+// ================= ACCOUNTS =================
+const accountsForm = document.getElementById("accountsForm");
+const accountsTableBody = document.querySelector("#accountsTable tbody");
+
+accountsForm.onsubmit = async (e)=>{
+  e.preventDefault();
+  const account = {
+    name: accountName.value,
+    amount: +accountAmount.value,
+    type: accountType.value,
+    date: new Date().toLocaleDateString()
+  };
+  await db.collection("finance_accounts").add(account);
+  accountsForm.reset();
+  loadAccounts();
 };
 
-accountsForm.onsubmit=e=>{
-e.preventDefault();
-saveItem("accounts",{name:accountName.value,amount:+accountAmount.value,type:accountType.value,date:new Date().toLocaleDateString()});
-e.target.reset();
-};
+async function loadAccounts(){
+  accountsTableBody.innerHTML = "";
+  const snapshot = await db.collection("finance_accounts").get();
+  snapshot.forEach((doc)=>{
+    const r = doc.data();
+    const tr=document.createElement("tr");
+    Object.values(r).forEach(v=>{const td=document.createElement("td"); td.innerText=v; tr.appendChild(td);});
+    const td=document.createElement("td");
+    const btn=document.createElement("button");
+    btn.innerText="Delete";
+    btn.onclick=async()=>{await db.collection("finance_accounts").doc(doc.id).delete(); loadAccounts();}
+    td.appendChild(btn); tr.appendChild(td);
+    accountsTableBody.appendChild(tr);
+  });
+}
 
 // ================= DASHBOARD =================
-function updateDashboard(){
-  const p=JSON.parse(localStorage.getItem("payments")||"[]").reduce((s,x)=>s+x.amount,0);
-  const e=JSON.parse(localStorage.getItem("expenses")||"[]").reduce((s,x)=>s+x.amount,0);
-  dashboard.innerText=`Payments: KES ${p} | Expenses: KES ${e} | Balance: KES ${p-e}`;
+async function updateDashboard(){
+  const payments = await db.collection("finance_payments").get();
+  const expenses = await db.collection("finance_expenses").get();
+  const totalPayments = payments.docs.reduce((s,d)=>s+d.data().amount,0);
+  const totalExpenses = expenses.docs.reduce((s,d)=>s+d.data().amount,0);
+  dashboard.innerText=`Payments: KES ${totalPayments} | Expenses: KES ${totalExpenses} | Balance: KES ${totalPayments-totalExpenses}`;
 }
 
 // ================= DOWNLOAD / PRINT =================
-function downloadWord(key,title){
-  const d=JSON.parse(localStorage.getItem(key)||"[]");
-  if(!d.length)return alert("No data");
-  let html=`<h2>${title}</h2><table border=1><tr>`;
-  Object.keys(d[0]).forEach(k=>html+=`<th>${k}</th>`); html+="</tr>";
-  d.forEach(r=>{html+="<tr>";Object.values(r).forEach(v=>html+=`<td>${v}</td>`);html+="</tr>";});
-  html+="</table>";
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(new Blob([html],{type:"application/msword"}));
-  a.download=title+".doc"; a.click();
+function downloadWord(collectionID,title){
+  db.collection(collectionID).get().then(snapshot=>{
+    if(snapshot.empty){ alert("No data"); return;}
+    let html=`<h2>${title}</h2><table border=1><tr>`;
+    Object.keys(snapshot.docs[0].data()).forEach(k=>html+=`<th>${k}</th>`); html+="</tr>";
+    snapshot.docs.forEach(doc=>{
+      html+="<tr>";
+      Object.values(doc.data()).forEach(v=>html+=`<td>${v}</td>`);
+      html+="</tr>";
+    });
+    html+="</table>";
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(new Blob([html],{type:"application/msword"}));
+    a.download=title+".doc"; a.click();
+  });
 }
 
-function printReport(key){
-  const d=JSON.parse(localStorage.getItem(key)||"[]");
-  if(!d.length)return alert("No data");
-  let w=window.open("");
-  w.document.write("<table border=1>");
-  Object.keys(d[0]).forEach(k=>w.document.write("<th>"+k+"</th>"));
-  d.forEach(r=>{w.document.write("<tr>");Object.values(r).forEach(v=>w.document.write("<td>"+v+"</td>"));w.document.write("</tr>")});
-  w.print();
+function printReport(collectionID){
+  db.collection(collectionID).get().then(snapshot=>{
+    if(snapshot.empty){ alert("No data"); return;}
+    let w=window.open("");
+    w.document.write("<table border=1>");
+    Object.keys(snapshot.docs[0].data()).forEach(k=>w.document.write("<th>"+k+"</th>"));
+    snapshot.docs.forEach(doc=>{
+      w.document.write("<tr>");
+      Object.values(doc.data()).forEach(v=>w.document.write("<td>"+v+"</td>"));
+      w.document.write("</tr>");
+    });
+    w.print();
+  });
 }
 </script>
+
  <!-- ICT Technician Portal -->
 <div id="ictLoginBox" style="max-width:400px;margin:80px auto;background:white;padding:40px;border-radius:20px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
   <h2 style="text-align:center;color:#006064;font-family:sans-serif;">💻 ICT Technician Login</h2>
@@ -2399,6 +2498,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
