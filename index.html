@@ -1587,8 +1587,7 @@ if(localStorage.getItem("logged")==="yes"){
 }
 </script>
 
- 
- <!-- ===================== ICT Technician Portal ===================== -->
+ <!-- ===================== ICT TECHNICIAN PORTAL ===================== -->
 <div id="ictLoginBox" style="max-width:400px;margin:80px auto;background:white;padding:40px;border-radius:20px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
   <h2 style="text-align:center;color:#006064;font-family:sans-serif;">💻 ICT Technician Login</h2>
   <input id="ictUser" placeholder="Username" style="width:100%;padding:12px;margin:12px 0;border-radius:8px;border:1px solid #ccc;font-size:16px;">
@@ -1608,461 +1607,103 @@ if(localStorage.getItem("logged")==="yes"){
     <button onclick="ictLogout()" style="padding:12px 18px;margin:5px;border:none;border-radius:8px;background:#d32f2f;color:white;cursor:pointer;">Logout</button>
   </div>
 
- <!-- ===================== ADMINISTRATION ===================== -->
-<section id="ADMINISTRATION" style="display:none;background:#f0f4f8;padding:25px;border-radius:15px;margin-bottom:20px;">
-  <h3 style="text-align:center; color:#004d40; font-weight:bold;">📊 ADMINISTRATION FORM</h3>
-  <form id="adminForm" style="max-width:850px;margin:auto; background:white; padding:25px; border-radius:12px;">
-    <div style="display:flex; gap:15px; flex-wrap:wrap;">
-      <input type="text" id="admName" placeholder="Full Name" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
-      <input type="text" id="admReg" placeholder="Registration Number" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
-    </div>
-    <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:15px;">
-      <select id="admDept" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
-        <option value="">Select Department</option>
-        <option value="ICT">ICT</option>
-        <option value="Business">Business</option>
-        <option value="Engineering">Engineering</option>
-      </select>
-      <select id="admGender" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
-        <option value="">Select Gender</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-      </select>
-    </div>
-    <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:15px;">
-      <input type="text" id="admCourse" placeholder="Course Taken" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
-      <input type="number" id="admYear" placeholder="Year of Admission" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
-    </div>
-    <div style="margin-top:15px;">
-      <label style="font-weight:bold;">Upload Document (PDF, DOCX):</label>
-      <input type="file" id="admDoc" accept=".pdf,.doc,.docx" style="display:block; margin-top:5px;">
-    </div>
-    <div style="text-align:center; margin-top:20px;">
-      <button type="submit" style="padding:12px 25px; background:#004d40; color:white; border:none; border-radius:8px; cursor:pointer; margin-right:10px;">Submit</button>
-      <button type="button" id="admDownload" style="padding:12px 25px; background:#00796b; color:white; border:none; border-radius:8px; cursor:pointer; margin-right:10px;">Download Word</button>
-      <button type="button" id="admPrint" style="padding:12px 25px; background:#00695c; color:white; border:none; border-radius:8px; cursor:pointer;">Print</button>
-    </div>
-  </form>
-  <div id="adminList" style="max-width:850px;margin:25px auto; display:flex; flex-direction:column; gap:12px;"></div>
-</section>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.7.0/docx.umd.js"></script>
-<script>
-let adminData = JSON.parse(localStorage.getItem("adminData")) || [];
-
-const adminForm = document.getElementById("adminForm");
-const adminList = document.getElementById("adminList");
-
-// Prevent page reload & save data
-adminForm.addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const student = {
-        name: document.getElementById("admName").value,
-        reg: document.getElementById("admReg").value,
-        dept: document.getElementById("admDept").value,
-        gender: document.getElementById("admGender").value,
-        course: document.getElementById("admCourse").value,
-        year: document.getElementById("admYear").value,
-        doc: document.getElementById("admDoc").files[0] ? document.getElementById("admDoc").files[0].name : "No File"
-    };
-
-    adminData.push(student);
-    localStorage.setItem("adminData", JSON.stringify(adminData));
-    adminForm.reset();
-    displayAdmin();
-});
-
-// Display admin list
-function displayAdmin() {
-    adminList.innerHTML = "";
-    adminData.forEach((s, i) => {
-        const div = document.createElement("div");
-        div.style.cssText = "background:#e0f7fa; padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; box-shadow:0 3px 6px rgba(0,0,0,0.1)";
-        div.innerHTML = `
-            <div>
-                <strong>${i + 1}. ${s.name}</strong> | ${s.reg} | ${s.dept} | ${s.gender} | ${s.course} | ${s.year} <br>
-                Document: <em>${s.doc}</em>
-            </div>
-            <div style="display:flex; gap:10px; margin-top:5px;">
-                <button onclick="editAdmin(${i})" style="padding:5px 10px; background:#ffc107; color:white; border:none; border-radius:5px; cursor:pointer;">Edit</button>
-                <button onclick="deleteAdmin(${i})" style="padding:5px 10px; background:#f44336; color:white; border:none; border-radius:5px; cursor:pointer;">Delete</button>
-            </div>
-        `;
-        adminList.appendChild(div);
-    });
-}
-
-// Edit function
-function editAdmin(i) {
-    const s = adminData[i];
-    document.getElementById("admName").value = s.name;
-    document.getElementById("admReg").value = s.reg;
-    document.getElementById("admDept").value = s.dept;
-    document.getElementById("admGender").value = s.gender;
-    document.getElementById("admCourse").value = s.course;
-    document.getElementById("admYear").value = s.year;
-    adminData.splice(i, 1);
-    localStorage.setItem("adminData", JSON.stringify(adminData));
-    displayAdmin();
-}
-
-// Delete function
-function deleteAdmin(i) {
-    if(confirm("Are you sure you want to delete this entry?")) {
-        adminData.splice(i, 1);
-        localStorage.setItem("adminData", JSON.stringify(adminData));
-        displayAdmin();
-    }
-}
-
-// Download Word
-document.getElementById("admDownload").addEventListener("click", async ()=>{
-    if(adminData.length === 0){ alert("No data to download"); return; }
-    const { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType, AlignmentType } = docx;
-
-    const rows = [new TableRow({
-        children: ["#", "Name", "Reg", "Dept", "Gender", "Course", "Year", "Document"].map(h => new TableCell({children:[new Paragraph({text:h,bold:true})]}))
-    })];
-
-    adminData.forEach((s,i)=>{
-        rows.push(new TableRow({
-            children: [
-                i+1, s.name, s.reg, s.dept, s.gender, s.course, s.year, s.doc
-            ].map(v=>new TableCell({children:[new Paragraph(String(v))]}))
-        }));
-    });
-
-    const doc = new Document({
-        sections:[{
-            children:[
-                new Paragraph({text:"MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE", bold:true, underline:{}, alignment:AlignmentType.CENTER, spacing:{after:300}}),
-                new Paragraph({text:"Administration Data", bold:true, alignment:AlignmentType.CENTER, spacing:{after:200}}),
-                new Paragraph({text:"Date: "+new Date().toLocaleDateString(), italics:true, alignment:AlignmentType.CENTER, spacing:{after:200}}),
-                new Table({rows, width:{size:100, type:WidthType.PERCENTAGE}})
-            ]
-        }]
-    });
-
-    const blob = await Packer.toBlob(doc);
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = "Administration_Data_MSAMBWENI.docx";
-    link.click();
-});
-
-// Print
-document.getElementById("admPrint").addEventListener("click", ()=>{
-    if(adminData.length === 0){ alert("No data to print"); return; }
-    const today = new Date().toLocaleDateString();
-    const win = window.open("","_blank","height=600,width=900");
-    win.document.write('<html><head><title>Administration Data</title></head><body>');
-    win.document.write('<h2 style="text-align:center;">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>');
-    win.document.write('<h3 style="text-align:center;">Administration Data</h3>');
-    win.document.write('<p style="text-align:center;">Date: '+today+'</p>');
-    win.document.write('<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse; width:100%;">');
-    win.document.write('<tr><th>#</th><th>Name</th><th>Reg</th><th>Dept</th><th>Gender</th><th>Course</th><th>Year</th><th>Document</th></tr>');
-    adminData.forEach((s,i)=>{
-        win.document.write(`<tr>
-            <td>${i+1}</td><td>${s.name}</td><td>${s.reg}</td><td>${s.dept}</td>
-            <td>${s.gender}</td><td>${s.course}</td><td>${s.year}</td><td>${s.doc}</td>
-        </tr>`);
-    });
-    win.document.write('</table></body></html>');
-    win.document.close();
-    win.print();
-});
-
-// Load data on page load
-displayAdmin();
-</script>
-
-
-  
- <!-- ================= LOGIN ================= -->
-<section id="LOGIN">
-  <h2>ICT Portal Login</h2>
-  <form id="loginForm">
-    <input id="username" placeholder="Username" required>
-    <input id="password" placeholder="Password" type="password" required>
-    <button type="submit">Login</button>
-  </form>
-</section>
-
-<!-- ===================== ACADEMICS ===================== -->
-<section id="ACADEMICS" style="display:none;background:#e3f2fd;padding:25px;border-radius:16px;margin-bottom:20px;">
-  <h2 style="text-align:center;color:#0d47a1;">📘 MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>
-  <h3 style="text-align:center;color:#0d47a1;">ACADEMICS OFFICE – RESULTS MANAGEMENT</h3>
-
-  <form id="acadForm" style="max-width:1000px;margin:auto;background:#ffffff;padding:20px;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
-    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px;">
-      <input id="name" placeholder="Student Name" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #90caf9;">
-      <input id="reg" placeholder="Registration Number" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #90caf9;">
-    </div>
-
-    <!-- Units Section (Minimum 3) -->
-    <div id="unitsContainer" style="margin-bottom:12px;">
-      <h4>Units</h4>
-      <!-- Unit Rows -->
-      <div class="unitRow" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
-        <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:8px; border-radius:6px; border:1px solid #90caf9;">
-        <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
-        <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+  <!-- ===================== ADMINISTRATION ===================== -->
+  <section id="ADMINISTRATION" style="display:none;background:#f0f4f8;padding:25px;border-radius:15px;margin-bottom:20px;">
+    <h3 style="text-align:center; color:#004d40; font-weight:bold;">📊 ADMINISTRATION FORM</h3>
+    <form id="adminForm" style="max-width:850px;margin:auto; background:white; padding:25px; border-radius:12px;">
+      <div style="display:flex; gap:15px; flex-wrap:wrap;">
+        <input type="text" id="admName" placeholder="Full Name" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+        <input type="text" id="admReg" placeholder="Registration Number" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
       </div>
-      <div class="unitRow" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
-        <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:8px; border-radius:6px; border:1px solid #90caf9;">
-        <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
-        <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+      <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:15px;">
+        <select id="admDept" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+          <option value="">Select Department</option>
+          <option value="ICT">ICT</option>
+          <option value="Business">Business</option>
+          <option value="Engineering">Engineering</option>
+        </select>
+        <select id="admGender" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
       </div>
-      <div class="unitRow" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
-        <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:8px; border-radius:6px; border:1px solid #90caf9;">
-        <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
-        <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+      <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:15px;">
+        <input type="text" id="admCourse" placeholder="Course Taken" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+        <input type="number" id="admYear" placeholder="Year of Admission" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
       </div>
-    </div>
-
-    <div style="text-align:center;">
-      <button type="submit" style="background:#2e7d32; color:white; padding:10px 20px; border:none; border-radius:6px; margin-right:8px;">💾 Save Record</button>
-      <button type="button" onclick="printRecords()" style="background:#0277bd; color:white; padding:10px 20px; border:none; border-radius:6px; margin-right:8px;">🖨 Print Records</button>
-      <button type="button" onclick="exportToWord()" style="background:#1b5e20; color:white; padding:10px 20px; border:none; border-radius:6px;">📥 Export Word</button>
-      <button type="button" onclick="logout()" style="background:#b71c1c; color:white; padding:10px 20px; border:none; border-radius:6px;">🚪 Logout</button>
-    </div>
-  </form>
-
-  <table id="recordsTable" style="width:100%; margin-top:20px; border-collapse:collapse;">
-    <thead>
-      <tr>
-        <th>Name</th><th>Reg No</th><th>Units</th><th>Total</th><th>GPA</th><th>Overall Grade</th><th>Action</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</section>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.7.0/docx.umd.js"></script>
-<script>
-let records = JSON.parse(localStorage.getItem("acadRecords")) || [];
-let editIndex = -1;
-
-const tbody = document.querySelector("#recordsTable tbody");
-const acadForm = document.getElementById("acadForm");
-
-// Calculate grade per unit
-function calculateUnit(cat, exam){
-  const total = Number(cat) + Number(exam);
-  const gpa = ((total/100)*4).toFixed(2);
-  const grade = total >= 80 ? "Mastery" :
-                total >= 65 ? "Proficient" :
-                total >= 50 ? "Competent" : "Not Competent";
-  return {total, gpa, grade};
-}
-
-// Calculate overall grade per student
-function calculateOverallGrade(units){
-  const avg = units.reduce((sum,u)=>sum+u.total,0) / units.length;
-  return avg >= 80 ? "Mastery" :
-         avg >= 65 ? "Proficient" :
-         avg >= 50 ? "Competent" : "Not Competent";
-}
-
-function render(){
-  tbody.innerHTML = "";
-  records.forEach((r,i)=>{
-    const unitsSummary = r.units.map(u=>`${u.name}: ${u.total} (${u.grade})`).join("; ");
-    const total = r.units.reduce((s,u)=>s+u.total,0);
-    const gpa = (r.units.reduce((s,u)=>s+Number(u.gpa),0)/r.units.length).toFixed(2);
-    const overallGrade = calculateOverallGrade(r.units);
-    tbody.innerHTML += `
-    <tr>
-      <td>${r.name}</td>
-      <td>${r.reg}</td>
-      <td>${unitsSummary}</td>
-      <td>${total}</td>
-      <td>${gpa}</td>
-      <td>${overallGrade}</td>
-      <td>
-        <button onclick="editRecord(${i})">Edit</button>
-        <button onclick="deleteRecord(${i})">Delete</button>
-      </td>
-    </tr>`;
-  });
-}
-
-acadForm.onsubmit = e => {
-  e.preventDefault();
-  const name = document.getElementById("name").value;
-  const reg = document.getElementById("reg").value;
-  const unitRows = document.querySelectorAll("#unitsContainer .unitRow");
-
-  let units = [];
-  unitRows.forEach(row=>{
-    const unitName = row.querySelector(".unitName").value;
-    const unitCAT = row.querySelector(".unitCAT").value;
-    const unitExam = row.querySelector(".unitExam").value;
-    const {total, gpa, grade} = calculateUnit(unitCAT, unitExam);
-    units.push({name:unitName, cat:unitCAT, exam:unitExam, total, gpa, grade});
-  });
-
-  const record = {name, reg, units};
-
-  if(editIndex === -1) records.push(record);
-  else records[editIndex] = record;
-
-  localStorage.setItem("acadRecords", JSON.stringify(records));
-  acadForm.reset();
-  editIndex = -1;
-  render();
-};
-
-function editRecord(i){
-  const r = records[i];
-  document.getElementById("name").value = r.name;
-  document.getElementById("reg").value = r.reg;
-  const unitRows = document.querySelectorAll("#unitsContainer .unitRow");
-  r.units.forEach((u,index)=>{
-    unitRows[index].querySelector(".unitName").value = u.name;
-    unitRows[index].querySelector(".unitCAT").value = u.cat;
-    unitRows[index].querySelector(".unitExam").value = u.exam;
-  });
-  editIndex = i;
-}
-
-function deleteRecord(i){
-  if(confirm("Delete this record?")){
-    records.splice(i,1);
-    localStorage.setItem("acadRecords", JSON.stringify(records));
-    render();
-  }
-}
-
-// PRINT FUNCTION
-function printRecords(){
-  if(records.length===0){ alert("No records to print"); return; }
-  const win = window.open("", "", "width=900,height=600");
-  win.document.write("<h2 style='text-align:center'>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>");
-  win.document.write("<h3 style='text-align:center'>ACADEMICS OFFICE – RESULTS MANAGEMENT</h3>");
-  win.document.write("<p style='text-align:center;'>Department: Academics | Date: "+new Date().toLocaleString()+"</p>");
-  win.document.write("<table border='1' cellpadding='6' cellspacing='0' style='border-collapse:collapse;width:100%;'>");
-  win.document.write("<tr><th>Name</th><th>Reg</th><th>Units</th><th>Total</th><th>GPA</th><th>Overall Grade</th></tr>");
-  records.forEach(r=>{
-    const unitsSummary = r.units.map(u=>`${u.name}: ${u.total} (${u.grade})`).join("; ");
-    const total = r.units.reduce((s,u)=>s+u.total,0);
-    const gpa = (r.units.reduce((s,u)=>s+Number(u.gpa),0)/r.units.length).toFixed(2);
-    const overallGrade = calculateOverallGrade(r.units);
-    win.document.write(`<tr>
-      <td>${r.name}</td>
-      <td>${r.reg}</td>
-      <td>${unitsSummary}</td>
-      <td>${total}</td>
-      <td>${gpa}</td>
-      <td>${overallGrade}</td>
-    </tr>`);
-  });
-  win.document.write("</table>");
-  win.document.close();
-  win.print();
-}
-
-// EXPORT WORD
-async function exportToWord(){
-  if(records.length===0){ alert("No data to export"); return; }
-  const { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType, AlignmentType } = docx;
-  const today = new Date().toLocaleString();
-
-  const rows = [new TableRow({
-    children:["Name","Reg","Units","Total","GPA","Overall Grade"]
-      .map(h=>new TableCell({children:[new Paragraph({text:h,bold:true})]}))
-  })];
-
-  records.forEach(r=>{
-    const unitsSummary = r.units.map(u=>`${u.name}: ${u.total} (${u.grade})`).join("; ");
-    const total = r.units.reduce((s,u)=>s+u.total,0);
-    const gpa = (r.units.reduce((s,u)=>s+Number(u.gpa),0)/r.units.length).toFixed(2);
-    const overallGrade = calculateOverallGrade(r.units);
-    rows.push(new TableRow({
-      children:[r.name,r.reg,unitsSummary,total,gpa,overallGrade]
-        .map(v=>new TableCell({children:[new Paragraph(String(v))]}))
-    }));
-  });
-
-  const doc = new Document({
-    sections:[{
-      children:[
-        new Paragraph({text:"MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE", bold:true, alignment:AlignmentType.CENTER}),
-        new Paragraph({text:"ACADEMICS OFFICE – RESULTS MANAGEMENT", bold:true, alignment:AlignmentType.CENTER}),
-        new Paragraph({text:"Department: Academics | Date: "+today, italics:true, alignment:AlignmentType.CENTER}),
-        new Table({rows, width:{size:100,type:WidthType.PERCENTAGE}})
-      ]
-    }]
-  });
-
-  const blob = await Packer.toBlob(doc);
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "Academics_Results_MSAMBWENI.docx";
-  link.click();
-}
-
-render();
-
-// ===== LOGIN SCRIPT =====
-const loginForm = document.getElementById("loginForm");
-loginForm.onsubmit = e => {
-  e.preventDefault();
-  const user = document.getElementById("username").value;
-  const pass = document.getElementById("password").value;
-  if(user==="admin" && pass==="ict123"){
-    localStorage.setItem("loggedIn", "true");
-    document.getElementById("LOGIN").style.display="none";
-    document.getElementById("ACADEMICS").style.display="block";
-  } else alert("Wrong credentials");
-};
-
-if(localStorage.getItem("loggedIn")==="true"){
-  document.getElementById("LOGIN").style.display="none";
-  document.getElementById("ACADEMICS").style.display="block";
-} else {
-  document.getElementById("LOGIN").style.display="block";
-  document.getElementById("ACADEMICS").style.display="none";
-}
-
-function logout(){
-  localStorage.removeItem("loggedIn");
-  location.reload();
-}
-</script>
-
-  <!-- ===================== STUDENTS ===================== -->
-  <section id="STUDENTS" style="display:none;background:#b2dfdb;padding:25px;border-radius:12px;margin-bottom:15px;">
-    <h3 style="text-align:center;">👨‍🎓 STUDENTS FORM</h3>
-    <form id="studentsForm" style="max-width:800px;margin:auto;background:#ffffff;padding:20px;border-radius:12px;">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <input type="text" id="stuName" placeholder="Full Name" required style="flex:1;">
-        <input type="text" id="stuReg" placeholder="Registration Number" required style="flex:1;">
+      <div style="margin-top:15px;">
+        <label style="font-weight:bold;">Upload Document (PDF, DOCX):</label>
+        <input type="file" id="admDoc" accept=".pdf,.doc,.docx" style="display:block; margin-top:5px;">
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
-        <input type="text" id="stuDept" placeholder="Department" required style="flex:1;">
-        <input type="number" id="stuYear" placeholder="Year of Admission" required style="flex:1;">
-      </div>
-      <div style="text-align:center; margin-top:15px;">
-        <button type="submit" style="background:#00796b; color:white;">Submit</button>
-        <button type="button" id="stuDownload" style="background:#004d40; color:white;">Download Word</button>
-        <button type="button" id="stuPrint" style="background:#00695c; color:white;">Print</button>
+      <div style="text-align:center; margin-top:20px;">
+        <button type="submit" style="padding:12px 25px; background:#004d40; color:white; border:none; border-radius:8px; cursor:pointer; margin-right:10px;">Submit</button>
+        <button type="button" id="admDownload" style="padding:12px 25px; background:#00796b; color:white; border:none; border-radius:8px; cursor:pointer; margin-right:10px;">Download Word</button>
+        <button type="button" id="admPrint" style="padding:12px 25px; background:#00695c; color:white; border:none; border-radius:8px; cursor:pointer;">Print</button>
       </div>
     </form>
-    <div id="studentsList" style="max-width:800px;margin:20px auto;"></div>
+    <div id="adminList" style="max-width:850px;margin:25px auto; display:flex; flex-direction:column; gap:12px;"></div>
+  </section>
+
+  <!-- ===================== ACADEMICS ===================== -->
+  <section id="ACADEMICS" style="display:none;background:#e3f2fd;padding:25px;border-radius:16px;margin-bottom:20px;">
+    <h2 style="text-align:center;color:#0d47a1;">📘 MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>
+    <h3 style="text-align:center;color:#0d47a1;">ACADEMICS OFFICE – RESULTS MANAGEMENT</h3>
+
+    <form id="acadForm" style="max-width:1000px;margin:auto;background:#ffffff;padding:20px;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px;">
+        <input id="name" placeholder="Student Name" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #90caf9;">
+        <input id="reg" placeholder="Registration Number" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #90caf9;">
+      </div>
+
+      <div id="unitsContainer" style="margin-bottom:12px;">
+        <h4>Units (Minimum 3)</h4>
+        <div class="unitRow" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+          <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+          <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+          <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+        </div>
+        <div class="unitRow" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+          <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+          <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+          <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+        </div>
+        <div class="unitRow" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+          <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+          <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+          <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+        </div>
+      </div>
+
+      <div style="text-align:center;">
+        <button type="submit" style="background:#2e7d32; color:white; padding:10px 20px; border:none; border-radius:6px; margin-right:8px;">💾 Save Record</button>
+        <button type="button" onclick="printRecords()" style="background:#0277bd; color:white; padding:10px 20px; border:none; border-radius:6px; margin-right:8px;">🖨 Print Records</button>
+        <button type="button" onclick="exportToWord()" style="background:#1b5e20; color:white; padding:10px 20px; border:none; border-radius:6px;">📥 Export Word</button>
+      </div>
+    </form>
+
+    <table id="recordsTable" style="width:100%; margin-top:20px; border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th>Name</th><th>Reg No</th><th>Units</th><th>Total</th><th>GPA</th><th>Overall Grade</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </section>
 </div>
 
-<!-- ===================== SCRIPT ===================== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.7.0/docx.umd.js"></script>
 <script>
 const ICT_USER = "ICTSAMSON";
 const ICT_PASS = "ICT@123";
 
+// ===== LOGIN =====
 function ictLogin(){
   const user = document.getElementById("ictUser").value.trim();
   const pass = document.getElementById("ictPass").value.trim();
   if(user === ICT_USER && pass === ICT_PASS){
+    localStorage.setItem("loggedInICT", "true");
     document.getElementById("ictLoginBox").style.display = "none";
     document.getElementById("ictPortal").style.display = "block";
     document.getElementById("ictError").innerText = "";
@@ -2071,24 +1712,87 @@ function ictLogin(){
   }
 }
 
+if(localStorage.getItem("loggedInICT") === "true"){
+  document.getElementById("ictLoginBox").style.display = "none";
+  document.getElementById("ictPortal").style.display = "block";
+} 
+
 function ictLogout(){
-  document.getElementById("ictPortal").style.display = "none";
-  document.getElementById("ictLoginBox").style.display = "block";
+  localStorage.removeItem("loggedInICT");
+  location.reload();
 }
 
 function showICTSection(id){
   ["ADMINISTRATION","ACADEMICS","STUDENTS"].forEach(sec => document.getElementById(sec).style.display = "none");
   document.getElementById(id).style.display = "block";
 }
+
+// ===== ADMINISTRATION FUNCTIONS =====
+let adminData = JSON.parse(localStorage.getItem("adminData")) || [];
+const adminForm = document.getElementById("adminForm");
+const adminList = document.getElementById("adminList");
+
+adminForm.addEventListener("submit", function(e){
+  e.preventDefault();
+  const student = {
+    name: document.getElementById("admName").value,
+    reg: document.getElementById("admReg").value,
+    dept: document.getElementById("admDept").value,
+    gender: document.getElementById("admGender").value,
+    course: document.getElementById("admCourse").value,
+    year: document.getElementById("admYear").value,
+    doc: document.getElementById("admDoc").files[0] ? document.getElementById("admDoc").files[0].name : "No File"
+  };
+  adminData.push(student);
+  localStorage.setItem("adminData", JSON.stringify(adminData));
+  adminForm.reset();
+  displayAdmin();
+});
+
+function displayAdmin(){
+  adminList.innerHTML = "";
+  adminData.forEach((s,i)=>{
+    const div = document.createElement("div");
+    div.style.cssText = "background:#e0f7fa; padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; box-shadow:0 3px 6px rgba(0,0,0,0.1)";
+    div.innerHTML = `
+      <div>
+        <strong>${i+1}. ${s.name}</strong> | ${s.reg} | ${s.dept} | ${s.gender} | ${s.course} | ${s.year} <br>
+        Document: <em>${s.doc}</em>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:5px;">
+        <button onclick="editAdmin(${i})" style="padding:5px 10px; background:#ffc107; color:white; border:none; border-radius:5px; cursor:pointer;">Edit</button>
+        <button onclick="deleteAdmin(${i})" style="padding:5px 10px; background:#f44336; color:white; border:none; border-radius:5px; cursor:pointer;">Delete</button>
+      </div>
+    `;
+    adminList.appendChild(div);
+  });
+}
+
+function editAdmin(i){
+  const s = adminData[i];
+  document.getElementById("admName").value = s.name;
+  document.getElementById("admReg").value = s.reg;
+  document.getElementById("admDept").value = s.dept;
+  document.getElementById("admGender").value = s.gender;
+  document.getElementById("admCourse").value = s.course;
+  document.getElementById("admYear").value = s.year;
+  adminData.splice(i,1);
+  localStorage.setItem("adminData", JSON.stringify(adminData));
+  displayAdmin();
+}
+
+function deleteAdmin(i){
+  if(confirm("Are you sure you want to delete this entry?")){
+    adminData.splice(i,1);
+    localStorage.setItem("adminData", JSON.stringify(adminData));
+    displayAdmin();
+  }
+}
+
+displayAdmin();
 </script>
 
 
-</body>
-</html>
-
-
-
- 
  
 
  <!-- Footer -->
@@ -2254,6 +1958,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
