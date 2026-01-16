@@ -1267,7 +1267,6 @@ function renderCourseChart(){
   <img src="elct.jpg" alt="School Campus" class="hero-img">
 </section>
 
-
 <html>
 <head>
 <title>Sports Portal - Official Document</title>
@@ -1374,13 +1373,13 @@ button:hover{background:#14532d;}
 .controls{display:flex;gap:10px;margin-top:20px;}
 .controls button{flex:1;}
 
-/* Print & Word Only Official Document */
+/* Print Only Official Document */
 @media print{
   body *{visibility:hidden;}
   #document, #document *{visibility:visible;}
   #document{position:absolute;left:0;top:0;width:100%;margin:0;padding:0;}
   #document table{page-break-inside:auto;}
-  .edit-btn,.delete-btn{display:none !important;}
+  .edit-btn,.delete-btn{display:none;}
 }
 </style>
 </head>
@@ -1517,12 +1516,10 @@ function load(){
   let q=searchInput.value.toLowerCase();
   let data=JSON.parse(localStorage.getItem("sports"))||[];
   rows.innerHTML="";
-  let count=0;
   data.forEach((d,i)=>{
     if(d.name.toLowerCase().includes(q) || d.reg.toLowerCase().includes(q) || d.sport.toLowerCase().includes(q)){
-      count++;
       rows.innerHTML+=`<tr>
-        <td>${count}</td>
+        <td>${i+1}</td>
         <td>${d.name}</td>
         <td>${d.reg}</td>
         <td>${d.sport}</td>
@@ -1563,16 +1560,19 @@ function printDoc(){
 }
 
 function downloadWord(){
-  let style = `<style>
+  // Clone document and remove buttons
+  let docClone=document.getElementById("document").cloneNode(true);
+  docClone.querySelectorAll('.edit-btn, .delete-btn').forEach(b=>b.remove());
+
+  let style=`<style>
     body{font-family:Segoe UI,sans-serif;}
     table{border-collapse:collapse;width:100%;}
     th,td{border:1px solid #000;padding:10px;text-align:left;}
     th{background:#1e40af;color:white;}
     tr:nth-child(even){background:#f3f4f6;}
-    .edit-btn,.delete-btn{display:none !important;}
   </style>`;
-  let content=document.getElementById("document").innerHTML;
-  let blob=new Blob(['<html><head>'+style+'</head><body>'+content+'</body></html>'], {type:'application/msword'});
+
+  let blob=new Blob(['<html><head>'+style+'</head><body>'+docClone.innerHTML+'</body></html>'], {type:'application/msword'});
   let a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
   a.download="Sports_Registration_MTVTC.doc";
@@ -1589,6 +1589,7 @@ if(localStorage.getItem("logged")==="yes"){
 
 </body>
 </html>
+
 
  
  <html>
@@ -2588,6 +2589,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
