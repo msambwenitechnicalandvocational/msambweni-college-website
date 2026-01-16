@@ -1275,19 +1275,20 @@ function renderCourseChart(){
 
 
 
- <html>
+<html>
 <head>
-<title>Sports Portal</title>
-
+<title>Sports Portal - Official Document</title>
 <style>
 body{
   font-family:"Segoe UI",sans-serif;
   background:#eef2f7;
   padding:20px;
+  margin:0;
 }
 
+/* Container Box */
 .box{
-  max-width:950px;
+  max-width:1000px;
   margin:auto;
   background:white;
   padding:30px;
@@ -1295,21 +1296,67 @@ body{
   box-shadow:0 8px 25px rgba(0,0,0,0.15);
 }
 
-.logo{
-  text-align:center;
+/* Header */
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  margin-bottom:20px;
 }
-.logo img{
+.header img{
+  position:absolute;
+  left:0;
   width:90px;
 }
-
-.school{
+.header .school-name{
   font-weight:800;
-  font-size:1.4rem;
+  font-size:1.8rem;
   text-align:center;
 }
 
-h3{text-align:center;}
+/* Title */
+.title{
+  text-align:center;
+  font-weight:700;
+  font-size:1.4rem;
+  margin-bottom:20px;
+  text-decoration:underline;
+}
 
+/* Table Styles */
+#officialTable{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+  font-size:1rem;
+}
+#officialTable th, #officialTable td{
+  border:1px solid #000;
+  padding:10px;
+  text-align:left;
+}
+#officialTable th{
+  background:#1e40af;
+  color:white;
+}
+#officialTable tr:nth-child(even){background:#f3f4f6;}
+
+/* Signature Section */
+.signature{
+  margin-top:50px;
+  display:flex;
+  justify-content:space-between;
+}
+.sign-line{
+  margin-top:60px;
+  border-top:1px solid #000;
+  width:300px;
+  text-align:center;
+  font-weight:600;
+}
+
+/* Inputs and Buttons */
 input,select,button{
   width:100%;
   padding:10px;
@@ -1317,102 +1364,34 @@ input,select,button{
   border-radius:8px;
   border:1px solid #ccc;
 }
-
 button{
-  background:#166534;
-  color:white;
-  font-weight:600;
-  cursor:pointer;
+  background:#166534;color:white;font-weight:600;cursor:pointer;
 }
 button:hover{background:#14532d;}
-
 .logout{background:#b91c1c;}
-.edit{background:#1e40af;}
-.delete{background:#b91c1c;}
-.lock{background:#7c2d12;}
-
-.hidden{display:none;}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  margin-top:15px;
-}
-th,td{
-  border:1px solid #ccc;
-  padding:8px;
-}
-th{background:#1e40af;color:white;}
-
-.controls{
-  display:flex;
-  gap:10px;
-  margin-top:20px;
-}
-.controls button{flex:1;}
-
-.signature{
-  margin-top:40px;
-  display:flex;
-  justify-content:space-between;
-}
-.sign-line{
-  margin-top:40px;
-  border-top:1px solid #000;
-  width:260px;
-  text-align:center;
-  font-weight:600;
-}
-
-.search{
-  margin-top:10px;
-  background:#f1f5f9;
-  padding:10px;
-  border-radius:10px;
-}
-<html>
-<head>
-<title>Sports Portal</title>
-<style>
-body{
-  font-family:"Segoe UI",sans-serif;
-  background:#eef2f7;
-  padding:20px;
-}
-.box{
-  max-width:950px;
-  margin:auto;
-  background:white;
-  padding:30px;
-  border-radius:15px;
-  box-shadow:0 8px 25px rgba(0,0,0,0.15);
-}
-.logo{text-align:center;}
-.logo img{width:90px;}
-.school{font-weight:800;font-size:1.4rem;text-align:center;}
-h3{text-align:center;}
-input,select,button{width:100%;padding:10px;margin:6px 0;border-radius:8px;border:1px solid #ccc;}
-button{background:#166534;color:white;font-weight:600;cursor:pointer;}
-button:hover{background:#14532d;}
-.logout{background:#b91c1c;}
-.edit{background:#1e40af;}
-.delete{background:#b91c1c;}
 .lock{background:#7c2d12;}
 .hidden{display:none;}
-table{width:100%;border-collapse:collapse;margin-top:15px;}
-th,td{border:1px solid #ccc;padding:8px;}
-th{background:#1e40af;color:white;}
+
+/* Search Box */
+.search{margin-top:10px;background:#f1f5f9;padding:10px;border-radius:10px;}
+
+/* Controls */
 .controls{display:flex;gap:10px;margin-top:20px;}
 .controls button{flex:1;}
-.signature{margin-top:40px;display:flex;justify-content:space-between;}
-.sign-line{margin-top:40px;border-top:1px solid #000;width:260px;text-align:center;font-weight:600;}
-.search{margin-top:10px;background:#f1f5f9;padding:10px;border-radius:10px;}
-.locked td{background:#f3f4f6;}
+
+/* Print Only Official Document */
+@media print{
+  body *{visibility:hidden;}
+  #document, #document *{visibility:visible;}
+  #document{position:absolute;left:0;top:0;width:100%;margin:0;padding:0;}
+  #document table{page-break-inside:auto;}
+}
 </style>
 </head>
 
 <body>
 
+<!-- LOGIN -->
 <div id="login" class="box">
   <h2>Sports Officer Login</h2>
   <input id="u" placeholder="Username">
@@ -1421,28 +1400,49 @@ th{background:#1e40af;color:white;}
   <p id="err" style="color:red;text-align:center;"></p>
 </div>
 
+<!-- PORTAL -->
 <div id="portal" class="box hidden">
 
-<div id="document">
+  <!-- OFFICIAL DOCUMENT -->
+  <div id="document">
 
-  <div class="logo">
-    <img src="logo.png" alt="College Logo">
+    <div class="header">
+      <img src="logo.png" alt="College Logo">
+      <div class="school-name">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</div>
+    </div>
+
+    <div class="title">SPORTS DEPARTMENT – STUDENT REGISTRATION</div>
+
+    <!-- Vision & Mission Table -->
+    <table id="officialTable">
+      <tr><th colspan="2">Vision</th></tr>
+      <tr><td colspan="2">To nurture disciplined, talented and competitive students through sports excellence.</td></tr>
+      <tr><th colspan="2">Mission</th></tr>
+      <tr><td colspan="2">To promote teamwork, health, leadership and professionalism through inclusive sporting activities.</td></tr>
+      <tr><th>Sports Officer</th><td id="officer"></td></tr>
+    </table>
+
+    <!-- Student Registration Table -->
+    <table id="officialTable">
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Registration Number</th>
+        <th>Sport</th>
+      </tr>
+      <tbody id="rows"></tbody>
+    </table>
+
+    <div class="signature">
+      <div class="sign-line">Sports Officer Signature</div>
+      <div class="sign-line">Date</div>
+    </div>
   </div>
 
-  <div class="school">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</div>
-  <h3>SPORTS DEPARTMENT – STUDENT REGISTRATION</h3>
-
-  <p><strong>Vision:</strong> To nurture disciplined, talented and competitive students through sports excellence.</p>
-  <p><strong>Mission:</strong> To promote teamwork, health, leadership and professionalism through inclusive sporting activities.</p>
-
-  <p><strong>Sports Officer:</strong> <span id="officer"></span></p>
-
-  <hr>
-
+  <!-- Inputs for Adding Students -->
   <div class="search">
     <input id="search" placeholder="Search by name, reg or sport" onkeyup="load()">
   </div>
-
   <input id="name" placeholder="Student Name">
   <input id="reg" placeholder="Registration Number">
   <select id="sport">
@@ -1453,61 +1453,41 @@ th{background:#1e40af;color:white;}
     <option>Netball</option>
     <option>Athletics</option>
   </select>
-
   <button onclick="save()">Save / Update Student</button>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Reg No</th>
-        <th>Sport</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="rows"></tbody>
-  </table>
-
-  <div class="signature">
-    <div class="sign-line">Sports Officer Signature</div>
-    <div class="sign-line">Date</div>
+  <!-- Controls -->
+  <div class="controls">
+    <button onclick="printDoc()">Print</button>
+    <button onclick="downloadWord()">Download Word</button>
+    <button class="lock" onclick="toggleLock()">Lock / Unlock Editing</button>
+    <button class="logout" onclick="logout()">Logout</button>
   </div>
-
-</div>
-
-<div class="controls">
-  <button onclick="printDoc()">Print</button>
-  <button onclick="downloadWord()">Download Word</button>
-  <button class="lock" onclick="toggleLock()">Lock / Unlock Editing</button>
-  <button class="logout" onclick="logout()">Logout</button>
-</div>
-
 </div>
 
 <script>
 const USER="sports";
 const PASS="12345";
-const OFFICER="Mr. Hassan Ali";
+const OFFICER="Mr. Lekati";
 let editIndex=null;
 let locked=false;
 
-// Get elements
-const loginBox = document.getElementById("login");
-const portal = document.getElementById("portal");
-const u = document.getElementById("u");
-const p = document.getElementById("p");
-const err = document.getElementById("err");
-const nameInput = document.getElementById("name");
-const regInput = document.getElementById("reg");
-const sportSelect = document.getElementById("sport");
-const rows = document.getElementById("rows");
-const searchInput = document.getElementById("search");
-const officer = document.getElementById("officer");
+// Elements
+const loginBox=document.getElementById("login");
+const portal=document.getElementById("portal");
+const u=document.getElementById("u");
+const p=document.getElementById("p");
+const err=document.getElementById("err");
+const nameInput=document.getElementById("name");
+const regInput=document.getElementById("reg");
+const sportSelect=document.getElementById("sport");
+const rows=document.getElementById("rows");
+const searchInput=document.getElementById("search");
+const officer=document.getElementById("officer");
 
-officer.textContent = OFFICER;
+officer.textContent=OFFICER;
 
 function login(){
-  if(u.value === USER && p.value === PASS){
+  if(u.value===USER && p.value===PASS){
     localStorage.setItem("logged","yes");
     loginBox.classList.add("hidden");
     portal.classList.remove("hidden");
@@ -1524,60 +1504,38 @@ function logout(){
 
 function save(){
   if(locked){alert("Editing locked"); return;}
-  if(!nameInput.value || !regInput.value || !sportSelect.value){alert("Fill all fields"); return;}
-  let data = JSON.parse(localStorage.getItem("sports")) || [];
-  if(editIndex !== null){
-    data[editIndex] = {name:nameInput.value, reg:regInput.value, sport:sportSelect.value};
-    editIndex = null;
+  if(!nameInput.value||!regInput.value||!sportSelect.value){alert("Fill all fields"); return;}
+  let data=JSON.parse(localStorage.getItem("sports"))||[];
+  if(editIndex!==null){
+    data[editIndex]={name:nameInput.value, reg:regInput.value, sport:sportSelect.value};
+    editIndex=null;
   }else{
     data.push({name:nameInput.value, reg:regInput.value, sport:sportSelect.value});
   }
   localStorage.setItem("sports", JSON.stringify(data));
-  nameInput.value = regInput.value = ""; sportSelect.value = "";
+  nameInput.value=regInput.value=""; sportSelect.value="";
   load();
 }
 
 function load(){
-  let q = searchInput.value.toLowerCase();
-  let data = JSON.parse(localStorage.getItem("sports")) || [];
-  rows.innerHTML = "";
+  let q=searchInput.value.toLowerCase();
+  let data=JSON.parse(localStorage.getItem("sports"))||[];
+  rows.innerHTML="";
   data.forEach((d,i)=>{
     if(d.name.toLowerCase().includes(q) || d.reg.toLowerCase().includes(q) || d.sport.toLowerCase().includes(q)){
-      rows.innerHTML += `
-      <tr class="${locked ? 'locked' : ''}">
+      rows.innerHTML+=`<tr>
+        <td>${i+1}</td>
         <td>${d.name}</td>
         <td>${d.reg}</td>
         <td>${d.sport}</td>
-        <td>
-          <button class="edit" onclick="edit(${i})" ${locked?'disabled':''}>Edit</button>
-          <button class="delete" onclick="del(${i})" ${locked?'disabled':''}>Delete</button>
-        </td>
       </tr>`;
     }
   });
 }
 
-function edit(i){
-  if(locked){alert("Editing locked"); return;}
-  let d = JSON.parse(localStorage.getItem("sports"))[i];
-  nameInput.value = d.name;
-  regInput.value = d.reg;
-  sportSelect.value = d.sport;
-  editIndex = i;
-}
-
-function del(i){
-  if(locked){alert("Editing locked"); return;}
-  let data = JSON.parse(localStorage.getItem("sports"));
-  data.splice(i,1);
-  localStorage.setItem("sports", JSON.stringify(data));
-  load();
-}
-
 function toggleLock(){
-  locked = !locked;
-  load();
-  alert(locked ? "Editing Locked" : "Editing Unlocked");
+  locked=!locked;
+  alert(locked?"Editing Locked":"Editing Unlocked");
 }
 
 function printDoc(){
@@ -1585,16 +1543,24 @@ function printDoc(){
 }
 
 function downloadWord(){
-  let content = document.getElementById("document").innerHTML;
-  let blob = new Blob(['<html><body>'+content+'</body></html>'], {type:'application/msword'});
-  let a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "Sports_Registration_MTVTC.doc";
+  // Add style for Word export to preserve tables and fonts
+  let style = `<style>
+    body{font-family:Segoe UI,sans-serif;}
+    table{border-collapse:collapse;width:100%;}
+    th,td{border:1px solid #000;padding:10px;text-align:left;}
+    th{background:#1e40af;color:white;}
+    tr:nth-child(even){background:#f3f4f6;}
+  </style>`;
+  let content=document.getElementById("document").innerHTML;
+  let blob=new Blob(['<html><head>'+style+'</head><body>'+content+'</body></html>'], {type:'application/msword'});
+  let a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="Sports_Registration_MTVTC.doc";
   a.click();
 }
 
-// Auto-login if previously logged in
-if(localStorage.getItem("logged") === "yes"){
+// Auto-login
+if(localStorage.getItem("logged")==="yes"){
   loginBox.classList.add("hidden");
   portal.classList.remove("hidden");
   load();
@@ -1603,7 +1569,6 @@ if(localStorage.getItem("logged") === "yes"){
 
 </body>
 </html>
-
 
  
  <html>
@@ -2603,6 +2568,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
