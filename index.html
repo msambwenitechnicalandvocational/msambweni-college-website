@@ -1779,46 +1779,57 @@ displayAdmin();
 
 
   
- <section id="ACADEMICS" style="display:block;background:#e3f2fd;padding:25px;border-radius:16px;margin-bottom:20px;">
+ <!-- ===================== ACADEMICS ===================== -->
+<section id="ACADEMICS" style="display:none;background:#e3f2fd;padding:25px;border-radius:16px;margin-bottom:20px;">
   <h2 style="text-align:center;color:#0d47a1;">📘 MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>
   <h3 style="text-align:center;color:#0d47a1;">ACADEMICS OFFICE – RESULTS MANAGEMENT</h3>
 
-  <form id="acadForm" style="max-width:1000px;margin:auto;background:#ffffff;padding:25px;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+  <form id="acadForm" style="max-width:1000px;margin:auto;background:#ffffff;padding:20px;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,0.1);">
     <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px;">
-      <input id="name" placeholder="Student Name" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #90caf9;">
-      <input id="reg" placeholder="Registration Number" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #90caf9;">
+      <input id="name" placeholder="Student Name" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #90caf9;">
+      <input id="reg" placeholder="Registration Number" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #90caf9;">
     </div>
 
-    <div id="unitsContainer" style="margin-bottom:20px;">
-      <h4>Units (Minimum 3)</h4>
-      <div class="unitRow" style="display:flex; gap:10px; margin-bottom:8px;">
-        <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:10px; border-radius:8px; border:1px solid #90caf9;">
-        <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:10px; border-radius:8px; border:1px solid #90caf9;">
-        <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:10px; border-radius:8px; border:1px solid #90caf9;">
+    <!-- Units Section (3 mandatory units) -->
+    <div id="unitsContainer" style="margin-bottom:12px;">
+      <h4>Units</h4>
+      <!-- Unit 1 -->
+      <div class="unitRow" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+        <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+        <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+        <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
       </div>
-      <div class="unitRow" style="display:flex; gap:10px; margin-bottom:8px;">
-        <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:10px; border-radius:8px; border:1px solid #90caf9;">
-        <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:10px; border-radius:8px; border:1px solid #90caf9;">
-        <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:10px; border-radius:8px; border:1px solid #90caf9;">
+      <!-- Unit 2 -->
+      <div class="unitRow" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+        <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+        <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+        <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
       </div>
-      <div class="unitRow" style="display:flex; gap:10px; margin-bottom:8px;">
-        <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:10px; border-radius:8px; border:1px solid #90caf9;">
-        <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:10px; border-radius:8px; border:1px solid #90caf9;">
-        <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:10px; border-radius:8px; border:1px solid #90caf9;">
+      <!-- Unit 3 -->
+      <div class="unitRow" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+        <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+        <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
+        <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
       </div>
     </div>
 
     <div style="text-align:center;">
-      <button type="submit" style="background:#2e7d32; color:white; padding:12px 25px; border:none; border-radius:8px; margin-right:8px;">💾 Save Record</button>
-      <button type="button" id="printBtn" style="background:#0277bd; color:white; padding:12px 25px; border:none; border-radius:8px; margin-right:8px;">🖨 Print Records</button>
-      <button type="button" id="wordBtn" style="background:#1b5e20; color:white; padding:12px 25px; border:none; border-radius:8px;">📥 Export Word</button>
+      <button type="submit" style="background:#2e7d32; color:white; padding:10px 20px; border:none; border-radius:6px; margin-right:8px;">💾 Save Record</button>
+      <button type="button" onclick="printRecords()" style="background:#0277bd; color:white; padding:10px 20px; border:none; border-radius:6px; margin-right:8px;">🖨 Print Records</button>
+      <button type="button" onclick="exportToWord()" style="background:#1b5e20; color:white; padding:10px 20px; border:none; border-radius:6px;">📥 Export Word</button>
     </div>
   </form>
 
-  <table id="recordsTable" style="width:100%; margin-top:20px; border-collapse:collapse; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+  <table id="recordsTable" style="width:100%; margin-top:20px; border-collapse:collapse;">
     <thead>
-      <tr style="background:#0d47a1; color:white;">
-        <th>Name</th><th>Reg No</th><th>Units</th><th>Total</th><th>GPA</th><th>Grade</th><th>Action</th>
+      <tr>
+        <th>Name</th>
+        <th>Reg No</th>
+        <th>Units</th>
+        <th>Total</th>
+        <th>Average Score</th>
+        <th>Final Grade</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -1827,40 +1838,46 @@ displayAdmin();
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.7.0/docx.umd.js"></script>
 <script>
-const { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType, AlignmentType } = docx;
-
 let records = JSON.parse(localStorage.getItem("acadRecords")) || [];
 let editIndex = -1;
-
 const tbody = document.querySelector("#recordsTable tbody");
 const acadForm = document.getElementById("acadForm");
 
+// Calculate unit total, GPA, grade
 function calculateUnit(cat, exam){
   const total = Number(cat) + Number(exam);
   const gpa = ((total/100)*4).toFixed(2);
-  let grade = "";
-  if(total >= 80) grade = "Mastery";
-  else if(total >= 65) grade = "Proficient";
-  else if(total >= 50) grade = "Competent";
-  else grade = "Not Competent";
-  return {total,gpa,grade};
+  const grade = total >= 80 ? "Mastery" :
+                total >= 65 ? "Proficient" :
+                total >= 50 ? "Competent" : "Not Competent";
+  return {total, gpa, grade};
 }
 
+// Calculate overall student grade
+function calculateOverall(units){
+  const totalScore = units.reduce((sum,u)=>sum+u.total,0);
+  const average = totalScore / units.length;
+  let finalGrade = "";
+  if(average>=80) finalGrade = "Mastery";
+  else if(average>=65) finalGrade = "Proficient";
+  else if(average>=50) finalGrade = "Competent";
+  else finalGrade = "Not Competent";
+  return {totalScore, average, finalGrade};
+}
+
+// Render table
 function render(){
   tbody.innerHTML = "";
   records.forEach((r,i)=>{
     const unitsSummary = r.units.map(u=>`${u.name}: ${u.total} (${u.grade})`).join("; ");
-    const total = r.units.reduce((s,u)=>s+u.total,0);
-    const gpa = (r.units.reduce((s,u)=>s+Number(u.gpa),0)/r.units.length).toFixed(2);
-    const grades = r.units.map(u=>u.grade).join(", ");
     tbody.innerHTML += `
       <tr>
         <td>${r.name}</td>
         <td>${r.reg}</td>
         <td>${unitsSummary}</td>
-        <td>${total}</td>
-        <td>${gpa}</td>
-        <td>${grades}</td>
+        <td>${r.totalScore}</td>
+        <td>${r.average.toFixed(2)}</td>
+        <td>${r.finalGrade}</td>
         <td>
           <button onclick="editRecord(${i})">Edit</button>
           <button onclick="deleteRecord(${i})">Delete</button>
@@ -1869,6 +1886,7 @@ function render(){
   });
 }
 
+// Save / update record
 acadForm.addEventListener("submit", e=>{
   e.preventDefault();
   const name = document.getElementById("name").value;
@@ -1880,14 +1898,15 @@ acadForm.addEventListener("submit", e=>{
     const unitName = row.querySelector(".unitName").value;
     const unitCAT = row.querySelector(".unitCAT").value;
     const unitExam = row.querySelector(".unitExam").value;
-    const {total,gpa,grade} = calculateUnit(unitCAT,unitExam);
-    units.push({name:unitName,cat:unitCAT,exam:unitExam,total,gpa,grade});
+    const {total, gpa, grade} = calculateUnit(unitCAT, unitExam);
+    units.push({name:unitName, cat:unitCAT, exam:unitExam, total, gpa, grade});
   });
 
-  const record = {name,reg,units};
+  const overall = calculateOverall(units);
+  const record = {...{name, reg, units}, ...overall};
 
   if(editIndex===-1) records.push(record);
-  else records[editIndex] = record;
+  else records[editIndex]=record;
 
   localStorage.setItem("acadRecords", JSON.stringify(records));
   acadForm.reset();
@@ -1895,7 +1914,8 @@ acadForm.addEventListener("submit", e=>{
   render();
 });
 
-window.editRecord = i=>{
+// Edit / Delete
+function editRecord(i){
   const r = records[i];
   document.getElementById("name").value = r.name;
   document.getElementById("reg").value = r.reg;
@@ -1908,7 +1928,7 @@ window.editRecord = i=>{
   editIndex = i;
 }
 
-window.deleteRecord = i=>{
+function deleteRecord(i){
   if(confirm("Delete this record?")){
     records.splice(i,1);
     localStorage.setItem("acadRecords", JSON.stringify(records));
@@ -1916,45 +1936,48 @@ window.deleteRecord = i=>{
   }
 }
 
-document.getElementById("printBtn").addEventListener("click", ()=>{
+// Print
+function printRecords(){
   if(records.length===0){ alert("No records to print"); return; }
-  const win = window.open("","Print","width=900,height=600");
+  const win = window.open("","", "width=900,height=600");
   win.document.write("<h2 style='text-align:center'>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>");
   win.document.write("<h3 style='text-align:center'>ACADEMICS OFFICE – RESULTS MANAGEMENT</h3>");
   win.document.write("<p style='text-align:center;'>Department: Academics | Date: "+new Date().toLocaleString()+"</p>");
   win.document.write("<table border='1' cellpadding='6' cellspacing='0' style='border-collapse:collapse;width:100%;'>");
-  win.document.write("<tr><th>Name</th><th>Reg</th><th>Units</th><th>Total</th><th>GPA</th><th>Grade</th></tr>");
+  win.document.write("<tr><th>Name</th><th>Reg</th><th>Units</th><th>Total</th><th>Average</th><th>Final Grade</th></tr>");
   records.forEach(r=>{
     const unitsSummary = r.units.map(u=>`${u.name}: ${u.total} (${u.grade})`).join("; ");
-    const total = r.units.reduce((s,u)=>s+u.total,0);
-    const gpa = (r.units.reduce((s,u)=>s+Number(u.gpa),0)/r.units.length).toFixed(2);
-    const grades = r.units.map(u=>u.grade).join(", ");
     win.document.write(`<tr>
       <td>${r.name}</td>
       <td>${r.reg}</td>
       <td>${unitsSummary}</td>
-      <td>${total}</td>
-      <td>${gpa}</td>
-      <td>${grades}</td>
+      <td>${r.totalScore}</td>
+      <td>${r.average.toFixed(2)}</td>
+      <td>${r.finalGrade}</td>
     </tr>`);
   });
   win.document.write("</table>");
   win.document.close();
   win.print();
-});
+}
 
-document.getElementById("wordBtn").addEventListener("click", async ()=>{
-  if(records.length===0){ alert("No data to export"); return; }
+// Export to Word
+async function exportToWord(){
+  if(records.length===0){ alert("No records to export"); return; }
+  const { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType, AlignmentType } = docx;
   const today = new Date().toLocaleString();
 
-  const rows = [new TableRow({children:["Name","Reg","Units","Total","GPA","Grade"].map(h=>new TableCell({children:[new Paragraph({text:h,bold:true})]}))})];
+  const rows = [new TableRow({
+    children:["Name","Reg","Units","Total","Average","Final Grade"]
+      .map(h=>new TableCell({children:[new Paragraph({text:h,bold:true})]}))
+  })];
 
   records.forEach(r=>{
     const unitsSummary = r.units.map(u=>`${u.name}: ${u.total} (${u.grade})`).join("; ");
-    const total = r.units.reduce((s,u)=>s+u.total,0);
-    const gpa = (r.units.reduce((s,u)=>s+Number(u.gpa),0)/r.units.length).toFixed(2);
-    const grades = r.units.map(u=>u.grade).join(", ");
-    rows.push(new TableRow({children:[r.name,r.reg,unitsSummary,total,gpa,grades].map(v=>new TableCell({children:[new Paragraph(String(v))]}))}));
+    rows.push(new TableRow({
+      children:[r.name,r.reg,unitsSummary,r.totalScore,r.average.toFixed(2),r.finalGrade]
+        .map(v=>new TableCell({children:[new Paragraph(String(v))]}))
+    }));
   });
 
   const doc = new Document({
@@ -1973,10 +1996,11 @@ document.getElementById("wordBtn").addEventListener("click", async ()=>{
   link.href = URL.createObjectURL(blob);
   link.download = "Academics_Results_MSAMBWENI.docx";
   link.click();
-});
+}
 
 render();
 </script>
+
 
 
   <!-- ===================== STUDENTS ===================== -->
@@ -2201,6 +2225,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
