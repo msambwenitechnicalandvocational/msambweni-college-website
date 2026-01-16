@@ -1779,7 +1779,17 @@ displayAdmin();
 
 
   
- <!-- ===================== ACADEMICS ===================== -->
+ <!-- ================= LOGIN ================= -->
+<section id="LOGIN">
+  <h2>ICT Portal Login</h2>
+  <form id="loginForm">
+    <input id="username" placeholder="Username" required>
+    <input id="password" placeholder="Password" type="password" required>
+    <button type="submit">Login</button>
+  </form>
+</section>
+
+<!-- ===================== ACADEMICS ===================== -->
 <section id="ACADEMICS" style="display:none;background:#e3f2fd;padding:25px;border-radius:16px;margin-bottom:20px;">
   <h2 style="text-align:center;color:#0d47a1;">📘 MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>
   <h3 style="text-align:center;color:#0d47a1;">ACADEMICS OFFICE – RESULTS MANAGEMENT</h3>
@@ -1790,22 +1800,20 @@ displayAdmin();
       <input id="reg" placeholder="Registration Number" required style="flex:1; padding:10px; border-radius:6px; border:1px solid #90caf9;">
     </div>
 
-    <!-- Units Section (3 mandatory units) -->
+    <!-- Units Section (Minimum 3) -->
     <div id="unitsContainer" style="margin-bottom:12px;">
       <h4>Units</h4>
-      <!-- Unit 1 -->
+      <!-- Unit Rows -->
       <div class="unitRow" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
         <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:8px; border-radius:6px; border:1px solid #90caf9;">
         <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
         <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
       </div>
-      <!-- Unit 2 -->
       <div class="unitRow" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
         <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:8px; border-radius:6px; border:1px solid #90caf9;">
         <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
         <input class="unitExam" type="number" placeholder="Exam (70)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
       </div>
-      <!-- Unit 3 -->
       <div class="unitRow" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
         <input class="unitName" placeholder="Unit Name" required style="flex:2; padding:8px; border-radius:6px; border:1px solid #90caf9;">
         <input class="unitCAT" type="number" placeholder="CAT (30)" required style="flex:1; padding:8px; border-radius:6px; border:1px solid #90caf9;">
@@ -1817,19 +1825,14 @@ displayAdmin();
       <button type="submit" style="background:#2e7d32; color:white; padding:10px 20px; border:none; border-radius:6px; margin-right:8px;">💾 Save Record</button>
       <button type="button" onclick="printRecords()" style="background:#0277bd; color:white; padding:10px 20px; border:none; border-radius:6px; margin-right:8px;">🖨 Print Records</button>
       <button type="button" onclick="exportToWord()" style="background:#1b5e20; color:white; padding:10px 20px; border:none; border-radius:6px;">📥 Export Word</button>
+      <button type="button" onclick="logout()" style="background:#b71c1c; color:white; padding:10px 20px; border:none; border-radius:6px;">🚪 Logout</button>
     </div>
   </form>
 
   <table id="recordsTable" style="width:100%; margin-top:20px; border-collapse:collapse;">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Reg No</th>
-        <th>Units</th>
-        <th>Total</th>
-        <th>Average Score</th>
-        <th>Final Grade</th>
-        <th>Action</th>
+        <th>Name</th><th>Reg No</th><th>Units</th><th>Total</th><th>GPA</th><th>Overall Grade</th><th>Action</th>
       </tr>
     </thead>
     <tbody></tbody>
@@ -1840,10 +1843,11 @@ displayAdmin();
 <script>
 let records = JSON.parse(localStorage.getItem("acadRecords")) || [];
 let editIndex = -1;
+
 const tbody = document.querySelector("#recordsTable tbody");
 const acadForm = document.getElementById("acadForm");
 
-// Calculate unit total, GPA, grade
+// Calculate grade per unit
 function calculateUnit(cat, exam){
   const total = Number(cat) + Number(exam);
   const gpa = ((total/100)*4).toFixed(2);
@@ -1853,41 +1857,38 @@ function calculateUnit(cat, exam){
   return {total, gpa, grade};
 }
 
-// Calculate overall student grade
-function calculateOverall(units){
-  const totalScore = units.reduce((sum,u)=>sum+u.total,0);
-  const average = totalScore / units.length;
-  let finalGrade = "";
-  if(average>=80) finalGrade = "Mastery";
-  else if(average>=65) finalGrade = "Proficient";
-  else if(average>=50) finalGrade = "Competent";
-  else finalGrade = "Not Competent";
-  return {totalScore, average, finalGrade};
+// Calculate overall grade per student
+function calculateOverallGrade(units){
+  const avg = units.reduce((sum,u)=>sum+u.total,0) / units.length;
+  return avg >= 80 ? "Mastery" :
+         avg >= 65 ? "Proficient" :
+         avg >= 50 ? "Competent" : "Not Competent";
 }
 
-// Render table
 function render(){
   tbody.innerHTML = "";
   records.forEach((r,i)=>{
     const unitsSummary = r.units.map(u=>`${u.name}: ${u.total} (${u.grade})`).join("; ");
+    const total = r.units.reduce((s,u)=>s+u.total,0);
+    const gpa = (r.units.reduce((s,u)=>s+Number(u.gpa),0)/r.units.length).toFixed(2);
+    const overallGrade = calculateOverallGrade(r.units);
     tbody.innerHTML += `
-      <tr>
-        <td>${r.name}</td>
-        <td>${r.reg}</td>
-        <td>${unitsSummary}</td>
-        <td>${r.totalScore}</td>
-        <td>${r.average.toFixed(2)}</td>
-        <td>${r.finalGrade}</td>
-        <td>
-          <button onclick="editRecord(${i})">Edit</button>
-          <button onclick="deleteRecord(${i})">Delete</button>
-        </td>
-      </tr>`;
+    <tr>
+      <td>${r.name}</td>
+      <td>${r.reg}</td>
+      <td>${unitsSummary}</td>
+      <td>${total}</td>
+      <td>${gpa}</td>
+      <td>${overallGrade}</td>
+      <td>
+        <button onclick="editRecord(${i})">Edit</button>
+        <button onclick="deleteRecord(${i})">Delete</button>
+      </td>
+    </tr>`;
   });
 }
 
-// Save / update record
-acadForm.addEventListener("submit", e=>{
+acadForm.onsubmit = e => {
   e.preventDefault();
   const name = document.getElementById("name").value;
   const reg = document.getElementById("reg").value;
@@ -1902,19 +1903,17 @@ acadForm.addEventListener("submit", e=>{
     units.push({name:unitName, cat:unitCAT, exam:unitExam, total, gpa, grade});
   });
 
-  const overall = calculateOverall(units);
-  const record = {...{name, reg, units}, ...overall};
+  const record = {name, reg, units};
 
-  if(editIndex===-1) records.push(record);
-  else records[editIndex]=record;
+  if(editIndex === -1) records.push(record);
+  else records[editIndex] = record;
 
   localStorage.setItem("acadRecords", JSON.stringify(records));
   acadForm.reset();
-  editIndex=-1;
+  editIndex = -1;
   render();
-});
+};
 
-// Edit / Delete
 function editRecord(i){
   const r = records[i];
   document.getElementById("name").value = r.name;
@@ -1936,24 +1935,27 @@ function deleteRecord(i){
   }
 }
 
-// Print
+// PRINT FUNCTION
 function printRecords(){
   if(records.length===0){ alert("No records to print"); return; }
-  const win = window.open("","", "width=900,height=600");
+  const win = window.open("", "", "width=900,height=600");
   win.document.write("<h2 style='text-align:center'>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>");
   win.document.write("<h3 style='text-align:center'>ACADEMICS OFFICE – RESULTS MANAGEMENT</h3>");
   win.document.write("<p style='text-align:center;'>Department: Academics | Date: "+new Date().toLocaleString()+"</p>");
   win.document.write("<table border='1' cellpadding='6' cellspacing='0' style='border-collapse:collapse;width:100%;'>");
-  win.document.write("<tr><th>Name</th><th>Reg</th><th>Units</th><th>Total</th><th>Average</th><th>Final Grade</th></tr>");
+  win.document.write("<tr><th>Name</th><th>Reg</th><th>Units</th><th>Total</th><th>GPA</th><th>Overall Grade</th></tr>");
   records.forEach(r=>{
     const unitsSummary = r.units.map(u=>`${u.name}: ${u.total} (${u.grade})`).join("; ");
+    const total = r.units.reduce((s,u)=>s+u.total,0);
+    const gpa = (r.units.reduce((s,u)=>s+Number(u.gpa),0)/r.units.length).toFixed(2);
+    const overallGrade = calculateOverallGrade(r.units);
     win.document.write(`<tr>
       <td>${r.name}</td>
       <td>${r.reg}</td>
       <td>${unitsSummary}</td>
-      <td>${r.totalScore}</td>
-      <td>${r.average.toFixed(2)}</td>
-      <td>${r.finalGrade}</td>
+      <td>${total}</td>
+      <td>${gpa}</td>
+      <td>${overallGrade}</td>
     </tr>`);
   });
   win.document.write("</table>");
@@ -1961,21 +1963,24 @@ function printRecords(){
   win.print();
 }
 
-// Export to Word
+// EXPORT WORD
 async function exportToWord(){
-  if(records.length===0){ alert("No records to export"); return; }
+  if(records.length===0){ alert("No data to export"); return; }
   const { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType, AlignmentType } = docx;
   const today = new Date().toLocaleString();
 
   const rows = [new TableRow({
-    children:["Name","Reg","Units","Total","Average","Final Grade"]
+    children:["Name","Reg","Units","Total","GPA","Overall Grade"]
       .map(h=>new TableCell({children:[new Paragraph({text:h,bold:true})]}))
   })];
 
   records.forEach(r=>{
     const unitsSummary = r.units.map(u=>`${u.name}: ${u.total} (${u.grade})`).join("; ");
+    const total = r.units.reduce((s,u)=>s+u.total,0);
+    const gpa = (r.units.reduce((s,u)=>s+Number(u.gpa),0)/r.units.length).toFixed(2);
+    const overallGrade = calculateOverallGrade(r.units);
     rows.push(new TableRow({
-      children:[r.name,r.reg,unitsSummary,r.totalScore,r.average.toFixed(2),r.finalGrade]
+      children:[r.name,r.reg,unitsSummary,total,gpa,overallGrade]
         .map(v=>new TableCell({children:[new Paragraph(String(v))]}))
     }));
   });
@@ -1999,9 +2004,33 @@ async function exportToWord(){
 }
 
 render();
+
+// ===== LOGIN SCRIPT =====
+const loginForm = document.getElementById("loginForm");
+loginForm.onsubmit = e => {
+  e.preventDefault();
+  const user = document.getElementById("username").value;
+  const pass = document.getElementById("password").value;
+  if(user==="admin" && pass==="ict123"){
+    localStorage.setItem("loggedIn", "true");
+    document.getElementById("LOGIN").style.display="none";
+    document.getElementById("ACADEMICS").style.display="block";
+  } else alert("Wrong credentials");
+};
+
+if(localStorage.getItem("loggedIn")==="true"){
+  document.getElementById("LOGIN").style.display="none";
+  document.getElementById("ACADEMICS").style.display="block";
+} else {
+  document.getElementById("LOGIN").style.display="block";
+  document.getElementById("ACADEMICS").style.display="none";
+}
+
+function logout(){
+  localStorage.removeItem("loggedIn");
+  location.reload();
+}
 </script>
-
-
 
   <!-- ===================== STUDENTS ===================== -->
   <section id="STUDENTS" style="display:none;background:#b2dfdb;padding:25px;border-radius:12px;margin-bottom:15px;">
@@ -2225,6 +2254,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
