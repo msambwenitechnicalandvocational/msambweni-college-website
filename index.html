@@ -1591,9 +1591,23 @@ if(localStorage.getItem("logged")==="yes"){
 </html>
 
 
+<!DOCTYPE html>
 <html>
 <head>
 <title>Finance Portal</title>
+
+<style>
+body{font-family:Segoe UI;background:#f4f6f8;margin:0}
+.card-login{max-width:400px;margin:80px auto;background:#fff;padding:30px;border-radius:15px;text-align:center}
+input,select,button{width:100%;padding:10px;margin:8px 0}
+button{background:#006064;color:white;border:none;font-weight:bold;cursor:pointer}
+.logout-btn{background:#b71c1c}
+.section{max-width:1100px;margin:20px auto;background:white;padding:20px}
+table{width:100%;border-collapse:collapse}
+td,th{border:1px solid #ccc;padding:8px;text-align:center}
+th{background:#006064;color:white}
+nav button{width:auto;margin-right:10px}
+</style>
 </head>
 
 <body>
@@ -1603,16 +1617,16 @@ if(localStorage.getItem("logged")==="yes"){
   <h2>🔐 Finance Login</h2>
   <input id="loginUser" placeholder="Username">
   <input id="loginPass" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
+  <button type="button" onclick="login()">Login</button>
   <p id="loginError" style="color:red"></p>
 </div>
 
 <!-- ================= PORTAL ================= -->
 <div id="portal" style="display:none">
 
-<h1 class="college-title">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h1>
-<h2 class="subtitle">DEPARTMENT OF FINANCE</h2>
-<h2 class="subtitle">FEE STATEMENT 2026 / 2027</h2>
+<h1 style="text-align:center">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h1>
+<h2 style="text-align:center">DEPARTMENT OF FINANCE</h2>
+<h3 style="text-align:center">FEE STATEMENT 2026 / 2027</h3>
 
 <nav>
   <button onclick="showSection('paymentsSection')">Fee Payments</button>
@@ -1662,20 +1676,6 @@ if(localStorage.getItem("logged")==="yes"){
 
 </div>
 
-<!-- ================= CSS ================= -->
-<style>
-body{font-family:Segoe UI;background:#f4f6f8;margin:0}
-.card-login{max-width:400px;margin:80px auto;background:#fff;padding:30px;border-radius:15px;text-align:center}
-input,select,button{width:100%;padding:10px;margin:8px 0}
-button{background:#006064;color:white;border:none;font-weight:bold}
-.logout-btn{background:#b71c1c}
-.section{max-width:1100px;margin:20px auto;background:white;padding:20px}
-table{width:100%;border-collapse:collapse}
-td,th{border:1px solid #ccc;padding:8px;text-align:center}
-th{background:#006064;color:white}
-</style>
-
-<!-- ================= JAVASCRIPT ================= -->
 <script>
 const USER = "FINANCE";
 const PASS = "finance@123";
@@ -1689,7 +1689,7 @@ function login(){
     document.getElementById("loginBox").style.display = "none";
     document.getElementById("portal").style.display = "block";
     showSection("paymentsSection");
-    initPayments();   // IMPORTANT
+    initPayments();
   }else{
     document.getElementById("loginError").innerText = "Invalid login details";
   }
@@ -1704,11 +1704,15 @@ function showSection(id){
   document.getElementById(id).style.display="block";
 }
 
-/* ===== INIT AFTER LOGIN ===== */
 function initPayments(){
   const form = document.getElementById("paymentForm");
   const tbody = document.querySelector("#paymentsTable tbody");
   const dashboard = document.getElementById("dashboard");
+
+  const studentName = document.getElementById("studentName");
+  const studentReg = document.getElementById("studentReg");
+  const term = document.getElementById("term");
+  const paymentAmount = document.getElementById("paymentAmount");
 
   form.onsubmit = function(e){
     e.preventDefault();
@@ -1716,8 +1720,9 @@ function initPayments(){
     let data = JSON.parse(localStorage.getItem("feePayments") || "[]");
 
     const paid = Number(paymentAmount.value);
-    const previous = data.filter(r=>r.reg===studentReg.value)
-                         .reduce((s,r)=>s+r.amount,0);
+    const previous = data
+      .filter(r=>r.reg === studentReg.value)
+      .reduce((s,r)=>s+r.amount,0);
 
     const record = {
       student: studentName.value,
@@ -1738,8 +1743,8 @@ function initPayments(){
   function load(){
     tbody.innerHTML="";
     let data = JSON.parse(localStorage.getItem("feePayments") || "[]");
-
     let totalPaid = 0;
+
     data.forEach((r,i)=>{
       totalPaid += r.amount;
       tbody.innerHTML += `
@@ -1759,7 +1764,7 @@ function initPayments(){
   }
 
   window.deleteRow = function(i){
-    let data = JSON.parse(localStorage.getItem("feePayments"));
+    let data = JSON.parse(localStorage.getItem("feePayments") || "[]");
     data.splice(i,1);
     localStorage.setItem("feePayments", JSON.stringify(data));
     load();
@@ -2524,6 +2529,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
