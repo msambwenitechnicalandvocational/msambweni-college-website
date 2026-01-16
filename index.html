@@ -1754,6 +1754,183 @@ function showICTSection(id){
 }
 </script>
 
+ <script>
+// ===== ADMINISTRATION FORM =====
+let adminData = JSON.parse(localStorage.getItem("adminData")) || [];
+const adminForm = document.getElementById("adminForm");
+const adminList = document.getElementById("adminList");
+
+// Save admin record
+adminForm.addEventListener("submit", function(e){
+  e.preventDefault();
+  const student = {
+    name: document.getElementById("admName").value,
+    reg: document.getElementById("admReg").value,
+    dept: document.getElementById("admDept").value,
+    gender: document.getElementById("admGender").value,
+    course: document.getElementById("admCourse").value,
+    year: document.getElementById("admYear").value,
+    doc: document.getElementById("admDoc").files[0] ? document.getElementById("admDoc").files[0].name : "No File"
+  };
+  adminData.push(student);
+  localStorage.setItem("adminData", JSON.stringify(adminData));
+  adminForm.reset();
+  displayAdmin();
+});
+
+// Display admin records
+function displayAdmin(){
+  adminList.innerHTML="";
+  adminData.forEach((s,i)=>{
+    const div = document.createElement("div");
+    div.style.cssText="background:#e0f7fa; padding:15px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; box-shadow:0 3px 6px rgba(0,0,0,0.1)";
+    div.innerHTML = `<div><strong>${i+1}. ${s.name}</strong> | ${s.reg} | ${s.dept} | ${s.gender} | ${s.course} | ${s.year} <br>Document: <em>${s.doc}</em></div>
+      <div style="display:flex; gap:10px; margin-top:5px;">
+        <button onclick="editAdmin(${i})" style="padding:5px 10px; background:#ffc107; color:white; border:none; border-radius:5px;">Edit</button>
+        <button onclick="deleteAdmin(${i})" style="padding:5px 10px; background:#f44336; color:white; border:none; border-radius:5px;">Delete</button>
+      </div>`;
+    adminList.appendChild(div);
+  });
+}
+
+// Edit & delete admin
+function editAdmin(i){
+  const s=adminData[i];
+  document.getElementById("admName").value=s.name;
+  document.getElementById("admReg").value=s.reg;
+  document.getElementById("admDept").value=s.dept;
+  document.getElementById("admGender").value=s.gender;
+  document.getElementById("admCourse").value=s.course;
+  document.getElementById("admYear").value=s.year;
+  adminData.splice(i,1);
+  localStorage.setItem("adminData",JSON.stringify(adminData));
+  displayAdmin();
+}
+function deleteAdmin(i){
+  if(confirm("Delete this record?")){
+    adminData.splice(i,1);
+    localStorage.setItem("adminData",JSON.stringify(adminData));
+    displayAdmin();
+  }
+}
+
+// Print & Word export
+document.getElementById("admPrint").addEventListener("click",()=>{
+  if(adminData.length===0){ alert("No data to print"); return; }
+  const win=window.open("","_blank","width=900,height=600");
+  win.document.write("<h2 style='text-align:center;'>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>");
+  win.document.write("<h3 style='text-align:center;'>Administration Records</h3>");
+  win.document.write("<p style='text-align:center;'>Date: "+new Date().toLocaleString()+"</p>");
+  win.document.write("<table border='1' cellpadding='6' cellspacing='0' style='border-collapse:collapse;width:100%'>");
+  win.document.write("<tr><th>#</th><th>Name</th><th>Reg</th><th>Dept</th><th>Gender</th><th>Course</th><th>Year</th><th>Document</th></tr>");
+  adminData.forEach((s,i)=>{
+    win.document.write(`<tr><td>${i+1}</td><td>${s.name}</td><td>${s.reg}</td><td>${s.dept}</td><td>${s.gender}</td><td>${s.course}</td><td>${s.year}</td><td>${s.doc}</td></tr>`);
+  });
+  win.document.write("</table>"); win.document.close(); win.print();
+});
+
+document.getElementById("admDownload").addEventListener("click", async ()=>{
+  if(adminData.length===0){ alert("No data to download"); return; }
+  const { Document,Packer,Paragraph,Table,TableRow,TableCell,WidthType,AlignmentType } = docx;
+  const rows = [new TableRow({children:["#","Name","Reg","Dept","Gender","Course","Year","Document"].map(h=>new TableCell({children:[new Paragraph({text:h,bold:true})]}))})];
+  adminData.forEach((s,i)=>{
+    rows.push(new TableRow({children:[i+1,s.name,s.reg,s.dept,s.gender,s.course,s.year,s.doc].map(v=>new TableCell({children:[new Paragraph(String(v))]}))}));
+  });
+  const doc=new Document({sections:[{children:[
+    new Paragraph({text:"MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE",bold:true,alignment:AlignmentType.CENTER}),
+    new Paragraph({text:"Administration Records",bold:true,alignment:AlignmentType.CENTER}),
+    new Table({rows,width:{size:100,type:WidthType.PERCENTAGE}})
+  ]}]});
+  const blob = await Packer.toBlob(doc);
+  const link=document.createElement("a"); link.href=URL.createObjectURL(blob);
+  link.download="Administration_Records_MSAMBWENI.docx"; link.click();
+});
+
+// ===== STUDENTS FORM =====
+let studentData = JSON.parse(localStorage.getItem("studentData")) || [];
+const studentsForm = document.getElementById("studentsForm");
+const studentsList = document.getElementById("studentsList");
+
+studentsForm.addEventListener("submit",function(e){
+  e.preventDefault();
+  const stu={
+    name:document.getElementById("stuName").value,
+    reg:document.getElementById("stuReg").value,
+    dept:document.getElementById("stuDept").value,
+    year:document.getElementById("stuYear").value
+  };
+  studentData.push(stu);
+  localStorage.setItem("studentData",JSON.stringify(studentData));
+  studentsForm.reset();
+  displayStudents();
+});
+
+function displayStudents(){
+  studentsList.innerHTML="";
+  studentData.forEach((s,i)=>{
+    const div=document.createElement("div");
+    div.style.cssText="background:#b2dfdb; padding:12px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;";
+    div.innerHTML=`<div><strong>${i+1}. ${s.name}</strong> | ${s.reg} | ${s.dept} | Year: ${s.year}</div>
+      <div><button onclick="editStudent(${i})" style="padding:5px 8px;background:#ffc107;color:white;border:none;border-radius:5px;">Edit</button>
+      <button onclick="deleteStudent(${i})" style="padding:5px 8px;background:#f44336;color:white;border:none;border-radius:5px;">Delete</button></div>`;
+    studentsList.appendChild(div);
+  });
+}
+
+function editStudent(i){
+  const s=studentData[i];
+  document.getElementById("stuName").value=s.name;
+  document.getElementById("stuReg").value=s.reg;
+  document.getElementById("stuDept").value=s.dept;
+  document.getElementById("stuYear").value=s.year;
+  studentData.splice(i,1);
+  localStorage.setItem("studentData",JSON.stringify(studentData));
+  displayStudents();
+}
+function deleteStudent(i){
+  if(confirm("Delete this student?")){
+    studentData.splice(i,1);
+    localStorage.setItem("studentData",JSON.stringify(studentData));
+    displayStudents();
+  }
+}
+
+// Print & Word
+document.getElementById("stuPrint").addEventListener("click",()=>{
+  if(studentData.length===0){ alert("No students to print"); return; }
+  const win=window.open("","_blank","width=900,height=600");
+  win.document.write("<h2 style='text-align:center;'>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>");
+  win.document.write("<h3 style='text-align:center;'>Students Records</h3>");
+  win.document.write("<table border='1' cellpadding='6' cellspacing='0' style='border-collapse:collapse;width:100%'>");
+  win.document.write("<tr><th>#</th><th>Name</th><th>Reg</th><th>Dept</th><th>Year</th></tr>");
+  studentData.forEach((s,i)=>{
+    win.document.write(`<tr><td>${i+1}</td><td>${s.name}</td><td>${s.reg}</td><td>${s.dept}</td><td>${s.year}</td></tr>`);
+  });
+  win.document.write("</table>"); win.document.close(); win.print();
+});
+
+document.getElementById("stuDownload").addEventListener("click",async()=>{
+  if(studentData.length===0){ alert("No students to download"); return; }
+  const {Document,Packer,Paragraph,Table,TableRow,TableCell,WidthType,AlignmentType}=docx;
+  const rows=[new TableRow({children:["#","Name","Reg","Dept","Year"].map(h=>new TableCell({children:[new Paragraph({text:h,bold:true})]}))})];
+  studentData.forEach((s,i)=>{
+    rows.push(new TableRow({children:[i+1,s.name,s.reg,s.dept,s.year].map(v=>new TableCell({children:[new Paragraph(String(v))]}))}));
+  });
+  const doc=new Document({sections:[{children:[
+    new Paragraph({text:"MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE",bold:true,alignment:AlignmentType.CENTER}),
+    new Paragraph({text:"Students Records",bold:true,alignment:AlignmentType.CENTER}),
+    new Table({rows,width:{size:100,type:WidthType.PERCENTAGE}})
+  ]}]});
+  const blob=await Packer.toBlob(doc); const link=document.createElement("a");
+  link.href=URL.createObjectURL(blob); link.download="Students_Records_MSAMBWENI.docx"; link.click();
+});
+
+// ===== INITIAL DISPLAY =====
+displayAdmin();
+displayStudents();
+</script>
+
+
 
  
 
@@ -1920,6 +2097,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
