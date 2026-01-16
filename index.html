@@ -1586,6 +1586,145 @@ if(localStorage.getItem("logged")==="yes"){
   load();
 }
 </script>
+ <!-- ===================== ICT Technician Portal ===================== -->
+<div id="ictLoginBox" style="max-width:400px;margin:80px auto;background:white;padding:40px;border-radius:20px;box-shadow:0 4px 12px rgba(0,0,0,0.2);">
+  <h2 style="text-align:center;color:#006064;font-family:sans-serif;">💻 ICT Technician Login</h2>
+  <input id="ictUser" placeholder="Username" style="width:100%;padding:12px;margin:12px 0;border-radius:8px;border:1px solid #ccc;font-size:16px;">
+  <input id="ictPass" type="password" placeholder="Password" style="width:100%;padding:12px;margin:12px 0;border-radius:8px;border:1px solid #ccc;font-size:16px;">
+  <button type="button" onclick="ictLogin()" style="width:100%;padding:14px;border:none;border-radius:10px;background:#006064;color:white;font-weight:bold;font-size:16px;cursor:pointer;">Login</button>
+  <p id="ictError" style="color:red;text-align:center;margin-top:12px;"></p>
+</div>
+
+<div id="ictPortal" style="display:none; max-width:1200px;margin:30px auto;background:#e0f7fa;padding:30px;border-radius:20px; font-family:sans-serif;">
+  <h1 style="text-align:center;color:#006064;">ICT Technician Portal</h1>
+  <p style="text-align:center;color:#004d40; margin-bottom:20px;">🔧 Manage Administration, Academics, and Student Data Efficiently</p>
+
+  <div style="text-align:center;margin-bottom:25px;">
+    <button onclick="showICTSection('ADMINISTRATION')" style="padding:12px 18px;margin:5px;border:none;border-radius:8px;background:#004d40;color:white;cursor:pointer;">Administration</button>
+    <button onclick="showICTSection('ACADEMICS')" style="padding:12px 18px;margin:5px;border:none;border-radius:8px;background:#004d40;color:white;cursor:pointer;">Academics</button>
+    <button onclick="showICTSection('STUDENTS')" style="padding:12px 18px;margin:5px;border:none;border-radius:8px;background:#004d40;color:white;cursor:pointer;">Students</button>
+    <button onclick="ictLogout()" style="padding:12px 18px;margin:5px;border:none;border-radius:8px;background:#d32f2f;color:white;cursor:pointer;">Logout</button>
+  </div>
+
+  <!-- ===================== ADMINISTRATION ===================== -->
+  <section id="ADMINISTRATION" style="display:none;background:#f0f4f8;padding:25px;border-radius:15px;margin-bottom:20px;">
+    <h3 style="text-align:center; color:#004d40; font-weight:bold;">📊 ADMINISTRATION FORM</h3>
+    <form id="adminForm" style="max-width:850px;margin:auto; background:white; padding:25px; border-radius:12px;">
+      <div style="display:flex; gap:15px; flex-wrap:wrap;">
+        <input type="text" id="admName" placeholder="Full Name" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+        <input type="text" id="admReg" placeholder="Registration Number" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+      </div>
+      <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:15px;">
+        <select id="admDept" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+          <option value="">Select Department</option>
+          <option value="ICT">ICT</option>
+          <option value="Business">Business</option>
+          <option value="Engineering">Engineering</option>
+        </select>
+        <select id="admGender" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+      <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:15px;">
+        <input type="text" id="admCourse" placeholder="Course Taken" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+        <input type="number" id="admYear" placeholder="Year of Admission" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+      </div>
+      <div style="margin-top:15px;">
+        <label style="font-weight:bold;">Upload Document (PDF, DOCX):</label>
+        <input type="file" id="admDoc" accept=".pdf,.doc,.docx" style="display:block; margin-top:5px;">
+      </div>
+      <div style="text-align:center; margin-top:20px;">
+        <button type="submit" style="padding:12px 25px; background:#004d40; color:white; border:none; border-radius:8px; cursor:pointer; margin-right:10px;">Submit</button>
+        <button type="button" id="admDownload" style="padding:12px 25px; background:#00796b; color:white; border:none; border-radius:8px; cursor:pointer; margin-right:10px;">Download Word</button>
+        <button type="button" id="admPrint" style="padding:12px 25px; background:#00695c; color:white; border:none; border-radius:8px; cursor:pointer;">Print</button>
+      </div>
+    </form>
+    <div id="adminList" style="max-width:850px;margin:25px auto; display:flex; flex-direction:column; gap:12px;"></div>
+  </section>
+
+  <!-- ===================== ACADEMICS ===================== -->
+  <section id="ACADEMICS" style="display:none;background:#e3f2fd;padding:25px;border-radius:16px;margin-bottom:20px;">
+    <h2 style="text-align:center;color:#0d47a1;">📘 ACADEMICS DEPARTMENT – RESULTS MANAGEMENT</h2>
+    <form id="acadForm" style="max-width:950px;margin:auto;background:#ffffff;padding:20px;border-radius:14px;">
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px;">
+        <input id="name" placeholder="Student Name" required>
+        <input id="reg" placeholder="Registration Number" required>
+        <input id="cat" type="number" placeholder="CAT (30)" required>
+        <input id="exam" type="number" placeholder="Exam (70)" required>
+      </div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:12px;">
+        <input id="total" placeholder="Total Score" disabled>
+        <input id="gpa" placeholder="GPA" disabled>
+        <input id="grade" placeholder="Grade" disabled>
+      </div>
+      <div style="text-align:center;">
+        <button type="submit" style="background:#2e7d32; color:white;">💾 Save Record</button>
+        <button type="button" onclick="printRecords()" style="background:#0277bd; color:white;">🖨 Print Records</button>
+        <button type="button" onclick="exportToWord()" style="background:#1b5e20; color:white;">📥 Export Word</button>
+      </div>
+    </form>
+    <table id="recordsTable" style="width:100%; margin-top:20px; border-collapse:collapse;">
+      <thead>
+        <tr>
+          <th>Name</th><th>Reg No</th><th>CAT</th><th>Exam</th><th>Total</th><th>GPA</th><th>Grade</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- ===================== STUDENTS ===================== -->
+  <section id="STUDENTS" style="display:none;background:#b2dfdb;padding:25px;border-radius:12px;margin-bottom:15px;">
+    <h3 style="text-align:center;">👨‍🎓 STUDENTS FORM</h3>
+    <form id="studentsForm" style="max-width:800px;margin:auto;background:#ffffff;padding:20px;border-radius:12px;">
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <input type="text" id="stuName" placeholder="Full Name" required style="flex:1;">
+        <input type="text" id="stuReg" placeholder="Registration Number" required style="flex:1;">
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+        <input type="text" id="stuDept" placeholder="Department" required style="flex:1;">
+        <input type="number" id="stuYear" placeholder="Year of Admission" required style="flex:1;">
+      </div>
+      <div style="text-align:center; margin-top:15px;">
+        <button type="submit" style="background:#00796b; color:white;">Submit</button>
+        <button type="button" id="stuDownload" style="background:#004d40; color:white;">Download Word</button>
+        <button type="button" id="stuPrint" style="background:#00695c; color:white;">Print</button>
+      </div>
+    </form>
+    <div id="studentsList" style="max-width:800px;margin:20px auto;"></div>
+  </section>
+</div>
+
+<!-- ===================== SCRIPT ===================== -->
+<script>
+const ICT_USER = "ICTSAMSON";
+const ICT_PASS = "ICT@123";
+
+function ictLogin(){
+  const user = document.getElementById("ictUser").value.trim();
+  const pass = document.getElementById("ictPass").value.trim();
+  if(user === ICT_USER && pass === ICT_PASS){
+    document.getElementById("ictLoginBox").style.display = "none";
+    document.getElementById("ictPortal").style.display = "block";
+    document.getElementById("ictError").innerText = "";
+  } else {
+    document.getElementById("ictError").innerText = "Invalid username or password";
+  }
+}
+
+function ictLogout(){
+  document.getElementById("ictPortal").style.display = "none";
+  document.getElementById("ictLoginBox").style.display = "block";
+}
+
+function showICTSection(id){
+  ["ADMINISTRATION","ACADEMICS","STUDENTS"].forEach(sec => document.getElementById(sec).style.display = "none");
+  document.getElementById(id).style.display = "block";
+}
+</script>
+
 
 </body>
 </html>
@@ -1758,6 +1897,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
