@@ -1591,7 +1591,6 @@ if(localStorage.getItem("logged")==="yes"){
 </html>
 
 
- 
 <html>
 <head>
 <title>Finance Portal</title>
@@ -1613,21 +1612,7 @@ if(localStorage.getItem("logged")==="yes"){
 
 <h1 class="college-title">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h1>
 <h2 class="subtitle">DEPARTMENT OF FINANCE</h2>
-<h2 class="subtitle">P.O.BOX 11-80404, MSAMBWENI-KENYA</h2>
-<h2 class="subtitle">TEL:0702944524 / 07554544</h2>
-<h2 class="subtitle">EMAIL: msambwenitti@gmail.com</h2>
-
-<h2 class="subtitle">VISION</h2>
-<p class="subtitle">
-To train competent and innovative manpower in technical and vocational disciplines to meet the changing needs of industry
-</p>
-
-<h2 class="subtitle">MISSION</h2>
-<p class="subtitle">
-To train and equip trainees with modern technologies for global market competition
-</p>
-
-<h2 class="subtitle">FEE STATEMENT FOR 2026 / 2027</h2>
+<h2 class="subtitle">FEE STATEMENT 2026 / 2027</h2>
 
 <nav>
   <button onclick="showSection('paymentsSection')">Fee Payments</button>
@@ -1635,7 +1620,6 @@ To train and equip trainees with modern technologies for global market competiti
   <button onclick="logout()" class="logout-btn">Logout</button>
 </nav>
 
-<!-- ================= PAYMENTS ================= -->
 <section id="paymentsSection" class="section">
   <h3>Student Fee Payment</h3>
 
@@ -1651,7 +1635,6 @@ To train and equip trainees with modern technologies for global market competiti
     </select>
 
     <input id="paymentAmount" type="number" placeholder="Amount Paid" required>
-
     <button type="submit">Save Payment</button>
   </form>
 
@@ -1659,7 +1642,7 @@ To train and equip trainees with modern technologies for global market competiti
     <thead>
       <tr>
         <th>Name</th>
-        <th>Reg No</th>
+        <th>Reg</th>
         <th>Term</th>
         <th>Paid</th>
         <th>Total Paid</th>
@@ -1670,12 +1653,8 @@ To train and equip trainees with modern technologies for global market competiti
     </thead>
     <tbody></tbody>
   </table>
-
-  <button onclick="downloadWord()">Download Word</button>
-  <button onclick="printReport()">Print</button>
 </section>
 
-<!-- ================= DASHBOARD ================= -->
 <section id="dashboardSection" class="section" style="display:none">
   <h3>Finance Summary</h3>
   <div id="dashboard"></div>
@@ -1686,52 +1665,33 @@ To train and equip trainees with modern technologies for global market competiti
 <!-- ================= CSS ================= -->
 <style>
 body{font-family:Segoe UI;background:#f4f6f8;margin:0}
-.card-login{max-width:400px;margin:80px auto;background:#fff;padding:35px;border-radius:18px;box-shadow:0 6px 20px rgba(0,0,0,.2);text-align:center}
-.card-login input,button,select{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc}
-button{background:#006064;color:white;border:none;font-weight:bold;cursor:pointer}
+.card-login{max-width:400px;margin:80px auto;background:#fff;padding:30px;border-radius:15px;text-align:center}
+input,select,button{width:100%;padding:10px;margin:8px 0}
+button{background:#006064;color:white;border:none;font-weight:bold}
 .logout-btn{background:#b71c1c}
-.college-title{text-align:center;color:#006064;margin-top:20px}
-.subtitle{text-align:center;color:#004d40;margin-bottom:10px}
-nav{text-align:center;margin-bottom:15px}
-nav button{margin:5px}
-.section{max-width:1100px;margin:20px auto;background:white;padding:25px;border-radius:18px;box-shadow:0 4px 14px rgba(0,0,0,.15)}
-table{width:100%;border-collapse:collapse;margin-top:15px}
-th{background:#006064;color:white}
+.section{max-width:1100px;margin:20px auto;background:white;padding:20px}
+table{width:100%;border-collapse:collapse}
 td,th{border:1px solid #ccc;padding:8px;text-align:center}
-tr:nth-child(even){background:#e0f7fa}
+th{background:#006064;color:white}
 </style>
 
 <!-- ================= JAVASCRIPT ================= -->
 <script>
-const TOTAL_FEES = 40000;
 const USER = "FINANCE";
 const PASS = "finance@123";
-
-const loginBox = document.getElementById("loginBox");
-const portal = document.getElementById("portal");
-const loginError = document.getElementById("loginError");
-
-const loginUser = document.getElementById("loginUser");
-const loginPass = document.getElementById("loginPass");
-
-const paymentForm = document.getElementById("paymentForm");
-const paymentsTableBody = document.querySelector("#paymentsTable tbody");
-const dashboard = document.getElementById("dashboard");
-
-const studentName = document.getElementById("studentName");
-const studentReg = document.getElementById("studentReg");
-const term = document.getElementById("term");
-const paymentAmount = document.getElementById("paymentAmount");
+const TOTAL_FEES = 40000;
 
 function login(){
-  if(loginUser.value.toUpperCase() === USER && loginPass.value === PASS){
-    loginBox.style.display = "none";
-    portal.style.display = "block";
-    showSection('paymentsSection');
-    loadPayments();
-    updateDashboard();
+  const u = document.getElementById("loginUser").value.trim().toUpperCase();
+  const p = document.getElementById("loginPass").value;
+
+  if(u === USER && p === PASS){
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("portal").style.display = "block";
+    showSection("paymentsSection");
+    initPayments();   // IMPORTANT
   }else{
-    loginError.innerText = "Invalid username or password";
+    document.getElementById("loginError").innerText = "Invalid login details";
   }
 }
 
@@ -1744,104 +1704,74 @@ function showSection(id){
   document.getElementById(id).style.display="block";
 }
 
-paymentForm.onsubmit = function(e){
-  e.preventDefault();
+/* ===== INIT AFTER LOGIN ===== */
+function initPayments(){
+  const form = document.getElementById("paymentForm");
+  const tbody = document.querySelector("#paymentsTable tbody");
+  const dashboard = document.getElementById("dashboard");
 
-  let data = JSON.parse(localStorage.getItem("feePayments") || "[]");
-  const paid = Number(paymentAmount.value);
+  form.onsubmit = function(e){
+    e.preventDefault();
 
-  const previous = data
-    .filter(r=>r.reg === studentReg.value)
-    .reduce((s,r)=>s + r.amount, 0);
+    let data = JSON.parse(localStorage.getItem("feePayments") || "[]");
 
-  const record = {
-    student: studentName.value,
-    reg: studentReg.value,
-    term: term.value,
-    amount: paid,
-    totalPaid: previous + paid,
-    balance: TOTAL_FEES - (previous + paid),
-    date: new Date().toLocaleDateString()
+    const paid = Number(paymentAmount.value);
+    const previous = data.filter(r=>r.reg===studentReg.value)
+                         .reduce((s,r)=>s+r.amount,0);
+
+    const record = {
+      student: studentName.value,
+      reg: studentReg.value,
+      term: term.value,
+      amount: paid,
+      totalPaid: previous + paid,
+      balance: TOTAL_FEES - (previous + paid),
+      date: new Date().toLocaleDateString()
+    };
+
+    data.push(record);
+    localStorage.setItem("feePayments", JSON.stringify(data));
+    form.reset();
+    load();
   };
 
-  data.push(record);
-  localStorage.setItem("feePayments", JSON.stringify(data));
-  paymentForm.reset();
-  loadPayments();
-  updateDashboard();
-};
+  function load(){
+    tbody.innerHTML="";
+    let data = JSON.parse(localStorage.getItem("feePayments") || "[]");
 
-function loadPayments(){
-  paymentsTableBody.innerHTML = "";
-  let data = JSON.parse(localStorage.getItem("feePayments") || "[]");
-
-  data.forEach((r,i)=>{
-    const tr = document.createElement("tr");
-
-    Object.values(r).forEach(v=>{
-      const td = document.createElement("td");
-      td.innerText = v;
-      tr.appendChild(td);
+    let totalPaid = 0;
+    data.forEach((r,i)=>{
+      totalPaid += r.amount;
+      tbody.innerHTML += `
+        <tr>
+          <td>${r.student}</td>
+          <td>${r.reg}</td>
+          <td>${r.term}</td>
+          <td>${r.amount}</td>
+          <td>${r.totalPaid}</td>
+          <td>${r.balance}</td>
+          <td>${r.date}</td>
+          <td><button onclick="deleteRow(${i})">Delete</button></td>
+        </tr>`;
     });
 
-    const td = document.createElement("td");
-    const del = document.createElement("button");
-    del.innerText = "Delete";
-    del.onclick = ()=>{
-      data.splice(i,1);
-      localStorage.setItem("feePayments", JSON.stringify(data));
-      loadPayments();
-      updateDashboard();
-    };
-    td.appendChild(del);
-    tr.appendChild(td);
-    paymentsTableBody.appendChild(tr);
-  });
-}
+    dashboard.innerText = `Total Paid: KES ${totalPaid} | Balance: KES ${TOTAL_FEES-totalPaid}`;
+  }
 
-function updateDashboard(){
-  let data = JSON.parse(localStorage.getItem("feePayments") || "[]");
-  let paid = data.reduce((s,r)=>s+r.amount,0);
-  let balance = TOTAL_FEES - paid;
-  dashboard.innerText = `Total Paid: KES ${paid} | Outstanding Balance: KES ${balance}`;
-}
+  window.deleteRow = function(i){
+    let data = JSON.parse(localStorage.getItem("feePayments"));
+    data.splice(i,1);
+    localStorage.setItem("feePayments", JSON.stringify(data));
+    load();
+  };
 
-function downloadWord(){
-  let data = JSON.parse(localStorage.getItem("feePayments") || "[]");
-  if(!data.length){ alert("No records"); return; }
-
-  let html = `<h2>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>
-  <h3>DEPARTMENT OF FINANCE</h3>
-  <h4>FEE STATEMENT 2026 / 2027</h4>
-  <table border="1" style="border-collapse:collapse;width:100%">`;
-
-  html += "<tr>";
-  Object.keys(data[0]).forEach(k=> html += `<th>${k}</th>`);
-  html += "</tr>";
-
-  data.forEach(r=>{
-    html += "<tr>";
-    Object.values(r).forEach(v=> html += `<td>${v}</td>`);
-    html += "</tr>";
-  });
-
-  html += "</table>";
-
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([html], {type:"application/msword"}));
-  a.download = "Fee_Statement.doc";
-  a.click();
-}
-
-function printReport(){
-  window.print();
+  load();
 }
 </script>
 
 </body>
 </html>
 
- 
 
 
 
@@ -2594,6 +2524,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
