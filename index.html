@@ -1269,7 +1269,6 @@ function renderCourseChart(){
 
 
 
-
 <html>
 <head>
 <title>Sports Portal - Official Document</title>
@@ -1365,6 +1364,8 @@ button{
 button:hover{background:#14532d;}
 .logout{background:#b91c1c;}
 .lock{background:#7c2d12;}
+.edit-btn{background:#1e40af;}
+.delete-btn{background:#b91c1c;}
 .hidden{display:none;}
 
 /* Search Box */
@@ -1380,6 +1381,7 @@ button:hover{background:#14532d;}
   #document, #document *{visibility:visible;}
   #document{position:absolute;left:0;top:0;width:100%;margin:0;padding:0;}
   #document table{page-break-inside:auto;}
+  .edit-btn,.delete-btn{display:none;}
 }
 </style>
 </head>
@@ -1402,7 +1404,6 @@ button:hover{background:#14532d;}
   <div id="document">
 
     <div class="header">
-     
       <div class="school-name">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</div>
     </div>
 
@@ -1410,11 +1411,11 @@ button:hover{background:#14532d;}
 
     <!-- Vision & Mission Table -->
     <table id="officialTable">
-      <tr><th colspan="2">VISSION</th></tr>
+      <tr><th colspan="2">VISION</th></tr>
       <tr><td colspan="2">To nurture disciplined, talented and competitive students through sports excellence.</td></tr>
       <tr><th colspan="2">MISSION</th></tr>
       <tr><td colspan="2">To promote teamwork, health, leadership and professionalism through inclusive sporting activities.</td></tr>
-      <tr><th>OPORTS OFFICER</th><td id="officer"></td></tr>
+      <tr><th>SPORTS OFFICER</th><td id="officer"></td></tr>
     </table>
 
     <!-- Student Registration Table -->
@@ -1424,13 +1425,14 @@ button:hover{background:#14532d;}
         <th>NAME</th>
         <th>REGISTRATION NUMBER</th>
         <th>SPORTS</th>
+        <th>ACTIONS</th>
       </tr>
       <tbody id="rows"></tbody>
     </table>
 
     <div class="signature">
-      <div class="sign-line">Sports Officer Signature................</div>
-      <div class="sign-line">Date..................</div>
+      <div class="sign-line">Sports Officer Signature</div>
+      <div class="sign-line">Date</div>
     </div>
   </div>
 
@@ -1523,13 +1525,35 @@ function load(){
         <td>${d.name}</td>
         <td>${d.reg}</td>
         <td>${d.sport}</td>
+        <td>
+          <button class="edit-btn" onclick="edit(${i})" ${locked?'disabled':''}>Edit</button>
+          <button class="delete-btn" onclick="del(${i})" ${locked?'disabled':''}>Delete</button>
+        </td>
       </tr>`;
     }
   });
 }
 
+function edit(i){
+  if(locked){alert("Editing locked"); return;}
+  let d=JSON.parse(localStorage.getItem("sports"))[i];
+  nameInput.value=d.name;
+  regInput.value=d.reg;
+  sportSelect.value=d.sport;
+  editIndex=i;
+}
+
+function del(i){
+  if(locked){alert("Editing locked"); return;}
+  let data=JSON.parse(localStorage.getItem("sports"));
+  data.splice(i,1);
+  localStorage.setItem("sports", JSON.stringify(data));
+  load();
+}
+
 function toggleLock(){
   locked=!locked;
+  load();
   alert(locked?"Editing Locked":"Editing Unlocked");
 }
 
@@ -1538,7 +1562,6 @@ function printDoc(){
 }
 
 function downloadWord(){
-  // Add style for Word export to preserve tables and fonts
   let style = `<style>
     body{font-family:Segoe UI,sans-serif;}
     table{border-collapse:collapse;width:100%;}
@@ -2563,6 +2586,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
