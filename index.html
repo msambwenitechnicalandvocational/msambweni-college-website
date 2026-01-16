@@ -1273,200 +1273,284 @@ function renderCourseChart(){
 </section>
 
 
-<!-- 🌐 Modern College News & Announcements -->
-<section id="news">
-  <h2>📢 College News & Announcements</h2>
 
-  <!-- News Ticker with Ribbon -->
-  <div class="news-ticker">
-    <span class="ribbon">🔥 Breaking News</span>
-    <div class="ticker-track">
-      <div class="ticker-item">
-        <img src="logo.jpg" alt="Calendar" class="thumb">
-        <p><strong>NEW UPDATES</strong> DON'T MISS <em>📢 On 1st October 2025, Msambweni Technical & Vocational College will host exciting tournaments featuring Volleyball (Trainers vs. Trainees), Soccer (Trainers vs. Trainees), and the Finals Championship for the winners.</em>.</p>
-      </div>
-      <div class="ticker-item">
-        <img src="logo.jpg" alt="Application" class="thumb">
-        <p><strong>Applications</strong> for new students are <em>now open</em>.</p>
-      </div>
-      <div class="ticker-item">
-        <img src="logo.jpg" alt="Celebration" class="thumb">
-        <p><strong>Open Day</strong> scheduled for <em>1st September 2025</em>.</p>
-      </div>
-    </div>
-  </div>
 
-  <!-- Quick Links Grid -->
-  <div class="nav-buttons">
-    <div class="nav-card">
-      <img src="spo.jpg" alt="Sports" class="nav-img">
-      <h3>⚽ Sports</h3>
-      <p>📢 On 1st October 2025, Msambweni Technical & Vocational College will host exciting tournaments featuring Volleyball (Trainers vs. Trainees), Soccer (Trainers vs. Trainees), and the Finals Championship for the winners.</p>
-    </div>
-    <div class="nav-card">
-      <img src="knec.png" alt="Exams" class="nav-img">
-      <h3>📚 Exams</h3>
-      <p>Check timetables, guidelines, and past results instantly.</p>
-    </div>
-    <div class="nav-card">
-      <img src="food1.jpg" alt="Cultural" class="nav-img">
-      <h3>🎭 Cultural Events</h3>
-      <p>Celebrate diversity with performances and exhibitions.</p>
-    </div>
-    <div class="nav-card">
-      <img src="orie.jpg" alt="Clubs" class="nav-img">
-      <h3>🎉 Clubs & Activities</h3>
-      <p>Join student organizations, clubs, and fun activities.</p>
-    </div>
-  </div>
-
-  <!-- View All Button -->
-  <a href="announcements.html" class="view-btn">✨ View All Announcements ✨</a>
-</section>
+ <html>
+<head>
+<title>Sports Portal</title>
 
 <style>
-/* Section Container */
-#news {
-  position: relative;
-  padding: 70px 20px;
-  text-align: center;
-  background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
-  border-radius: 25px;
-  max-width: 1000px;
-  margin: 50px auto;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+body{
+  font-family:"Segoe UI",sans-serif;
+  background:#eef2f7;
+  padding:20px;
 }
 
-/* Heading */
-#news h2 {
-  font-size: 2.3rem;
-  font-weight: 800;
-  color: #222;
-  margin-bottom: 40px;
-  text-shadow: 1px 1px 4px rgba(0,0,0,0.1);
+.box{
+  max-width:950px;
+  margin:auto;
+  background:white;
+  padding:30px;
+  border-radius:15px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.15);
 }
 
-/* 🔥 News Ticker with Ribbon */
-.news-ticker {
-  max-width: 700px;
-  margin: 0 auto 50px;
-  overflow: hidden;
-  border-radius: 18px;
-  backdrop-filter: blur(10px);
-  background: rgba(255,255,255,0.5);
-  box-shadow: 0 6px 25px rgba(0,0,0,0.1);
-  position: relative;
+.logo{
+  text-align:center;
 }
-.ribbon {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: linear-gradient(135deg, #ff1744, #d50000);
-  color: white;
-  font-weight: bold;
-  font-size: 0.9rem;
-  padding: 6px 16px;
-  border-radius: 0 0 12px 0;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-  letter-spacing: 0.5px;
-}
-.ticker-track {
-  display: flex;
-  flex-direction: column;
-  animation: slideNews 12s linear infinite;
-}
-.news-ticker:hover .ticker-track {
-  animation-play-state: paused; /* ⏸ Pause on hover */
-}
-.ticker-item {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 20px;
-  font-size: 1.1rem;
-  color: #333;
-}
-.ticker-item strong { color: #0d47a1; }
-.thumb {
-  width: 45px; height: 45px;
-  border-radius: 12px;
-  object-fit: cover;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  transition: transform 0.3s ease;
-}
-.ticker-item:hover .thumb { transform: scale(1.15) rotate(3deg); }
-
-/* Ticker Animation */
-@keyframes slideNews {
-  0%   { transform: translateY(0); }
-  25%  { transform: translateY(0); }
-  33%  { transform: translateY(-100%); }
-  58%  { transform: translateY(-100%); }
-  66%  { transform: translateY(-200%); }
-  91%  { transform: translateY(-200%); }
-  100% { transform: translateY(0); }
+.logo img{
+  width:90px;
 }
 
-/* Quick Links Grid */
-.nav-buttons {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 25px;
-}
-.nav-card {
-  background: rgba(255,255,255,0.7);
-  backdrop-filter: blur(12px);
-  border-radius: 20px;
-  width: 220px;
-  padding: 25px 20px;
-  text-align: center;
-  transition: all 0.4s ease;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-  cursor: pointer;
-}
-.nav-card:hover {
-  transform: translateY(-10px) scale(1.05);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-}
-.nav-img {
-  width: 60px; height: 60px;
-  border-radius: 15px;
-  margin-bottom: 15px;
-  object-fit: cover;
-  transition: transform 0.4s ease;
-}
-.nav-card:hover .nav-img { transform: scale(1.15); }
-.nav-card h3 { font-size: 1.3rem; margin-bottom: 8px; color: #111; }
-.nav-card p { font-size: 0.95rem; color: #555; }
-
-/* Button */
-.view-btn {
-  display: inline-block;
-  margin-top: 40px;
-  padding: 14px 32px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: white;
-  background: linear-gradient(135deg, #ff6a00, #ee0979);
-  border-radius: 30px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-  text-decoration: none;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-.view-btn:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+.school{
+  font-weight:800;
+  font-size:1.4rem;
+  text-align:center;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  #news h2 { font-size: 1.8rem; }
-  .nav-card { width: 100%; max-width: 320px; }
+h3{text-align:center;}
+
+input,select,button{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+
+button{
+  background:#166534;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+button:hover{background:#14532d;}
+
+.logout{background:#b91c1c;}
+.edit{background:#1e40af;}
+.delete{background:#b91c1c;}
+.lock{background:#7c2d12;}
+
+.hidden{display:none;}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+th,td{
+  border:1px solid #ccc;
+  padding:8px;
+}
+th{background:#1e40af;color:white;}
+
+.controls{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+.controls button{flex:1;}
+
+.signature{
+  margin-top:40px;
+  display:flex;
+  justify-content:space-between;
+}
+.sign-line{
+  margin-top:40px;
+  border-top:1px solid #000;
+  width:260px;
+  text-align:center;
+  font-weight:600;
+}
+
+.search{
+  margin-top:10px;
+  background:#f1f5f9;
+  padding:10px;
+  border-radius:10px;
 }
 </style>
+</head>
 
+<body>
+
+<div id="login" class="box">
+  <h2>Sports Officer Login</h2>
+  <input id="u" placeholder="Username">
+  <input id="p" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <p id="err" style="color:red;text-align:center;"></p>
+</div>
+
+<div id="portal" class="box hidden">
+
+<div id="document">
+
+  <div class="logo">
+    <img src="logo.png">
+  </div>
+
+  <div class="school">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</div>
+  <h3>SPORTS DEPARTMENT – STUDENT REGISTRATION</h3>
+
+  <p><strong>Vision:</strong> To nurture disciplined, talented and competitive students through sports excellence.</p>
+  <p><strong>Mission:</strong> To promote teamwork, health, leadership and professionalism through inclusive sporting activities.</p>
+
+  <p><strong>Sports Officer:</strong> <span id="officer"></span></p>
+
+  <hr>
+
+  <div class="search">
+    <input id="search" placeholder="Search by name, reg or sport" onkeyup="load()">
+  </div>
+
+  <input id="name" placeholder="Student Name">
+  <input id="reg" placeholder="Registration Number">
+  <select id="sport">
+    <option value="">Select Sport</option>
+    <option>Football</option>
+    <option>Volleyball</option>
+    <option>Basketball</option>
+    <option>Netball</option>
+    <option>Athletics</option>
+  </select>
+
+  <button onclick="save()">Save / Update Student</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Reg No</th>
+        <th>Sport</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <div class="signature">
+    <div class="sign-line">Sports Officer Signature</div>
+    <div class="sign-line">Date</div>
+  </div>
+
+</div>
+
+<div class="controls">
+  <button onclick="printDoc()">Print</button>
+  <button onclick="downloadWord()">Download Word</button>
+  <button class="lock" onclick="toggleLock()">Lock / Unlock Editing</button>
+  <button class="logout" onclick="logout()">Logout</button>
+</div>
+
+</div>
+
+<script>
+const USER="sports";
+const PASS="12345";
+const OFFICER="Mr. Hassan Ali";
+let editIndex=null;
+let locked=false;
+
+officer.textContent=OFFICER;
+
+function login(){
+  if(u.value===USER && p.value===PASS){
+    localStorage.setItem("logged","yes");
+    login.classList.add("hidden");
+    portal.classList.remove("hidden");
+    load();
+  }else{err.textContent="Invalid login";}
+}
+
+function logout(){
+  localStorage.removeItem("logged");
+  location.reload();
+}
+
+function save(){
+  if(locked){alert("Editing locked");return;}
+  if(!name.value||!reg.value||!sport.value){alert("Fill all fields");return;}
+  let data=JSON.parse(localStorage.getItem("sports"))||[];
+
+  if(editIndex!==null){
+    data[editIndex]={name:name.value,reg:reg.value,sport:sport.value};
+    editIndex=null;
+  }else{
+    data.push({name:name.value,reg:reg.value,sport:sport.value});
+  }
+  localStorage.setItem("sports",JSON.stringify(data));
+  name.value=reg.value=""; sport.value="";
+  load();
+}
+
+function load(){
+  let q=search.value.toLowerCase();
+  let data=JSON.parse(localStorage.getItem("sports"))||[];
+  rows.innerHTML="";
+  data.forEach((d,i)=>{
+    if(d.name.toLowerCase().includes(q)||d.reg.toLowerCase().includes(q)||d.sport.toLowerCase().includes(q)){
+      rows.innerHTML+=`
+      <tr>
+        <td>${d.name}</td>
+        <td>${d.reg}</td>
+        <td>${d.sport}</td>
+        <td>
+          <button class="edit" onclick="edit(${i})">Edit</button>
+          <button class="delete" onclick="del(${i})">Delete</button>
+        </td>
+      </tr>`;
+    }
+  });
+}
+
+function edit(i){
+  if(locked){alert("Editing locked");return;}
+  let d=JSON.parse(localStorage.getItem("sports"))[i];
+  name.value=d.name; reg.value=d.reg; sport.value=d.sport;
+  editIndex=i;
+}
+
+function del(i){
+  if(locked){alert("Editing locked");return;}
+  let d=JSON.parse(localStorage.getItem("sports"));
+  d.splice(i,1);
+  localStorage.setItem("sports",JSON.stringify(d));
+  load();
+}
+
+function toggleLock(){
+  locked=!locked;
+  alert(locked?"Editing Locked":"Editing Unlocked");
+}
+
+function printDoc(){
+  window.print();
+}
+
+function downloadWord(){
+  let content=document.getElementById("document").innerHTML;
+  let blob=new Blob(['<html><body>'+content+'</body></html>'],{type:'application/msword'});
+  let a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="Sports_Registration_MTVTC.doc";
+  a.click();
+}
+
+if(localStorage.getItem("logged")==="yes"){
+  login.classList.add("hidden");
+  portal.classList.remove("hidden");
+  load();
+}
+</script>
+
+</body>
+</html>
+
+
+
+ 
  <html>
 <head>
 <title>Finance Portal</title>
@@ -2464,6 +2548,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
