@@ -1467,6 +1467,233 @@ function renderCourseChart(){
 }
 </style>
 
+ <html>
+<head>
+<title>Finance Portal</title>
+</head>
+
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="loginBox" class="card-login">
+  <h2>🔐 Finance Login</h2>
+  <input id="loginUser" placeholder="Username">
+  <input id="loginPass" type="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+  <p id="loginError"></p>
+</div>
+
+<!-- ================= PORTAL ================= -->
+<div id="portal" style="display:none">
+
+<h1 class="college-title">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h1>
+<h2 class="subtitle">FEE STATEMENT FOR FEES</h2>
+
+<nav>
+  <button onclick="showSection('paymentsSection')">Fee Payments</button>
+  <button onclick="showSection('dashboardSection')">Dashboard</button>
+  <button onclick="logout()" class="logout-btn">Logout</button>
+</nav>
+
+<!-- ================= PAYMENTS ================= -->
+<section id="paymentsSection" class="section">
+  <h3>Student Fee Payment</h3>
+
+  <form id="paymentForm">
+    <input id="studentName" placeholder="Student Name" required>
+    <input id="studentReg" placeholder="Registration Number" required>
+
+    <select id="term" required>
+      <option value="">Select Term</option>
+      <option>Term 1</option>
+      <option>Term 2</option>
+      <option>Term 3</option>
+    </select>
+
+    <input id="paymentAmount" type="number" placeholder="Amount Paid" required>
+
+    <button type="submit">Save Payment</button>
+  </form>
+
+  <table id="paymentsTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Reg No</th>
+        <th>Term</th>
+        <th>Paid</th>
+        <th>Total Paid</th>
+        <th>Balance</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button onclick="downloadWord()">Download Word</button>
+  <button onclick="printReport()">Print</button>
+</section>
+
+<!-- ================= DASHBOARD ================= -->
+<section id="dashboardSection" class="section" style="display:none">
+  <h3>Finance Summary</h3>
+  <div id="dashboard"></div>
+</section>
+
+</div>
+
+<!-- ================= CSS ================= -->
+<style>
+body{font-family:Segoe UI;background:#f4f6f8;margin:0}
+.card-login{max-width:400px;margin:80px auto;background:#fff;padding:35px;border-radius:18px;box-shadow:0 6px 20px rgba(0,0,0,.2);text-align:center}
+.card-login input,button,select{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:1px solid #ccc}
+button{background:#006064;color:white;border:none;font-weight:bold;cursor:pointer}
+.logout-btn{background:#b71c1c}
+.college-title{text-align:center;color:#006064;margin-top:20px}
+.subtitle{text-align:center;color:#004d40;margin-bottom:20px}
+nav{text-align:center;margin-bottom:15px}
+nav button{margin:5px}
+.section{max-width:1100px;margin:20px auto;background:white;padding:25px;border-radius:18px;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+table{width:100%;border-collapse:collapse;margin-top:15px}
+th{background:#006064;color:white}
+td,th{border:1px solid #ccc;padding:8px;text-align:center}
+tr:nth-child(even){background:#e0f7fa}
+</style>
+
+<!-- ================= JAVASCRIPT ================= -->
+<script>
+const TOTAL_FEES = 40000;
+const USER="FINANCE";
+const PASS="finance@123";
+
+const loginBox=document.getElementById("loginBox");
+const portal=document.getElementById("portal");
+const loginError=document.getElementById("loginError");
+
+const paymentForm=document.getElementById("paymentForm");
+const paymentsTableBody=document.querySelector("#paymentsTable tbody");
+const dashboard=document.getElementById("dashboard");
+
+const studentName=document.getElementById("studentName");
+const studentReg=document.getElementById("studentReg");
+const term=document.getElementById("term");
+const paymentAmount=document.getElementById("paymentAmount");
+
+function login(){
+  if(loginUser.value.toUpperCase()===USER && loginPass.value===PASS){
+    loginBox.style.display="none";
+    portal.style.display="block";
+    loadPayments();
+    updateDashboard();
+  }else{
+    loginError.innerText="Invalid username or password";
+  }
+}
+
+function logout(){location.reload();}
+
+function showSection(id){
+  document.querySelectorAll("section").forEach(s=>s.style.display="none");
+  document.getElementById(id).style.display="block";
+}
+
+paymentForm.onsubmit=e=>{
+  e.preventDefault();
+  let data=JSON.parse(localStorage.getItem("feePayments")||"[]");
+
+  const paid=Number(paymentAmount.value);
+  const previous=data.filter(r=>r.reg===studentReg.value)
+                     .reduce((s,r)=>s+r.amount,0);
+
+  const record={
+    student:studentName.value,
+    reg:studentReg.value,
+    term:term.value,
+    amount:paid,
+    totalPaid:previous+paid,
+    balance:TOTAL_FEES-(previous+paid),
+    date:new Date().toLocaleDateString()
+  };
+
+  data.push(record);
+  localStorage.setItem("feePayments",JSON.stringify(data));
+  paymentForm.reset();
+  loadPayments();
+  updateDashboard();
+};
+
+function loadPayments(){
+  paymentsTableBody.innerHTML="";
+  let data=JSON.parse(localStorage.getItem("feePayments")||"[]");
+
+  data.forEach((r,i)=>{
+    const tr=document.createElement("tr");
+    Object.values(r).forEach(v=>{
+      const td=document.createElement("td");
+      td.innerText=v;
+      tr.appendChild(td);
+    });
+    const td=document.createElement("td");
+    const del=document.createElement("button");
+    del.innerText="Delete";
+    del.onclick=()=>{
+      data.splice(i,1);
+      localStorage.setItem("feePayments",JSON.stringify(data));
+      loadPayments();
+      updateDashboard();
+    };
+    td.appendChild(del);
+    tr.appendChild(td);
+    paymentsTableBody.appendChild(tr);
+  });
+}
+
+function updateDashboard(){
+  let data=JSON.parse(localStorage.getItem("feePayments")||"[]");
+  let paid=data.reduce((s,r)=>s+r.amount,0);
+  let balance=data.reduce((s,r)=>s+r.balance,0);
+  dashboard.innerText=`Total Paid: KES ${paid} | Outstanding Balance: KES ${balance}`;
+}
+
+function downloadWord(){
+  let data=JSON.parse(localStorage.getItem("feePayments")||"[]");
+  if(!data.length){alert("No records");return;}
+
+  let html=`<h2 style="color:#006064">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>
+  <h3 style="color:#004d40">FEE STATEMENT FOR FEES</h3>
+  <table border="1" style="border-collapse:collapse;width:100%">`;
+
+  html+="<tr>";
+  Object.keys(data[0]).forEach(k=>{
+    html+=`<th style="background:#006064;color:white">${k}</th>`;
+  });
+  html+="</tr>";
+
+  data.forEach(r=>{
+    html+="<tr>";
+    Object.values(r).forEach(v=>html+=`<td>${v}</td>`);
+    html+="</tr>";
+  });
+  html+="</table>";
+
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([html],{type:"application/msword"}));
+  a.download="Fee_Statement.doc";
+  a.click();
+}
+
+function printReport(){
+  let w=window.open("");
+  w.document.write(document.getElementById("paymentsSection").innerHTML);
+  w.print();
+}
+</script>
+
+</body>
+</html>
+
+
  
 
 
@@ -2220,6 +2447,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
