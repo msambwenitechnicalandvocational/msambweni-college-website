@@ -1620,44 +1620,200 @@ h2,h3,h4 {margin:8px 0;}
     <button onclick="ictLogout()" style="padding:12px 18px;margin:5px;border:none;border-radius:8px;background:#d32f2f;color:white;">Logout</button>
   </div>
 
-  <!-- ===================== ADMINISTRATION ===================== -->
-  <section id="ADMINISTRATION" style="display:none;background:#f0f4f8;padding:25px;border-radius:15px;">
-    <h3 style="text-align:center; color:#004d40; font-weight:bold;">📊 ADMINISTRATION FORM</h3>
-    <form id="adminForm" style="max-width:850px;margin:auto; background:white; padding:25px; border-radius:12px;">
-      <div style="display:flex; gap:15px; flex-wrap:wrap;">
-        <input type="text" id="admName" placeholder="Full Name" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
-        <input type="text" id="admReg" placeholder="Registration Number" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
-      </div>
-      <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:15px;">
-        <select id="admDept" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
-          <option value="">Select Department</option>
-          <option value="ICT">ICT</option>
-          <option value="Business">Business</option>
-          <option value="Engineering">Engineering</option>
-        </select>
-        <select id="admGender" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
-          <option value="">Select Gender</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-      </div>
-      <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:15px;">
-        <input type="text" id="admCourse" placeholder="Course Taken" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
-        <input type="number" id="admYear" placeholder="Year of Admission" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
-      </div>
-      <div style="margin-top:15px;">
-        <label style="font-weight:bold;">Upload Document (PDF, DOCX):</label>
-        <input type="file" id="admDoc" accept=".pdf,.doc,.docx" style="display:block; margin-top:5px;">
-      </div>
-      <div style="text-align:center; margin-top:20px;">
-        <button type="submit" style="padding:12px 25px; background:#004d40; color:white; border:none; border-radius:8px;">Submit</button>
-        <button type="button" id="admDownload" style="padding:12px 25px; background:#00796b; color:white; border:none; border-radius:8px;">Download Word</button>
-        <button type="button" id="admPrint" style="padding:12px 25px; background:#00695c; color:white; border:none; border-radius:8px;">Print</button>
-      </div>
-    </form>
-    <div id="adminList" style="max-width:850px;margin:25px auto; display:flex; flex-direction:column; gap:12px;"></div>
-  </section>
+<!-- ===================== ADMINISTRATION ===================== -->
+<section id="ADMINISTRATION" style="display:none;background:#f0f4f8;padding:25px;border-radius:15px;">
+  <h3 style="text-align:center; color:#004d40; font-weight:bold;">📊 ADMINISTRATION FORM</h3>
 
+  <!-- Administration Form -->
+  <form id="adminForm" style="max-width:850px;margin:auto; background:white; padding:25px; border-radius:12px;">
+    <div style="display:flex; gap:15px; flex-wrap:wrap;">
+      <input type="text" id="admName" placeholder="Full Name" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+      <input type="text" id="admReg" placeholder="Registration Number" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+    </div>
+    <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:15px;">
+      <select id="admDept" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+        <option value="">Select Department</option>
+        <option value="ICT">ICT</option>
+        <option value="Business">Business</option>
+        <option value="Engineering">Engineering</option>
+      </select>
+      <select id="admGender" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+        <option value="">Select Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+    </div>
+    <div style="display:flex; gap:15px; flex-wrap:wrap; margin-top:15px;">
+      <input type="text" id="admCourse" placeholder="Course Taken" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+      <input type="number" id="admYear" placeholder="Year of Admission" required style="flex:1; padding:12px; border-radius:8px; border:1px solid #ccc; font-size:14px;">
+    </div>
+    <div style="margin-top:15px;">
+      <label style="font-weight:bold;">Upload Document (PDF, DOCX):</label>
+      <input type="file" id="admDoc" accept=".pdf,.doc,.docx" style="display:block; margin-top:5px;">
+    </div>
+    <div style="text-align:center; margin-top:20px;">
+      <button type="submit" style="padding:12px 25px; background:#004d40; color:white; border:none; border-radius:8px;">Submit</button>
+      <button type="button" id="admDownload" style="padding:12px 25px; background:#00796b; color:white; border:none; border-radius:8px;">Download Word</button>
+      <button type="button" id="admPrint" style="padding:12px 25px; background:#00695c; color:white; border:none; border-radius:8px;">Print</button>
+    </div>
+  </form>
+
+  <!-- Administration Records Table -->
+  <table id="adminTable" style="max-width:850px;margin:25px auto; width:100%; border-collapse:collapse; display:none;">
+    <thead>
+      <tr style="background:#004d40; color:white;">
+        <th style="padding:10px; border:1px solid #ccc;">#</th>
+        <th style="padding:10px; border:1px solid #ccc;">Full Name</th>
+        <th style="padding:10px; border:1px solid #ccc;">Registration Number</th>
+        <th style="padding:10px; border:1px solid #ccc;">Department</th>
+        <th style="padding:10px; border:1px solid #ccc;">Gender</th>
+        <th style="padding:10px; border:1px solid #ccc;">Course</th>
+        <th style="padding:10px; border:1px solid #ccc;">Year</th>
+        <th style="padding:10px; border:1px solid #ccc;">Document</th>
+        <th style="padding:10px; border:1px solid #ccc;">Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</section>
+
+<!-- DOCX SCRIPT -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.7.0/docx.umd.js"></script>
+<script>
+let adminData = JSON.parse(localStorage.getItem("adminData")) || [];
+const adminForm = document.getElementById("adminForm");
+const adminTableBody = document.querySelector("#adminTable tbody");
+
+// Save Record
+adminForm.addEventListener("submit", function(e){
+  e.preventDefault();
+  const record = {
+    name: document.getElementById("admName").value,
+    reg: document.getElementById("admReg").value,
+    dept: document.getElementById("admDept").value,
+    gender: document.getElementById("admGender").value,
+    course: document.getElementById("admCourse").value,
+    year: document.getElementById("admYear").value,
+    doc: document.getElementById("admDoc").files[0] ? document.getElementById("admDoc").files[0].name : "No File"
+  };
+  adminData.push(record);
+  localStorage.setItem("adminData", JSON.stringify(adminData));
+  adminForm.reset();
+  displayAdmin();
+});
+
+// Display Records
+function displayAdmin(){
+  if(adminData.length===0){
+    document.getElementById("adminTable").style.display="none";
+    return;
+  }
+  document.getElementById("adminTable").style.display="table";
+  adminTableBody.innerHTML = "";
+  adminData.forEach((r,i)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td style="padding:8px; border:1px solid #ccc;">${i+1}</td>
+      <td style="padding:8px; border:1px solid #ccc;">${r.name}</td>
+      <td style="padding:8px; border:1px solid #ccc;">${r.reg}</td>
+      <td style="padding:8px; border:1px solid #ccc;">${r.dept}</td>
+      <td style="padding:8px; border:1px solid #ccc;">${r.gender}</td>
+      <td style="padding:8px; border:1px solid #ccc;">${r.course}</td>
+      <td style="padding:8px; border:1px solid #ccc;">${r.year}</td>
+      <td style="padding:8px; border:1px solid #ccc;">${r.doc}</td>
+      <td style="padding:8px; border:1px solid #ccc;">
+        <button onclick="editAdmin(${i})" style="padding:4px 8px;background:#ffc107;color:white;border:none;border-radius:4px;">Edit</button>
+        <button onclick="deleteAdmin(${i})" style="padding:4px 8px;background:#f44336;color:white;border:none;border-radius:4px;">Delete</button>
+      </td>`;
+    adminTableBody.appendChild(tr);
+  });
+}
+
+// Edit & Delete
+function editAdmin(i){
+  const r = adminData[i];
+  document.getElementById("admName").value = r.name;
+  document.getElementById("admReg").value = r.reg;
+  document.getElementById("admDept").value = r.dept;
+  document.getElementById("admGender").value = r.gender;
+  document.getElementById("admCourse").value = r.course;
+  document.getElementById("admYear").value = r.year;
+  adminData.splice(i,1);
+  localStorage.setItem("adminData",JSON.stringify(adminData));
+  displayAdmin();
+}
+function deleteAdmin(i){
+  if(confirm("Delete this record?")){
+    adminData.splice(i,1);
+    localStorage.setItem("adminData",JSON.stringify(adminData));
+    displayAdmin();
+  }
+}
+
+// DOWNLOAD WORD
+document.getElementById("admDownload").addEventListener("click", async ()=>{
+  if(adminData.length===0){ alert("No data to download"); return; }
+  const { Document, Packer, Paragraph, Table, TableRow, TableCell, WidthType, AlignmentType } = docx;
+  
+  const rows = [new TableRow({
+    children:["#","Name","Reg","Dept","Gender","Course","Year","Document"].map(h=>new TableCell({children:[new Paragraph({text:h,bold:true})]}))
+  })];
+
+  adminData.forEach((r,i)=>{
+    rows.push(new TableRow({
+      children:[i+1,r.name,r.reg,r.dept,r.gender,r.course,r.year,r.doc].map(v=>new TableCell({children:[new Paragraph(String(v))]}))
+    }));
+  });
+
+  const doc = new Document({
+    sections:[{
+      children:[
+        new Paragraph({text:"MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE", bold:true, alignment:AlignmentType.CENTER}),
+        new Paragraph({text:"Administration Records", bold:true, alignment:AlignmentType.CENTER}),
+        new Paragraph({text:"Date: "+new Date().toLocaleString(), italics:true, alignment:AlignmentType.CENTER}),
+        new Table({rows, width:{size:100, type:WidthType.PERCENTAGE}})
+      ]
+    }]
+  });
+
+  const blob = await Packer.toBlob(doc);
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "Administration_Records_MSAMBWENI.docx";
+  link.click();
+});
+
+// PRINT
+document.getElementById("admPrint").addEventListener("click", ()=>{
+  if(adminData.length===0){ alert("No records to print"); return; }
+  const win = window.open("","_blank","height=600,width=900");
+  win.document.write('<h2 style="text-align:center;">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>');
+  win.document.write('<h3 style="text-align:center;">Administration Records</h3>');
+  win.document.write('<p style="text-align:center;">Date: '+new Date().toLocaleString()+'</p>');
+  win.document.write('<table border="1" cellpadding="6" cellspacing="0" style="border-collapse:collapse;width:100%;">');
+  win.document.write('<tr><th>#</th><th>Name</th><th>Reg</th><th>Dept</th><th>Gender</th><th>Course</th><th>Year</th><th>Document</th></tr>');
+  adminData.forEach((r,i)=>{
+    win.document.write(`<tr>
+      <td>${i+1}</td>
+      <td>${r.name}</td>
+      <td>${r.reg}</td>
+      <td>${r.dept}</td>
+      <td>${r.gender}</td>
+      <td>${r.course}</td>
+      <td>${r.year}</td>
+      <td>${r.doc}</td>
+    </tr>`);
+  });
+  win.document.write('</table></body></html>');
+  win.document.close();
+  win.print();
+});
+
+displayAdmin();
+</script>
+
+
+ 
   <!-- ===================== STUDENTS ===================== -->
   <section id="STUDENTS" style="display:none;background:#b2dfdb;padding:25px;border-radius:12px;">
     <h3 style="text-align:center;">👨‍🎓 STUDENTS FORM</h3>
@@ -2097,6 +2253,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
