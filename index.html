@@ -1,3 +1,89 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Student Registration - MSAMBWENI TVC</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #e3f2fd; margin:0; padding:0; }
+    h2 { text-align:center; color:#0d47a1; margin-top:30px; }
+    form { max-width:500px; margin:30px auto; background:#fff; padding:25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+    input { width:100%; padding:12px; margin-bottom:12px; border-radius:8px; border:1px solid #90caf9; font-size:14px; }
+    button { width:100%; padding:14px; background:#0d47a1; color:white; border:none; border-radius:8px; font-size:16px; cursor:pointer; }
+    #formMessage { text-align:center; margin-top:12px; font-weight:bold; }
+  </style>
+
+  <!-- Firebase Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<h2>Student Registration - MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>
+
+<form id="regForm">
+  <input type="text" id="name" placeholder="Full Name" required>
+  <input type="email" id="email" placeholder="Email" required>
+  <input type="text" id="phone" placeholder="Phone Number" required>
+  <button type="submit">Register</button>
+  <p id="formMessage"></p>
+</form>
+
+<script>
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
+    authDomain: "studentregistration-b3f93.firebaseapp.com",
+    databaseURL: "https://studentregistration-b3f93-default-rtdb.firebaseio.com",
+    projectId: "studentregistration-b3f93",
+    storageBucket: "studentregistration-b3f93.firebasestorage.app",
+    messagingSenderId: "429282074438",
+    appId: "1:429282074438:web:37c43b51a9504f793ecf47",
+    measurementId: "G-6QR2B6MSY8"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // Form submission
+  const form = document.getElementById("regForm");
+  const msg = document.getElementById("formMessage");
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const phone = document.getElementById("phone").value;
+
+    db.collection("registrations").add({
+      name: name,
+      email: email,
+      phone: phone,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+      msg.style.color = "green";
+      msg.textContent = "Registration successful!";
+      form.reset();
+    })
+    .catch((error) => {
+      msg.style.color = "red";
+      msg.textContent = "Error: " + error.message;
+      console.error(error);
+    });
+  });
+</script>
+
+</body>
+</html>
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2253,6 +2339,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
