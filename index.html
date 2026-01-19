@@ -1,75 +1,132 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Msambweni Technical & Vocational College Portal</title>
+<title>Msambweni Technical & Vocational College</title>
 
 <style>
-  * { margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; }
-  body { background:#e3f2fd; color:#333; line-height:1.6; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: Arial, sans-serif; line-height:1.6; color:#333; scroll-behavior: smooth; }
 
   header {
-    background:#2c7be5; color:#fff; padding:15px 20px; text-align:center; font-size:22px; font-weight:bold; position:sticky; top:0; z-index:1000;
+    background:#2c7be5;
+    color:#fff;
+    padding:15px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    position:sticky;
+    top:0;
+    z-index:1000;
   }
+  .header-left, .header-right { width:60px; height:60px; }
+  .header-left img, .header-right img { width:100%; height:auto; }
+  .header-center { flex:1; text-align:center; font-size:20px; font-weight:bold; }
 
-  .portal-card { max-width:900px; margin:30px auto; background:#fff; padding:25px; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.15); }
+  nav ul { display:flex; list-style:none; justify-content:center; flex-wrap:wrap; margin-top:10px; width:100%; }
+  nav ul li { margin:5px 15px; }
+  nav ul li a { color:#fff; text-decoration:none; font-weight:bold; }
+  nav ul li a:hover { text-decoration:underline; }
+
+  .hero { background:url('college-hero.jpg') center/cover no-repeat; height:70vh; display:flex; align-items:center; justify-content:center; color:#fff; text-align:center; }
+  .hero-content h2 { font-size:40px; margin-bottom:10px; text-shadow:2px 2px 4px rgba(0,0,0,0.5);}
+  .hero-content p { font-size:18px; margin-bottom:20px; text-shadow:1px 1px 3px rgba(0,0,0,0.5); }
+
+  .btn { display:inline-block; padding:12px 25px; background:#ffcc00; color:#333; text-decoration:none; border-radius:8px; font-weight:bold; cursor:pointer; }
+  .btn:hover { background:#e6b800; }
+
+  section { padding:60px 20px; }
+  section h2 { font-size:28px; margin-bottom:20px; text-align:center; color:#2c7be5; }
+  section p, section ul { max-width:800px; margin:auto; margin-bottom:20px; text-align:center; }
+
+  .portal-card { max-width:800px; margin:30px auto; background:#fff; padding:25px; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.15); }
   .tabs { display:flex; justify-content:space-around; margin-bottom:20px; }
   .tab-btn { padding:10px 20px; border:none; background:#f0f2f5; cursor:pointer; border-radius:8px; font-weight:bold; transition:0.3s; }
   .tab-btn.active { background:#2c7be5; color:#fff; }
+  .portal-form { display:none; flex-direction:column; gap:15px; }
+  .portal-form.active { display:flex; }
 
-  form { display:flex; flex-direction:column; gap:15px; }
-  input, select { padding:12px; border-radius:8px; border:1px solid #90caf9; font-size:14px; width:100%; }
-  button { padding:12px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; background:#2c7be5; color:#fff; }
+  input, select, textarea, button { padding:12px; border-radius:6px; border:1px solid #ccc; font-size:14px; }
+  button { background:#2c7be5; color:#fff; border:none; cursor:pointer; font-weight:bold; }
   button:hover { background:#1a5bbf; }
 
-  .message { text-align:center; font-weight:bold; margin-top:8px; }
-
-  table { width:100%; border-collapse:collapse; margin-top:15px; }
-  th, td { border:1px solid #333; padding:10px; text-align:center; }
+  table { width:100%; border-collapse:collapse; margin-top:20px; }
+  table, th, td { border:1px solid #333; }
+  th, td { padding:10px; text-align:center; }
   th { background:#2c7be5; color:#fff; }
 
-  .action-btn { padding:5px 10px; margin:2px; border:none; border-radius:5px; cursor:pointer; }
-  .edit-btn { background:#ff9800; color:#fff; }
-  .delete-btn { background:#f44336; color:#fff; }
-
+  footer { background:#333; color:#fff; text-align:center; padding:20px; }
 </style>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<!-- 🔥 FIREBASE SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
+    authDomain: "studentregistration-b3f93.firebaseapp.com",
+    projectId: "studentregistration-b3f93",
+    storageBucket: "studentregistration-b3f93.appspot.com",
+    messagingSenderId: "429282074438",
+    appId: "1:429282074438:web:37c43b51a9504f793ecf47"
+  };
+
+  // Initialize Firebase
+  window.firebaseApp = initializeApp(firebaseConfig);
+  window.db = getFirestore(window.firebaseApp);
+</script>
 </head>
 
 <body>
-<header>Msambweni Technical & Vocational College Portal</header>
+<header>
+  <div class="header-left"><img src="logo-left.png" alt="Logo"></div>
+  <div class="header-center">Msambweni Technical & Vocational College</div>
+  <div class="header-right"><img src="logo-right.png" alt="Logo"></div>
+</header>
 
-<div class="portal-card">
-  <div class="tabs">
-    <button class="tab-btn active" onclick="showTab('student')">Student Form</button>
-    <button class="tab-btn" onclick="showTab('admin')">Administration Form</button>
-    <button class="tab-btn" onclick="showTab('academics')">Academics Form</button>
+<nav>
+  <ul>
+    <li><a href="#home">Home</a></li>
+    <li><a href="#portals">Portals</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="home">
+  <div class="hero-content">
+    <h2>Welcome to Msambweni TVC</h2>
+    <p>Empowering students for a brighter future</p>
+    <a class="btn" href="#portals">Explore Portals</a>
   </div>
+</section>
 
-  <!-- Student Form -->
-  <section id="student" class="tab-content">
-    <form id="studentForm">
+<section id="portals">
+  <h2>College Portals</h2>
+
+  <div class="portal-card">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="student">Student Form</button>
+      <button class="tab-btn" data-tab="admin">Administration Form</button>
+      <button class="tab-btn" data-tab="academics">Academics Form</button>
+    </div>
+
+    <!-- STUDENT FORM -->
+    <form id="studentForm" class="portal-form active">
       <input type="text" id="stuName" placeholder="Full Name" required>
       <input type="email" id="stuEmail" placeholder="Email" required>
       <input type="text" id="stuPhone" placeholder="Phone Number" required>
-      <button type="submit">Submit Student</button>
-      <p id="stuMessage" class="message"></p>
+      <button type="submit">Register Student</button>
+      <table id="studentTable"><thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead><tbody></tbody></table>
     </form>
-    <table id="studentTable">
-      <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Actions</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </section>
 
-  <!-- Administration Form -->
-  <section id="admin" class="tab-content" style="display:none;">
-    <form id="adminForm">
+    <!-- ADMINISTRATION FORM -->
+    <form id="adminForm" class="portal-form">
       <input type="text" id="admName" placeholder="Full Name" required>
-      <input type="text" id="admReg" placeholder="Registration Number" required>
+      <input type="text" id="admReg" placeholder="Reg Number" required>
       <select id="admDept" required>
         <option value="">Select Department</option>
         <option value="ICT">ICT</option>
@@ -81,160 +138,27 @@
         <option value="Male">Male</option>
         <option value="Female">Female</option>
       </select>
-      <button type="submit">Submit Administration</button>
-      <p id="admMessage" class="message"></p>
+      <button type="submit">Save Administration</button>
+      <table id="adminTable"><thead><tr><th>Name</th><th>Reg</th><th>Dept</th><th>Gender</th></tr></thead><tbody></tbody></table>
     </form>
-    <table id="adminTable">
-      <thead><tr><th>Name</th><th>Reg</th><th>Department</th><th>Gender</th><th>Actions</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </section>
 
-  <!-- Academics Form -->
-  <section id="academics" class="tab-content" style="display:none;">
-    <form id="acadForm">
+    <!-- ACADEMICS FORM -->
+    <form id="acadForm" class="portal-form">
       <input type="text" id="acadName" placeholder="Student Name" required>
       <input type="text" id="acadReg" placeholder="Registration Number" required>
       <input type="text" id="acadUnit" placeholder="Unit Name" required>
-      <input type="number" id="acadCAT" placeholder="CAT (30)" required>
-      <input type="number" id="acadExam" placeholder="Exam (70)" required>
-      <button type="submit">Submit Academic</button>
-      <p id="acadMessage" class="message"></p>
+      <input type="number" id="acadCAT" placeholder="CAT Score" required>
+      <input type="number" id="acadExam" placeholder="Exam Score" required>
+      <button type="submit">Save Academics</button>
+      <table id="acadTable"><thead><tr><th>Name</th><th>Reg</th><th>Unit</th><th>CAT</th><th>Exam</th><th>Total</th><th>Grade</th></tr></thead><tbody></tbody></table>
     </form>
-    <table id="acadTable">
-      <thead><tr><th>Name</th><th>Reg</th><th>Unit</th><th>Total</th><th>GPA</th><th>Grade</th><th>Actions</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </section>
-</div>
 
-<script>
-  // Initialize Firebase
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "XXXX",
-    appId: "XXXX"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+  </div>
+</section>
 
-  function showTab(tab) {
-    document.querySelectorAll('.tab-content').forEach(s => s.style.display='none');
-    document.getElementById(tab).style.display='block';
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-  }
-
-  function createActionButtons(id, collection, tableBody, form, inputs, messageId) {
-    const editBtn = document.createElement('button');
-    editBtn.innerText='Edit'; editBtn.className='action-btn edit-btn';
-    editBtn.onclick = () => {
-      db.collection(collection).doc(id).get().then(doc => {
-        inputs.forEach(inp => document.getElementById(inp).value = doc.data()[inp]);
-      });
-    };
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.innerText='Delete'; deleteBtn.className='action-btn delete-btn';
-    deleteBtn.onclick = () => {
-      if(confirm('Delete this record?')){
-        db.collection(collection).doc(id).delete();
-        tableBody.removeChild(editBtn.parentElement);
-        document.getElementById(messageId).innerText = 'Record deleted successfully';
-        setTimeout(()=>document.getElementById(messageId).innerText='',2000);
-      }
-    };
-
-    const td = document.createElement('td');
-    td.appendChild(editBtn); td.appendChild(deleteBtn);
-    return td;
-  }
-
-  // Student Form
-  const studentForm = document.getElementById('studentForm');
-  const studentTable = document.querySelector('#studentTable tbody');
-  studentForm.addEventListener('submit', e=>{
-    e.preventDefault();
-    const data = {
-      stuName: studentForm.stuName.value,
-      stuEmail: studentForm.stuEmail.value,
-      stuPhone: studentForm.stuPhone.value
-    };
-    db.collection('students').add(data).then(docRef=>{
-      const tr = document.createElement('tr');
-      tr.innerHTML=`<td>${data.stuName}</td><td>${data.stuEmail}</td><td>${data.stuPhone}</td>`;
-      tr.appendChild(createActionButtons(docRef.id,'students',tr,['studentForm'],['stuName','stuEmail','stuPhone'],'stuMessage'));
-      studentTable.appendChild(tr);
-      studentForm.reset();
-      document.getElementById('stuMessage').innerText='Student registered successfully!';
-      setTimeout(()=>document.getElementById('stuMessage').innerText='',2000);
-    });
-  });
-
-  // Administration Form
-  const adminForm = document.getElementById('adminForm');
-  const adminTable = document.querySelector('#adminTable tbody');
-  adminForm.addEventListener('submit', e=>{
-    e.preventDefault();
-    const data = {
-      admName: adminForm.admName.value,
-      admReg: adminForm.admReg.value,
-      admDept: adminForm.admDept.value,
-      admGender: adminForm.admGender.value
-    };
-    db.collection('administration').add(data).then(docRef=>{
-      const tr = document.createElement('tr');
-      tr.innerHTML=`<td>${data.admName}</td><td>${data.admReg}</td><td>${data.admDept}</td><td>${data.admGender}</td>`;
-      tr.appendChild(createActionButtons(docRef.id,'administration',tr,['adminForm'],['admName','admReg','admDept','admGender'],'admMessage'));
-      adminTable.appendChild(tr);
-      adminForm.reset();
-      document.getElementById('admMessage').innerText='Administration record saved!';
-      setTimeout(()=>document.getElementById('admMessage').innerText='',2000);
-    });
-  });
-
-  // Academics Form
-  const acadForm = document.getElementById('acadForm');
-  const acadTable = document.querySelector('#acadTable tbody');
-  acadForm.addEventListener('submit', e=>{
-    e.preventDefault();
-    const cat = Number(acadForm.acadCAT.value);
-    const exam = Number(acadForm.acadExam.value);
-    const total = cat + exam;
-    const gpa = ((total/100)*4).toFixed(2);
-    let grade = '';
-    if(total >=80) grade='Mastery';
-    else if(total>=65) grade='Proficient';
-    else if(total>=50) grade='Competent';
-    else grade='Not Competent';
-
-    const data = {
-      acadName: acadForm.acadName.value,
-      acadReg: acadForm.acadReg.value,
-      acadUnit: acadForm.acadUnit.value,
-      acadCAT: cat,
-      acadExam: exam,
-      total, gpa, grade
-    };
-    db.collection('academics').add(data).then(docRef=>{
-      const tr = document.createElement('tr');
-      tr.innerHTML=`<td>${data.acadName}</td><td>${data.acadReg}</td><td>${data.acadUnit}</td><td>${data.total}</td><td>${data.gpa}</td><td>${data.grade}</td>`;
-      tr.appendChild(createActionButtons(docRef.id,'academics',tr,['acadForm'],['acadName','acadReg','acadUnit','acadCAT','acadExam'],'acadMessage'));
-      acadTable.appendChild(tr);
-      acadForm.reset();
-      document.getElementById('acadMessage').innerText='Academic record saved successfully!';
-      setTimeout(()=>document.getElementById('acadMessage').innerText='',2000);
-    });
-  });
-
-</script>
-
-</body>
-</html>
-
+<footer>
+  &copy; 2026 Msambweni Technical & Vocational College. All rights reserved.
+</footer>
 
 <script type="module">
   const tabs = document.querySelectorAll('.tab-btn');
@@ -337,6 +261,11 @@
 
 </body>
 </html>
+
+
+
+
+
 
 
 
@@ -2598,6 +2527,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
