@@ -292,7 +292,7 @@
 <body>
 <header>
   <div class="header-left">
-    <img src="logo.jpg" alt="College Logo">
+    <img src="knec.png" alt="College Logo">
   </div>
   <div class="header-center">
     <span>MSAMBWENI <strong>TECHNICAL AND VOCATIONAL </strong>COLLEGE</span>
@@ -535,147 +535,169 @@
       <button class="tab-btn" data-tab="admin">Administration Form</button>
       <button class="tab-btn" data-tab="academics">Academics Form</button>
     </div>
+<!-- STUDENT FORM -->
+<form id="studentForm" class="portal-form active">
+  <input type="text" id="stuName" placeholder="Full Name" required>
+  <input type="email" id="stuEmail" placeholder="Email" required>
+  <input type="text" id="stuPhone" placeholder="Phone Number" required>
+  <button type="submit">Register Student</button>
 
-    <!-- STUDENT FORM -->
-    <form id="studentForm" class="portal-form active">
-      <input type="text" id="stuName" placeholder="Full Name" required>
-      <input type="email" id="stuEmail" placeholder="Email" required>
-      <input type="text" id="stuPhone" placeholder="Phone Number" required>
-      <button type="submit">Register Student</button>
-      <table id="studentTable"><thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead><tbody></tbody></table>
-    </form>
+  <table id="studentTable">
+    <thead>
+      <tr><th>Name</th><th>Email</th><th>Phone</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</form>
 
-    <!-- ADMINISTRATION FORM -->
-    <form id="adminForm" class="portal-form">
-      <input type="text" id="admName" placeholder="Full Name" required>
-      <input type="text" id="admReg" placeholder="Reg Number" required>
-      <select id="admDept" required>
-        <option value="">Select Department</option>
-        <option value="ICT">ICT</option>
-        <option value="Business">Business</option>
-        <option value="Engineering">Engineering</option>
-      </select>
-      <select id="admGender" required>
-        <option value="">Select Gender</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-      </select>
-      <button type="submit">Save Administration</button>
-      <table id="adminTable"><thead><tr><th>Name</th><th>Reg</th><th>Dept</th><th>Gender</th></tr></thead><tbody></tbody></table>
-    </form>
+<!-- ADMINISTRATION FORM -->
+<form id="adminForm" class="portal-form">
+  <input type="text" id="admName" placeholder="Full Name" required>
+  <input type="text" id="admReg" placeholder="Reg Number" required>
 
-    <!-- ACADEMICS FORM -->
-    <form id="acadForm" class="portal-form">
-      <input type="text" id="acadName" placeholder="Student Name" required>
-      <input type="text" id="acadReg" placeholder="Registration Number" required>
-      <input type="text" id="acadUnit" placeholder="Unit Name" required>
-      <input type="number" id="acadCAT" placeholder="CAT Score" required>
-      <input type="number" id="acadExam" placeholder="Exam Score" required>
-      <button type="submit">Save Academics</button>
-      <table id="acadTable"><thead><tr><th>Name</th><th>Reg</th><th>Unit</th><th>CAT</th><th>Exam</th><th>Total</th><th>Grade</th></tr></thead><tbody></tbody></table>
-    </form>
+  <select id="admDept" required>
+    <option value="">Select Department</option>
+    <option value="ICT">ICT</option>
+    <option value="Business">Business</option>
+    <option value="Engineering">Engineering</option>
+  </select>
 
-  </div>
-</section>
+  <select id="admGender" required>
+    <option value="">Select Gender</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+  </select>
 
-<footer>
-  &copy; 2026 Msambweni Technical & Vocational College. All rights reserved.
-</footer>
+  <button type="submit">Save Administration</button>
+
+  <table id="adminTable">
+    <thead>
+      <tr><th>Name</th><th>Reg</th><th>Dept</th><th>Gender</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</form>
+
+<!-- ACADEMICS FORM -->
+<form id="acadForm" class="portal-form">
+  <input type="text" id="acadName" placeholder="Student Name" required>
+  <input type="text" id="acadReg" placeholder="Registration Number" required>
+  <input type="text" id="acadUnit" placeholder="Unit Name" required>
+  <input type="number" id="acadCAT" placeholder="CAT Score" required>
+  <input type="number" id="acadExam" placeholder="Exam Score" required>
+
+  <button type="submit">Save Academics</button>
+
+  <table id="acadTable">
+    <thead>
+      <tr>
+        <th>Name</th><th>Reg</th><th>Unit</th>
+        <th>CAT</th><th>Exam</th><th>Total</th><th>Grade</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</form>
 
 <script type="module">
-  const tabs = document.querySelectorAll('.tab-btn');
-  const forms = document.querySelectorAll('.portal-form');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', ()=>{
-      tabs.forEach(t=>t.classList.remove('active'));
-      tab.classList.add('active');
-      forms.forEach(f=>f.classList.remove('active'));
-      document.getElementById(tab.dataset.tab + 'Form').classList.add('active');
-    });
-  });
+  import { collection, addDoc, getDocs }
+  from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
 
-  // FIREBASE SUBMISSIONS
-  import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-  const db = window.db;
+  const db = window.db; // already initialized earlier
 
-  // Student
-  document.getElementById("studentForm").addEventListener("submit", async e=>{
+  /* ================= STUDENT ================= */
+  document.getElementById("studentForm").addEventListener("submit", async e => {
     e.preventDefault();
-    const name = document.getElementById("stuName").value;
-    const email = document.getElementById("stuEmail").value;
-    const phone = document.getElementById("stuPhone").value;
-    await addDoc(collection(db,"students"),{name,email,phone});
-    document.getElementById("stuName").value="";
-    document.getElementById("stuEmail").value="";
-    document.getElementById("stuPhone").value="";
+
+    await addDoc(collection(db, "students"), {
+      name: stuName.value,
+      email: stuEmail.value,
+      phone: stuPhone.value
+    });
+
+    alert("Student registered successfully ✅");
+    e.target.reset();
     loadStudents();
   });
 
-  async function loadStudents(){
+  async function loadStudents() {
     const tbody = document.querySelector("#studentTable tbody");
     tbody.innerHTML = "";
-    const querySnapshot = await getDocs(collection(db,"students"));
-    querySnapshot.forEach(doc=>{
+    const snap = await getDocs(collection(db, "students"));
+    snap.forEach(doc => {
       const d = doc.data();
-      tbody.innerHTML += `<tr><td>${d.name}</td><td>${d.email}</td><td>${d.phone}</td></tr>`;
+      tbody.innerHTML += `
+        <tr><td>${d.name}</td><td>${d.email}</td><td>${d.phone}</td></tr>`;
     });
   }
   loadStudents();
 
-  // Admin
-  document.getElementById("adminForm").addEventListener("submit", async e=>{
+  /* ================= ADMIN ================= */
+  document.getElementById("adminForm").addEventListener("submit", async e => {
     e.preventDefault();
-    const name = document.getElementById("admName").value;
-    const reg = document.getElementById("admReg").value;
-    const dept = document.getElementById("admDept").value;
-    const gender = document.getElementById("admGender").value;
-    await addDoc(collection(db,"administration"),{name,reg,dept,gender});
-    document.getElementById("admName").value="";
-    document.getElementById("admReg").value="";
-    document.getElementById("admDept").value="";
-    document.getElementById("admGender").value="";
+
+    await addDoc(collection(db, "administration"), {
+      name: admName.value,
+      reg: admReg.value,
+      dept: admDept.value,
+      gender: admGender.value
+    });
+
+    alert("Administration saved successfully ✅");
+    e.target.reset();
     loadAdmins();
   });
 
-  async function loadAdmins(){
+  async function loadAdmins() {
     const tbody = document.querySelector("#adminTable tbody");
     tbody.innerHTML = "";
-    const querySnapshot = await getDocs(collection(db,"administration"));
-    querySnapshot.forEach(doc=>{
+    const snap = await getDocs(collection(db, "administration"));
+    snap.forEach(doc => {
       const d = doc.data();
-      tbody.innerHTML += `<tr><td>${d.name}</td><td>${d.reg}</td><td>${d.dept}</td><td>${d.gender}</td></tr>`;
+      tbody.innerHTML += `
+        <tr><td>${d.name}</td><td>${d.reg}</td><td>${d.dept}</td><td>${d.gender}</td></tr>`;
     });
   }
   loadAdmins();
 
-  // Academics
-  document.getElementById("acadForm").addEventListener("submit", async e=>{
+  /* ================= ACADEMICS ================= */
+  document.getElementById("acadForm").addEventListener("submit", async e => {
     e.preventDefault();
-    const name = document.getElementById("acadName").value;
-    const reg = document.getElementById("acadReg").value;
-    const unit = document.getElementById("acadUnit").value;
-    const cat = parseFloat(document.getElementById("acadCAT").value);
-    const exam = parseFloat(document.getElementById("acadExam").value);
-    const total = cat + exam;
-    const grade = total >= 80 ? "Mastery" : total >= 65 ? "Proficient" : total >= 50 ? "Competent" : "Not Competent";
-    await addDoc(collection(db,"academics"),{name,reg,unit,cat,exam,total,grade});
-    document.getElementById("acadName").value="";
-    document.getElementById("acadReg").value="";
-    document.getElementById("acadUnit").value="";
-    document.getElementById("acadCAT").value="";
-    document.getElementById("acadExam").value="";
+
+    const total = Number(acadCAT.value) + Number(acadExam.value);
+    const grade =
+      total >= 80 ? "Mastery" :
+      total >= 65 ? "Proficient" :
+      total >= 50 ? "Competent" :
+      "Not Competent";
+
+    await addDoc(collection(db, "academics"), {
+      name: acadName.value,
+      reg: acadReg.value,
+      unit: acadUnit.value,
+      cat: acadCAT.value,
+      exam: acadExam.value,
+      total,
+      grade
+    });
+
+    alert("Academics record saved successfully ✅");
+    e.target.reset();
     loadAcademics();
   });
 
-  async function loadAcademics(){
+  async function loadAcademics() {
     const tbody = document.querySelector("#acadTable tbody");
     tbody.innerHTML = "";
-    const querySnapshot = await getDocs(collection(db,"academics"));
-    querySnapshot.forEach(doc=>{
+    const snap = await getDocs(collection(db, "academics"));
+    snap.forEach(doc => {
       const d = doc.data();
-      tbody.innerHTML += `<tr>
-        <td>${d.name}</td><td>${d.reg}</td><td>${d.unit}</td><td>${d.cat}</td><td>${d.exam}</td><td>${d.total}</td><td>${d.grade}</td>
-      </tr>`;
+      tbody.innerHTML += `
+        <tr>
+          <td>${d.name}</td><td>${d.reg}</td><td>${d.unit}</td>
+          <td>${d.cat}</td><td>${d.exam}</td>
+          <td>${d.total}</td><td>${d.grade}</td>
+        </tr>`;
     });
   }
   loadAcademics();
@@ -2949,6 +2971,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
