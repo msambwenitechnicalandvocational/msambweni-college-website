@@ -1,4 +1,229 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MSAMBWENI TVC | Portals</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e3f2fd;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      background: #0d47a1;
+      color: white;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      background: #bbdefb;
+    }
+
+    .tabs button {
+      padding: 15px 25px;
+      border: none;
+      background: none;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .tabs button.active {
+      background: #0d47a1;
+      color: white;
+    }
+
+    .portal {
+      display: none;
+      max-width: 500px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .portal.active {
+      display: block;
+    }
+
+    h2 {
+      text-align: center;
+      color: #0d47a1;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid #90caf9;
+      font-size: 14px;
+    }
+
+    button.submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: #0d47a1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .message {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
+
+  <!-- Firebase Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+
+<body>
+
+<h1>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h1>
+
+<div class="tabs">
+  <button class="active" onclick="openPortal('student')">Student Portal</button>
+  <button onclick="openPortal('admin')">Administration Portal</button>
+  <button onclick="openPortal('academics')">Academics Portal</button>
+</div>
+
+<!-- STUDENT PORTAL -->
+<div id="student" class="portal active">
+  <h2>Student Registration</h2>
+  <form id="studentForm">
+    <input type="text" id="stuName" placeholder="Full Name" required>
+    <input type="email" id="stuEmail" placeholder="Email" required>
+    <input type="text" id="stuPhone" placeholder="Phone Number" required>
+    <button class="submit-btn" type="submit">Register Student</button>
+    <p class="message" id="stuMsg"></p>
+  </form>
+</div>
+
+<!-- ADMIN PORTAL -->
+<div id="admin" class="portal">
+  <h2>Administration Registration</h2>
+  <form id="adminForm">
+    <input type="text" id="admName" placeholder="Full Name" required>
+    <input type="text" id="admReg" placeholder="Registration Number" required>
+    <select id="admDept" required>
+      <option value="">Select Department</option>
+      <option>ICT</option>
+      <option>Business</option>
+      <option>Engineering</option>
+    </select>
+    <button class="submit-btn" type="submit">Save Administration</button>
+    <p class="message" id="admMsg"></p>
+  </form>
+</div>
+
+<!-- ACADEMICS PORTAL -->
+<div id="academics" class="portal">
+  <h2>Academics Records</h2>
+  <form id="acadForm">
+    <input type="text" id="acadName" placeholder="Student Name" required>
+    <input type="text" id="acadReg" placeholder="Registration Number" required>
+    <input type="text" id="acadUnit" placeholder="Unit Name" required>
+    <input type="number" id="acadCAT" placeholder="CAT Marks" required>
+    <input type="number" id="acadExam" placeholder="Exam Marks" required>
+    <button class="submit-btn" type="submit">Save Academics</button>
+    <p class="message" id="acadMsg"></p>
+  </form>
+</div>
+
+<script>
+  /* PORTAL SWITCH */
+  function openPortal(id) {
+    document.querySelectorAll(".portal").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    event.target.classList.add("active");
+  }
+
+  /* FIREBASE CONFIG */
+  const firebaseConfig = {
+    apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
+    authDomain: "studentregistration-b3f93.firebaseapp.com",
+    projectId: "studentregistration-b3f93",
+    storageBucket: "studentregistration-b3f93.appspot.com",
+    messagingSenderId: "429282074438",
+    appId: "1:429282074438:web:37c43b51a9504f793ecf47"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  /* STUDENT FORM */
+  document.getElementById("studentForm").addEventListener("submit", e => {
+    e.preventDefault();
+    db.collection("students").add({
+      name: stuName.value,
+      email: stuEmail.value,
+      phone: stuPhone.value,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      stuMsg.style.color = "green";
+      stuMsg.textContent = "Student registered successfully ✔";
+      e.target.reset();
+    });
+  });
+
+  /* ADMIN FORM */
+  document.getElementById("adminForm").addEventListener("submit", e => {
+    e.preventDefault();
+    db.collection("administration").add({
+      name: admName.value,
+      reg: admReg.value,
+      dept: admDept.value,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      admMsg.style.color = "green";
+      admMsg.textContent = "Administration saved ✔";
+      e.target.reset();
+    });
+  });
+
+  /* ACADEMICS FORM */
+  document.getElementById("acadForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const total = Number(acadCAT.value) + Number(acadExam.value);
+    const grade = total >= 80 ? "Mastery" :
+                  total >= 65 ? "Proficient" :
+                  total >= 50 ? "Competent" : "Not Competent";
+
+    db.collection("academics").add({
+      name: acadName.value,
+      reg: acadReg.value,
+      unit: acadUnit.value,
+      cat: acadCAT.value,
+      exam: acadExam.value,
+      total: total,
+      grade: grade,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      acadMsg.style.color = "green";
+      acadMsg.textContent = "Academics record saved ✔";
+      e.target.reset();
+    });
+  });
+</script>
+
+</body>
+</html>
 
 
 
@@ -2261,6 +2486,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
