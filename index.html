@@ -11,7 +11,6 @@
   body { font-family: Arial, sans-serif; background:#e3f2fd; margin:0; padding:0; }
   h2 { text-align:center; color:#0d47a1; margin-top:20px; }
 
-  /* Header */
   header {
     display:flex; justify-content:space-between; align-items:center;
     padding:15px 30px; background: linear-gradient(135deg,#0d47a1,#42a5f5); color:#fff;
@@ -22,13 +21,11 @@
   .header-left img, .header-right img { width:100%; height:100%; object-fit:cover; }
   .header-center { flex:1; text-align:center; font-size:22px; font-weight:bold; letter-spacing:1px; }
 
-  /* Tabs */
   .portal-card { max-width:900px; margin:30px auto; background:#fff; padding:25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
   .tabs { display:flex; justify-content:space-around; margin-bottom:20px; }
   .tabs button { padding:12px 20px; border:none; border-radius:8px; cursor:pointer; font-weight:600; background:#90caf9; transition:0.3s; }
   .tabs button.active { background:#0d47a1; color:#fff; }
 
-  /* Forms */
   form { display:none; flex-direction:column; gap:12px; }
   form.active { display:flex; }
   input, select, button { padding:12px; border-radius:8px; border:1px solid #90caf9; font-size:14px; width:100%; }
@@ -36,7 +33,6 @@
   button:hover { background:#094a85; }
   .msg { text-align:center; font-weight:bold; margin-top:8px; }
 
-  /* Responsive */
   @media(max-width:768px){
     header { flex-direction:column; gap:10px; padding:15px 20px; }
     .header-left,.header-right { width:60px;height:60px; }
@@ -44,7 +40,6 @@
   }
 </style>
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -68,7 +63,7 @@
     <button onclick="openPortal('finance', this)">Finance</button>
   </div>
 
-  <!-- STUDENT FORM -->
+  <!-- STUDENT -->
   <form id="student" class="active">
     <input type="text" id="stuName" placeholder="Full Name" required>
     <input type="email" id="stuEmail" placeholder="Email" required>
@@ -77,7 +72,7 @@
     <p class="msg" id="stuMsg"></p>
   </form>
 
-  <!-- ADMIN FORM -->
+  <!-- ADMIN -->
   <form id="admin">
     <input type="text" id="admName" placeholder="Full Name" required>
     <input type="text" id="admReg" placeholder="Reg Number" required>
@@ -96,7 +91,7 @@
     <p class="msg" id="admMsg"></p>
   </form>
 
-  <!-- ACADEMICS FORM -->
+  <!-- ACADEMICS -->
   <form id="academics">
     <input type="text" id="acadName" placeholder="Student Name" required>
     <input type="text" id="acadReg" placeholder="Registration Number" required>
@@ -107,7 +102,7 @@
     <p class="msg" id="acadMsg"></p>
   </form>
 
-  <!-- STAFF FORM -->
+  <!-- STAFF -->
   <form id="staff">
     <input type="text" id="staffName" placeholder="Full Name" required>
     <input type="email" id="staffEmail" placeholder="Email" required>
@@ -117,7 +112,7 @@
     <p class="msg" id="staffMsg"></p>
   </form>
 
-  <!-- FINANCE FORM -->
+  <!-- FINANCE -->
   <form id="finance">
     <input type="text" id="finName" placeholder="Student Name" required>
     <input type="text" id="finReg" placeholder="Registration Number" required>
@@ -133,10 +128,10 @@
     <button type="submit">Save Finance</button>
     <p class="msg" id="finMsg"></p>
   </form>
+
 </div>
 
 <script>
-  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
     authDomain: "studentregistration-b3f93.firebaseapp.com",
@@ -149,7 +144,6 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // Tab switch
   function openPortal(id, btn){
     document.querySelectorAll("form").forEach(f=>f.classList.remove("active"));
     document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
@@ -160,70 +154,91 @@
   /* STUDENT */
   document.getElementById("student").addEventListener("submit", async e=>{
     e.preventDefault();
-    const name=stuName.value, email=stuEmail.value, phone=stuPhone.value;
-    try {
+    const name=document.getElementById("stuName").value;
+    const email=document.getElementById("stuEmail").value;
+    const phone=document.getElementById("stuPhone").value;
+    const msg=document.getElementById("stuMsg");
+    try{
       await db.collection("students").add({name,email,phone,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-      stuMsg.style.color="green"; stuMsg.textContent="✅ Student registered successfully!";
+      msg.style.color="green"; msg.textContent="✅ Student registered successfully!";
       e.target.reset();
-    } catch(err){ stuMsg.style.color="red"; stuMsg.textContent="❌ "+err.message; }
+    }catch(err){ msg.style.color="red"; msg.textContent="❌ "+err.message; }
   });
 
   /* ADMIN */
   document.getElementById("admin").addEventListener("submit", async e=>{
     e.preventDefault();
-    const name=admName.value, reg=admReg.value, dept=admDept.value, gender=admGender.value;
+    const name=document.getElementById("admName").value;
+    const reg=document.getElementById("admReg").value;
+    const dept=document.getElementById("admDept").value;
+    const gender=document.getElementById("admGender").value;
+    const msg=document.getElementById("admMsg");
     try{
       await db.collection("administration").add({name,reg,dept,gender,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-      admMsg.style.color="green"; admMsg.textContent="✅ Administration saved successfully!";
+      msg.style.color="green"; msg.textContent="✅ Administration saved successfully!";
       e.target.reset();
-    }catch(err){ admMsg.style.color="red"; admMsg.textContent="❌ "+err.message; }
+    }catch(err){ msg.style.color="red"; msg.textContent="❌ "+err.message; }
   });
 
   /* ACADEMICS */
   document.getElementById("academics").addEventListener("submit", async e=>{
     e.preventDefault();
-    const name=acadName.value, reg=acadReg.value, unit=acadUnit.value;
-    const cat=Number(acadCAT.value), exam=Number(acadExam.value), total=cat+exam;
+    const name=document.getElementById("acadName").value;
+    const reg=document.getElementById("acadReg").value;
+    const unit=document.getElementById("acadUnit").value;
+    const cat=Number(document.getElementById("acadCAT").value);
+    const exam=Number(document.getElementById("acadExam").value);
+    const total=cat+exam;
     const grade=total>=80?"Mastery":total>=65?"Proficient":total>=50?"Competent":"Not Competent";
+    const msg=document.getElementById("acadMsg");
     try{
       await db.collection("academics").add({name,reg,unit,cat,exam,total,grade,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-      acadMsg.style.color="green"; acadMsg.textContent="✅ Academics saved successfully!";
+      msg.style.color="green"; msg.textContent="✅ Academics saved successfully!";
       e.target.reset();
-    }catch(err){ acadMsg.style.color="red"; acadMsg.textContent="❌ "+err.message; }
+    }catch(err){ msg.style.color="red"; msg.textContent="❌ "+err.message; }
   });
 
   /* STAFF */
   document.getElementById("staff").addEventListener("submit", async e=>{
     e.preventDefault();
-    const name=staffName.value,email=staffEmail.value,phone=staffPhone.value,role=staffRole.value;
+    const name=document.getElementById("staffName").value;
+    const email=document.getElementById("staffEmail").value;
+    const phone=document.getElementById("staffPhone").value;
+    const role=document.getElementById("staffRole").value;
+    const msg=document.getElementById("staffMsg");
     try{
       await db.collection("staff").add({name,email,phone,role,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-      staffMsg.style.color="green"; staffMsg.textContent="✅ Staff added successfully!";
+      msg.style.color="green"; msg.textContent="✅ Staff added successfully!";
       e.target.reset();
-    }catch(err){ staffMsg.style.color="red"; staffMsg.textContent="❌ "+err.message; }
+    }catch(err){ msg.style.color="red"; msg.textContent="❌ "+err.message; }
   });
 
   /* FINANCE */
   const FEE_PER_TERM=35000;
   function updateFinance(){
-    const ded=Number(deductions.value)||0;
-    feeStatement.value="₦"+FEE_PER_TERM;
-    feeBalance.value="₦"+(FEE_PER_TERM-ded);
+    const ded=Number(document.getElementById("deductions").value)||0;
+    document.getElementById("feeStatement").value="₦"+FEE_PER_TERM;
+    document.getElementById("feeBalance").value="₦"+(FEE_PER_TERM-ded);
   }
-  deductions.addEventListener("input", updateFinance);
-  finTerm.addEventListener("change", updateFinance);
+  document.getElementById("deductions").addEventListener("input", updateFinance);
+  document.getElementById("finTerm").addEventListener("change", updateFinance);
 
   document.getElementById("finance").addEventListener("submit", async e=>{
     e.preventDefault();
-    const name=finName.value, reg=finReg.value, term=finTerm.value;
-    const ded=Number(deductions.value)||0;
-    const fee=FEE_PER_TERM, balance=fee-ded;
+    const name=document.getElementById("finName").value;
+    const reg=document.getElementById("finReg").value;
+    const term=document.getElementById("finTerm").value;
+    const ded=Number(document.getElementById("deductions").value)||0;
+    const fee=FEE_PER_TERM;
+    const balance=fee-ded;
+    const msg=document.getElementById("finMsg");
     try{
       await db.collection("finance").add({name,reg,term,fee,deductions:ded,balance,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-      finMsg.style.color="green"; finMsg.textContent="✅ Finance record saved successfully!";
+      msg.style.color="green"; msg.textContent="✅ Finance record saved successfully!";
       e.target.reset();
-      feeStatement.value=""; feeBalance.value="";
-    }catch(err){ finMsg.style.color="red"; finMsg.textContent="❌ "+err.message; }
+      document.getElementById("feeStatement").value="";
+      document.getElementById("feeBalance").value="";
+    }catch(err){ msg.style.color="red"; msg.textContent="❌ "+err.message; }
   });
 </script>
 
@@ -2489,6 +2504,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
