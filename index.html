@@ -1,56 +1,74 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Msambweni Technical & Vocational College - Portals</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Msambweni TVC - All Portals</title>
 
-  <style>
-    body { font-family: Arial, sans-serif; background: #e3f2fd; margin:0; padding:0; }
-    h2 { text-align:center; color:#0d47a1; margin-top:30px; }
+<style>
+  body { font-family: Arial, sans-serif; background: #e3f2fd; margin:0; padding:0; }
 
-    .portal-card {
-      max-width: 900px;
-      margin: 40px auto;
-      background:#fff; 
-      padding:30px; 
-      border-radius:12px; 
-      box-shadow:0 4px 12px rgba(0,0,0,0.1);
-    }
+  /* HEADER */
+  header {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #0d47a1; color: #fff; padding: 15px 20px;
+    flex-wrap: wrap; position: sticky; top:0; z-index: 1000;
+  }
+  .logo { width:60px; height:60px; object-fit: contain; }
+  .header-center { flex:1; text-align: center; font-size: 22px; font-weight: bold; }
 
-    .tabs { display:flex; justify-content:space-around; margin-bottom:25px; }
-    .tabs button { padding:12px 25px; border:none; border-radius:8px; cursor:pointer; font-weight:600; background:#90caf9; transition:0.3s; }
-    .tabs button.active { background:#0d47a1; color:#fff; }
+  h2 { text-align:center; color:#0d47a1; margin-top:20px; }
 
-    form { display:none; flex-direction:column; gap:12px; }
-    form.active { display:flex; }
+  /* Portal Card */
+  .portal-card { max-width: 900px; margin: 20px auto 40px auto; background:#fff; padding:30px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
 
-    input, select, button {
-      padding:12px; border-radius:8px; border:1px solid #90caf9; font-size:14px; width:100%;
-    }
-    button { background:#0d47a1; color:white; border:none; cursor:pointer; font-size:16px; }
-    button:hover { background:#094a85; }
+  /* Tabs */
+  .tabs { display:flex; justify-content:space-around; margin-bottom:25px; flex-wrap: wrap; }
+  .tabs button { padding:12px 25px; border:none; border-radius:8px; cursor:pointer; font-weight:600; background:#90caf9; margin:5px; transition:0.3s; }
+  .tabs button.active { background:#0d47a1; color:#fff; }
 
-    table { width:100%; border-collapse: collapse; margin-top:20px; }
-    th, td { border:1px solid #ddd; padding:10px; text-align:center; }
-    th { background:#0d47a1; color:#fff; }
-    tr:nth-child(even){ background:#f1f1f1; }
-  </style>
+  /* Forms */
+  form { display:none; flex-direction:column; gap:12px; }
+  form.active { display:flex; }
 
-  <!-- Firebase Compat SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  input, select, button { padding:12px; border-radius:8px; border:1px solid #90caf9; font-size:14px; width:100%; }
+  button { background:#0d47a1; color:white; border:none; cursor:pointer; font-size:16px; }
+  button:hover { background:#094a85; }
+
+  table { width:100%; border-collapse: collapse; margin-top:20px; }
+  th, td { border:1px solid #ddd; padding:10px; text-align:center; }
+  th { background:#0d47a1; color:#fff; }
+  tr:nth-child(even){ background:#f1f1f1; }
+
+  input[readonly] { background:#f0f0f0; }
+
+</style>
+
+<!-- Firebase Compat SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 </head>
-
 <body>
 
-<h2>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE - PORTALS</h2>
+<!-- HEADER WITH LOGOS -->
+<header>
+  <img src="left-logo.png" class="logo" alt="Left Logo">
+  <div class="header-center">MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</div>
+  <img src="right-logo.png" class="logo" alt="Right Logo">
+</header>
+
+<h2>WELCOME TO MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>
 
 <div class="portal-card">
   <div class="tabs">
-    <button class="active" onclick="openPortal('student', this)">Student Portal</button>
-    <button onclick="openPortal('admin', this)">Administration Portal</button>
-    <button onclick="openPortal('academics', this)">Academics Portal</button>
+    <button class="active" onclick="openPortal('student', this)">Student</button>
+    <button onclick="openPortal('admin', this)">Administration</button>
+    <button onclick="openPortal('academics', this)">Academics</button>
+    <button onclick="openPortal('staff', this)">Staff</button>
+    <button onclick="openPortal('finance', this)">Finance</button>
   </div>
 
   <!-- STUDENT FORM -->
@@ -60,9 +78,7 @@
     <input type="text" id="stuPhone" placeholder="Phone Number" required>
     <button type="submit">Register Student</button>
     <table>
-      <thead>
-        <tr><th>Name</th><th>Email</th><th>Phone</th></tr>
-      </thead>
+      <thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead>
       <tbody id="studentTable"></tbody>
     </table>
   </form>
@@ -84,9 +100,7 @@
     </select>
     <button type="submit">Save Administration</button>
     <table>
-      <thead>
-        <tr><th>Name</th><th>Reg</th><th>Dept</th><th>Gender</th></tr>
-      </thead>
+      <thead><tr><th>Name</th><th>Reg</th><th>Dept</th><th>Gender</th></tr></thead>
       <tbody id="adminTable"></tbody>
     </table>
   </form>
@@ -100,12 +114,50 @@
     <input type="number" id="acadExam" placeholder="Exam Score" required>
     <button type="submit">Save Academics</button>
     <table>
-      <thead>
-        <tr><th>Name</th><th>Reg</th><th>Unit</th><th>CAT</th><th>Exam</th><th>Total</th><th>Grade</th></tr>
-      </thead>
+      <thead><tr><th>Name</th><th>Reg</th><th>Unit</th><th>CAT</th><th>Exam</th><th>Total</th><th>Grade</th></tr></thead>
       <tbody id="acadTable"></tbody>
     </table>
   </form>
+
+  <!-- STAFF FORM -->
+  <form id="staff" class="portal">
+    <input type="text" id="staffName" placeholder="Full Name" required>
+    <input type="text" id="staffID" placeholder="Staff ID" required>
+    <select id="staffDept" required>
+      <option value="">Select Department</option>
+      <option value="ICT">ICT</option>
+      <option value="Business">Business</option>
+      <option value="Engineering">Engineering</option>
+    </select>
+    <input type="text" id="staffPosition" placeholder="Position" required>
+    <input type="email" id="staffEmail" placeholder="Email" required>
+    <input type="text" id="staffPhone" placeholder="Phone Number" required>
+    <select id="staffGender" required>
+      <option value="">Select Gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+    <button type="submit">Save Staff</button>
+    <table>
+      <thead><tr><th>Name</th><th>ID</th><th>Dept</th><th>Position</th><th>Email</th><th>Phone</th><th>Gender</th></tr></thead>
+      <tbody id="staffTable"></tbody>
+    </table>
+  </form>
+
+  <!-- FINANCE FORM -->
+  <form id="finance" class="portal">
+    <input type="text" id="finName" placeholder="Employee Name" required>
+    <input type="number" id="finSalary" placeholder="Basic Salary" value="45000" readonly>
+    <input type="number" id="finAllowance" placeholder="Allowance" value="0">
+    <input type="number" id="finDeduction" placeholder="Deduction" value="0">
+    <input type="number" id="finNetPay" placeholder="Net Pay" readonly>
+    <button type="submit">Save Finance</button>
+    <table>
+      <thead><tr><th>Name</th><th>Salary</th><th>Allowance</th><th>Deduction</th><th>Net Pay</th></tr></thead>
+      <tbody id="financeTable"></tbody>
+    </table>
+  </form>
+
 </div>
 
 <script>
@@ -119,11 +171,9 @@
     messagingSenderId: "429282074438",
     appId: "1:429282074438:web:37c43b51a9504f793ecf47"
   };
-
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // Portal tab switch
   function openPortal(id, btn){
     document.querySelectorAll(".portal").forEach(p => p.classList.remove("active"));
     document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("active"));
@@ -131,7 +181,7 @@
     btn.classList.add("active");
   }
 
-  /* ================= STUDENT ================= */
+  // --- Student
   const studentForm = document.getElementById("student");
   const studentTable = document.getElementById("studentTable");
   studentForm.addEventListener("submit", e=>{
@@ -141,23 +191,16 @@
       email: document.getElementById("stuEmail").value,
       phone: document.getElementById("stuPhone").value,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(()=> {
-      studentForm.reset();
-      loadStudents();
-    });
+    }).then(()=> { studentForm.reset(); loadStudents(); });
   });
-
   async function loadStudents(){
     const snap = await db.collection("students").orderBy("createdAt","desc").get();
     studentTable.innerHTML = "";
-    snap.forEach(doc=>{
-      const d = doc.data();
-      studentTable.innerHTML += `<tr><td>${d.name}</td><td>${d.email}</td><td>${d.phone}</td></tr>`;
-    });
+    snap.forEach(doc=>{ const d = doc.data(); studentTable.innerHTML += `<tr><td>${d.name}</td><td>${d.email}</td><td>${d.phone}</td></tr>`; });
   }
   loadStudents();
 
-  /* ================= ADMIN ================= */
+  // --- Admin
   const adminForm = document.getElementById("admin");
   const adminTable = document.getElementById("adminTable");
   adminForm.addEventListener("submit", e=>{
@@ -168,23 +211,16 @@
       dept: document.getElementById("admDept").value,
       gender: document.getElementById("admGender").value,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(()=> {
-      adminForm.reset();
-      loadAdmins();
-    });
+    }).then(()=> { adminForm.reset(); loadAdmins(); });
   });
-
   async function loadAdmins(){
     const snap = await db.collection("administration").orderBy("createdAt","desc").get();
     adminTable.innerHTML = "";
-    snap.forEach(doc=>{
-      const d = doc.data();
-      adminTable.innerHTML += `<tr><td>${d.name}</td><td>${d.reg}</td><td>${d.dept}</td><td>${d.gender}</td></tr>`;
-    });
+    snap.forEach(doc=>{ const d = doc.data(); adminTable.innerHTML += `<tr><td>${d.name}</td><td>${d.reg}</td><td>${d.dept}</td><td>${d.gender}</td></tr>`; });
   }
   loadAdmins();
 
-  /* ================= ACADEMICS ================= */
+  // --- Academics
   const acadForm = document.getElementById("academics");
   const acadTable = document.getElementById("acadTable");
   acadForm.addEventListener("submit", e=>{
@@ -193,39 +229,81 @@
     const exam = Number(document.getElementById("acadExam").value);
     const total = cat + exam;
     const grade = total >= 80 ? "Mastery" : total >=65 ? "Proficient" : total >=50 ? "Competent" : "Not Competent";
-
     db.collection("academics").add({
       name: document.getElementById("acadName").value,
       reg: document.getElementById("acadReg").value,
       unit: document.getElementById("acadUnit").value,
-      cat: cat,
-      exam: exam,
-      total: total,
-      grade: grade,
+      cat: cat, exam: exam, total: total, grade: grade,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(()=> {
-      acadForm.reset();
-      loadAcademics();
-    });
+    }).then(()=> { acadForm.reset(); loadAcademics(); });
   });
-
   async function loadAcademics(){
     const snap = await db.collection("academics").orderBy("createdAt","desc").get();
     acadTable.innerHTML = "";
-    snap.forEach(doc=>{
-      const d = doc.data();
-      acadTable.innerHTML += `<tr><td>${d.name}</td><td>${d.reg}</td><td>${d.unit}</td><td>${d.cat}</td><td>${d.exam}</td><td>${d.total}</td><td>${d.grade}</td></tr>`;
-    });
+    snap.forEach(doc=>{ const d = doc.data(); acadTable.innerHTML += `<tr><td>${d.name}</td><td>${d.reg}</td><td>${d.unit}</td><td>${d.cat}</td><td>${d.exam}</td><td>${d.total}</td><td>${d.grade}</td></tr>`; });
   }
   loadAcademics();
+
+  // --- Staff
+  const staffForm = document.getElementById("staff");
+  const staffTable = document.getElementById("staffTable");
+  staffForm.addEventListener("submit", e=>{
+    e.preventDefault();
+    db.collection("staff").add({
+      name: document.getElementById("staffName").value,
+      staffID: document.getElementById("staffID").value,
+      dept: document.getElementById("staffDept").value,
+      position: document.getElementById("staffPosition").value,
+      email: document.getElementById("staffEmail").value,
+      phone: document.getElementById("staffPhone").value,
+      gender: document.getElementById("staffGender").value,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(()=> { staffForm.reset(); loadStaff(); });
+  });
+  async function loadStaff(){
+    const snap = await db.collection("staff").orderBy("createdAt","desc").get();
+    staffTable.innerHTML = "";
+    snap.forEach(doc=>{ const d = doc.data(); staffTable.innerHTML += `<tr><td>${d.name}</td><td>${d.staffID}</td><td>${d.dept}</td><td>${d.position}</td><td>${d.email}</td><td>${d.phone}</td><td>${d.gender}</td></tr>`; });
+  }
+  loadStaff();
+
+  // --- Finance
+  const financeForm = document.getElementById("finance");
+  const financeTable = document.getElementById("financeTable");
+  const finSalary = document.getElementById("finSalary");
+  const finAllowance = document.getElementById("finAllowance");
+  const finDeduction = document.getElementById("finDeduction");
+  const finNetPay = document.getElementById("finNetPay");
+
+  function calcNetPay() {
+    finNetPay.value = Number(finSalary.value) + Number(finAllowance.value) - Number(finDeduction.value);
+  }
+  finAllowance.addEventListener("input", calcNetPay);
+  finDeduction.addEventListener("input", calcNetPay);
+
+  financeForm.addEventListener("submit", e=>{
+    e.preventDefault();
+    calcNetPay();
+    db.collection("finance").add({
+      name: document.getElementById("finName").value,
+      salary: Number(finSalary.value),
+      allowance: Number(finAllowance.value),
+      deduction: Number(finDeduction.value),
+      netPay: Number(finNetPay.value),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(()=> { financeForm.reset(); finNetPay.value=""; loadFinance(); });
+  });
+
+  async function loadFinance(){
+    const snap = await db.collection("finance").orderBy("createdAt","desc").get();
+    financeTable.innerHTML = "";
+    snap.forEach(doc=>{ const d = doc.data(); financeTable.innerHTML += `<tr><td>${d.name}</td><td>${d.salary}</td><td>${d.allowance}</td><td>${d.deduction}</td><td>${d.netPay}</td></tr>`; });
+  }
+  loadFinance();
 </script>
 
 </body>
 </html>
-
-
-
-
 
 
 
@@ -2482,6 +2560,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
