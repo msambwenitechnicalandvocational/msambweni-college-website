@@ -1,128 +1,161 @@
 
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Msambweni Technical & Vocational College</title>
+  <meta charset="UTF-8">
+  <title>MSAMBWENI TVC | Portals</title>
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Verdana}
-body{background:#f4f7fb;color:#333}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #e3f2fd;
+      margin: 0;
+      padding: 0;
+    }
 
-/* HEADER */
-header{
-  background:linear-gradient(135deg,#2c7be5,#00bcd4);
-  color:#fff;
-  padding:15px 30px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  box-shadow:0 6px 20px rgba(0,0,0,.2)
-}
-.header-left,.header-right{
-  width:65px;height:65px;border-radius:50%;overflow:hidden;border:2px solid #fff
-}
-.header-left img,.header-right img{width:100%;height:100%;object-fit:cover}
-.header-center{text-align:center;flex:1;font-size:22px;font-weight:700}
-.header-center strong{color:#ffe600}
+    h1 {
+      text-align: center;
+      background: #0d47a1;
+      color: white;
+      padding: 20px;
+      margin: 0;
+    }
 
-/* NAV */
-nav{background:#1a5bbf}
-nav ul{display:flex;justify-content:center;list-style:none;flex-wrap:wrap}
-nav ul li a{
-  color:#fff;
-  padding:15px 20px;
-  display:block;
-  text-decoration:none;
-  font-weight:600;
-}
-nav ul li a:hover{background:#ffcc00;color:#1a5bbf}
+    .tabs {
+      display: flex;
+      justify-content: center;
+      background: #bbdefb;
+    }
 
-/* HERO */
-.hero{
-  height:70vh;
-  background:linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.4)),url('college-hero.jpg') center/cover;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  color:#fff
-}
-.hero h2{font-size:42px;margin-bottom:15px}
-.hero p{font-size:20px;margin-bottom:25px}
-.btn{
-  padding:14px 30px;
-  background:#ffcc00;
-  color:#1a5bbf;
-  border-radius:8px;
-  font-weight:700;
-  text-decoration:none
-}
+    .tabs button {
+      padding: 15px 25px;
+      border: none;
+      background: none;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    }
 
-/* PORTAL */
-section{padding:60px 20px}
-h2{text-align:center;color:#2c7be5;margin-bottom:30px}
+    .tabs button.active {
+      background: #0d47a1;
+      color: white;
+    }
 
-.portal-card{
-  max-width:900px;
-  margin:auto;
-  background:#fff;
-  padding:30px;
-  border-radius:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,.1)
-}
+    .portal {
+      display: none;
+      max-width: 500px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
 
-.tabs{display:flex;justify-content:space-around;margin-bottom:25px}
-.tab-btn{
-  padding:12px 25px;
-  border:none;
-  border-radius:12px;
-  background:#f0f2f5;
-  font-weight:600;
-  cursor:pointer
-}
-.tab-btn.active{background:#2c7be5;color:#fff}
+    .portal.active {
+      display: block;
+    }
 
-.portal-form{display:none;gap:15px;flex-direction:column}
-.portal-form.active{display:flex}
+    h2 {
+      text-align: center;
+      color: #0d47a1;
+    }
 
-input,select,button{
-  padding:14px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  font-size:15px
-}
-button{
-  background:#2c7be5;
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
-  border:none
-}
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 12px;
+      border-radius: 8px;
+      border: 1px solid #90caf9;
+      font-size: 14px;
+    }
 
-/* TABLE */
-table{width:100%;margin-top:25px;border-collapse:collapse}
-th,td{border:1px solid #ddd;padding:10px;text-align:center}
-th{background:#2c7be5;color:#fff}
-tr:nth-child(even){background:#f7f9fc}
+    button.submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: #0d47a1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
 
-/* FOOTER */
-footer{
-  background:#333;
-  color:#fff;
-  text-align:center;
-  padding:25px;
-  margin-top:40px
-}
-</style>
+    .message {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  </style>
 
-<!-- FIREBASE INIT -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+  <!-- Firebase Compat SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
 
+<body>
+
+<h1>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h1>
+
+<div class="tabs">
+  <button class="active" onclick="openPortal('student')">Student Portal</button>
+  <button onclick="openPortal('admin')">Administration Portal</button>
+  <button onclick="openPortal('academics')">Academics Portal</button>
+</div>
+
+<!-- STUDENT PORTAL -->
+<div id="student" class="portal active">
+  <h2>Student Registration</h2>
+  <form id="studentForm">
+    <input type="text" id="stuName" placeholder="Full Name" required>
+    <input type="email" id="stuEmail" placeholder="Email" required>
+    <input type="text" id="stuPhone" placeholder="Phone Number" required>
+    <button class="submit-btn" type="submit">Register Student</button>
+    <p class="message" id="stuMsg"></p>
+  </form>
+</div>
+
+<!-- ADMIN PORTAL -->
+<div id="admin" class="portal">
+  <h2>Administration Registration</h2>
+  <form id="adminForm">
+    <input type="text" id="admName" placeholder="Full Name" required>
+    <input type="text" id="admReg" placeholder="Registration Number" required>
+    <select id="admDept" required>
+      <option value="">Select Department</option>
+      <option>ICT</option>
+      <option>Business</option>
+      <option>Engineering</option>
+    </select>
+    <button class="submit-btn" type="submit">Save Administration</button>
+    <p class="message" id="admMsg"></p>
+  </form>
+</div>
+
+<!-- ACADEMICS PORTAL -->
+<div id="academics" class="portal">
+  <h2>Academics Records</h2>
+  <form id="acadForm">
+    <input type="text" id="acadName" placeholder="Student Name" required>
+    <input type="text" id="acadReg" placeholder="Registration Number" required>
+    <input type="text" id="acadUnit" placeholder="Unit Name" required>
+    <input type="number" id="acadCAT" placeholder="CAT Marks" required>
+    <input type="number" id="acadExam" placeholder="Exam Marks" required>
+    <button class="submit-btn" type="submit">Save Academics</button>
+    <p class="message" id="acadMsg"></p>
+  </form>
+</div>
+
+<script>
+  /* PORTAL SWITCH */
+  function openPortal(id) {
+    document.querySelectorAll(".portal").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    event.target.classList.add("active");
+  }
+
+  /* FIREBASE CONFIG */
   const firebaseConfig = {
     apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
     authDomain: "studentregistration-b3f93.firebaseapp.com",
@@ -132,152 +165,62 @@ footer{
     appId: "1:429282074438:web:37c43b51a9504f793ecf47"
   };
 
-  const app = initializeApp(firebaseConfig);
-  window.db = getFirestore(app);
-</script>
-</head>
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-<body>
-
-<header>
-  <div class="header-left"><img src="knec.png"></div>
-  <div class="header-center">
-    MSAMBWENI <strong>TECHNICAL & VOCATIONAL</strong> COLLEGE<br>
-    <small>Empowering Students for a Brighter Future</small>
-  </div>
-  <div class="header-right"><img src="logo.jpg"></div>
-</header>
-
-<nav>
-  <ul>
-    <li><a href="#home">Home</a></li>
-    <li><a href="#portals">Portals</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
-
-<section class="hero" id="home">
-  <div>
-    <h2>Welcome to Msambweni TVC</h2>
-    <p>Training for Skills • Competence • Excellence</p>
-    <a href="#portals" class="btn">Explore Portals</a>
-  </div>
-</section>
-
-<section id="portals">
-<h2>College Portals</h2>
-
-<div class="portal-card">
-
-<div class="tabs">
-  <button class="tab-btn active" data-tab="student">Student</button>
-  <button class="tab-btn" data-tab="admin">Administration</button>
-  <button class="tab-btn" data-tab="academics">Academics</button>
-</div>
-
-<form id="studentForm" class="portal-form active">
-  <input id="stuName" placeholder="Full Name" required>
-  <input id="stuEmail" type="email" placeholder="Email" required>
-  <input id="stuPhone" placeholder="Phone" required>
-  <button>Register Student</button>
-  <table><thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead><tbody id="studentTable"></tbody></table>
-</form>
-
-<form id="adminForm" class="portal-form">
-  <input id="admName" placeholder="Full Name" required>
-  <input id="admReg" placeholder="Reg Number" required>
-  <select id="admDept"><option>ICT</option><option>Business</option><option>Engineering</option></select>
-  <select id="admGender"><option>Male</option><option>Female</option></select>
-  <button>Save Admin</button>
-  <table><thead><tr><th>Name</th><th>Reg</th><th>Dept</th><th>Gender</th></tr></thead><tbody id="adminTable"></tbody></table>
-</form>
-
-<form id="acadForm" class="portal-form">
-  <input id="acadName" placeholder="Student Name" required>
-  <input id="acadReg" placeholder="Reg Number" required>
-  <input id="acadUnit" placeholder="Unit" required>
-  <input id="acadCAT" type="number" placeholder="CAT">
-  <input id="acadExam" type="number" placeholder="Exam">
-  <button>Save Academics</button>
-  <table>
-    <thead><tr><th>Name</th><th>Reg</th><th>Unit</th><th>Total</th><th>Grade</th></tr></thead>
-    <tbody id="acadTable"></tbody>
-  </table>
-</form>
-
-</div>
-</section>
-
-<footer>
-&copy; 2026 Msambweni Technical & Vocational College
-</footer>
-
-<!-- FUNCTIONAL SCRIPT -->
-<script type="module">
-import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
-const db = window.db;
-
-/* TABS */
-document.querySelectorAll(".tab-btn").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll(".tab-btn,.portal-form").forEach(e=>e.classList.remove("active"));
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.tab+"Form").classList.add("active");
-  }
-});
-
-/* STUDENTS */
-studentForm.onsubmit=async e=>{
-  e.preventDefault();
-  await addDoc(collection(db,"students"),{name:stuName.value,email:stuEmail.value,phone:stuPhone.value});
-  alert("Student saved");
-  studentForm.reset();
-  loadStudents();
-};
-async function loadStudents(){
-  studentTable.innerHTML="";
-  (await getDocs(collection(db,"students"))).forEach(d=>{
-    let x=d.data();
-    studentTable.innerHTML+=`<tr><td>${x.name}</td><td>${x.email}</td><td>${x.phone}</td></tr>`;
+  /* STUDENT FORM */
+  document.getElementById("studentForm").addEventListener("submit", e => {
+    e.preventDefault();
+    db.collection("students").add({
+      name: stuName.value,
+      email: stuEmail.value,
+      phone: stuPhone.value,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      stuMsg.style.color = "green";
+      stuMsg.textContent = "Student registered successfully ✔";
+      e.target.reset();
+    });
   });
-}
-loadStudents();
 
-/* ADMIN */
-adminForm.onsubmit=async e=>{
-  e.preventDefault();
-  await addDoc(collection(db,"administration"),{name:admName.value,reg:admReg.value,dept:admDept.value,gender:admGender.value});
-  alert("Admin saved");
-  adminForm.reset();
-  loadAdmins();
-};
-async function loadAdmins(){
-  adminTable.innerHTML="";
-  (await getDocs(collection(db,"administration"))).forEach(d=>{
-    let x=d.data();
-    adminTable.innerHTML+=`<tr><td>${x.name}</td><td>${x.reg}</td><td>${x.dept}</td><td>${x.gender}</td></tr>`;
+  /* ADMIN FORM */
+  document.getElementById("adminForm").addEventListener("submit", e => {
+    e.preventDefault();
+    db.collection("administration").add({
+      name: admName.value,
+      reg: admReg.value,
+      dept: admDept.value,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      admMsg.style.color = "green";
+      admMsg.textContent = "Administration saved ✔";
+      e.target.reset();
+    });
   });
-}
-loadAdmins();
 
-/* ACADEMICS */
-acadForm.onsubmit=async e=>{
-  e.preventDefault();
-  let total=+acadCAT.value + +acadExam.value;
-  let grade=total>=80?"Mastery":total>=65?"Proficient":total>=50?"Competent":"Not Competent";
-  await addDoc(collection(db,"academics"),{name:acadName.value,reg:acadReg.value,unit:acadUnit.value,total,grade});
-  alert("Academics saved");
-  acadForm.reset();
-  loadAcademics();
-};
-async function loadAcademics(){
-  acadTable.innerHTML="";
-  (await getDocs(collection(db,"academics"))).forEach(d=>{
-    let x=d.data();
-    acadTable.innerHTML+=`<tr><td>${x.name}</td><td>${x.reg}</td><td>${x.unit}</td><td>${x.total}</td><td>${x.grade}</td></tr>`;
+  /* ACADEMICS FORM */
+  document.getElementById("acadForm").addEventListener("submit", e => {
+    e.preventDefault();
+    const total = Number(acadCAT.value) + Number(acadExam.value);
+    const grade = total >= 80 ? "Mastery" :
+                  total >= 65 ? "Proficient" :
+                  total >= 50 ? "Competent" : "Not Competent";
+
+    db.collection("academics").add({
+      name: acadName.value,
+      reg: acadReg.value,
+      unit: acadUnit.value,
+      cat: acadCAT.value,
+      exam: acadExam.value,
+      total: total,
+      grade: grade,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      acadMsg.style.color = "green";
+      acadMsg.textContent = "Academics record saved ✔";
+      e.target.reset();
+    });
   });
-}
-loadAcademics();
 </script>
 
 </body>
@@ -289,8 +232,8 @@ loadAcademics();
 
 
 
-<!DOCTYPE html>
-<html lang="en">
+
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2544,6 +2487,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
