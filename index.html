@@ -1,90 +1,40 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MSAMBWENI TVC | Portals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Msambweni Technical & Vocational College - Portals</title>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #e3f2fd;
-      margin: 0;
-      padding: 0;
+    body { font-family: Arial, sans-serif; background: #e3f2fd; margin:0; padding:0; }
+    h2 { text-align:center; color:#0d47a1; margin-top:30px; }
+
+    .portal-card {
+      max-width: 900px;
+      margin: 40px auto;
+      background:#fff; 
+      padding:30px; 
+      border-radius:12px; 
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
     }
 
-    h1 {
-      text-align: center;
-      background: #0d47a1;
-      color: white;
-      padding: 20px;
-      margin: 0;
-    }
+    .tabs { display:flex; justify-content:space-around; margin-bottom:25px; }
+    .tabs button { padding:12px 25px; border:none; border-radius:8px; cursor:pointer; font-weight:600; background:#90caf9; transition:0.3s; }
+    .tabs button.active { background:#0d47a1; color:#fff; }
 
-    .tabs {
-      display: flex;
-      justify-content: center;
-      background: #bbdefb;
-    }
+    form { display:none; flex-direction:column; gap:12px; }
+    form.active { display:flex; }
 
-    .tabs button {
-      padding: 15px 25px;
-      border: none;
-      background: none;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 16px;
+    input, select, button {
+      padding:12px; border-radius:8px; border:1px solid #90caf9; font-size:14px; width:100%;
     }
+    button { background:#0d47a1; color:white; border:none; cursor:pointer; font-size:16px; }
+    button:hover { background:#094a85; }
 
-    .tabs button.active {
-      background: #0d47a1;
-      color: white;
-    }
-
-    .portal {
-      display: none;
-      max-width: 500px;
-      margin: 30px auto;
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .portal.active {
-      display: block;
-    }
-
-    h2 {
-      text-align: center;
-      color: #0d47a1;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 12px;
-      border-radius: 8px;
-      border: 1px solid #90caf9;
-      font-size: 14px;
-    }
-
-    button.submit-btn {
-      width: 100%;
-      padding: 14px;
-      background: #0d47a1;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    .message {
-      text-align: center;
-      font-weight: bold;
-      margin-top: 10px;
-    }
+    table { width:100%; border-collapse: collapse; margin-top:20px; }
+    th, td { border:1px solid #ddd; padding:10px; text-align:center; }
+    th { background:#0d47a1; color:#fff; }
+    tr:nth-child(even){ background:#f1f1f1; }
   </style>
 
   <!-- Firebase Compat SDK -->
@@ -94,72 +44,78 @@
 
 <body>
 
-<h1>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h1>
+<h2>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE - PORTALS</h2>
 
-<div class="tabs">
-  <button class="active" onclick="openPortal('student')">Student Portal</button>
-  <button onclick="openPortal('admin')">Administration Portal</button>
-  <button onclick="openPortal('academics')">Academics Portal</button>
-</div>
+<div class="portal-card">
+  <div class="tabs">
+    <button class="active" onclick="openPortal('student', this)">Student Portal</button>
+    <button onclick="openPortal('admin', this)">Administration Portal</button>
+    <button onclick="openPortal('academics', this)">Academics Portal</button>
+  </div>
 
-<!-- STUDENT PORTAL -->
-<div id="student" class="portal active">
-  <h2>Student Registration</h2>
-  <form id="studentForm">
+  <!-- STUDENT FORM -->
+  <form id="student" class="active portal">
     <input type="text" id="stuName" placeholder="Full Name" required>
     <input type="email" id="stuEmail" placeholder="Email" required>
     <input type="text" id="stuPhone" placeholder="Phone Number" required>
-    <button class="submit-btn" type="submit">Register Student</button>
-    <p class="message" id="stuMsg"></p>
+    <button type="submit">Register Student</button>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Phone</th></tr>
+      </thead>
+      <tbody id="studentTable"></tbody>
+    </table>
   </form>
-</div>
 
-<!-- ADMIN PORTAL -->
-<div id="admin" class="portal">
-  <h2>Administration Registration</h2>
-  <form id="adminForm">
+  <!-- ADMINISTRATION FORM -->
+  <form id="admin" class="portal">
     <input type="text" id="admName" placeholder="Full Name" required>
-    <input type="text" id="admReg" placeholder="Registration Number" required>
+    <input type="text" id="admReg" placeholder="Reg Number" required>
     <select id="admDept" required>
       <option value="">Select Department</option>
-      <option>ICT</option>
-      <option>Business</option>
-      <option>Engineering</option>
+      <option value="ICT">ICT</option>
+      <option value="Business">Business</option>
+      <option value="Engineering">Engineering</option>
     </select>
-    <button class="submit-btn" type="submit">Save Administration</button>
-    <p class="message" id="admMsg"></p>
+    <select id="admGender" required>
+      <option value="">Select Gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+    <button type="submit">Save Administration</button>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Reg</th><th>Dept</th><th>Gender</th></tr>
+      </thead>
+      <tbody id="adminTable"></tbody>
+    </table>
   </form>
-</div>
 
-<!-- ACADEMICS PORTAL -->
-<div id="academics" class="portal">
-  <h2>Academics Records</h2>
-  <form id="acadForm">
+  <!-- ACADEMICS FORM -->
+  <form id="academics" class="portal">
     <input type="text" id="acadName" placeholder="Student Name" required>
     <input type="text" id="acadReg" placeholder="Registration Number" required>
     <input type="text" id="acadUnit" placeholder="Unit Name" required>
-    <input type="number" id="acadCAT" placeholder="CAT Marks" required>
-    <input type="number" id="acadExam" placeholder="Exam Marks" required>
-    <button class="submit-btn" type="submit">Save Academics</button>
-    <p class="message" id="acadMsg"></p>
+    <input type="number" id="acadCAT" placeholder="CAT Score" required>
+    <input type="number" id="acadExam" placeholder="Exam Score" required>
+    <button type="submit">Save Academics</button>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Reg</th><th>Unit</th><th>CAT</th><th>Exam</th><th>Total</th><th>Grade</th></tr>
+      </thead>
+      <tbody id="acadTable"></tbody>
+    </table>
   </form>
 </div>
 
 <script>
-  /* PORTAL SWITCH */
-  function openPortal(id) {
-    document.querySelectorAll(".portal").forEach(p => p.classList.remove("active"));
-    document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-    event.target.classList.add("active");
-  }
-
-  /* FIREBASE CONFIG */
+  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
     authDomain: "studentregistration-b3f93.firebaseapp.com",
+    databaseURL: "https://studentregistration-b3f93-default-rtdb.firebaseio.com",
     projectId: "studentregistration-b3f93",
-    storageBucket: "studentregistration-b3f93.appspot.com",
+    storageBucket: "studentregistration-b3f93.firebasestorage.app",
     messagingSenderId: "429282074438",
     appId: "1:429282074438:web:37c43b51a9504f793ecf47"
   };
@@ -167,65 +123,105 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  /* STUDENT FORM */
-  document.getElementById("studentForm").addEventListener("submit", e => {
+  // Portal tab switch
+  function openPortal(id, btn){
+    document.querySelectorAll(".portal").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    btn.classList.add("active");
+  }
+
+  /* ================= STUDENT ================= */
+  const studentForm = document.getElementById("student");
+  const studentTable = document.getElementById("studentTable");
+  studentForm.addEventListener("submit", e=>{
     e.preventDefault();
     db.collection("students").add({
-      name: stuName.value,
-      email: stuEmail.value,
-      phone: stuPhone.value,
+      name: document.getElementById("stuName").value,
+      email: document.getElementById("stuEmail").value,
+      phone: document.getElementById("stuPhone").value,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      stuMsg.style.color = "green";
-      stuMsg.textContent = "Student registered successfully ✔";
-      e.target.reset();
+    }).then(()=> {
+      studentForm.reset();
+      loadStudents();
     });
   });
 
-  /* ADMIN FORM */
-  document.getElementById("adminForm").addEventListener("submit", e => {
+  async function loadStudents(){
+    const snap = await db.collection("students").orderBy("createdAt","desc").get();
+    studentTable.innerHTML = "";
+    snap.forEach(doc=>{
+      const d = doc.data();
+      studentTable.innerHTML += `<tr><td>${d.name}</td><td>${d.email}</td><td>${d.phone}</td></tr>`;
+    });
+  }
+  loadStudents();
+
+  /* ================= ADMIN ================= */
+  const adminForm = document.getElementById("admin");
+  const adminTable = document.getElementById("adminTable");
+  adminForm.addEventListener("submit", e=>{
     e.preventDefault();
     db.collection("administration").add({
-      name: admName.value,
-      reg: admReg.value,
-      dept: admDept.value,
+      name: document.getElementById("admName").value,
+      reg: document.getElementById("admReg").value,
+      dept: document.getElementById("admDept").value,
+      gender: document.getElementById("admGender").value,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      admMsg.style.color = "green";
-      admMsg.textContent = "Administration saved ✔";
-      e.target.reset();
+    }).then(()=> {
+      adminForm.reset();
+      loadAdmins();
     });
   });
 
-  /* ACADEMICS FORM */
-  document.getElementById("acadForm").addEventListener("submit", e => {
+  async function loadAdmins(){
+    const snap = await db.collection("administration").orderBy("createdAt","desc").get();
+    adminTable.innerHTML = "";
+    snap.forEach(doc=>{
+      const d = doc.data();
+      adminTable.innerHTML += `<tr><td>${d.name}</td><td>${d.reg}</td><td>${d.dept}</td><td>${d.gender}</td></tr>`;
+    });
+  }
+  loadAdmins();
+
+  /* ================= ACADEMICS ================= */
+  const acadForm = document.getElementById("academics");
+  const acadTable = document.getElementById("acadTable");
+  acadForm.addEventListener("submit", e=>{
     e.preventDefault();
-    const total = Number(acadCAT.value) + Number(acadExam.value);
-    const grade = total >= 80 ? "Mastery" :
-                  total >= 65 ? "Proficient" :
-                  total >= 50 ? "Competent" : "Not Competent";
+    const cat = Number(document.getElementById("acadCAT").value);
+    const exam = Number(document.getElementById("acadExam").value);
+    const total = cat + exam;
+    const grade = total >= 80 ? "Mastery" : total >=65 ? "Proficient" : total >=50 ? "Competent" : "Not Competent";
 
     db.collection("academics").add({
-      name: acadName.value,
-      reg: acadReg.value,
-      unit: acadUnit.value,
-      cat: acadCAT.value,
-      exam: acadExam.value,
+      name: document.getElementById("acadName").value,
+      reg: document.getElementById("acadReg").value,
+      unit: document.getElementById("acadUnit").value,
+      cat: cat,
+      exam: exam,
       total: total,
       grade: grade,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(() => {
-      acadMsg.style.color = "green";
-      acadMsg.textContent = "Academics record saved ✔";
-      e.target.reset();
+    }).then(()=> {
+      acadForm.reset();
+      loadAcademics();
     });
   });
+
+  async function loadAcademics(){
+    const snap = await db.collection("academics").orderBy("createdAt","desc").get();
+    acadTable.innerHTML = "";
+    snap.forEach(doc=>{
+      const d = doc.data();
+      acadTable.innerHTML += `<tr><td>${d.name}</td><td>${d.reg}</td><td>${d.unit}</td><td>${d.cat}</td><td>${d.exam}</td><td>${d.total}</td><td>${d.grade}</td></tr>`;
+    });
+  }
+  loadAcademics();
 </script>
 
 </body>
 </html>
-
-
 
 
 
@@ -2486,6 +2482,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
