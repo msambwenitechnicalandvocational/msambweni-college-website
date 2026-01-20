@@ -5,31 +5,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Msambweni TVC - All Portals</title>
+<title>Msambweni Technical & Vocational College - Portals</title>
 
 <style>
   body { font-family: Arial, sans-serif; background: #e3f2fd; margin:0; padding:0; }
-
-  /* HEADER */
-  header {
-    display: flex; justify-content: space-between; align-items: center;
-    background: #0d47a1; color: #fff; padding: 15px 20px;
-    flex-wrap: wrap; position: sticky; top:0; z-index: 1000;
-  }
-  .logo { width:60px; height:60px; object-fit: contain; }
-  .header-center { flex:1; text-align: center; font-size: 22px; font-weight: bold; }
-
   h2 { text-align:center; color:#0d47a1; margin-top:20px; }
+  .header { display:flex; justify-content:space-between; align-items:center; padding:15px 30px; background:linear-gradient(135deg,#0d47a1,#42a5f5); color:#fff; border-radius:0 0 20px 20px; }
+  .header img { width:70px; height:70px; object-fit:cover; border-radius:50%; border:2px solid #fff; }
+  .header .center { flex:1; text-align:center; font-size:20px; font-weight:bold; }
 
-  /* Portal Card */
-  .portal-card { max-width: 900px; margin: 20px auto 40px auto; background:#fff; padding:30px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
-
-  /* Tabs */
-  .tabs { display:flex; justify-content:space-around; margin-bottom:25px; flex-wrap: wrap; }
-  .tabs button { padding:12px 25px; border:none; border-radius:8px; cursor:pointer; font-weight:600; background:#90caf9; margin:5px; transition:0.3s; }
+  .portal-card { max-width:1000px; margin:30px auto; background:#fff; padding:30px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+  .tabs { display:flex; justify-content:space-around; margin-bottom:25px; }
+  .tabs button { padding:12px 25px; border:none; border-radius:8px; cursor:pointer; font-weight:600; background:#90caf9; transition:0.3s; }
   .tabs button.active { background:#0d47a1; color:#fff; }
 
-  /* Forms */
   form { display:none; flex-direction:column; gap:12px; }
   form.active { display:flex; }
 
@@ -42,25 +31,28 @@
   th { background:#0d47a1; color:#fff; }
   tr:nth-child(even){ background:#f1f1f1; }
 
-  input[readonly] { background:#f0f0f0; }
+  .msg { font-weight:bold; text-align:center; margin-top:5px; }
 
+  @media(max-width:768px){
+    .header { flex-direction:column; gap:10px; text-align:center; }
+    .tabs { flex-direction:column; gap:10px; }
+  }
 </style>
 
 <!-- Firebase Compat SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
 </head>
+
 <body>
 
-<!-- HEADER WITH LOGOS -->
-<header>
-  <img src="left-logo.png" class="logo" alt="Left Logo">
-  <div class="header-center">MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</div>
-  <img src="right-logo.png" class="logo" alt="Right Logo">
-</header>
+<div class="header">
+  <img src="logo-left.png" alt="Left Logo">
+  <div class="center">MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</div>
+  <img src="logo-right.png" alt="Right Logo">
+</div>
 
-<h2>WELCOME TO MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>
+<h2>Welcome to College Portals</h2>
 
 <div class="portal-card">
   <div class="tabs">
@@ -71,19 +63,20 @@
     <button onclick="openPortal('finance', this)">Finance</button>
   </div>
 
-  <!-- STUDENT FORM -->
+  <!-- ================= STUDENT FORM ================= -->
   <form id="student" class="active portal">
     <input type="text" id="stuName" placeholder="Full Name" required>
     <input type="email" id="stuEmail" placeholder="Email" required>
     <input type="text" id="stuPhone" placeholder="Phone Number" required>
     <button type="submit">Register Student</button>
+    <p id="stuMsg" class="msg"></p>
     <table>
       <thead><tr><th>Name</th><th>Email</th><th>Phone</th></tr></thead>
       <tbody id="studentTable"></tbody>
     </table>
   </form>
 
-  <!-- ADMINISTRATION FORM -->
+  <!-- ================= ADMIN FORM ================= -->
   <form id="admin" class="portal">
     <input type="text" id="admName" placeholder="Full Name" required>
     <input type="text" id="admReg" placeholder="Reg Number" required>
@@ -99,13 +92,14 @@
       <option value="Female">Female</option>
     </select>
     <button type="submit">Save Administration</button>
+    <p id="admMsg" class="msg"></p>
     <table>
       <thead><tr><th>Name</th><th>Reg</th><th>Dept</th><th>Gender</th></tr></thead>
       <tbody id="adminTable"></tbody>
     </table>
   </form>
 
-  <!-- ACADEMICS FORM -->
+  <!-- ================= ACADEMICS FORM ================= -->
   <form id="academics" class="portal">
     <input type="text" id="acadName" placeholder="Student Name" required>
     <input type="text" id="acadReg" placeholder="Registration Number" required>
@@ -113,193 +107,199 @@
     <input type="number" id="acadCAT" placeholder="CAT Score" required>
     <input type="number" id="acadExam" placeholder="Exam Score" required>
     <button type="submit">Save Academics</button>
+    <p id="acadMsg" class="msg"></p>
     <table>
       <thead><tr><th>Name</th><th>Reg</th><th>Unit</th><th>CAT</th><th>Exam</th><th>Total</th><th>Grade</th></tr></thead>
       <tbody id="acadTable"></tbody>
     </table>
   </form>
 
-  <!-- STAFF FORM -->
+  <!-- ================= STAFF FORM ================= -->
   <form id="staff" class="portal">
     <input type="text" id="staffName" placeholder="Full Name" required>
     <input type="text" id="staffID" placeholder="Staff ID" required>
-    <select id="staffDept" required>
-      <option value="">Select Department</option>
-      <option value="ICT">ICT</option>
-      <option value="Business">Business</option>
-      <option value="Engineering">Engineering</option>
+    <input type="text" id="staffDept" placeholder="Department" required>
+    <select id="staffRole" required>
+      <option value="">Select Role</option>
+      <option value="Lecturer">Lecturer</option>
+      <option value="HOD">HOD</option>
+      <option value="Administrator">Administrator</option>
     </select>
-    <input type="text" id="staffPosition" placeholder="Position" required>
     <input type="email" id="staffEmail" placeholder="Email" required>
-    <input type="text" id="staffPhone" placeholder="Phone Number" required>
-    <select id="staffGender" required>
-      <option value="">Select Gender</option>
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-    </select>
     <button type="submit">Save Staff</button>
+    <p id="staffMsg" class="msg"></p>
     <table>
-      <thead><tr><th>Name</th><th>ID</th><th>Dept</th><th>Position</th><th>Email</th><th>Phone</th><th>Gender</th></tr></thead>
+      <thead><tr><th>Name</th><th>ID</th><th>Dept</th><th>Role</th><th>Email</th></tr></thead>
       <tbody id="staffTable"></tbody>
     </table>
   </form>
 
-  <!-- FINANCE FORM -->
+  <!-- ================= FINANCE FORM ================= -->
   <form id="finance" class="portal">
-    <input type="text" id="finName" placeholder="Employee Name" required>
-    <input type="number" id="finSalary" placeholder="Basic Salary" value="45000" readonly>
-    <input type="number" id="finAllowance" placeholder="Allowance" value="0">
-    <input type="number" id="finDeduction" placeholder="Deduction" value="0">
-    <input type="number" id="finNetPay" placeholder="Net Pay" readonly>
-    <button type="submit">Save Finance</button>
+    <input type="text" id="finStuName" placeholder="Student Name" required>
+    <input type="text" id="finReg" placeholder="Registration Number" required>
+    <select id="finTerm" required>
+      <option value="">Select Term</option>
+      <option value="Term 1">Term 1</option>
+      <option value="Term 2">Term 2</option>
+      <option value="Term 3">Term 3</option>
+    </select>
+    <input type="number" id="finPaid" placeholder="Amount Paid" required>
+    <button type="submit">Calculate Fee</button>
+    <p id="finMsg" class="msg"></p>
     <table>
-      <thead><tr><th>Name</th><th>Salary</th><th>Allowance</th><th>Deduction</th><th>Net Pay</th></tr></thead>
-      <tbody id="financeTable"></tbody>
+      <thead><tr><th>Student</th><th>Reg</th><th>Term</th><th>Paid</th><th>Fee Statement</th><th>Balance</th></tr></thead>
+      <tbody id="finTable"></tbody>
     </table>
   </form>
 
 </div>
 
 <script>
-  // Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
-    authDomain: "studentregistration-b3f93.firebaseapp.com",
-    databaseURL: "https://studentregistration-b3f93-default-rtdb.firebaseio.com",
-    projectId: "studentregistration-b3f93",
-    storageBucket: "studentregistration-b3f93.firebasestorage.app",
-    messagingSenderId: "429282074438",
-    appId: "1:429282074438:web:37c43b51a9504f793ecf47"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+const firebaseConfig = {
+  apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
+  authDomain: "studentregistration-b3f93.firebaseapp.com",
+  projectId: "studentregistration-b3f93",
+  storageBucket: "studentregistration-b3f93.appspot.com",
+  messagingSenderId: "429282074438",
+  appId: "1:429282074438:web:37c43b51a9504f793ecf47"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-  function openPortal(id, btn){
-    document.querySelectorAll(".portal").forEach(p => p.classList.remove("active"));
-    document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-    btn.classList.add("active");
-  }
+// Tab switch
+function openPortal(id, btn){
+  document.querySelectorAll(".portal").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  btn.classList.add("active");
+}
 
-  // --- Student
-  const studentForm = document.getElementById("student");
-  const studentTable = document.getElementById("studentTable");
-  studentForm.addEventListener("submit", e=>{
-    e.preventDefault();
-    db.collection("students").add({
-      name: document.getElementById("stuName").value,
-      email: document.getElementById("stuEmail").value,
-      phone: document.getElementById("stuPhone").value,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(()=> { studentForm.reset(); loadStudents(); });
+/* ================= STUDENT ================= */
+const studentForm = document.getElementById("student");
+studentForm.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const name = document.getElementById("stuName").value.trim();
+  const email = document.getElementById("stuEmail").value.trim();
+  const phone = document.getElementById("stuPhone").value.trim();
+  try{
+    await db.collection("students").add({name,email,phone,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    document.getElementById("stuMsg").textContent="✅ Student registered successfully!";
+    studentForm.reset();
+    loadStudents();
+  }catch(err){ document.getElementById("stuMsg").textContent="❌ "+err.message; console.error(err);}
+});
+async function loadStudents(){
+  const snap = await db.collection("students").orderBy("createdAt","desc").get();
+  const tbody = document.getElementById("studentTable"); tbody.innerHTML="";
+  snap.forEach(doc=>{
+    const d=doc.data(); tbody.innerHTML+=`<tr><td>${d.name}</td><td>${d.email}</td><td>${d.phone}</td></tr>`;
   });
-  async function loadStudents(){
-    const snap = await db.collection("students").orderBy("createdAt","desc").get();
-    studentTable.innerHTML = "";
-    snap.forEach(doc=>{ const d = doc.data(); studentTable.innerHTML += `<tr><td>${d.name}</td><td>${d.email}</td><td>${d.phone}</td></tr>`; });
-  }
-  loadStudents();
+}
+loadStudents();
 
-  // --- Admin
-  const adminForm = document.getElementById("admin");
-  const adminTable = document.getElementById("adminTable");
-  adminForm.addEventListener("submit", e=>{
-    e.preventDefault();
-    db.collection("administration").add({
-      name: document.getElementById("admName").value,
-      reg: document.getElementById("admReg").value,
-      dept: document.getElementById("admDept").value,
-      gender: document.getElementById("admGender").value,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(()=> { adminForm.reset(); loadAdmins(); });
+/* ================= ADMIN ================= */
+const adminForm = document.getElementById("admin");
+adminForm.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const name=document.getElementById("admName").value.trim();
+  const reg=document.getElementById("admReg").value.trim();
+  const dept=document.getElementById("admDept").value;
+  const gender=document.getElementById("admGender").value;
+  try{
+    await db.collection("administration").add({name,reg,dept,gender,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    document.getElementById("admMsg").textContent="✅ Administration saved!";
+    adminForm.reset();
+    loadAdmins();
+  }catch(err){ document.getElementById("admMsg").textContent="❌ "+err.message; console.error(err);}
+});
+async function loadAdmins(){
+  const snap=await db.collection("administration").orderBy("createdAt","desc").get();
+  const tbody=document.getElementById("adminTable"); tbody.innerHTML="";
+  snap.forEach(doc=>{
+    const d=doc.data(); tbody.innerHTML+=`<tr><td>${d.name}</td><td>${d.reg}</td><td>${d.dept}</td><td>${d.gender}</td></tr>`;
   });
-  async function loadAdmins(){
-    const snap = await db.collection("administration").orderBy("createdAt","desc").get();
-    adminTable.innerHTML = "";
-    snap.forEach(doc=>{ const d = doc.data(); adminTable.innerHTML += `<tr><td>${d.name}</td><td>${d.reg}</td><td>${d.dept}</td><td>${d.gender}</td></tr>`; });
-  }
-  loadAdmins();
+}
+loadAdmins();
 
-  // --- Academics
-  const acadForm = document.getElementById("academics");
-  const acadTable = document.getElementById("acadTable");
-  acadForm.addEventListener("submit", e=>{
-    e.preventDefault();
-    const cat = Number(document.getElementById("acadCAT").value);
-    const exam = Number(document.getElementById("acadExam").value);
-    const total = cat + exam;
-    const grade = total >= 80 ? "Mastery" : total >=65 ? "Proficient" : total >=50 ? "Competent" : "Not Competent";
-    db.collection("academics").add({
-      name: document.getElementById("acadName").value,
-      reg: document.getElementById("acadReg").value,
-      unit: document.getElementById("acadUnit").value,
-      cat: cat, exam: exam, total: total, grade: grade,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(()=> { acadForm.reset(); loadAcademics(); });
+/* ================= ACADEMICS ================= */
+const acadForm=document.getElementById("academics");
+acadForm.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const name=document.getElementById("acadName").value.trim();
+  const reg=document.getElementById("acadReg").value.trim();
+  const unit=document.getElementById("acadUnit").value.trim();
+  const cat=Number(document.getElementById("acadCAT").value);
+  const exam=Number(document.getElementById("acadExam").value);
+  const total=cat+exam;
+  const grade=total>=80?"Mastery":total>=65?"Proficient":total>=50?"Competent":"Not Competent";
+  try{
+    await db.collection("academics").add({name,reg,unit,cat,exam,total,grade,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    document.getElementById("acadMsg").textContent="✅ Academics saved!";
+    acadForm.reset();
+    loadAcademics();
+  }catch(err){ document.getElementById("acadMsg").textContent="❌ "+err.message; console.error(err);}
+});
+async function loadAcademics(){
+  const snap=await db.collection("academics").orderBy("createdAt","desc").get();
+  const tbody=document.getElementById("acadTable"); tbody.innerHTML="";
+  snap.forEach(doc=>{
+    const d=doc.data(); tbody.innerHTML+=`<tr><td>${d.name}</td><td>${d.reg}</td><td>${d.unit}</td><td>${d.cat}</td><td>${d.exam}</td><td>${d.total}</td><td>${d.grade}</td></tr>`;
   });
-  async function loadAcademics(){
-    const snap = await db.collection("academics").orderBy("createdAt","desc").get();
-    acadTable.innerHTML = "";
-    snap.forEach(doc=>{ const d = doc.data(); acadTable.innerHTML += `<tr><td>${d.name}</td><td>${d.reg}</td><td>${d.unit}</td><td>${d.cat}</td><td>${d.exam}</td><td>${d.total}</td><td>${d.grade}</td></tr>`; });
-  }
-  loadAcademics();
+}
+loadAcademics();
 
-  // --- Staff
-  const staffForm = document.getElementById("staff");
-  const staffTable = document.getElementById("staffTable");
-  staffForm.addEventListener("submit", e=>{
-    e.preventDefault();
-    db.collection("staff").add({
-      name: document.getElementById("staffName").value,
-      staffID: document.getElementById("staffID").value,
-      dept: document.getElementById("staffDept").value,
-      position: document.getElementById("staffPosition").value,
-      email: document.getElementById("staffEmail").value,
-      phone: document.getElementById("staffPhone").value,
-      gender: document.getElementById("staffGender").value,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(()=> { staffForm.reset(); loadStaff(); });
+/* ================= STAFF ================= */
+const staffForm=document.getElementById("staff");
+staffForm.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const name=document.getElementById("staffName").value.trim();
+  const id=document.getElementById("staffID").value.trim();
+  const dept=document.getElementById("staffDept").value.trim();
+  const role=document.getElementById("staffRole").value;
+  const email=document.getElementById("staffEmail").value.trim();
+  try{
+    await db.collection("staff").add({name,id,dept,role,email,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    document.getElementById("staffMsg").textContent="✅ Staff saved!";
+    staffForm.reset();
+    loadStaff();
+  }catch(err){ document.getElementById("staffMsg").textContent="❌ "+err.message; console.error(err);}
+});
+async function loadStaff(){
+  const snap=await db.collection("staff").orderBy("createdAt","desc").get();
+  const tbody=document.getElementById("staffTable"); tbody.innerHTML="";
+  snap.forEach(doc=>{
+    const d=doc.data(); tbody.innerHTML+=`<tr><td>${d.name}</td><td>${d.id}</td><td>${d.dept}</td><td>${d.role}</td><td>${d.email}</td></tr>`;
   });
-  async function loadStaff(){
-    const snap = await db.collection("staff").orderBy("createdAt","desc").get();
-    staffTable.innerHTML = "";
-    snap.forEach(doc=>{ const d = doc.data(); staffTable.innerHTML += `<tr><td>${d.name}</td><td>${d.staffID}</td><td>${d.dept}</td><td>${d.position}</td><td>${d.email}</td><td>${d.phone}</td><td>${d.gender}</td></tr>`; });
-  }
-  loadStaff();
+}
+loadStaff();
 
-  // --- Finance
-  const financeForm = document.getElementById("finance");
-  const financeTable = document.getElementById("financeTable");
-  const finSalary = document.getElementById("finSalary");
-  const finAllowance = document.getElementById("finAllowance");
-  const finDeduction = document.getElementById("finDeduction");
-  const finNetPay = document.getElementById("finNetPay");
-
-  function calcNetPay() {
-    finNetPay.value = Number(finSalary.value) + Number(finAllowance.value) - Number(finDeduction.value);
-  }
-  finAllowance.addEventListener("input", calcNetPay);
-  finDeduction.addEventListener("input", calcNetPay);
-
-  financeForm.addEventListener("submit", e=>{
-    e.preventDefault();
-    calcNetPay();
-    db.collection("finance").add({
-      name: document.getElementById("finName").value,
-      salary: Number(finSalary.value),
-      allowance: Number(finAllowance.value),
-      deduction: Number(finDeduction.value),
-      netPay: Number(finNetPay.value),
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }).then(()=> { financeForm.reset(); finNetPay.value=""; loadFinance(); });
+/* ================= FINANCE ================= */
+const finForm=document.getElementById("finance");
+finForm.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const name=document.getElementById("finStuName").value.trim();
+  const reg=document.getElementById("finReg").value.trim();
+  const term=document.getElementById("finTerm").value;
+  const paid=Number(document.getElementById("finPaid").value);
+  const feePerTerm=35000;
+  const balance=feePerTerm-paid;
+  try{
+    await db.collection("finance").add({name,reg,term,paid,feeStatement:feePerTerm,balance,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+    document.getElementById("finMsg").textContent=`✅ Finance record saved! Balance: ${balance}`;
+    finForm.reset();
+    loadFinance();
+  }catch(err){ document.getElementById("finMsg").textContent="❌ "+err.message; console.error(err);}
+});
+async function loadFinance(){
+  const snap=await db.collection("finance").orderBy("createdAt","desc").get();
+  const tbody=document.getElementById("finTable"); tbody.innerHTML="";
+  snap.forEach(doc=>{
+    const d=doc.data();
+    tbody.innerHTML+=`<tr><td>${d.name}</td><td>${d.reg}</td><td>${d.term}</td><td>${d.paid}</td><td>${d.feeStatement}</td><td>${d.balance}</td></tr>`;
   });
-
-  async function loadFinance(){
-    const snap = await db.collection("finance").orderBy("createdAt","desc").get();
-    financeTable.innerHTML = "";
-    snap.forEach(doc=>{ const d = doc.data(); financeTable.innerHTML += `<tr><td>${d.name}</td><td>${d.salary}</td><td>${d.allowance}</td><td>${d.deduction}</td><td>${d.netPay}</td></tr>`; });
-  }
-  loadFinance();
+}
+loadFinance();
 </script>
 
 </body>
@@ -2560,6 +2560,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
