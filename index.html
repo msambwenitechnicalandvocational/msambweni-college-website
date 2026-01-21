@@ -578,6 +578,377 @@ function breakup3D(image, callback) {
 </script>
 
 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MTVC Student Portal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- FONT AWESOME FOR ICONS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+body {
+  margin:0;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background:#f4f6f8;
+  color:#333;
+}
+
+/* MODERN BANNER */
+.header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px 40px;
+  background: linear-gradient(90deg,#0d47a1,#1976d2);
+  color:#fff;
+  box-shadow:0 4px 12px rgba(0,0,0,0.2);
+  flex-wrap:wrap;
+}
+.header img {
+  width:70px;
+  border-radius:10px;
+  margin-right:15px;
+}
+.header .title {
+  flex-grow:1;
+}
+.header h1 {
+  margin:0;
+  font-size:24px;
+}
+.header p {
+  margin:2px 0 0 0;
+  font-size:14px;
+  opacity:0.85;
+}
+
+/* CARD FORM */
+.card {
+  background:#fff;
+  max-width:1200px;
+  margin:20px auto;
+  padding:25px;
+  border-radius:10px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* FORMS */
+label {
+  font-weight:600;
+  margin-top:12px;
+  display:block;
+}
+input, select {
+  width:100%;
+  padding:10px;
+  margin-top:6px;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font-size:14px;
+}
+button {
+  width:100%;
+  padding:12px;
+  margin-top:18px;
+  border:none;
+  background:#0d47a1;
+  color:#fff;
+  font-size:15px;
+  border-radius:6px;
+  cursor:pointer;
+  transition:.3s;
+}
+button:hover { background:#093373; }
+.link {
+  color:#0d47a1;
+  cursor:pointer;
+  text-align:center;
+  margin-top:12px;
+  display:block;
+}
+.msg {
+  text-align:center;
+  margin-top:12px;
+  font-weight:bold;
+  color:green;
+}
+
+/* GRID FORM: 4 columns */
+.form-row {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+}
+@media(max-width:1200px){.form-row{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:900px){.form-row{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.form-row{grid-template-columns:1fr;}}
+
+/* DASHBOARD CARDS */
+#dashboard {
+  display:none;
+  max-width:1200px;
+  margin:30px auto;
+}
+.card-grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+}
+@media(max-width:900px){.card-grid{grid-template-columns:1fr;}}
+.detail-card {
+  padding:15px;
+  border-radius:10px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:14px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.1);
+  transition:.3s;
+}
+.detail-card:hover {transform:translateY(-5px);box-shadow:0 8px 18px rgba(0,0,0,0.2);}
+.detail-card i { font-size:22px; flex-shrink:0; }
+.detail-card span { font-weight:600; }
+
+/* DOWNLOAD BUTTONS */
+.dashboard-link {
+  display:block;
+  padding:12px;
+  background:#0d47a1;
+  color:#fff;
+  margin:10px 0;
+  text-decoration:none;
+  border-radius:5px;
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MODERN BANNER -->
+<div class="header">
+  <img src="logo.png" alt="MTVC Logo">
+  <div class="title">
+    <h1>Msambweni Technical & Vocational College</h1>
+    <p>Student Portal - Access Courses, Timetables & More</p>
+  </div>
+  <div style="font-weight:bold;font-size:16px;">🎓 Welcome</div>
+</div>
+
+<!-- AUTH CARD -->
+<div class="card" id="authCard">
+  <!-- LOGIN FORM -->
+  <div id="loginForm">
+    <label>Email</label><input type="email" id="loginEmail">
+    <label>Password</label><input type="password" id="loginPassword">
+    <button onclick="login()">Login</button>
+    <span class="link" onclick="showCreate()">Create Account</span>
+    <span class="link" onclick="showReset()">Forgot Password?</span>
+    <div class="msg" id="msg"></div>
+  </div>
+
+  <!-- CREATE ACCOUNT FORM -->
+  <div id="createForm" style="display:none;">
+    <div class="form-row">
+      <div><label>Full Name</label><input type="text" id="fullname"></div>
+      <div><label>Email</label><input type="email" id="email"></div>
+      <div><label>Year of Admission</label><input type="number" id="admissionYear"></div>
+      <div><label>KCSE Index</label><input type="text" id="kcse"></div>
+    </div>
+    <div class="form-row">
+      <div><label>KCPE Index</label><input type="text" id="kcpe"></div>
+      <div><label>Roll Number</label><input type="text" id="rollNumber"></div>
+      <div><label>Date of Birth</label><input type="date" id="dob"></div>
+      <div><label>Father's Name</label><input type="text" id="fatherName"></div>
+    </div>
+    <div class="form-row">
+      <div><label>Mobile</label><input type="text" id="mobile"></div>
+      <div><label>Gender</label>
+        <select id="gender">
+          <option value="">Select</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div><label>Department</label><input type="text" id="department"></div>
+      <div><label>Course</label><input type="text" id="course"></div>
+    </div>
+    <div class="form-row">
+      <div><label>City</label><input type="text" id="city"></div>
+      <div><label>Address</label><input type="text" id="address"></div>
+      <div></div>
+      <div></div>
+    </div>
+    <button onclick="signup()">Create Account</button>
+    <span class="link" onclick="showLogin()">Back to Login</span>
+    <div class="msg" id="msgCreate"></div>
+  </div>
+
+  <!-- RESET PASSWORD FORM -->
+  <div id="resetForm" style="display:none;">
+    <label>Email</label><input type="email" id="resetEmail">
+    <button onclick="resetPassword()">Send Reset Link</button>
+    <span class="link" onclick="showLogin()">Back to Login</span>
+    <div class="msg" id="msgReset"></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <h2>🎓 Student Dashboard</h2>
+  <div class="card-grid" id="studentInfo"></div>
+
+  <h3>Downloads</h3>
+  <a class="dashboard-link" href="timetable.pdf" download>📄 Download Timetable</a>
+  <a class="dashboard-link" href="notes.zip" download>📚 Download Notes</a>
+  <a class="dashboard-link" href="guides.pdf" download>📘 Download Guides</a>
+
+  <button onclick="logout()">🚪 Logout</button>
+</div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey:"AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
+  authDomain:"studentregistration-b3f93.firebaseapp.com",
+  projectId:"studentregistration-b3f93"
+};
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth();
+const db=firebase.firestore();
+
+/* SHOW FORMS */
+function showLogin(){loginForm.style.display="block"; createForm.style.display="none"; resetForm.style.display="none"; msg.innerText="";}
+function showCreate(){loginForm.style.display="none"; createForm.style.display="block"; resetForm.style.display="none";}
+function showReset(){loginForm.style.display="none"; createForm.style.display="none"; resetForm.style.display="block";}
+
+/* AUTH STATE */
+auth.onAuthStateChanged(user=>{
+  if(user){
+    authCard.style.display="none";
+    dashboard.style.display="block";
+    loadProfile(user.uid);
+  }else{
+    authCard.style.display="block";
+    dashboard.style.display="none";
+    showLogin();
+  }
+});
+
+/* LOAD PROFILE INTO CARDS WITHOUT PASSWORD */
+function loadProfile(uid){
+  db.collection("students_auth").doc(uid).get().then(doc=>{
+    if(doc.exists){
+      const data = doc.data();
+      const info = document.getElementById('studentInfo');
+      info.innerHTML="";
+      const icons = {
+        fullname:'<i class="fas fa-user"></i>',
+        email:'<i class="fas fa-envelope"></i>',
+        admissionYear:'<i class="fas fa-calendar-alt"></i>',
+        kcse:'<i class="fas fa-graduation-cap"></i>',
+        kcpe:'<i class="fas fa-school"></i>',
+        rollNumber:'<i class="fas fa-id-badge"></i>',
+        dob:'<i class="fas fa-birthday-cake"></i>',
+        fatherName:'<i class="fas fa-user-tie"></i>',
+        mobile:'<i class="fas fa-phone"></i>',
+        gender:'<i class="fas fa-venus-mars"></i>',
+        department:'<i class="fas fa-building"></i>',
+        course:'<i class="fas fa-book"></i>',
+        city:'<i class="fas fa-city"></i>',
+        address:'<i class="fas fa-map-marker-alt"></i>'
+      };
+      let i=0;
+      for(const key in data){
+        if(key==="role"||key==="createdAt"||key==="password") continue;
+        info.innerHTML+=`
+        <div class="detail-card" style="background-color:${getColor(i)}">
+          ${icons[key]||'<i class="fas fa-info-circle"></i>'}
+          <span><strong>${key}</strong><br>${data[key]}</span>
+        </div>`;
+        i++;
+      }
+    }
+  });
+}
+
+/* COLOR ARRAY */
+function getColor(index){
+  const colors = ["#f44336","#e91e63","#9c27b0","#3f51b5","#2196f3","#03a9f4","#00bcd4","#009688","#4caf50","#8bc34a","#cddc39","#ffeb3b","#ffc107","#ff9800","#ff5722","#795548"];
+  return colors[index%colors.length];
+}
+
+/* LOGIN */
+function login(){
+  msg.innerText="Signing in...";
+  auth.signInWithEmailAndPassword(loginEmail.value,loginPassword.value)
+    .catch(err=> msg.innerText=err.message);
+}
+
+/* GENERATE RANDOM PASSWORD */
+function generatePassword(length=10){
+  const chars="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+  let pass="";
+  for(let i=0;i<length;i++) pass+=chars.charAt(Math.floor(Math.random()*chars.length));
+  return pass;
+}
+
+/* SIGNUP */
+function signup(){
+  if(!email.value||!fullname.value){msgCreate.innerText="Fill required fields"; return;}
+  msgCreate.innerText="Creating account...";
+  const password = generatePassword();
+  auth.createUserWithEmailAndPassword(email.value,password)
+    .then(cred=>{
+      return db.collection("students_auth").doc(cred.user.uid).set({
+        fullname:fullname.value,email:email.value,password:password,
+        admissionYear:admissionYear.value,kcse:kcse.value,kcpe:kcpe.value,
+        rollNumber:rollNumber.value,dob:dob.value,fatherName:fatherName.value,
+        mobile:mobile.value,gender:gender.value,department:department.value,
+        course:course.value,city:city.value,address:address.value,
+        role:"student",createdAt:firebase.firestore.FieldValue.serverTimestamp()
+      });
+    })
+    .then(()=> msgCreate.innerText="Account created successfully ✅ (Password stored in database)")
+    .catch(err=> msgCreate.innerText=err.message);
+}
+
+/* RESET PASSWORD */
+function resetPassword(){
+  if(!resetEmail.value){msgReset.innerText="Enter email"; return;}
+  auth.sendPasswordResetEmail(resetEmail.value)
+    .then(()=> msgReset.innerText="Reset link sent ✅")
+    .catch(err=> msgReset.innerText=err.message);
+}
+
+/* LOGOUT */
+function logout(){auth.signOut();}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+ 
+
+
   
 <!DOCTYPE html>
 <html lang="en">
@@ -992,6 +1363,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
