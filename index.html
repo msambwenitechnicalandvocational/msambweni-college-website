@@ -1,126 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>www.msambwenitechnicalandvocationalcollege.com</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; scroll-behavior: smooth; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Msambweni Technical & Vocational College</title>
 
-    /* Header */
-    header { background: #2c7be5; color: #fff; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; position: sticky; top: 0; z-index: 1000; }
-    .header-left, .header-right { width: 60px; height: 60px; }
-    .header-left img, .header-right img { width: 100%; height: auto; }
-    .header-center { flex: 1; text-align: center; font-size: 20px; font-weight: bold; }
-    nav ul { display: flex; list-style: none; justify-content: center; flex-wrap: wrap; margin-top: 10px; width: 100%; }
-    nav ul li { margin: 5px 15px; }
-    nav ul li a { color: #fff; text-decoration: none; font-weight: bold; }
-    nav ul li a:hover { text-decoration: underline; }
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    /* Hero */
-    .hero { position: relative; background: url('college-hero.jpg') center/cover no-repeat; height: 85vh; display: flex; align-items: center; justify-content: center; text-align: center; color: #fff; overflow: hidden; }
-    .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(44,123,229,0.8), rgba(77,163,255,0.8)); z-index: 1; }
-    .hero-content { position: relative; z-index: 2; max-width: 900px; padding: 20px; }
-    .hero-content h1, .hero-content .main-title, .hero-content .subtitle, .hero-content p { margin-bottom: 20px; line-height: 1.4; }
-    .hero-content h1 { font-size: 36px; text-shadow: 2px 2px 5px rgba(0,0,0,0.5); }
-    .hero-content .main-title { font-size: 28px; text-shadow: 2px 2px 5px rgba(0,0,0,0.4); color: #ffeb3b; }
-    .hero-content .subtitle { font-size: 24px; text-shadow: 2px 2px 5px rgba(0,0,0,0.4); color: #ffeb3b; }
-    .hero-content p { font-size: 16px; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); }
-    .hero .btn { display: inline-block; padding: 15px 30px; font-size: 18px; font-weight: bold; color: #fff; background: linear-gradient(90deg, #ff7e5f, #feb47b); border-radius: 12px; text-decoration: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: 0.3s; }
-    .hero .btn:hover { background: linear-gradient(90deg, #ff6a3c, #ffb15c); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+body{
+  font-family:"Segoe UI", Arial, sans-serif;
+  background:#f4f6fb;
+  color:#222;
+}
 
-    /* Hero Info Cards */
-    .hero-cards { display: flex; justify-content: center; gap: 20px; margin-top: 30px; flex-wrap: wrap; }
-    .hero-card { background: rgba(255,255,255,0.15); padding: 15px 20px; border-radius: 12px; backdrop-filter: blur(10px); color: #fff; min-width: 220px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: transform 0.3s, box-shadow 0.3s; }
-    .hero-card span { font-size: 28px; display: block; margin-bottom: 8px; }
-    .hero-card p { font-size: 14px; margin: 0; }
-    .hero-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
+/* ===== TOP MOST BANNER ===== */
+.top-banner{
+  background:linear-gradient(135deg,#0b3c91,#1565c0,#1e88e5);
+  color:#fff;
+  text-align:center;
+  padding:50px 20px;
+}
 
-    /* Social Media Links */
-    .hero-socials { margin-top: 30px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-    .social-btn { background: linear-gradient(90deg, #4267B2, #23345C); color: #fff; padding: 12px 20px; border-radius: 10px; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.3s, box-shadow 0.3s; }
-    .social-btn:nth-child(2) { background: linear-gradient(90deg, #FF0000, #C4302B); }
-    .social-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.3); }
+.top-banner h1{
+  font-size:2.6rem;
+  font-weight:900;
+  letter-spacing:2px;
+}
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      header { flex-direction: column; align-items: center; }
-      nav ul { flex-direction: column; margin-top: 10px; }
-      nav ul li { margin: 10px 0; }
-      .hero-content h1 { font-size: 28px; }
-      .hero-content .main-title { font-size: 24px; }
-      .hero-content .subtitle { font-size: 20px; }
-      .hero-content p { font-size: 14px; }
-      .hero .btn { font-size: 16px; padding: 12px 25px; }
-      .hero-cards { flex-direction: column; gap: 15px; }
-      .hero-socials { flex-direction: column; gap: 10px; }
-    }
-  </style>
+/* ===== SECOND HEADER ===== */
+.sub-header{
+  background:#ffffff;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  padding:30px 20px;
+}
+
+.sub-header-content{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+
+/* BIGGER LOGOS */
+.logo{
+  width:140px;
+  height:auto;
+}
+
+/* NAVIGATION */
+nav{
+  width:100%;
+  margin-top:25px;
+}
+
+nav ul{
+  list-style:none;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:22px;
+}
+
+nav ul li a{
+  text-decoration:none;
+  color:#0b3c91;
+  font-weight:700;
+  padding:10px 18px;
+  border-radius:8px;
+  transition:0.3s;
+}
+
+nav ul li a:hover{
+  background:#0b3c91;
+  color:#fff;
+}
+
+/* ===== HERO SECTION ===== */
+.hero{
+  min-height:85vh;
+  background:
+    linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),
+    url("college-hero.jpg") center/cover no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:60px 20px;
+  text-align:center;
+}
+
+.hero-content{
+  max-width:1000px;
+  color:#fff;
+}
+
+.hero-content h2{
+  font-size:2.4rem;
+  margin-bottom:15px;
+}
+
+.hero-content h3{
+  font-size:1.5rem;
+  color:#ffeb3b;
+  margin-bottom:25px;
+}
+
+.hero-content p{
+  font-size:1.1rem;
+  line-height:1.7;
+  margin-bottom:35px;
+}
+
+/* BUTTON */
+.hero-content a{
+  display:inline-block;
+  padding:16px 40px;
+  background:linear-gradient(90deg,#ff9800,#ffc107);
+  color:#000;
+  font-weight:800;
+  border-radius:30px;
+  text-decoration:none;
+  transition:0.3s;
+}
+
+.hero-content a:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* ===== INFO CARDS ===== */
+.info-cards{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  flex-wrap:wrap;
+  margin-top:45px;
+}
+
+.card{
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(12px);
+  padding:26px;
+  border-radius:18px;
+  width:300px;
+  text-align:left;
+  box-shadow:0 6px 20px rgba(0,0,0,0.3);
+}
+
+.card span{
+  font-size:36px;
+  display:block;
+  margin-bottom:12px;
+}
+
+.card h4{
+  font-size:1.2rem;
+  margin-bottom:10px;
+  color:#ffeb3b;
+}
+
+.card p{
+  font-size:0.95rem;
+  line-height:1.6;
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .top-banner h1{
+    font-size:1.9rem;
+  }
+
+  .logo{
+    width:110px;
+  }
+
+  .hero-content h2{
+    font-size:1.8rem;
+  }
+
+  .hero-content h3{
+    font-size:1.25rem;
+  }
+
+  .card{
+    width:100%;
+    max-width:340px;
+  }
+}
+</style>
 </head>
+
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="header-left"><img src="knec.png" alt="Left Logo"></div>
-    <div class="header-center">Msambweni Technical & Vocational College</div>
-    <div class="header-right"><img src="logo.jpg" alt="Right Logo"></div>
-    <nav>
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#departments">Departments</a></li>
-        <li><a href="#admissions">Admissions</a></li>
-        <li><a href="#news">News</a></li>
-        <li><a href="#finance-portal">Finance Portal</a></li>
-        <li><a href="#staff-portal">Staff Portal</a></li>
-      </ul>
-    </nav>
-  </header><br><br><br><br>
+<!-- TOP MOST BANNER -->
+<div class="top-banner">
+  <h1>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h1>
+</div>
 
-  <!-- Hero -->
-  <section id="home" class="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <h1>Msambweni Technical & Vocational College</h1>
-      <h2 class="main-title">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h2>
-      <h2 class="subtitle">Empowering Students for a Brighter Future</h2>
-      <p>Providing top-quality technical and vocational education in ICT, Business, Engineering, Hospitality, Fashion, and more.</p>
-      <a href="#admissions" class="btn">Apply Now</a>
+<!-- SECOND HEADER -->
+<div class="sub-header">
+  <div class="sub-header-content">
+    <img src="logo-left.png" class="logo" alt="Left Logo">
+    <img src="logo-right.png" class="logo" alt="Right Logo">
+  </div>
 
-      <!-- Info Cards -->
-      <div class="hero-cards">
-        <div class="hero-card">
-          <span>📍</span>
-          <p>LOCATION: KWALE COUNTY, LIKONI LUNGALUNGA ROAD, MSAMBWENI</p>
-        </div>
-        <div class="hero-card">
-          <span>📚</span>
-          <p>Courses: ICT, MECHANICAL ENGINEERING, WELDING AND FABRICATION, FASHION AND DESIGN, HAIR DRESSING, BUILDING AND CONSTRUCTION, HUMAN RESOURCE MANAGEMENT, SOCIAL WORK AND COMMUNITY DEVELOPMENT, PROCUREMENT, ELECTRICAL AND ELECTRONICS, FOOD AND BEVERAGE, PLUMBING</p>
-        </div>
-        <div class="hero-card">
-          <span>🗓️</span>
-          <p>WELCOME ALL 2025</p>
-        </div>
+  <nav>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#courses">Courses</a></li>
+      <li><a href="#admissions">Admissions</a></li>
+      <li><a href="#portal">Student Portal</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</div>
+
+<!-- HERO SECTION -->
+<section class="hero" id="home">
+  <div class="hero-content">
+    <h2>Welcome to Msambweni TVC</h2>
+    <h3>Empowering Skills • Building Careers • Transforming Lives</h3>
+
+    <p>
+      Msambweni Technical and Vocational College is a public TVET institution
+      committed to delivering industry-relevant, competency-based training
+      aligned with national development goals.
+    </p>
+
+    <a href="#admissions">Apply Now</a>
+
+    <!-- INFORMATION CARDS -->
+    <div class="info-cards">
+
+      <div class="card">
+        <span>🎓</span>
+        <h4>Accreditation</h4>
+        <p>
+          Fully accredited by TVET Authority (TVETA) and CDACC,
+          offering nationally recognized certificates and diplomas.
+        </p>
       </div>
 
-      <!-- Social Media Links -->
-      <div class="hero-socials">
-        <a href="https://www.facebook.com/share/v/1FMM4x4nqn/" target="_blank" class="social-btn">👍 Facebook</a>
-        <a href="https://youtu.be/vbJVuYkpyOg?si=x0hPpyEeXdPJdDcS" target="_blank" class="social-btn">▶ YouTube</a>
-        <a href="https://students.kuccps.net/" target="_blank" class="social-btn">▶ KUCCPS</a>
-        <a href="https://www.helb.co.ke/" target="_blank" class="social-btn">▶ HELB</a>
-        <a href="https://www.tvetcdacc.go.ke/" target="_blank" class="social-btn">▶ CDACC</a>
-        <a href="https://www.youtube.com/@MSAMBWENI-TVC" target="_blank" class="social-btn">▶ MTVC</a>
-        <a href="https://epaper.peopledaily.digital/html5/reader/production/default.aspx?pubname=People%20Daily" target="_blank" class="social-btn">👍 People Daily</a>
+      <div class="card">
+        <span>📚</span>
+        <h4>Accredited Courses</h4>
+        <p>
+          ICT, Electrical & Electronics, Mechanical Engineering,
+          Welding & Fabrication, Building Construction,
+          Plumbing, Fashion & Design, Hairdressing,
+          Business Management, Procurement,
+          Social Work & Community Development.
+        </p>
       </div>
+
+      <div class="card">
+        <span>🗓️</span>
+        <h4>Admissions & Intakes</h4>
+        <p>
+          January, May and September intakes available.
+          Open to KCSE, KCPE and artisan-level applicants.
+        </p>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
 </body>
 </html>
-
-
 
 
 
@@ -1082,6 +1236,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
