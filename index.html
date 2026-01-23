@@ -641,12 +641,11 @@ button:hover{background:#093373;}
       <div class="dashboard-card card-balance"><h2 id="totalBalance">0</h2><span>Total Balance</span></div>
     </div>
   </div>
-  <!-- Other forms (student, finance, academics, staff, admin) same as your code -->
 </div>
 </div>
 
 <script>
-// Firebase
+// Firebase config
 firebase.initializeApp({
  apiKey:"AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
  authDomain:"studentregistration-b3f93.firebaseapp.com",
@@ -666,40 +665,51 @@ const portal = document.getElementById("portal");
 
 // ===== SIGNUP =====
 async function signup(){
-  if(!email.value || !password.value || !role.value){
+  const userEmail = email.value.trim();
+  const userPassword = password.value;
+  const userRole = role.value;
+  
+  if(!userEmail || !userPassword || !userRole){
     loginMsg.style.color="red"; loginMsg.innerText="Fill all fields"; return;
   }
+  // email validation
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!emailPattern.test(userEmail)){
+    loginMsg.style.color="red"; loginMsg.innerText="Invalid email format"; return;
+  }
+  
   loginMsg.style.color="blue"; loginMsg.innerText="Creating account...";
   try{
-    // check if email is valid
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(!emailPattern.test(email.value)){loginMsg.style.color="red"; loginMsg.innerText="Invalid email format"; return;}
-    
-    // check if role exists
-    const existing = await db.collection("users").where("role","==",role.value).get();
-    if(existing.size>0){loginMsg.style.color="red"; loginMsg.innerText=`Account for role "${role.value}" exists`; return;}
-    
-    const cred = await auth.createUserWithEmailAndPassword(email.value,password.value);
-    await db.collection("users").doc(cred.user.uid).set({email:email.value, role:role.value});
+    const existing = await db.collection("users").where("role","==",userRole).get();
+    if(existing.size>0){loginMsg.style.color="red"; loginMsg.innerText=`Account for role "${userRole}" exists`; return;}
+    const cred = await auth.createUserWithEmailAndPassword(userEmail, userPassword);
+    await db.collection("users").doc(cred.user.uid).set({email:userEmail, role:userRole});
     loginMsg.style.color="green"; loginMsg.innerText="✅ Account created successfully!";
-  }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
+  }catch(e){
+    loginMsg.style.color="red"; loginMsg.innerText=e.message;
+  }
 }
 
 // ===== LOGIN =====
 async function login(){
-  if(!email.value || !password.value || !role.value){
+  const userEmail = email.value.trim();
+  const userPassword = password.value;
+  const userRole = role.value;
+  if(!userEmail || !userPassword || !userRole){
     loginMsg.style.color="red"; loginMsg.innerText="Fill all fields"; return;
   }
   loginMsg.style.color="blue"; loginMsg.innerText="Logging in...";
   try{
-    const cred = await auth.signInWithEmailAndPassword(email.value,password.value);
+    const cred = await auth.signInWithEmailAndPassword(userEmail, userPassword);
     const doc = await db.collection("users").doc(cred.user.uid).get();
     if(!doc.exists){loginMsg.style.color="red"; loginMsg.innerText="User data not found"; return;}
-    if(doc.data().role !== role.value){loginMsg.style.color="red"; loginMsg.innerText="Role mismatch"; return;}
+    if(doc.data().role !== userRole){loginMsg.style.color="red"; loginMsg.innerText="Role mismatch"; return;}
     loginBox.style.display="none";
     portal.style.display="block";
     loginMsg.style.color="green"; loginMsg.innerText="🎉 Logged in!";
-  }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
+  }catch(e){
+    loginMsg.style.color="red"; loginMsg.innerText=e.message;
+  }
 }
 
 // SIDEBAR FUNCTIONS
@@ -710,6 +720,7 @@ function logout(){auth.signOut(); location.reload();}
 </script>
 </body>
 </html>
+
 
 
 
@@ -881,6 +892,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
