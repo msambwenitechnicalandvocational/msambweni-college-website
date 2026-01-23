@@ -2,292 +2,129 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Msambweni Technical & Vocational College Portal</title>
+<title>Msambweni TVC Portal</title>
 
-<!-- Firebase SDKs -->
 <script type="module">
+  /* ================= FIREBASE IMPORTS ================= */
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-  import { getFirestore, collection, addDoc, getDocs, serverTimestamp, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } 
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut }
+    from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  // Firebase Config
+  /* ================= FIREBASE CONFIG ================= */
   const firebaseConfig = {
     apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
     authDomain: "studentregistration-b3f93.firebaseapp.com",
-    databaseURL: "https://studentregistration-b3f93-default-rtdb.firebaseio.com",
     projectId: "studentregistration-b3f93",
     storageBucket: "studentregistration-b3f93.firebasestorage.app",
     messagingSenderId: "429282074438",
-    appId: "1:429282074438:web:d50150839003b34a3ecf47",
-    measurementId: "G-8CG0TSN909"
+    appId: "1:429282074438:web:d50150839003b34a3ecf47"
   };
 
+  /* ================= INITIALIZE ================= */
   const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
   const db = getFirestore(app);
   const auth = getAuth(app);
-  window.firebaseDB = db;
-  window.firebaseAuth = auth;
+
+  /* 🔑 EXPOSE TO WINDOW (CRITICAL FIX) */
+  window.db = db;
+  window.auth = auth;
+  window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+  window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+  window.sendPasswordResetEmail = sendPasswordResetEmail;
+  window.signOut = signOut;
+  window.addDoc = addDoc;
+  window.collection = collection;
+  window.getDocs = getDocs;
+  window.query = query;
+  window.where = where;
+  window.serverTimestamp = serverTimestamp;
 </script>
 
-<!-- jsPDF and autoTable for PDFs -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-
-<!-- Modern CSS -->
 <style>
-  body{font-family:'Segoe UI',sans-serif;margin:0;padding:0;background:#f5f5f5;}
-  header{display:flex;align-items:center;justify-content:flex-start;background:linear-gradient(90deg,#005f73,#0a9396); color:white; padding:20px;}
-  header img{height:80px;margin-right:20px;}
-  header div{text-align:left;}
-  header h1{margin:0;font-size:2rem;}
-  header p{margin:5px 0 0 0;font-size:1rem;}
-  nav{display:flex;justify-content:center;background:#94d2bd;flex-wrap:wrap;}
-  nav a{color:#001219;padding:15px 25px;text-decoration:none;font-weight:bold;transition:0.3s;}
-  nav a:hover{background:#0a9396;color:white;border-radius:5px;}
-  section{padding:20px;max-width:1200px;margin:20px auto;background:white;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.1);}
-  input, select, button{padding:10px;margin:5px 0;width:100%;max-width:400px;border-radius:5px;border:1px solid #ccc;}
-  button{background:#005f73;color:white;border:none;cursor:pointer;transition:0.3s;}
-  button:hover{background:#0a9396;}
-  table{width:100%;border-collapse:collapse;margin-top:20px;}
-  th, td{padding:10px;border:1px solid #ccc;text-align:left;}
-  th{background:#94d2bd;cursor:pointer;}
-  th:hover{background:#0a9396;color:white;}
-  .modal{display:none;position:fixed;z-index:10;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,0.5);}
-  .modal-content{background:white;margin:5% auto;padding:20px;border-radius:10px;width:90%;max-width:700px;position:relative;}
-  .close{position:absolute;top:10px;right:20px;font-size:28px;cursor:pointer;}
-  @media(max-width:768px){nav{flex-direction:column;} input,button,select{width:100%;}}
+body{font-family:Segoe UI;background:#f5f5f5}
+.card{background:#fff;padding:20px;max-width:400px;margin:50px auto;border-radius:10px}
+button{padding:10px;width:100%;margin-top:10px}
 </style>
 </head>
+
 <body>
 
-<header>
-  <img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/91/Kenya_education_logo.png/220px-Kenya_education_logo.png" alt="College Logo">
-  <div>
-    <h1>Msambweni Technical & Vocational College</h1>
-    <p>Empowering Skills for a Brighter Future</p>
-  </div>
-</header>
-
-<nav>
-  <a href="#login-section">Login / Signup</a>
-  <a href="#student-portal">Student Portal</a>
-  <a href="#admin-dashboard">Admin Dashboard</a>
-</nav>
-
-<!-- LOGIN / SIGNUP -->
-<section id="login-section">
-  <h2>Login / Signup</h2>
-  <input type="email" id="user_email" placeholder="Email">
-  <input type="password" id="user_password" placeholder="Password">
-  <select id="user_role">
+<div class="card">
+  <h2>Portal Login</h2>
+  <input id="email" placeholder="Email"><br>
+  <input id="password" type="password" placeholder="Password"><br>
+  <select id="role">
     <option value="">Select Role</option>
     <option value="student">Student</option>
     <option value="admin">Admin</option>
     <option value="finance">Finance Officer</option>
     <option value="exam">Exam Officer</option>
-    <option value="registry">Registry Officer</option>
-    <option value="sports">Sports Officer</option>
-    <option value="administration">Administration</option>
   </select>
-  <button onclick="signupUser()">Create Account</button>
+
   <button onclick="loginUser()">Login</button>
+  <button onclick="signupUser()">Create Account</button>
   <button onclick="resetPassword()">Forgot Password</button>
-  <p id="auth_status"></p>
-</section>
 
-<!-- STUDENT PORTAL -->
-<section id="student-portal" style="display:none;">
-  <h2>Student Portal</h2>
-  <p>Welcome, <span id="student_name"></span></p>
-  <button onclick="openModal('modalStudentRegister')">Register / Update Info</button>
-  <button onclick="loadTable()">View Data</button>
-  <button onclick="logout()">Logout</button>
-  <div id="student_table_container">
-    <table id="student_table">
-      <thead>
-        <tr><th>Name</th><th>Reg No</th><th>Course</th><th>Units</th><th>Year</th><th>Fees</th><th>Attendance</th><th>Notifications</th></tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-    <button onclick="downloadTablePDF()">Download PDF</button>
-  </div>
-</section>
-
-<!-- ADMIN DASHBOARD -->
-<section id="admin-dashboard" style="display:none;">
-  <h2>Admin Dashboard</h2>
-  <p>Welcome, <span id="admin_name"></span></p>
-  <button onclick="loadAdminTable()">Load All Students</button>
-  <button onclick="logout()">Logout</button>
-  <table id="admin_table">
-    <thead>
-      <tr><th>Name</th><th>Reg No</th><th>Course</th><th>Units</th><th>Year</th><th>Fees</th><th>Attendance</th><th>Notifications</th><th>Role</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-  <button onclick="downloadAdminPDF()">Download PDF</button>
-</section>
-
-<!-- MODAL: STUDENT REGISTRATION / UPDATE -->
-<div id="modalStudentRegister" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal('modalStudentRegister')">&times;</span>
-    <h3>Student Registration / Update</h3>
-    <input type="text" id="s_name" placeholder="Full Name">
-    <input type="text" id="s_reg" placeholder="Reg No">
-    <input type="number" id="s_year" placeholder="Year of Admission">
-    <input type="text" id="s_course" placeholder="Course">
-    <input type="text" id="s_unit1" placeholder="Unit 1">
-    <input type="text" id="s_unit2" placeholder="Unit 2">
-    <input type="text" id="s_unit3" placeholder="Unit 3">
-    <input type="text" id="s_unit4" placeholder="Unit 4">
-    <input type="text" id="s_fees" placeholder="Fee Statement">
-    <input type="text" id="s_attendance" placeholder="Attendance">
-    <input type="text" id="s_notifications" placeholder="Notifications">
-    <button onclick="registerStudent()">Submit</button>
-    <p id="reg_status"></p>
-  </div>
+  <p id="status"></p>
 </div>
 
-<script type="module">
-  import { firebaseDB, firebaseAuth } from './';
-  import { addDoc, collection, getDocs, serverTimestamp, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-  import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-  const { jsPDF } = window.jspdf;
+<script>
+/* ================= AUTH FUNCTIONS ================= */
 
-  // MODALS
-  function openModal(id){ document.getElementById(id).style.display='block'; }
-  function closeModal(id){ document.getElementById(id).style.display='none'; }
+async function signupUser(){
+  const email = email.value;
+  const password = document.getElementById("password").value;
+  const role = document.getElementById("role").value;
+  status.innerText = "⏳ Creating account...";
 
-  // AUTH FUNCTIONS
-  async function signupUser(){
-    const email=document.getElementById('user_email').value.trim();
-    const password=document.getElementById('user_password').value.trim();
-    const role=document.getElementById('user_role').value;
-    const status=document.getElementById('auth_status');
-    if(!email||!password||!role){ status.innerText="❌ Fill all fields"; return; }
-    status.innerText="⏳ Creating account...";
-    try{
-      const userCred=await createUserWithEmailAndPassword(firebaseAuth,email,password);
-      await addDoc(collection(firebaseDB,'users'),{ uid:userCred.user.uid,email,role,createdAt:serverTimestamp() });
-      status.innerText=`✅ Account created successfully for ${role}`;
-    }catch(e){ status.innerText="❌ "+e.message; }
-  }
-
-  async function loginUser(){
-    const email=document.getElementById('user_email').value.trim();
-    const password=document.getElementById('user_password').value.trim();
-    const role=document.getElementById('user_role').value;
-    const status=document.getElementById('auth_status');
-    if(!email||!password||!role){ status.innerText="❌ Fill all fields"; return; }
-    status.innerText="⏳ Logging in...";
-    try{
-      const userCred=await signInWithEmailAndPassword(firebaseAuth,email,password);
-      const usersSnap=await getDocs(query(collection(firebaseDB,'users'), where('uid','==',userCred.user.uid)));
-      if(usersSnap.empty){ throw new Error("User record not found"); }
-      const userData = usersSnap.docs[0].data();
-      if(userData.role!==role){ await signOut(firebaseAuth); status.innerText="❌ Role mismatch"; return; }
-      status.innerText=`✅ Logged in as ${role}`;
-      if(role==='student'){ document.getElementById('student-portal').style.display='block'; document.getElementById('student_name').innerText=email; }
-      else{ document.getElementById('admin-dashboard').style.display='block'; document.getElementById('admin_name').innerText=email; }
-      document.getElementById('login-section').style.display='none';
-    }catch(e){ status.innerText="❌ "+e.message; }
-  }
-
-  async function resetPassword(){
-    const email=document.getElementById('user_email').value.trim();
-    const status=document.getElementById('auth_status');
-    if(!email){ status.innerText="❌ Enter email"; return; }
-    status.innerText="⏳ Sending reset link...";
-    try{ await sendPasswordResetEmail(firebaseAuth,email); status.innerText="✅ Password reset link sent"; }
-    catch(e){ status.innerText="❌ "+e.message; }
-  }
-
-  async function logout(){
-    await signOut(firebaseAuth);
-    document.getElementById('student-portal').style.display='none';
-    document.getElementById('admin-dashboard').style.display='none';
-    document.getElementById('login-section').style.display='block';
-    document.getElementById('auth_status').innerText="✅ Logged out";
-  }
-
-  // STUDENT REGISTRATION
-  async function registerStudent(){
-    const name=document.getElementById('s_name').value;
-    const reg=document.getElementById('s_reg').value;
-    const year=document.getElementById('s_year').value;
-    const course=document.getElementById('s_course').value;
-    const units=[document.getElementById('s_unit1').value,document.getElementById('s_unit2').value,document.getElementById('s_unit3').value,document.getElementById('s_unit4').value];
-    const fees=document.getElementById('s_fees').value;
-    const attendance=document.getElementById('s_attendance').value;
-    const notifications=document.getElementById('s_notifications').value;
-    const status=document.getElementById('reg_status');
-    if(!name||!reg||!year||!course||units.some(u=>"")){status.innerText="❌ Fill required fields"; return;}
-    try{
-      await addDoc(collection(firebaseDB,'students'),{name,reg,year,course,units,fees,attendance,notifications,createdAt:serverTimestamp()});
-      status.innerText="✅ Student data saved";
-      closeModal('modalStudentRegister');
-      loadTable();
-    }catch(e){status.innerText="❌ "+e.message;}
-  }
-
-  // LOAD TABLES
-  async function loadTable(){
-    const tbody=document.querySelector('#student_table tbody');
-    tbody.innerHTML='';
-    const snapshot=await getDocs(collection(firebaseDB,'students'));
-    snapshot.forEach(doc=>{
-      const d=doc.data();
-      const row=tbody.insertRow();
-      row.insertCell(0).innerText=d.name;
-      row.insertCell(1).innerText=d.reg;
-      row.insertCell(2).innerText=d.course;
-      row.insertCell(3).innerText=d.units.join(', ');
-      row.insertCell(4).innerText=d.year;
-      row.insertCell(5).innerText=d.fees||'';
-      row.insertCell(6).innerText=d.attendance||'';
-      row.insertCell(7).innerText=d.notifications||'';
+  try{
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    await addDoc(collection(db,"users"),{
+      uid: cred.user.uid,
+      email,
+      role,
+      createdAt: serverTimestamp()
     });
+    status.innerText = "✅ Account created successfully";
+  }catch(e){
+    status.innerText = "❌ " + e.message;
   }
+}
 
-  async function loadAdminTable(){
-    const tbody=document.querySelector('#admin_table tbody');
-    tbody.innerHTML='';
-    const snapshot=await getDocs(collection(firebaseDB,'students'));
-    snapshot.forEach(doc=>{
-      const d=doc.data();
-      const row=tbody.insertRow();
-      row.insertCell(0).innerText=d.name;
-      row.insertCell(1).innerText=d.reg;
-      row.insertCell(2).innerText=d.course;
-      row.insertCell(3).innerText=d.units.join(', ');
-      row.insertCell(4).innerText=d.year;
-      row.insertCell(5).innerText=d.fees||'';
-      row.insertCell(6).innerText=d.attendance||'';
-      row.insertCell(7).innerText=d.notifications||'';
-      row.insertCell(8).innerText="Student";
-    });
-  }
+async function loginUser(){
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const role = document.getElementById("role").value;
+  status.innerText = "⏳ Logging in...";
 
-  // DOWNLOAD PDF
-  function downloadTablePDF(){
-    const doc=new jsPDF();
-    doc.setFontSize(14);
-    doc.text("Msambweni Technical & Vocational College - Student Data", 10, 10);
-    doc.autoTable({ html:'#student_table', startY:20, theme:'grid', headStyles:{fillColor:[0,95,115]}, styles:{fontSize:10} });
-    doc.save('Student_Data.pdf');
-  }
+  try{
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+    const q = query(collection(db,"users"), where("uid","==",cred.user.uid));
+    const snap = await getDocs(q);
 
-  function downloadAdminPDF(){
-    const doc=new jsPDF();
-    doc.setFontSize(14);
-    doc.text("Msambweni Technical & Vocational College - All Students", 10, 10);
-    doc.autoTable({ html:'#admin_table', startY:20, theme:'grid', headStyles:{fillColor:[0,95,115]}, styles:{fontSize:10} });
-    doc.save('All_Students.pdf');
+    if(snap.empty){ throw "No role assigned"; }
+
+    const userRole = snap.docs[0].data().role;
+    if(userRole !== role){ throw "Role mismatch"; }
+
+    status.innerText = `✅ Logged in as ${role}`;
+  }catch(e){
+    status.innerText = "❌ " + e;
   }
+}
+
+async function resetPassword(){
+  const email = document.getElementById("email").value;
+  status.innerText = "⏳ Sending reset link...";
+  try{
+    await sendPasswordResetEmail(auth,email);
+    status.innerText = "✅ Reset link sent to email";
+  }catch(e){
+    status.innerText = "❌ " + e.message;
+  }
+}
 </script>
 
 </body>
