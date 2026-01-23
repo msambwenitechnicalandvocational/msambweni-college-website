@@ -516,8 +516,6 @@ function downloadPDF(title){
 
 
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -532,6 +530,7 @@ function downloadPDF(title){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <style>
+/* Keep your existing CSS here as-is */
 body{margin:0;font-family:Segoe UI,sans-serif;background:#f0f2f5;}
 header{height:60px;background:#0d47a1;color:#fff;display:flex;align-items:center;padding:0 20px;position:fixed;width:100%;top:0;z-index:3;justify-content:space-between;}
 header img{height:40px;margin-right:10px;}
@@ -540,11 +539,8 @@ header img{height:40px;margin-right:10px;}
 input,select,button{width:100%;padding:12px;margin:8px 0;border-radius:6px;border:1px solid #ccc;font-size:14px;}
 button{background:#0d47a1;color:#fff;font-weight:bold;cursor:pointer;transition:0.3s;}
 button:hover{background:#093373;}
-
 #portal{display:none;}
-#sidebar{
-  width:250px;background:#1a237e;color:#fff;position:fixed;top:60px;bottom:0;overflow-y:auto;transition:0.3s;
-}
+#sidebar{width:250px;background:#1a237e;color:#fff;position:fixed;top:60px;bottom:0;overflow-y:auto;transition:0.3s;}
 #sidebar.collapsed{width:60px;}
 #sidebar a{display:flex;align-items:center;padding:14px 20px;color:#fff;text-decoration:none;transition:0.3s;cursor:pointer;}
 #sidebar a:hover{background:#3949ab;}
@@ -556,7 +552,6 @@ button:hover{background:#093373;}
 #sidebar.collapsed .submenu{padding-left:0;position:absolute;background:#2c2c54;left:60px;top:auto;z-index:10;width:200px;}
 #content{margin-left:250px;margin-top:60px;padding:20px;transition:0.3s;}
 #sidebar.collapsed ~ #content{margin-left:60px;}
-
 .card{background:#fff;padding:20px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,0.1);margin-bottom:20px;}
 .msg{font-weight:bold;color:green;margin-top:10px;}
 .table{width:100%;border-collapse:collapse;margin-top:15px;}
@@ -575,12 +570,7 @@ button:hover{background:#093373;}
 .card-balance{background:#e74c3c;}
 .notification-item{border-bottom:1px solid #ccc;padding:6px 0;}
 .toggle-btn{background:#0d47a1;color:#fff;border:none;padding:8px 12px;font-size:18px;cursor:pointer;border-radius:5px;}
-@media(max-width:768px){
-  #sidebar{width:100%;position:relative;height:auto;}
-  #sidebar.collapsed{width:100%;}
-  #content{margin-left:0;}
-  .dashboard-cards{flex-direction:column;}
-}
+@media(max-width:768px){#sidebar{width:100%;position:relative;height:auto;}#sidebar.collapsed{width:100%;}#content{margin-left:0;}.dashboard-cards{flex-direction:column;}}
 </style>
 </head>
 <body>
@@ -615,262 +605,78 @@ button:hover{background:#093373;}
 <div id="sidebar">
   <a onclick="menuClick('dashboard')"><span class="icon">🏠</span><span class="text">Dashboard</span></a>
   <a onclick="toggleSubmenu('studentSub')"><span class="icon">🎓</span><span class="text">Students ▼</span></a>
-  <div id="studentSub" class="submenu">
-      <a onclick="menuClick('student')">Registration</a>
-  </div>
+  <div id="studentSub" class="submenu"><a onclick="menuClick('student')">Registration</a></div>
   <a onclick="toggleSubmenu('academicsSub')"><span class="icon">📘</span><span class="text">Academics ▼</span></a>
-  <div id="academicsSub" class="submenu">
-      <a onclick="menuClick('academics')">Results</a>
-      <a onclick="menuClick('notifications')">Notifications</a>
-  </div>
+  <div id="academicsSub" class="submenu"><a onclick="menuClick('academics')">Results</a><a onclick="menuClick('notifications')">Notifications</a></div>
   <a onclick="toggleSubmenu('financeSub')"><span class="icon">💰</span><span class="text">Finance ▼</span></a>
-  <div id="financeSub" class="submenu">
-      <a onclick="menuClick('finance')">Fee Payment</a>
-  </div>
+  <div id="financeSub" class="submenu"><a onclick="menuClick('finance')">Fee Payment</a></div>
   <a onclick="toggleSubmenu('staffSub')"><span class="icon">👨‍🏫</span><span class="text">Staff ▼</span></a>
-  <div id="staffSub" class="submenu">
-      <a onclick="menuClick('staff')">Staff Details</a>
-  </div>
+  <div id="staffSub" class="submenu"><a onclick="menuClick('staff')">Staff Details</a></div>
   <a onclick="toggleSubmenu('adminSub')"><span class="icon">⚙</span><span class="text">Admin ▼</span></a>
-  <div id="adminSub" class="submenu">
-      <a onclick="menuClick('admin')">Settings</a>
-  </div>
+  <div id="adminSub" class="submenu"><a onclick="menuClick('admin')">Settings</a></div>
   <a onclick="logout()"><span class="icon">🚪</span><span class="text">Logout</span></a>
 </div>
 
 <div id="content">
-  <!-- Dashboard -->
-  <div class="card" id="dashboard">
-    <h3>Dashboard</h3>
-    <div class="dashboard-cards">
-      <div class="dashboard-card card-students"><h2 id="totalStudents">0</h2><span>Total Students</span></div>
-      <div class="dashboard-card card-staff"><h2 id="totalStaff">0</h2><span>Total Staff</span></div>
-      <div class="dashboard-card card-fees"><h2 id="totalFees">0</h2><span>Total Fees Paid</span></div>
-      <div class="dashboard-card card-balance"><h2 id="totalBalance">0</h2><span>Total Balance</span></div>
-    </div>
-  </div>
-
-  <!-- STUDENT -->
-  <form class="card" id="student" onsubmit="return false;">
-    <h3>Student Registration</h3>
-    <input id="stuName" placeholder="Name">
-    <input id="stuReg" placeholder="Reg No">
-    <input id="stuEmail" placeholder="Email">
-    <input id="stuTerm" placeholder="Term (e.g., 1,2,3)">
-    <input id="stuYear" placeholder="Year">
-    <input id="stuCourse" placeholder="Course">
-    <button type="button" onclick="saveStudent()">Save & Download PDF</button>
-    <p class="msg" id="stuMsg"></p>
-  </form>
-
-  <!-- FINANCE -->
-  <form class="card" id="finance" onsubmit="return false;">
-    <h3>Finance</h3>
-    <input id="fReg" placeholder="Reg No">
-    <input id="fName" placeholder="Name">
-    <input id="fPaid" type="number" placeholder="Amount Paid">
-    <input id="fTerm" placeholder="Term">
-    <input id="fYear" placeholder="Year">
-    <button type="button" onclick="saveFinance()">Save & Download Fee PDF</button>
-    <p class="msg" id="fMsg"></p>
-    <div id="feeStatement"></div>
-  </form>
-
-  <!-- ACADEMICS -->
-  <form class="card" id="academics" onsubmit="return false;">
-    <h3>Academic Results</h3>
-    <input id="aReg" placeholder="Reg No">
-    <input id="aName" placeholder="Name">
-    <input id="aUnit" placeholder="Unit">
-    <input id="aScore" type="number" placeholder="Score">
-    <input id="aTerm" placeholder="Term">
-    <input id="aYear" placeholder="Year">
-    <button type="button" onclick="saveResult()">Save & Download PDF</button>
-    <p class="msg" id="aMsg"></p>
-    <div id="transcript"></div>
-  </form>
-
-  <!-- NOTIFICATIONS -->
-  <div class="card" id="notifications">
-    <h3>Notifications</h3>
-    <div id="notifyList"></div>
-  </div>
-
-  <!-- STAFF -->
-  <form class="card" id="staff" onsubmit="return false;">
-    <h3>Staff Details</h3>
-    <input id="sName" placeholder="Name">
-    <input id="sRole" placeholder="Role">
-    <input id="sEmail" placeholder="Email">
-    <input id="sPhone" placeholder="Phone">
-    <input id="sDept" placeholder="Department">
-    <button type="button" onclick="saveStaff()">Save & Download PDF</button>
-    <p class="msg" id="sMsg"></p>
-  </form>
-
-  <!-- ADMIN -->
-  <form class="card" id="admin" onsubmit="return false;">
-    <h3>Admin Settings</h3>
-    <input id="adName" placeholder="Setting">
-    <button type="button" onclick="saveAdmin()">Save</button>
-    <p class="msg" id="adMsg"></p>
-  </form>
-</div>
+  <!-- Keep all your student, finance, academics, staff, admin forms here -->
 </div>
 
 <script>
+/* ===== FIREBASE INIT ===== */
 firebase.initializeApp({
  apiKey:"AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
  authDomain:"studentregistration-b3f93.firebaseapp.com",
  projectId:"studentregistration-b3f93",
  databaseURL:"https://studentregistration-b3f93-default-rtdb.firebaseio.com"
 });
-const auth=firebase.auth();
-const db=firebase.firestore();
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+/* ===== DOM ELEMENTS ===== */
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const roleSelect = document.getElementById("role");
+const loginMsg = document.getElementById("loginMsg");
+const loginBox = document.getElementById("loginBox");
+const portal = document.getElementById("portal");
 
 /* ===== SIGNUP ===== */
 async function signup(){
-  if(!email.value||!password.value||!role.value){loginMsg.innerText="Fill all fields"; return;}
+  if(!emailInput.value||!passwordInput.value||!roleSelect.value){
+    loginMsg.style.color="red"; loginMsg.innerText="Fill all fields"; return;
+  }
   loginMsg.style.color="blue"; loginMsg.innerText="Creating account...";
   try{
-    const existing = await db.collection("users").where("role","==",role.value).get();
-    if(existing.size>0){loginMsg.innerText=`Account for role "${role.value}" exists`; return;}
-    const cred = await auth.createUserWithEmailAndPassword(email.value,password.value);
-    await db.collection("users").doc(cred.user.uid).set({email:email.value, role:role.value});
+    const existing = await db.collection("users").where("role","==",roleSelect.value).get();
+    if(existing.size>0){loginMsg.style.color="red"; loginMsg.innerText=`Account for role "${roleSelect.value}" exists`; return;}
+    const cred = await auth.createUserWithEmailAndPassword(emailInput.value.trim(), passwordInput.value);
+    await db.collection("users").doc(cred.user.uid).set({email:emailInput.value.trim(), role:roleSelect.value});
     loginMsg.style.color="green"; loginMsg.innerText="✅ Account created successfully!";
   }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
 }
 
 /* ===== LOGIN ===== */
 async function login(){
+  if(!emailInput.value||!passwordInput.value){loginMsg.style.color="red"; loginMsg.innerText="Enter email & password"; return;}
   loginMsg.style.color="blue"; loginMsg.innerText="Logging in...";
   try{
-    const cred = await auth.signInWithEmailAndPassword(email.value,password.value);
+    const cred = await auth.signInWithEmailAndPassword(emailInput.value.trim(), passwordInput.value);
     const doc = await db.collection("users").doc(cred.user.uid).get();
     const userRole = doc.data().role;
-    loginBox.style.display="none";
-    portal.style.display="block";
+    loginBox.style.display="none"; portal.style.display="block";
     loginMsg.style.color="green"; loginMsg.innerText="🎉 Logged in!";
-    updateDashboard();
-    loadNotifications();
+    updateDashboard(); loadNotifications();
   }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
 }
 
-/* SIDEBAR FUNCTIONS */
-function toggleSidebar(){document.getElementById("sidebar").classList.toggle("collapsed");}
-function menuClick(id){document.querySelectorAll("#content > .card, #content > div").forEach(d=>d.style.display="none"); document.getElementById(id).style.display="block";}
-function toggleSubmenu(id){const el=document.getElementById(id); el.style.display=el.style.display==='block'?'none':'block';}
-function logout(){auth.signOut(); location.reload();}
-
-/* ===== DASHBOARD ===== */
-async function updateDashboard(){
-  const studentsSnap = await db.collection("students").get();
-  const staffSnap = await db.collection("staff").get();
-  const financeSnap = await db.collection("finance").get();
-  document.getElementById("totalStudents").innerText = studentsSnap.size;
-  document.getElementById("totalStaff").innerText = staffSnap.size;
-  let totalPaid=0, totalBalance=0;
-  financeSnap.forEach(d=>{totalPaid+=d.data().paid||0; totalBalance+=((40000-d.data().paid)||0);});
-  document.getElementById("totalFees").innerText = totalPaid;
-  document.getElementById("totalBalance").innerText = totalBalance;
-}
-
-/* ===== SAVE STUDENT ===== */
-async function saveStudent(){
-  const name=stuName.value, reg=stuReg.value, email=stuEmail.value, term=stuTerm.value, year=stuYear.value, course=stuCourse.value;
-  if(!name||!reg||!email||!term||!year||!course){stuMsg.innerText="Fill all fields"; return;}
-  const timestamp=new Date().toLocaleString();
-  await db.collection("students").doc(reg).set({name, reg, email, term, year, course, timestamp});
-  stuMsg.innerText="Saved ✅"; downloadStudentPDF({name, reg, email, term, year, course, timestamp});
-  loadNotifications();
-}
-
-/* ===== SAVE FINANCE ===== */
-async function saveFinance(){
-  const reg=fReg.value, name=fName.value, paid=parseFloat(fPaid.value)||0, term=fTerm.value, year=fYear.value;
-  if(!reg||!name||!term||!year){fMsg.innerText="Fill all fields"; return;}
-  const balance=40000-paid;
-  const timestamp=new Date().toLocaleString();
-  await db.collection("finance").doc(reg+term+year).set({reg, name, paid, balance, term, year, timestamp});
-  fMsg.innerText="Saved ✅"; downloadFinancePDF({reg, name, paid, balance, term, year, timestamp});
-  loadNotifications();
-}
-
-/* ===== SAVE RESULT ===== */
-function getGrade(score){
-  if(score>=80) return "Mastery";
-  if(score>=70) return "Proficient";
-  if(score>=60) return "Competent";
-  return "Not Competent";
-}
-async function saveResult(){
-  const reg=aReg.value, name=aName.value, unit=aUnit.value, score=parseFloat(aScore.value)||0, term=aTerm.value, year=aYear.value;
-  if(!reg||!name||!unit||!score||!term||!year){aMsg.innerText="Fill all fields"; return;}
-  const grade=getGrade(score);
-  const timestamp=new Date().toLocaleString();
-  await db.collection("academics").doc(reg+unit+term+year).set({reg,name,unit,score,grade,term,year,timestamp});
-  aMsg.innerText="Saved ✅"; downloadResultPDF({reg,name,unit,score,grade,term,year,timestamp});
-  loadNotifications();
-}
-
-/* ===== SAVE STAFF ===== */
-async function saveStaff(){
-  const name=sName.value, role=sRole.value, email=sEmail.value, phone=sPhone.value, dept=sDept.value;
-  if(!name||!role||!email||!phone||!dept){sMsg.innerText="Fill all fields"; return;}
-  const timestamp=new Date().toLocaleString();
-  await db.collection("staff").doc(email).set({name,role,email,phone,dept,timestamp});
-  sMsg.innerText="Saved ✅"; downloadStaffPDF({name,role,email,phone,dept,timestamp});
-  loadNotifications();
-}
-
-/* ===== SAVE ADMIN ===== */
-function saveAdmin(){adMsg.innerText="Saved ✅";}
-
-/* ===== NOTIFICATIONS ===== */
-async function loadNotifications(){
-  const notifyList = document.getElementById("notifyList");
-  notifyList.innerHTML = "";
-  const studentsSnap = await db.collection("students").orderBy("timestamp","desc").limit(5).get();
-  studentsSnap.forEach(doc=>{const d=doc.data(); notifyList.innerHTML += `<div class="notification-item">Student Registered: <b>${d.name}</b> (${d.reg}) at ${d.timestamp}</div>`;});
-  const financeSnap = await db.collection("finance").orderBy("timestamp","desc").limit(5).get();
-  financeSnap.forEach(doc=>{const d=doc.data(); notifyList.innerHTML += `<div class="notification-item">Fee Paid: <b>${d.name}</b> (${d.reg}) Ksh ${d.paid} at ${d.timestamp}</div>`;});
-  const academicsSnap = await db.collection("academics").orderBy("timestamp","desc").limit(5).get();
-  academicsSnap.forEach(doc=>{const d=doc.data(); notifyList.innerHTML += `<div class="notification-item">Result Added: <b>${d.name}</b> (${d.reg}) Score: ${d.score} Grade: ${d.grade} at ${d.timestamp}</div>`;});
-}
-
-/* ===== PDF DOWNLOADS ===== */
-function downloadStudentPDF(d){
-  const doc = new jspdf.jsPDF(); doc.setFontSize(14);
-  doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE", 10,10);
-  doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Email: ${d.email}`,10,40);
-  doc.text(`Course: ${d.course}`,10,50); doc.text(`Term: ${d.term}`,10,60); doc.text(`Year: ${d.year}`,10,70); doc.text(`Timestamp: ${d.timestamp}`,10,80);
-  doc.save(`Student_${d.reg}.pdf`);
-}
-function downloadFinancePDF(d){
-  const doc = new jspdf.jsPDF(); doc.setFontSize(14);
-  doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);
-  doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Term: ${d.term}`,10,40);
-  doc.text(`Year: ${d.year}`,10,50); doc.text(`Paid: Ksh ${d.paid}`,10,60); doc.text(`Balance: Ksh ${d.balance}`,10,70);
-  doc.text(`Timestamp: ${d.timestamp}`,10,80); doc.save(`Fee_${d.reg}_${d.term}_${d.year}.pdf`);
-}
-function downloadResultPDF(d){
-  const doc = new jspdf.jsPDF(); doc.setFontSize(14);
-  doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);
-  doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Unit: ${d.unit}`,10,40);
-  doc.text(`Score: ${d.score}`,10,50); doc.text(`Grade: ${d.grade}`,10,60);
-  doc.text(`Term: ${d.term}`,10,70); doc.text(`Year: ${d.year}`,10,80); doc.text(`Timestamp: ${d.timestamp}`,10,90);
-  doc.save(`Result_${d.reg}_${d.unit}.pdf`);
-}
-function downloadStaffPDF(d){
-  const doc = new jspdf.jsPDF(); doc.setFontSize(14);
-  doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);
-  doc.text(`Name: ${d.name}`,10,20); doc.text(`Role: ${d.role}`,10,30); doc.text(`Email: ${d.email}`,10,40);
-  doc.text(`Phone: ${d.phone}`,10,50); doc.text(`Dept: ${d.dept}`,10,60); doc.text(`Timestamp: ${d.timestamp}`,10,70);
-  doc.save(`Staff_${d.email}.pdf`);
-}
+/* ===== SIDEBAR, DASHBOARD, SAVE FUNCTIONS ===== */
+/* Keep your existing functions for sidebar toggle, student/finance/academics/staff save, PDF downloads, notifications here */
 </script>
 </body>
 </html>
+
+
+
 
 
 
@@ -1037,6 +843,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
