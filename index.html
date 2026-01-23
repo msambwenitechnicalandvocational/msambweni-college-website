@@ -389,6 +389,256 @@ function downloadStaffPDF(d){
     doc.save(`Staff_${d.email}.pdf`);
 }
 </script>
+
+<!-- ICT PORTAL MODERN -->
+<div id="ictPortal" style="font-family:Segoe UI,sans-serif;">
+
+  <!-- HEADER BANNER -->
+  <div class="ict-header">
+    ICT PORTAL - MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE
+  </div>
+
+  <!-- LOGIN/SIGNUP/RESET CONTAINER -->
+  <div class="form-container">
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm" class="form-card">
+      <h2>Login</h2>
+      <input id="loginEmail" type="email" placeholder="Email">
+      <input id="loginPassword" type="password" placeholder="Password">
+      <button onclick="loginUser()" class="btn-blue">Login</button>
+      <p class="form-switch">
+        <a href="#" onclick="showSignup()">Create Account</a> | 
+        <a href="#" onclick="showReset()">Reset Password</a>
+      </p>
+      <p id="loginMsg" class="msg"></p>
+    </div>
+
+    <!-- SIGNUP FORM -->
+    <div id="signupForm" class="form-card" style="display:none;">
+      <h2>Create Account</h2>
+      <input id="signupEmail" type="email" placeholder="Email">
+      <input id="signupPassword" type="password" placeholder="Password">
+      <input id="signupRole" type="text" placeholder="Role (student/staff/admin)">
+      <button onclick="signupUser()" class="btn-green">Sign Up</button>
+      <p class="form-switch">
+        <a href="#" onclick="showLogin()">Back to Login</a>
+      </p>
+      <p id="signupMsg" class="msg"></p>
+    </div>
+
+    <!-- RESET PASSWORD FORM -->
+    <div id="resetForm" class="form-card" style="display:none;">
+      <h2>Reset Password</h2>
+      <input id="resetEmail" type="email" placeholder="Enter your email">
+      <button onclick="resetPassword()" class="btn-orange">Send Reset Link</button>
+      <p class="form-switch">
+        <a href="#" onclick="showLogin()">Back to Login</a>
+      </p>
+      <p id="resetMsg" class="msg"></p>
+    </div>
+
+  </div>
+
+  <!-- DASHBOARD (hidden initially) -->
+  <div id="dashboardPortal" style="display:none;">
+    <header class="dashboard-header">
+      <button onclick="toggleSidebar()" class="toggle-btn">☰</button>
+      <span>ICT Dashboard</span>
+      <button onclick="logoutUser()" class="btn-red">Logout</button>
+    </header>
+
+    <aside id="sidebar" class="sidebar">
+      <a onclick="menuClick('dashboardCard')" class="active">🏠 Dashboard</a>
+      <a onclick="menuClick('notificationsCard')">🔔 Notifications</a>
+      <a onclick="menuClick('studentsCard')">🎓 Students</a>
+      <a onclick="menuClick('staffCard')">👨‍🏫 Staff</a>
+      <a onclick="menuClick('financeCard')">💰 Finance</a>
+    </aside>
+
+    <main id="content">
+      <div id="dashboardCard" class="card">
+        <h3>Dashboard</h3>
+        <div class="dashboard-cards">
+          <div class="dashboard-card card-students"><h2 id="totalStudents">0</h2><span>Total Students</span></div>
+          <div class="dashboard-card card-staff"><h2 id="totalStaff">0</h2><span>Total Staff</span></div>
+          <div class="dashboard-card card-fees"><h2 id="totalFees">0</h2><span>Total Fees Paid</span></div>
+        </div>
+      </div>
+
+      <div id="notificationsCard" class="card" style="display:none;">
+        <h3>Recent Notifications</h3>
+        <div id="notifyList"></div>
+      </div>
+
+      <div id="studentsCard" class="card" style="display:none;">
+        <h3>Students</h3>
+        <table id="studentsTable" class="table"></table>
+      </div>
+
+      <div id="staffCard" class="card" style="display:none;">
+        <h3>Staff</h3>
+        <table id="staffTable" class="table"></table>
+      </div>
+
+      <div id="financeCard" class="card" style="display:none;">
+        <h3>Finance</h3>
+        <table id="financeTable" class="table"></table>
+      </div>
+    </main>
+  </div>
+
+</div>
+
+<style>
+/* ===== GENERAL ===== */
+body{margin:0;background:#f0f2f5;}
+.ict-header{background:#3498db;color:white;text-align:center;padding:40px 20px;font-size:28px;font-weight:bold;box-shadow:0 4px 10px rgba(0,0,0,0.2);}
+.form-container{max-width:400px;margin:40px auto;}
+.form-card{background:white;padding:25px;border-radius:10px;box-shadow:0 5px 20px rgba(0,0,0,0.1);margin-bottom:20px;}
+input{width:100%;padding:12px;margin:8px 0;border-radius:6px;border:1px solid #ccc;font-size:14px;}
+button{width:100%;padding:12px;margin-top:8px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;font-size:14px;}
+.btn-blue{background:#3498db;color:white;}
+.btn-blue:hover{background:#2980b9;}
+.btn-green{background:#2ecc71;color:white;}
+.btn-green:hover{background:#27ae60;}
+.btn-orange{background:#f39c12;color:white;}
+.btn-orange:hover{background:#e67e22;}
+.btn-red{background:#e74c3c;color:white;}
+.btn-red:hover{background:#c0392b;}
+.msg{font-weight:bold;text-align:center;margin-top:10px;}
+.form-switch{text-align:center;margin-top:10px;}
+.form-switch a{color:#3498db;text-decoration:none;}
+.form-switch a:hover{text-decoration:underline;}
+
+/* ===== DASHBOARD ===== */
+.dashboard-header{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;background:#3498db;color:white;position:sticky;top:0;z-index:10;}
+.toggle-btn{background:#2980b9;color:white;padding:10px;border-radius:6px;border:none;cursor:pointer;}
+.sidebar{width:220px;position:fixed;top:60px;left:0;background:#1abc9c;color:white;height:100%;overflow-y:auto;padding-top:20px;transition:0.3s;}
+.sidebar a{display:block;padding:12px 20px;color:white;text-decoration:none;margin-bottom:2px;border-radius:6px;}
+.sidebar a:hover,.sidebar a.active{background:#16a085;}
+#content{margin-left:240px;padding:20px;transition:0.3s;}
+.card{background:white;padding:20px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,0.1);margin-bottom:20px;}
+.dashboard-cards{display:flex;gap:15px;margin-top:15px;}
+.dashboard-card{flex:1;padding:20px;border-radius:10px;color:white;text-align:center;box-shadow:0 5px 15px rgba(0,0,0,0.1);}
+.card-students{background:#3498db;}
+.card-staff{background:#2ecc71;}
+.card-fees{background:#f1c40f;color:#1a237e;}
+.table{width:100%;border-collapse:collapse;margin-top:15px;}
+.table th,.table td{border:1px solid #ccc;padding:8px;text-align:center;}
+.table th{background:#3498db;color:white;}
+.table tr:nth-child(even){background:#f2f2f2;}
+</style>
+
+<script type="module">
+  // ===== FIREBASE IMPORTS =====
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, collection, doc, setDoc, getDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  // ===== FIREBASE CONFIG =====
+  const firebaseConfig = {
+    apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
+    authDomain: "studentregistration-b3f93.firebaseapp.com",
+    databaseURL: "https://studentregistration-b3f93-default-rtdb.firebaseio.com",
+    projectId: "studentregistration-b3f93",
+    storageBucket: "studentregistration-b3f93.firebasestorage.app",
+    messagingSenderId: "429282074438",
+    appId: "1:429282074438:web:d50150839003b34a3ecf47",
+    measurementId: "G-8CG0TSN909"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth = getAuth();
+  const db = getFirestore();
+
+  // ===== FORM SWITCH =====
+  function showSignup(){document.getElementById('loginForm').style.display='none';document.getElementById('signupForm').style.display='block';document.getElementById('resetForm').style.display='none';clearMsgs();}
+  function showLogin(){document.getElementById('loginForm').style.display='block';document.getElementById('signupForm').style.display='none';document.getElementById('resetForm').style.display='none';clearMsgs();}
+  function showReset(){document.getElementById('loginForm').style.display='none';document.getElementById('signupForm').style.display='none';document.getElementById('resetForm').style.display='block';clearMsgs();}
+  function clearMsgs(){document.getElementById('loginMsg').innerText='';document.getElementById('signupMsg').innerText='';document.getElementById('resetMsg').innerText='';}
+
+  // ===== SIGNUP =====
+  async function signupUser(){
+    const email=document.getElementById('signupEmail').value;
+    const password=document.getElementById('signupPassword').value;
+    const role=document.getElementById('signupRole').value || "student";
+    const msg=document.getElementById('signupMsg');
+    if(!email||!password){msg.innerText="Fill all fields!"; return;}
+    msg.style.color='blue'; msg.innerText='Creating account...';
+    try{
+      const q=query(collection(db,"users"), orderBy("email"), limit(1));
+      const cred=await createUserWithEmailAndPassword(auth,email,password);
+      await setDoc(doc(db,"users",cred.user.uid),{email,role});
+      msg.style.color='green'; msg.innerText='✅ Account created successfully!';
+    }catch(e){msg.style.color='red'; msg.innerText=e.message;}
+  }
+
+  // ===== LOGIN =====
+  async function loginUser(){
+    const email=document.getElementById('loginEmail').value;
+    const password=document.getElementById('loginPassword').value;
+    const msg=document.getElementById('loginMsg');
+    if(!email||!password){msg.innerText="Fill all fields!"; return;}
+    msg.style.color='blue'; msg.innerText='Logging in...';
+    try{
+      const cred=await signInWithEmailAndPassword(auth,email,password);
+      const docSnap=await getDoc(doc(db,"users",cred.user.uid));
+      const role=docSnap.data().role||"unknown";
+      msg.style.color='green'; msg.innerText=`🎉 Logged in as ${role}`;
+      document.getElementById('dashboardPortal').style.display='block';
+      document.getElementById('loginForm').style.display='none';
+      loadDashboard();
+    }catch(e){msg.style.color='red'; msg.innerText=e.message;}
+  }
+
+  // ===== RESET PASSWORD =====
+  async function resetPassword(){
+    const email=document.getElementById('resetEmail').value;
+    const msg=document.getElementById('resetMsg');
+    if(!email){msg.innerText="Enter email!"; return;}
+    try{
+      await sendPasswordResetEmail(auth,email);
+      msg.style.color='green'; msg.innerText="✅ Reset link sent!";
+    }catch(e){msg.style.color='red'; msg.innerText=e.message;}
+  }
+
+  // ===== LOGOUT =====
+  async function logoutUser(){
+    await signOut(auth);
+    location.reload();
+  }
+
+  // ===== SIDEBAR & MENU =====
+  function toggleSidebar(){document.getElementById('sidebar').classList.toggle('collapsed');}
+  function menuClick(id){
+    document.querySelectorAll('#content > .card').forEach(c=>c.style.display='none');
+    document.getElementById(id).style.display='block';
+  }
+
+  // ===== DASHBOARD DATA =====
+  async function loadDashboard(){
+    const studentsSnap=await getDocs(collection(db,"students"));
+    const staffSnap=await getDocs(collection(db,"staff"));
+    const financeSnap=await getDocs(collection(db,"finance"));
+    document.getElementById('totalStudents').innerText=studentsSnap.size;
+    document.getElementById('totalStaff').innerText=staffSnap.size;
+    let totalFees=0; financeSnap.forEach(d=>totalFees+=(d.data().paid||0));
+    document.getElementById('totalFees').innerText=totalFees;
+
+    // Notifications
+    const notifyList=document.getElementById('notifyList'); notifyList.innerHTML='';
+    const recentStudents=studentsSnap.docs.slice(-5).reverse();
+    recentStudents.forEach(d=>notifyList.innerHTML+=`<div>${d.data().name} registered</div>`);
+  }
+</script>
+
+
+
+
+  
 </body>
 </html>
 
@@ -486,6 +736,7 @@ function downloadStaffPDF(d){
   .footer a {margin: 5px;}
 }
 </style>
+
 
 
 
