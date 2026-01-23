@@ -512,169 +512,9 @@ function downloadPDF(title){
 
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>MTVC College System</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<script type="module">
-/* ================= IMPORTS ================= */
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } 
-from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc } 
-from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-import jsPDF from "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
 
-/* ================= FIREBASE CONFIG ================= */
-const firebaseConfig = {
-  apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
-  authDomain: "studentregistration-b3f93.firebaseapp.com",
-  projectId: "studentregistration-b3f93",
-  storageBucket: "studentregistration-b3f93.firebasestorage.app",
-  messagingSenderId: "429282074438",
-  appId: "1:429282074438:web:d50150839003b34a3ecf47"
-};
 
-/* ================= INIT ================= */
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-/* ================= HELPERS ================= */
-const $ = id => document.getElementById(id);
-const msg = (t,c="red") => { $("loginMsg").innerText=t; $("loginMsg").style.color=c; };
-
-/* ================= SIGNUP ================= */
-window.signup = async () => {
-  const email = $("email").value.trim();
-  const password = $("password").value;
-  const role = $("role").value;
-
-  if(!email || !password || !role) return msg("Fill all fields");
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return msg("Invalid email");
-
-  try{
-    const cred = await createUserWithEmailAndPassword(auth,email,password);
-    await setDoc(doc(db,"users",cred.user.uid),{
-      email, role,
-      createdAt: new Date().toISOString()
-    });
-    msg("Account created","green");
-  }catch(e){ msg(e.message); }
-};
-
-/* ================= LOGIN ================= */
-window.login = async () => {
-  const email = $("email").value.trim();
-  const password = $("password").value;
-  const role = $("role").value;
-
-  if(!email || !password || !role) return msg("Fill all fields");
-
-  try{
-    const cred = await signInWithEmailAndPassword(auth,email,password);
-    const snap = await getDoc(doc(db,"users",cred.user.uid));
-
-    if(!snap.exists()) return msg("User profile missing");
-    if(snap.data().role !== role) return msg("Role mismatch");
-
-    $("loginBox").style.display="none";
-    $("portal").style.display="block";
-    showDashboard(role);
-    msg("Logged in","green");
-  }catch(e){ msg(e.message); }
-};
-
-/* ================= LOGOUT ================= */
-window.logout = async ()=>{ await signOut(auth); location.reload(); };
-
-/* ================= ROLE ROUTING ================= */
-function showDashboard(role){
-  document.querySelectorAll(".dash").forEach(d=>d.style.display="none");
-  $(role+"Dash").style.display="block";
-}
-
-/* ================= PDF ================= */
-window.downloadPDF = (title, rows)=>{
-  const pdf = new jsPDF.jsPDF();
-  pdf.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);
-  pdf.text(title,10,20);
-
-  let y=35;
-  rows.forEach(r=>{
-    pdf.text(r,10,y);
-    y+=8;
-  });
-
-  pdf.text("Generated: "+new Date().toLocaleString(),10,y+10);
-  pdf.save(title.replace(/\s/g,"_")+".pdf");
-};
-</script>
-
-<style>
-body{font-family:Segoe UI;background:#f4f6f9}
-#loginBox{max-width:380px;margin:80px auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,.2)}
-input,select,button{width:100%;padding:12px;margin:8px 0}
-button{background:#0d47a1;color:#fff;border:none;font-weight:bold}
-#portal{display:none;padding:20px}
-.dash{display:none;background:#fff;padding:20px;border-radius:10px;margin-top:15px}
-</style>
-</head>
-
-<body>
-
-<!-- LOGIN -->
-<div id="loginBox">
-  <h3>MTVC Secure Login</h3>
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-  <select id="role">
-    <option value="">Select Role</option>
-    <option value="student">Student</option>
-    <option value="staff">Staff</option>
-    <option value="finance">Finance</option>
-    <option value="admin">Admin</option>
-  </select>
-  <button onclick="login()">Login</button>
-  <button onclick="signup()">Create Account</button>
-  <p id="loginMsg"></p>
-</div>
-
-<!-- PORTAL -->
-<div id="portal">
-  <h2>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h2>
-  <button onclick="logout()">Logout</button>
-
-  <!-- STUDENT -->
-  <div id="studentDash" class="dash">
-    <h3>🎓 Student Dashboard</h3>
-    <button onclick="downloadPDF('Student Profile',['Name: Student','Status: Active'])">Download Profile</button>
-  </div>
-
-  <!-- STAFF -->
-  <div id="staffDash" class="dash">
-    <h3>👨‍🏫 Staff Dashboard</h3>
-    <button onclick="downloadPDF('Staff Report',['Department: ICT'])">Download Report</button>
-  </div>
-
-  <!-- FINANCE -->
-  <div id="financeDash" class="dash">
-    <h3>💰 Finance Dashboard</h3>
-    <button onclick="downloadPDF('Finance Summary',['Total Paid: Ksh 0'])">Download Finance PDF</button>
-  </div>
-
-  <!-- ADMIN -->
-  <div id="adminDash" class="dash">
-    <h3>🛡 Admin Dashboard</h3>
-    <button onclick="downloadPDF('System Audit',['All systems operational'])">Download Audit</button>
-  </div>
-</div>
-
-</body>
-</html>
 
 
 
@@ -845,6 +685,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
