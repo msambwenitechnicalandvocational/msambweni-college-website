@@ -521,6 +521,233 @@ window.showReset = function(){
 </html>
 
 
+<!-- ===== ICT PORTAL CONTAINER ===== -->
+<div id="ict-portal">
+
+<style>
+/* ===== MODERN BLUE THEME ===== */
+#ict-portal{
+  min-height:100vh;
+  background:linear-gradient(135deg,#0d47a1,#1976d2,#42a5f5);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:Segoe UI, sans-serif;
+}
+
+.portal-box{
+  width:380px;
+  background:#fff;
+  padding:30px;
+  border-radius:14px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+  animation:fadeIn 0.6s ease;
+}
+
+.portal-box h2{
+  text-align:center;
+  color:#0d47a1;
+  margin-bottom:20px;
+}
+
+.portal-box input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:14px;
+}
+
+.portal-box input:focus{
+  outline:none;
+  border:2px solid #1976d2;
+}
+
+.portal-box button{
+  width:100%;
+  padding:12px;
+  background:#1976d2;
+  color:white;
+  border:none;
+  border-radius:8px;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.portal-box button:hover{
+  background:#0d47a1;
+}
+
+.portal-links{
+  text-align:center;
+  margin-top:12px;
+}
+
+.portal-links span{
+  color:#1976d2;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.portal-links span:hover{
+  text-decoration:underline;
+}
+
+.msg{
+  text-align:center;
+  margin-top:10px;
+  font-weight:bold;
+}
+
+#dashboardPortal{
+  display:none;
+  width:100%;
+  height:100vh;
+  background:#f4f6f9;
+}
+
+.dashboard-inner{
+  padding:40px;
+}
+
+.dashboard-inner h2{
+  color:#0d47a1;
+}
+
+.logout-btn{
+  background:#e53935;
+  padding:10px 14px;
+  border:none;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+</style>
+
+<!-- ===== LOGIN ===== -->
+<div class="portal-box" id="loginForm">
+  <h2>ICT Portal Login</h2>
+  <input id="loginEmail" placeholder="Email">
+  <input id="loginPassword" type="password" placeholder="Password">
+  <button onclick="loginUser()">Login</button>
+  <div class="portal-links">
+    <span onclick="showSignup()">Create account</span> ·
+    <span onclick="showReset()">Forgot password?</span>
+  </div>
+  <div class="msg" id="loginMsg"></div>
+</div>
+
+<!-- ===== SIGNUP ===== -->
+<div class="portal-box" id="signupForm" style="display:none;">
+  <h2>Create Account</h2>
+  <input id="signupEmail" placeholder="Email">
+  <input id="signupPassword" type="password" placeholder="Password">
+  <button onclick="signupUser()">Create Account</button>
+  <div class="portal-links">
+    <span onclick="showLogin()">Back to login</span>
+  </div>
+  <div class="msg" id="signupMsg"></div>
+</div>
+
+<!-- ===== RESET PASSWORD ===== -->
+<div class="portal-box" id="resetForm" style="display:none;">
+  <h2>Reset Password</h2>
+  <input id="resetEmail" placeholder="Email">
+  <button onclick="resetPassword()">Send Reset Link</button>
+  <div class="portal-links">
+    <span onclick="showLogin()">Back to login</span>
+  </div>
+  <div class="msg" id="resetMsg"></div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div id="dashboardPortal">
+  <div class="dashboard-inner">
+    <h2>Welcome to ICT Portal</h2>
+    <p>You are successfully logged in.</p>
+    <button class="logout-btn" onclick="logoutUser()">Logout</button>
+  </div>
+</div>
+
+</div>
+
+<!-- ===== FIREBASE MODULE SCRIPT ===== -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+/* ===== CONFIG ===== */
+const firebaseConfig = {
+  apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
+  authDomain: "studentregistration-b3f93.firebaseapp.com",
+  databaseURL: "https://studentregistration-b3f93-default-rtdb.firebaseio.com",
+  projectId: "studentregistration-b3f93",
+  storageBucket: "studentregistration-b3f93.appspot.com",
+  messagingSenderId: "429282074438",
+  appId: "1:429282074438:web:d50150839003b34a3ecf47",
+  measurementId: "G-8CG0TSN909"
+};
+
+/* ===== INIT ===== */
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+/* ===== GLOBAL FUNCTIONS (FIXED) ===== */
+window.loginUser = async ()=>{
+  try{
+    await signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value);
+    loginForm.style.display="none";
+    dashboardPortal.style.display="block";
+  }catch(e){
+    loginMsg.innerText=e.message;
+    loginMsg.style.color="red";
+  }
+};
+
+window.signupUser = async ()=>{
+  try{
+    await createUserWithEmailAndPassword(auth, signupEmail.value, signupPassword.value);
+    signupMsg.innerText="Account created ✔";
+    signupMsg.style.color="green";
+    setTimeout(showLogin,1500);
+  }catch(e){
+    signupMsg.innerText=e.message;
+    signupMsg.style.color="red";
+  }
+};
+
+window.resetPassword = async ()=>{
+  try{
+    await sendPasswordResetEmail(auth, resetEmail.value);
+    resetMsg.innerText="Reset email sent ✔";
+    resetMsg.style.color="green";
+  }catch(e){
+    resetMsg.innerText=e.message;
+    resetMsg.style.color="red";
+  }
+};
+
+window.logoutUser = async ()=>{
+  await signOut(auth);
+  location.reload();
+};
+
+window.showSignup=()=>{loginForm.style.display="none"; signupForm.style.display="block"; resetForm.style.display="none";}
+window.showLogin=()=>{loginForm.style.display="block"; signupForm.style.display="none"; resetForm.style.display="none";}
+window.showReset=()=>{loginForm.style.display="none"; signupForm.style.display="none"; resetForm.style.display="block";}
+</script>
+
+
+
 
 <!-- FOOTER -->
 <footer class="footer">
@@ -614,6 +841,7 @@ window.showReset = function(){
   .footer a {margin: 5px;}
 }
 </style>
+
 
 
 
