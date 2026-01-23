@@ -391,3 +391,92 @@ function downloadStaffPDF(d){
 </script>
 </body>
 </html>
+
+
+
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <strong>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</strong><br>
+      P.O. Box 123, Msambweni, Kwale County, Kenya
+    </div>
+    <div class="footer-contact">
+      <span>Email: info@mtvc.ac.ke</span> | 
+      <span>Phone: +254 701 234 567</span>
+    </div>
+    <div class="footer-links">
+      <strong>Resources:</strong>
+      <a href="https://www.youtube.com" target="_blank">YouTube</a>
+      <a href="https://www.kuccps.ac.ke" target="_blank">KUCCPS</a>
+      <a href="https://www.helb.co.ke" target="_blank">HELB</a>
+      <a href="https://www.cdacc.go.ke" target="_blank">CDACC</a>
+    </div>
+    <div class="footer-social">
+      <a href="#">Facebook</a>
+      <a href="#">Twitter</a>
+      <a href="#">Instagram</a>
+    </div>
+  </div>
+  <div class="footer-copy">&copy; 2026 MSAMBWENI TVC. All rights reserved.</div>
+</footer>
+
+<style>
+/* FOOTER STYLING */
+.footer {
+  background: #1abc9c;
+  color: white;
+  padding: 30px 50px 15px 50px;
+  font-family: 'Segoe UI', sans-serif;
+  margin-top: 20px;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.footer a {
+  color: white;
+  margin: 0 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.footer a:hover {
+  color: #f1c40f;
+  text-decoration: underline;
+}
+
+.footer-brand, .footer-contact, .footer-social, .footer-links {
+  flex: 1 1 200px;
+  text-align: center;
+  margin: 5px 0;
+}
+
+.footer-copy {
+  margin-top: 15px;
+  font-size: 13px;
+  text-align: center;
+  color: #f0f0f0;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  padding-top: 10px;
+}
+
+/* Responsive Footer */
+@media(max-width:768px){
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+  .footer a {margin: 5px;}
+}
+</style>
