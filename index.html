@@ -512,11 +512,6 @@ function downloadPDF(title){
 
 </body>
 </html>
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -524,224 +519,113 @@ function downloadPDF(title){
 <title>MTVC College System</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Firebase v9+ Modular SDK -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
-  import { getFirestore, collection, doc, setDoc, getDoc, query, where, getDocs, orderBy, limit } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+/* ================= IMPORTS ================= */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } 
+from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } 
+from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+import jsPDF from "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
 
-  // Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
-    authDomain: "studentregistration-b3f93.firebaseapp.com",
-    databaseURL: "https://studentregistration-b3f93-default-rtdb.firebaseio.com",
-    projectId: "studentregistration-b3f93",
-    storageBucket: "studentregistration-b3f93.firebasestorage.app",
-    messagingSenderId: "429282074438",
-    appId: "1:429282074438:web:d50150839003b34a3ecf47",
-    measurementId: "G-8CG0TSN909"
-  };
+/* ================= FIREBASE CONFIG ================= */
+const firebaseConfig = {
+  apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
+  authDomain: "studentregistration-b3f93.firebaseapp.com",
+  projectId: "studentregistration-b3f93",
+  storageBucket: "studentregistration-b3f93.firebasestorage.app",
+  messagingSenderId: "429282074438",
+  appId: "1:429282074438:web:d50150839003b34a3ecf47"
+};
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+/* ================= INIT ================= */
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-  // Elements
-  const emailInput = document.getElementById("email");
-  const passwordInput = document.getElementById("password");
-  const roleInput = document.getElementById("role");
-  const loginMsg = document.getElementById("loginMsg");
-  const loginBox = document.getElementById("loginBox");
-  const portal = document.getElementById("portal");
+/* ================= HELPERS ================= */
+const $ = id => document.getElementById(id);
+const msg = (t,c="red") => { $("loginMsg").innerText=t; $("loginMsg").style.color=c; };
 
-  /* ===== SIGNUP ===== */
-  async function signup(){
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-    const role = roleInput.value;
+/* ================= SIGNUP ================= */
+window.signup = async () => {
+  const email = $("email").value.trim();
+  const password = $("password").value;
+  const role = $("role").value;
 
-    if(!email || !password || !role){ loginMsg.innerText="Fill all fields"; loginMsg.style.color="red"; return; }
+  if(!email || !password || !role) return msg("Fill all fields");
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return msg("Invalid email");
 
-    // Validate email
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(!emailPattern.test(email)){ loginMsg.innerText="Invalid email format"; loginMsg.style.color="red"; return; }
+  try{
+    const cred = await createUserWithEmailAndPassword(auth,email,password);
+    await setDoc(doc(db,"users",cred.user.uid),{
+      email, role,
+      createdAt: new Date().toISOString()
+    });
+    msg("Account created","green");
+  }catch(e){ msg(e.message); }
+};
 
-    loginMsg.innerText="Creating account..."; loginMsg.style.color="blue";
+/* ================= LOGIN ================= */
+window.login = async () => {
+  const email = $("email").value.trim();
+  const password = $("password").value;
+  const role = $("role").value;
 
-    try{
-      // Check if role exists
-      const q = query(collection(db,"users"), where("role","==",role));
-      const querySnap = await getDocs(q);
-      if(!querySnap.empty){ loginMsg.innerText=`Account for role "${role}" exists`; loginMsg.style.color="red"; return; }
+  if(!email || !password || !role) return msg("Fill all fields");
 
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
-      await setDoc(doc(db,"users",cred.user.uid), { email, role });
-      loginMsg.innerText="✅ Account created successfully!"; loginMsg.style.color="green";
-    }catch(e){ loginMsg.innerText=e.message; loginMsg.style.color="red"; }
-  }
+  try{
+    const cred = await signInWithEmailAndPassword(auth,email,password);
+    const snap = await getDoc(doc(db,"users",cred.user.uid));
 
-  /* ===== LOGIN ===== */
-  async function login(){
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
-    const role = roleInput.value;
+    if(!snap.exists()) return msg("User profile missing");
+    if(snap.data().role !== role) return msg("Role mismatch");
 
-    if(!email || !password || !role){ loginMsg.innerText="Fill all fields"; loginMsg.style.color="red"; return; }
+    $("loginBox").style.display="none";
+    $("portal").style.display="block";
+    showDashboard(role);
+    msg("Logged in","green");
+  }catch(e){ msg(e.message); }
+};
 
-    loginMsg.innerText="Logging in..."; loginMsg.style.color="blue";
+/* ================= LOGOUT ================= */
+window.logout = async ()=>{ await signOut(auth); location.reload(); };
 
-    try{
-      const cred = await signInWithEmailAndPassword(auth,email,password);
-      const docRef = doc(db,"users",cred.user.uid);
-      const docSnap = await getDoc(docRef);
-      if(!docSnap.exists()){ loginMsg.innerText="User data not found"; loginMsg.style.color="red"; return; }
-      if(docSnap.data().role !== role){ loginMsg.innerText="Role mismatch"; loginMsg.style.color="red"; return; }
+/* ================= ROLE ROUTING ================= */
+function showDashboard(role){
+  document.querySelectorAll(".dash").forEach(d=>d.style.display="none");
+  $(role+"Dash").style.display="block";
+}
 
-      loginBox.style.display="none";
-      portal.style.display="block";
-      loginMsg.innerText="🎉 Logged in!"; loginMsg.style.color="green";
+/* ================= PDF ================= */
+window.downloadPDF = (title, rows)=>{
+  const pdf = new jsPDF.jsPDF();
+  pdf.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);
+  pdf.text(title,10,20);
 
-      updateDashboard();
-      loadNotifications();
-    }catch(e){ loginMsg.innerText=e.message; loginMsg.style.color="red"; }
-  }
+  let y=35;
+  rows.forEach(r=>{
+    pdf.text(r,10,y);
+    y+=8;
+  });
 
-  /* ===== LOGOUT ===== */
-  async function logout(){
-    await signOut(auth);
-    location.reload();
-  }
-
-  /* ===== SIDEBAR ===== */
-  window.toggleSidebar = function(){ document.getElementById("sidebar").classList.toggle("collapsed"); }
-  window.menuClick = function(id){ document.querySelectorAll("#content > .card, #content > div").forEach(d=>d.style.display="none"); document.getElementById(id).style.display="block"; }
-  window.toggleSubmenu = function(id){ const el=document.getElementById(id); el.style.display = el.style.display==="block"?"none":"block"; }
-
-  /* ===== DASHBOARD ===== */
-  async function updateDashboard(){
-    const studentsSnap = await getDocs(collection(db,"students"));
-    const staffSnap = await getDocs(collection(db,"staff"));
-    const financeSnap = await getDocs(collection(db,"finance"));
-
-    document.getElementById("totalStudents").innerText = studentsSnap.size;
-    document.getElementById("totalStaff").innerText = staffSnap.size;
-
-    let totalPaid=0, totalBalance=0;
-    financeSnap.forEach(d=>{ totalPaid += d.data().paid||0; totalBalance += (40000 - (d.data().paid||0)); });
-    document.getElementById("totalFees").innerText = totalPaid;
-    document.getElementById("totalBalance").innerText = totalBalance;
-  }
-
-  /* ===== SAVE STUDENT ===== */
-  window.saveStudent = async function(){
-    const name=stuName.value, reg=stuReg.value, email=stuEmail.value, term=stuTerm.value, year=stuYear.value, course=stuCourse.value;
-    if(!name||!reg||!email||!term||!year||!course){stuMsg.innerText="Fill all fields"; return;}
-    const timestamp=new Date().toLocaleString();
-    await setDoc(doc(db,"students",reg),{name,reg,email,term,year,course,timestamp});
-    stuMsg.innerText="Saved ✅"; downloadStudentPDF({name,reg,email,term,year,course,timestamp});
-    loadNotifications();
-  }
-
-  /* ===== SAVE FINANCE ===== */
-  window.saveFinance = async function(){
-    const reg=fReg.value, name=fName.value, paid=parseFloat(fPaid.value)||0, term=fTerm.value, year=fYear.value;
-    if(!reg||!name||!term||!year){fMsg.innerText="Fill all fields"; return;}
-    const balance = 40000 - paid;
-    const timestamp=new Date().toLocaleString();
-    await setDoc(doc(db,"finance",reg+term+year),{reg,name,paid,balance,term,year,timestamp});
-    fMsg.innerText="Saved ✅"; downloadFinancePDF({reg,name,paid,balance,term,year,timestamp});
-    loadNotifications();
-  }
-
-  /* ===== SAVE RESULTS ===== */
-  function getGrade(score){
-    if(score>=80) return "Mastery";
-    if(score>=70) return "Proficient";
-    if(score>=60) return "Competent";
-    return "Not Competent";
-  }
-  window.saveResult = async function(){
-    const reg=aReg.value, name=aName.value, unit=aUnit.value, score=parseFloat(aScore.value)||0, term=aTerm.value, year=aYear.value;
-    if(!reg||!name||!unit||!score||!term||!year){aMsg.innerText="Fill all fields"; return;}
-    const grade = getGrade(score);
-    const timestamp=new Date().toLocaleString();
-    await setDoc(doc(db,"academics",reg+unit+term+year),{reg,name,unit,score,grade,term,year,timestamp});
-    aMsg.innerText="Saved ✅"; downloadResultPDF({reg,name,unit,score,grade,term,year,timestamp});
-    loadNotifications();
-  }
-
-  /* ===== SAVE STAFF ===== */
-  window.saveStaff = async function(){
-    const name=sName.value, role=sRole.value, email=sEmail.value, phone=sPhone.value, dept=sDept.value;
-    if(!name||!role||!email||!phone||!dept){sMsg.innerText="Fill all fields"; return;}
-    const timestamp=new Date().toLocaleString();
-    await setDoc(doc(db,"staff",email),{name,role,email,phone,dept,timestamp});
-    sMsg.innerText="Saved ✅"; downloadStaffPDF({name,role,email,phone,dept,timestamp});
-    loadNotifications();
-  }
-
-  /* ===== SAVE ADMIN ===== */
-  window.saveAdmin = function(){ adMsg.innerText="Saved ✅"; }
-
-  /* ===== NOTIFICATIONS ===== */
-  async function loadNotifications(){
-    const notifyList = document.getElementById("notifyList");
-    notifyList.innerHTML = "";
-
-    const studentsSnap = await getDocs(query(collection(db,"students"), orderBy("timestamp","desc"), limit(5)));
-    studentsSnap.forEach(doc=>{const d=doc.data(); notifyList.innerHTML += `<div class="notification-item">Student Registered: <b>${d.name}</b> (${d.reg}) at ${d.timestamp}</div>`;});
-
-    const financeSnap = await getDocs(query(collection(db,"finance"), orderBy("timestamp","desc"), limit(5)));
-    financeSnap.forEach(doc=>{const d=doc.data(); notifyList.innerHTML += `<div class="notification-item">Fee Paid: <b>${d.name}</b> (${d.reg}) Ksh ${d.paid} at ${d.timestamp}</div>`;});
-
-    const academicsSnap = await getDocs(query(collection(db,"academics"), orderBy("timestamp","desc"), limit(5)));
-    academicsSnap.forEach(doc=>{const d=doc.data(); notifyList.innerHTML += `<div class="notification-item">Result Added: <b>${d.name}</b> (${d.reg}) Score: ${d.score} Grade: ${d.grade} at ${d.timestamp}</div>`;});
-  }
-
-  /* ===== PDF DOWNLOADS ===== */
-  import jsPDF from "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
-
-  function downloadStudentPDF(d){ const doc = new jsPDF.jsPDF(); doc.setFontSize(14);
-    doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);
-    doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Email: ${d.email}`,10,40);
-    doc.text(`Course: ${d.course}`,10,50); doc.text(`Term: ${d.term}`,10,60); doc.text(`Year: ${d.year}`,10,70); doc.text(`Timestamp: ${d.timestamp}`,10,80);
-    doc.save(`Student_${d.reg}.pdf`);
-  }
-
-  function downloadFinancePDF(d){ const doc = new jsPDF.jsPDF(); doc.setFontSize(14);
-    doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);
-    doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Term: ${d.term}`,10,40);
-    doc.text(`Year: ${d.year}`,10,50); doc.text(`Paid: Ksh ${d.paid}`,10,60); doc.text(`Balance: Ksh ${d.balance}`,10,70);
-    doc.text(`Timestamp: ${d.timestamp}`,10,80); doc.save(`Fee_${d.reg}_${d.term}_${d.year}.pdf`);
-  }
-
-  function downloadResultPDF(d){ const doc = new jsPDF.jsPDF(); doc.setFontSize(14);
-    doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);
-    doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Unit: ${d.unit}`,10,40);
-    doc.text(`Score: ${d.score}`,10,50); doc.text(`Grade: ${d.grade}`,10,60);
-    doc.text(`Term: ${d.term}`,10,70); doc.text(`Year: ${d.year}`,10,80); doc.text(`Timestamp: ${d.timestamp}`,10,90);
-    doc.save(`Result_${d.reg}_${d.unit}.pdf`);
-  }
-
-  function downloadStaffPDF(d){ const doc = new jsPDF.jsPDF(); doc.setFontSize(14);
-    doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);
-    doc.text(`Name: ${d.name}`,10,20); doc.text(`Role: ${d.role}`,10,30); doc.text(`Email: ${d.email}`,10,40);
-    doc.text(`Phone: ${d.phone}`,10,50); doc.text(`Dept: ${d.dept}`,10,60); doc.text(`Timestamp: ${d.timestamp}`,10,70);
-    doc.save(`Staff_${d.email}.pdf`);
-  }
-
-  // Expose login/signup globally
-  window.login = login;
-  window.signup = signup;
-  window.logout = logout;
+  pdf.text("Generated: "+new Date().toLocaleString(),10,y+10);
+  pdf.save(title.replace(/\s/g,"_")+".pdf");
+};
 </script>
 
 <style>
-/* ... Your previous CSS goes here (unchanged) ... */
+body{font-family:Segoe UI;background:#f4f6f9}
+#loginBox{max-width:380px;margin:80px auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,.2)}
+input,select,button{width:100%;padding:12px;margin:8px 0}
+button{background:#0d47a1;color:#fff;border:none;font-weight:bold}
+#portal{display:none;padding:20px}
+.dash{display:none;background:#fff;padding:20px;border-radius:10px;margin-top:15px}
 </style>
+</head>
 
 <body>
+
 <!-- LOGIN -->
 <div id="loginBox">
   <h3>MTVC Secure Login</h3>
@@ -754,17 +638,45 @@ function downloadPDF(title){
     <option value="finance">Finance</option>
     <option value="admin">Admin</option>
   </select>
-  <button type="button" onclick="login()">Login</button>
-  <button type="button" onclick="signup()">Create Account</button>
+  <button onclick="login()">Login</button>
+  <button onclick="signup()">Create Account</button>
   <p id="loginMsg"></p>
 </div>
 
 <!-- PORTAL -->
-<div id="portal" style="display:none;">
-  <!-- Your header, sidebar, and forms go here (same as your previous HTML) -->
+<div id="portal">
+  <h2>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h2>
+  <button onclick="logout()">Logout</button>
+
+  <!-- STUDENT -->
+  <div id="studentDash" class="dash">
+    <h3>🎓 Student Dashboard</h3>
+    <button onclick="downloadPDF('Student Profile',['Name: Student','Status: Active'])">Download Profile</button>
+  </div>
+
+  <!-- STAFF -->
+  <div id="staffDash" class="dash">
+    <h3>👨‍🏫 Staff Dashboard</h3>
+    <button onclick="downloadPDF('Staff Report',['Department: ICT'])">Download Report</button>
+  </div>
+
+  <!-- FINANCE -->
+  <div id="financeDash" class="dash">
+    <h3>💰 Finance Dashboard</h3>
+    <button onclick="downloadPDF('Finance Summary',['Total Paid: Ksh 0'])">Download Finance PDF</button>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="adminDash" class="dash">
+    <h3>🛡 Admin Dashboard</h3>
+    <button onclick="downloadPDF('System Audit',['All systems operational'])">Download Audit</button>
+  </div>
 </div>
+
 </body>
 </html>
+
+
 
 
 
@@ -933,6 +845,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
