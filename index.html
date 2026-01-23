@@ -274,7 +274,6 @@ async function login(){
     updateDashboard();
     loadNotifications();
 
-    // Role-based display
     const financeElements = document.querySelectorAll("#finance, #financeSub");
     const studentElements = document.querySelectorAll("#student, #studentSub");
     const staffElements = document.querySelectorAll("#staff, #staffSub");
@@ -292,10 +291,7 @@ async function login(){
       studentElements.forEach(e=>e.style.display="none");
       staffElements.forEach(e=>e.style.display="none");
       adminElements.forEach(e=>e.style.display="none");
-    } else if(userRole==="admin"){
-      // admin sees all
     }
-
   }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
 }
 
@@ -319,14 +315,7 @@ async function updateDashboard(){
 }
 
 /* ===== SAVE & PDF ===== */
-function alertEmptyFields(obj,message){
-  for(const key in obj){
-    if(obj[key]===""||obj[key]===null||obj[key]===undefined||obj[key]===0){
-      alert(message); return true;
-    }
-  }
-  return false;
-}
+function alertEmptyFields(obj,message){for(const key in obj){if(obj[key]===""||obj[key]===null||obj[key]===undefined||obj[key]===0){alert(message); return true;}}return false;}
 
 async function saveStudent(){
   const data={name:stuName.value, reg:stuReg.value, email:stuEmail.value, term:stuTerm.value, year:stuYear.value, course:stuCourse.value};
@@ -346,31 +335,9 @@ async function saveFinance(){
   loadNotifications();
 }
 
-function getGrade(score){
-  if(score>=80) return "Mastery";
-  if(score>=70) return "Proficient";
-  if(score>=60) return "Competent";
-  return "Not Competent";
-}
-
-async function saveResult(){
-  const data={reg:aReg.value, name:aName.value, unit:aUnit.value, score:parseFloat(aScore.value)||0, term:aTerm.value, year:aYear.value};
-  if(alertEmptyFields(data,"Please fill all academic result fields")) return;
-  data.grade=getGrade(data.score); data.timestamp=new Date().toLocaleString();
-  await db.collection("academics").doc(data.reg+data.unit+data.term+data.year).set(data);
-  aMsg.innerText="Saved ✅"; downloadResultPDF(data);
-  loadNotifications();
-}
-
-async function saveStaff(){
-  const data={name:sName.value, role:sRole.value, email:sEmail.value, phone:sPhone.value, dept:sDept.value};
-  if(alertEmptyFields(data,"Please fill all staff fields")) return;
-  data.timestamp=new Date().toLocaleString();
-  await db.collection("staff").doc(data.email).set(data);
-  sMsg.innerText="Saved ✅"; downloadStaffPDF(data);
-  loadNotifications();
-}
-
+function getGrade(score){if(score>=80) return "Mastery"; if(score>=70) return "Proficient"; if(score>=60) return "Competent"; return "Not Competent";}
+async function saveResult(){const data={reg:aReg.value, name:aName.value, unit:aUnit.value, score:parseFloat(aScore.value)||0, term:aTerm.value, year:aYear.value}; if(alertEmptyFields(data,"Please fill all academic result fields")) return; data.grade=getGrade(data.score); data.timestamp=new Date().toLocaleString(); await db.collection("academics").doc(data.reg+data.unit+data.term+data.year).set(data); aMsg.innerText="Saved ✅"; downloadResultPDF(data); loadNotifications();}
+async function saveStaff(){const data={name:sName.value, role:sRole.value, email:sEmail.value, phone:sPhone.value, dept:sDept.value}; if(alertEmptyFields(data,"Please fill all staff fields")) return; data.timestamp=new Date().toLocaleString(); await db.collection("staff").doc(data.email).set(data); sMsg.innerText="Saved ✅"; downloadStaffPDF(data); loadNotifications();}
 function saveAdmin(){adMsg.innerText="Saved ✅";}
 
 /* ===== NOTIFICATIONS ===== */
@@ -385,11 +352,42 @@ async function loadNotifications(){
   academicsSnap.forEach(doc=>{const d=doc.data(); notifyList.innerHTML += `<div class="notification-item">Result Added: <b>${d.name}</b> (${d.reg}) Score: ${d.score} Grade: ${d.grade} at ${d.timestamp}</div>`;});
 }
 
-/* ===== PDF DOWNLOADS ===== */
-function downloadStudentPDF(d){const doc=new jspdf.jsPDF(); doc.setFontSize(14); doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10); doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Email: ${d.email}`,10,40); doc.text(`Course: ${d.course}`,10,50); doc.text(`Term: ${d.term}`,10,60); doc.text(`Year: ${d.year}`,10,70); doc.text(`Timestamp: ${d.timestamp}`,10,80); doc.save(`Student_${d.reg}.pdf`);}
-function downloadFinancePDF(d){const doc=new jspdf.jsPDF(); doc.setFontSize(14); doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10); doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Term: ${d.term}`,10,40); doc.text(`Year: ${d.year}`,10,50); doc.text(`Paid: Ksh ${d.paid}`,10,60); doc.text(`Balance: Ksh ${d.balance}`,10,70); doc.text(`Timestamp: ${d.timestamp}`,10,80); doc.save(`Fee_${d.reg}_${d.term}_${d.year}.pdf`);}
-function downloadResultPDF(d){const doc=new jspdf.jsPDF(); doc.setFontSize(14); doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10); doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Unit: ${d.unit}`,10,40); doc.text(`Score: ${d.score}`,10,50); doc.text(`Grade: ${d.grade}`,10,60); doc.text(`Term: ${d.term}`,10,70); doc.text(`Year: ${d.year}`,10,80); doc.text(`Timestamp: ${d.timestamp}`,10,90); doc.save(`Result_${d.reg}_${d.unit}.pdf`);}
-function downloadStaffPDF(d){const doc=new jspdf.jsPDF(); doc.setFontSize(14); doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10); doc.text(`Name: ${d.name}`,10,20); doc.text(`Role: ${d.role}`,10,30); doc.text(`Email: ${d.email}`,10,40); doc.text(`Phone: ${d.phone}`,10,50); doc.text(`Dept: ${d.dept}`,10,60); doc.text(`Timestamp: ${d.timestamp}`,10,70); doc.save(`Staff_${d.email}.pdf`);}
+/* ===== PDF DOWNLOADS (TABLE FORMAT WITH COLORS) ===== */
+function downloadStudentPDF(d){
+    const doc = new jspdf.jsPDF();
+    doc.setFontSize(16);
+    doc.setTextColor(255,255,255);
+    doc.setFillColor(26,188,156); doc.rect(0,0,210,15,'F');
+    doc.text("STUDENT RECORD",105,10,null,null,'center');
+    doc.setFontSize(12); doc.setTextColor(0,0,0);
+    const tableData=[["Name",d.name],["Reg No",d.reg],["Email",d.email],["Course",d.course],["Term",d.term],["Year",d.year],["Timestamp",d.timestamp]];
+    let y=25; tableData.forEach(r=>{doc.setFillColor(236,240,241); doc.rect(10,y-8,190,8,'F'); doc.text(`${r[0]}: ${r[1]}`,12,y); y+=10;});
+    doc.save(`Student_${d.reg}.pdf`);
+}
+function downloadFinancePDF(d){
+    const doc = new jspdf.jsPDF();
+    doc.setFontSize(16); doc.setTextColor(255,255,255); doc.setFillColor(241,196,15); doc.rect(0,0,210,15,'F'); doc.text("FINANCE RECORD",105,10,null,null,'center');
+    doc.setFontSize(12); doc.setTextColor(0,0,0);
+    const tableData=[["Name",d.name],["Reg No",d.reg],["Term",d.term],["Year",d.year],["Paid","Ksh "+d.paid],["Balance","Ksh "+d.balance],["Timestamp",d.timestamp]];
+    let y=25; tableData.forEach(r=>{doc.setFillColor(236,240,241); doc.rect(10,y-8,190,8,'F'); doc.text(`${r[0]}: ${r[1]}`,12,y); y+=10;});
+    doc.save(`Fee_${d.reg}_${d.term}_${d.year}.pdf`);
+}
+function downloadResultPDF(d){
+    const doc = new jspdf.jsPDF();
+    doc.setFontSize(16); doc.setTextColor(255,255,255); doc.setFillColor(52,152,219); doc.rect(0,0,210,15,'F'); doc.text("ACADEMIC RESULT",105,10,null,null,'center');
+    doc.setFontSize(12); doc.setTextColor(0,0,0);
+    const tableData=[["Name",d.name],["Reg No",d.reg],["Unit",d.unit],["Score",d.score],["Grade",d.grade],["Term",d.term],["Year",d.year],["Timestamp",d.timestamp]];
+    let y=25; tableData.forEach(r=>{doc.setFillColor(236,240,241); doc.rect(10,y-8,190,8,'F'); doc.text(`${r[0]}: ${r[1]}`,12,y); y+=10;});
+    doc.save(`Result_${d.reg}_${d.unit}.pdf`);
+}
+function downloadStaffPDF(d){
+    const doc = new jspdf.jsPDF();
+    doc.setFontSize(16); doc.setTextColor(255,255,255); doc.setFillColor(231,76,60); doc.rect(0,0,210,15,'F'); doc.text("STAFF RECORD",105,10,null,null,'center');
+    doc.setFontSize(12); doc.setTextColor(0,0,0);
+    const tableData=[["Name",d.name],["Role",d.role],["Email",d.email],["Phone",d.phone],["Department",d.dept],["Timestamp",d.timestamp]];
+    let y=25; tableData.forEach(r=>{doc.setFillColor(236,240,241); doc.rect(10,y-8,190,8,'F'); doc.text(`${r[0]}: ${r[1]}`,12,y); y+=10;});
+    doc.save(`Staff_${d.email}.pdf`);
+}
 </script>
 </body>
 </html>
