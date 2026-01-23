@@ -264,10 +264,7 @@ nav ul li a:hover{
       <div class="card">
         <span>🗓️</span>
         <h4>Admissions & Intakes</h4>
-        <p>
-          January, May and September intakes available.
-          Open to KCSE, KCPE and artisan-level applicants.
-        </p>
+       
       </div>
 
     </div>
@@ -906,7 +903,7 @@ function deleteRecord(id){
 /* UPDATE TRANSCRIPT */
 function updateTranscript(){
  let table=`<h4>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h4><table class="table">
- <tr><th>Reg No</th><th>Unit</th><th>Score</th><th>Grade</th></tr>`;
+ <tr><th>REG NO:</th><th>UNIT NAME:</th><th>SCORE</th><th>GRADE</th></tr>`;
  transcriptData.forEach(d=>{
    table+=`<tr><td>${d.reg}</td><td>${d.unit}</td><td>${d.score}</td><td>${d.grade}</td></tr>`;
  });
@@ -1140,6 +1137,7 @@ window.onscroll = function () {
 </script>
 </body>
 </html>
+
 
 
 
