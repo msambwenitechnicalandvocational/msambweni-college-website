@@ -521,231 +521,214 @@ window.showReset = function(){
 </html>
 
 
-<!-- ===== ICT PORTAL CONTAINER ===== -->
+<!-- ================= ICT PORTAL ================= -->
 <div id="ict-portal">
 
 <style>
-/* ===== MODERN BLUE THEME ===== */
-#ict-portal{
-  min-height:100vh;
-  background:linear-gradient(135deg,#0d47a1,#1976d2,#42a5f5);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family:Segoe UI, sans-serif;
-}
+#ict-portal{min-height:100vh;font-family:Segoe UI,sans-serif}
+.hidden{display:none}
 
-.portal-box{
-  width:380px;
-  background:#fff;
-  padding:30px;
+/* AUTH */
+.auth-box{
+  max-width:380px;margin:80px auto;
+  background:#fff;padding:30px;
   border-radius:14px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.25);
-  animation:fadeIn 0.6s ease;
+  box-shadow:0 20px 40px rgba(0,0,0,.25)
 }
-
-.portal-box h2{
-  text-align:center;
-  color:#0d47a1;
-  margin-bottom:20px;
+.auth-box h2{text-align:center;color:#0d47a1}
+.auth-box input,select{
+  width:100%;padding:12px;margin:10px 0;
+  border-radius:8px;border:1px solid #ccc
 }
-
-.portal-box input{
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  border-radius:8px;
-  border:1px solid #ccc;
-  font-size:14px;
+.auth-box button{
+  width:100%;padding:12px;
+  background:#1976d2;color:#fff;
+  border:none;border-radius:8px;font-weight:bold
 }
+.link{text-align:center;color:#1976d2;cursor:pointer}
 
-.portal-box input:focus{
-  outline:none;
-  border:2px solid #1976d2;
+/* DASHBOARD */
+#dashboard{background:#f4f6f9;min-height:100vh;padding:30px}
+.topbar{display:flex;justify-content:space-between}
+.logout{background:#c62828;color:#fff;border:none;padding:8px 14px;border-radius:6px}
+
+/* WIDGETS */
+.widgets{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;margin-top:25px
 }
-
-.portal-box button{
-  width:100%;
-  padding:12px;
-  background:#1976d2;
-  color:white;
-  border:none;
-  border-radius:8px;
-  font-size:15px;
-  font-weight:bold;
-  cursor:pointer;
-  transition:0.3s;
+.widget{
+  background:#fff;padding:18px;border-radius:12px;
+  box-shadow:0 8px 16px rgba(0,0,0,.15);
+  text-align:center;font-weight:bold
 }
+.widget span{font-size:26px;display:block;margin-top:6px}
 
-.portal-box button:hover{
-  background:#0d47a1;
+/* SECTIONS */
+.section{
+  background:#fff;margin-top:30px;padding:20px;
+  border-radius:12px;box-shadow:0 6px 14px rgba(0,0,0,.1)
 }
+.section h3{color:#0d47a1}
 
-.portal-links{
-  text-align:center;
-  margin-top:12px;
-}
-
-.portal-links span{
-  color:#1976d2;
-  cursor:pointer;
-  font-size:14px;
-}
-
-.portal-links span:hover{
-  text-decoration:underline;
-}
-
-.msg{
-  text-align:center;
-  margin-top:10px;
-  font-weight:bold;
-}
-
-#dashboardPortal{
-  display:none;
-  width:100%;
-  height:100vh;
-  background:#f4f6f9;
-}
-
-.dashboard-inner{
-  padding:40px;
-}
-
-.dashboard-inner h2{
-  color:#0d47a1;
-}
-
-.logout-btn{
-  background:#e53935;
-  padding:10px 14px;
-  border:none;
-  color:white;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(20px);}
-  to{opacity:1; transform:translateY(0);}
+/* TICKETS */
+.ticket{
+  padding:10px;border-bottom:1px solid #ddd
 }
 </style>
 
-<!-- ===== LOGIN ===== -->
-<div class="portal-box" id="loginForm">
+<!-- ========== LOGIN ========== -->
+<div class="auth-box" id="loginBox">
   <h2>ICT Portal Login</h2>
   <input id="loginEmail" placeholder="Email">
   <input id="loginPassword" type="password" placeholder="Password">
-  <button onclick="loginUser()">Login</button>
-  <div class="portal-links">
-    <span onclick="showSignup()">Create account</span> ·
-    <span onclick="showReset()">Forgot password?</span>
-  </div>
-  <div class="msg" id="loginMsg"></div>
+  <button onclick="login()">Login</button>
+  <p class="link" onclick="showSignup()">Create account</p>
+  <p id="loginMsg"></p>
 </div>
 
-<!-- ===== SIGNUP ===== -->
-<div class="portal-box" id="signupForm" style="display:none;">
+<!-- ========== SIGNUP ========== -->
+<div class="auth-box hidden" id="signupBox">
   <h2>Create Account</h2>
   <input id="signupEmail" placeholder="Email">
   <input id="signupPassword" type="password" placeholder="Password">
-  <button onclick="signupUser()">Create Account</button>
-  <div class="portal-links">
-    <span onclick="showLogin()">Back to login</span>
+  <select id="signupRole">
+    <option value="Student">Student</option>
+    <option value="Finance">Finance</option>
+    <option value="Lecturer">Lecturer</option>
+    <option value="Registrar">Registrar</option>
+    <option value="ICT">ICT</option>
+    <option value="Admin">Admin</option>
+  </select>
+  <button onclick="signup()">Create</button>
+  <p class="link" onclick="showLogin()">Back</p>
+  <p id="signupMsg"></p>
+</div>
+
+<!-- ========== DASHBOARD ========== -->
+<div id="dashboard" class="hidden">
+
+  <div class="topbar">
+    <h2>🖥️ ICT Department Portal</h2>
+    <button class="logout" onclick="logout()">Logout</button>
   </div>
-  <div class="msg" id="signupMsg"></div>
-</div>
 
-<!-- ===== RESET PASSWORD ===== -->
-<div class="portal-box" id="resetForm" style="display:none;">
-  <h2>Reset Password</h2>
-  <input id="resetEmail" placeholder="Email">
-  <button onclick="resetPassword()">Send Reset Link</button>
-  <div class="portal-links">
-    <span onclick="showLogin()">Back to login</span>
+  <!-- WIDGETS -->
+  <div class="widgets">
+    <div class="widget">👥 Total Users <span id="totalUsers">0</span></div>
+    <div class="widget">🟢 Internet <span>Online</span></div>
+    <div class="widget">🟡 Tickets <span id="ticketCount">0</span></div>
+    <div class="widget">🔴 Alerts <span>0</span></div>
   </div>
-  <div class="msg" id="resetMsg"></div>
-</div>
 
-<!-- ===== DASHBOARD ===== -->
-<div id="dashboardPortal">
-  <div class="dashboard-inner">
-    <h2>Welcome to ICT Portal</h2>
-    <p>You are successfully logged in.</p>
-    <button class="logout-btn" onclick="logoutUser()">Logout</button>
+  <!-- ICT SECTIONS -->
+  <div class="section" id="ictOnly">
+    <h3>👥 User & Access Management</h3>
+    <p>ICT can manage all users and systems.</p>
   </div>
-</div>
+
+  <div class="section">
+    <h3>🧑‍💻 ICT Support Tickets</h3>
+    <input id="ticketText" placeholder="Describe issue">
+    <button onclick="createTicket()">Submit Ticket</button>
+    <div id="ticketList"></div>
+  </div>
 
 </div>
+</div>
 
-<!-- ===== FIREBASE MODULE SCRIPT ===== -->
+<!-- ================= FIREBASE ================= -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut }
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut }
 from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, doc, setDoc, query, where }
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-/* ===== CONFIG ===== */
-const firebaseConfig = {
-  apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
-  authDomain: "studentregistration-b3f93.firebaseapp.com",
-  databaseURL: "https://studentregistration-b3f93-default-rtdb.firebaseio.com",
-  projectId: "studentregistration-b3f93",
-  storageBucket: "studentregistration-b3f93.appspot.com",
-  messagingSenderId: "429282074438",
-  appId: "1:429282074438:web:d50150839003b34a3ecf47",
-  measurementId: "G-8CG0TSN909"
+const firebaseConfig={
+  apiKey:"AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
+  authDomain:"studentregistration-b3f93.firebaseapp.com",
+  projectId:"studentregistration-b3f93"
 };
 
-/* ===== INIT ===== */
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
 
-/* ===== GLOBAL FUNCTIONS (FIXED) ===== */
-window.loginUser = async ()=>{
+/* UI */
+const loginBox=document.getElementById("loginBox");
+const signupBox=document.getElementById("signupBox");
+const dashboard=document.getElementById("dashboard");
+const ictOnly=document.getElementById("ictOnly");
+
+/* AUTH */
+window.login=async()=>{
   try{
-    await signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value);
-    loginForm.style.display="none";
-    dashboardPortal.style.display="block";
-  }catch(e){
-    loginMsg.innerText=e.message;
-    loginMsg.style.color="red";
-  }
+    await signInWithEmailAndPassword(auth,loginEmail.value,loginPassword.value);
+  }catch(e){loginMsg.innerText=e.message}
 };
 
-window.signupUser = async ()=>{
+window.signup=async()=>{
   try{
-    await createUserWithEmailAndPassword(auth, signupEmail.value, signupPassword.value);
+    const cred=await createUserWithEmailAndPassword(auth,signupEmail.value,signupPassword.value);
+    await setDoc(doc(db,"users",cred.user.uid),{
+      email:signupEmail.value,
+      role:signupRole.value,
+      department:signupRole.value
+    });
     signupMsg.innerText="Account created ✔";
-    signupMsg.style.color="green";
-    setTimeout(showLogin,1500);
-  }catch(e){
-    signupMsg.innerText=e.message;
-    signupMsg.style.color="red";
+  }catch(e){signupMsg.innerText=e.message}
+};
+
+window.logout=async()=>{await signOut(auth)};
+
+window.showSignup=()=>{loginBox.classList.add("hidden");signupBox.classList.remove("hidden")}
+window.showLogin=()=>{signupBox.classList.add("hidden");loginBox.classList.remove("hidden")}
+
+/* SESSION */
+onAuthStateChanged(auth,async user=>{
+  if(!user){
+    dashboard.classList.add("hidden");
+    loginBox.classList.remove("hidden");
+    return;
   }
+
+  loginBox.classList.add("hidden");
+  signupBox.classList.add("hidden");
+  dashboard.classList.remove("hidden");
+
+  /* Role */
+  const uSnap=await getDocs(query(collection(db,"users"),where("email","==",user.email)));
+  let role="Student";
+  uSnap.forEach(d=>role=d.data().role);
+  if(role!=="ICT") ictOnly.style.display="none";
+
+  /* Counters */
+  totalUsers.innerText=(await getDocs(collection(db,"users"))).size;
+  loadTickets();
+});
+
+/* TICKETS */
+window.createTicket=async()=>{
+  if(!ticketText.value) return;
+  await addDoc(collection(db,"tickets"),{
+    text:ticketText.value,
+    status:"Open",
+    created:new Date()
+  });
+  ticketText.value="";
+  loadTickets();
 };
 
-window.resetPassword = async ()=>{
-  try{
-    await sendPasswordResetEmail(auth, resetEmail.value);
-    resetMsg.innerText="Reset email sent ✔";
-    resetMsg.style.color="green";
-  }catch(e){
-    resetMsg.innerText=e.message;
-    resetMsg.style.color="red";
-  }
-};
-
-window.logoutUser = async ()=>{
-  await signOut(auth);
-  location.reload();
-};
-
-window.showSignup=()=>{loginForm.style.display="none"; signupForm.style.display="block"; resetForm.style.display="none";}
-window.showLogin=()=>{loginForm.style.display="block"; signupForm.style.display="none"; resetForm.style.display="none";}
-window.showReset=()=>{loginForm.style.display="none"; signupForm.style.display="none"; resetForm.style.display="block";}
+async function loadTickets(){
+  const snap=await getDocs(collection(db,"tickets"));
+  ticketList.innerHTML="";
+  ticketCount.innerText=snap.size;
+  snap.forEach(d=>{
+    ticketList.innerHTML+=`<div class="ticket">🟡 ${d.data().text}</div>`;
+  });
+}
 </script>
-
 
 
 
@@ -841,6 +824,7 @@ window.showReset=()=>{loginForm.style.display="none"; signupForm.style.display="
   .footer a {margin: 5px;}
 }
 </style>
+
 
 
 
