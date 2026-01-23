@@ -32,7 +32,7 @@
   window.firebaseAuth = auth;
 </script>
 
-<!-- jsPDF and autoTable for tables -->
+<!-- jsPDF and autoTable for PDFs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
@@ -162,45 +162,48 @@
   function openModal(id){ document.getElementById(id).style.display='block'; }
   function closeModal(id){ document.getElementById(id).style.display='none'; }
 
-  // AUTH
+  // AUTH FUNCTIONS
   async function signupUser(){
-    const email=document.getElementById('user_email').value;
-    const password=document.getElementById('user_password').value;
+    const email=document.getElementById('user_email').value.trim();
+    const password=document.getElementById('user_password').value.trim();
     const role=document.getElementById('user_role').value;
     const status=document.getElementById('auth_status');
-    if(!email||!password||!role){status.innerText="❌ Fill all fields"; return;}
+    if(!email||!password||!role){ status.innerText="❌ Fill all fields"; return; }
+    status.innerText="⏳ Creating account...";
     try{
       const userCred=await createUserWithEmailAndPassword(firebaseAuth,email,password);
-      await addDoc(collection(firebaseDB,'users'),{
-        uid:userCred.user.uid,email,role,createdAt:serverTimestamp()
-      });
-      status.innerText=`✅ Account created for ${role}`;
-    }catch(e){status.innerText="❌ "+e.message;}
+      await addDoc(collection(firebaseDB,'users'),{ uid:userCred.user.uid,email,role,createdAt:serverTimestamp() });
+      status.innerText=`✅ Account created successfully for ${role}`;
+    }catch(e){ status.innerText="❌ "+e.message; }
   }
 
   async function loginUser(){
-    const email=document.getElementById('user_email').value;
-    const password=document.getElementById('user_password').value;
+    const email=document.getElementById('user_email').value.trim();
+    const password=document.getElementById('user_password').value.trim();
     const role=document.getElementById('user_role').value;
     const status=document.getElementById('auth_status');
-    if(!email||!password||!role){status.innerText="❌ Fill all fields"; return;}
+    if(!email||!password||!role){ status.innerText="❌ Fill all fields"; return; }
+    status.innerText="⏳ Logging in...";
     try{
       const userCred=await signInWithEmailAndPassword(firebaseAuth,email,password);
-      const usersSnap = await getDocs(query(collection(firebaseDB,'users'), where('uid','==',userCred.user.uid)));
+      const usersSnap=await getDocs(query(collection(firebaseDB,'users'), where('uid','==',userCred.user.uid)));
+      if(usersSnap.empty){ throw new Error("User record not found"); }
       const userData = usersSnap.docs[0].data();
-      if(userData.role!==role){status.innerText="❌ Role mismatch"; await signOut(firebaseAuth); return;}
+      if(userData.role!==role){ await signOut(firebaseAuth); status.innerText="❌ Role mismatch"; return; }
       status.innerText=`✅ Logged in as ${role}`;
-      if(role==='student'){document.getElementById('student-portal').style.display='block'; document.getElementById('student_name').innerText=email;}
-      else{document.getElementById('admin-dashboard').style.display='block'; document.getElementById('admin_name').innerText=email;}
+      if(role==='student'){ document.getElementById('student-portal').style.display='block'; document.getElementById('student_name').innerText=email; }
+      else{ document.getElementById('admin-dashboard').style.display='block'; document.getElementById('admin_name').innerText=email; }
       document.getElementById('login-section').style.display='none';
-    }catch(e){status.innerText="❌ "+e.message;}
+    }catch(e){ status.innerText="❌ "+e.message; }
   }
 
   async function resetPassword(){
-    const email=document.getElementById('user_email').value;
+    const email=document.getElementById('user_email').value.trim();
     const status=document.getElementById('auth_status');
-    if(!email){status.innerText="❌ Enter email"; return;}
-    try{await sendPasswordResetEmail(firebaseAuth,email); status.innerText="✅ Reset link sent";}catch(e){status.innerText="❌ "+e.message;}
+    if(!email){ status.innerText="❌ Enter email"; return; }
+    status.innerText="⏳ Sending reset link...";
+    try{ await sendPasswordResetEmail(firebaseAuth,email); status.innerText="✅ Password reset link sent"; }
+    catch(e){ status.innerText="❌ "+e.message; }
   }
 
   async function logout(){
@@ -211,7 +214,7 @@
     document.getElementById('auth_status').innerText="✅ Logged out";
   }
 
-  // REGISTER / UPDATE STUDENT
+  // STUDENT REGISTRATION
   async function registerStudent(){
     const name=document.getElementById('s_name').value;
     const reg=document.getElementById('s_reg').value;
@@ -222,7 +225,7 @@
     const attendance=document.getElementById('s_attendance').value;
     const notifications=document.getElementById('s_notifications').value;
     const status=document.getElementById('reg_status');
-    if(!name||!reg||!year||!course||units.some(u=>"")){status.innerText="❌ Fill all required fields"; return;}
+    if(!name||!reg||!year||!course||units.some(u=>"")){status.innerText="❌ Fill required fields"; return;}
     try{
       await addDoc(collection(firebaseDB,'students'),{name,reg,year,course,units,fees,attendance,notifications,createdAt:serverTimestamp()});
       status.innerText="✅ Student data saved";
@@ -269,22 +272,20 @@
     });
   }
 
-  // MODERN PDF with autoTable
-  async function downloadTablePDF(){
-    const table=document.getElementById('student_table');
+  // DOWNLOAD PDF
+  function downloadTablePDF(){
     const doc=new jsPDF();
     doc.setFontSize(14);
     doc.text("Msambweni Technical & Vocational College - Student Data", 10, 10);
-    doc.autoTable({ html: '#student_table', startY:20, theme:'grid', headStyles:{fillColor:[0,95,115]}, styles:{fontSize:10} });
+    doc.autoTable({ html:'#student_table', startY:20, theme:'grid', headStyles:{fillColor:[0,95,115]}, styles:{fontSize:10} });
     doc.save('Student_Data.pdf');
   }
 
-  async function downloadAdminPDF(){
-    const table=document.getElementById('admin_table');
+  function downloadAdminPDF(){
     const doc=new jsPDF();
     doc.setFontSize(14);
     doc.text("Msambweni Technical & Vocational College - All Students", 10, 10);
-    doc.autoTable({ html: '#admin_table', startY:20, theme:'grid', headStyles:{fillColor:[0,95,115]}, styles:{fontSize:10} });
+    doc.autoTable({ html:'#admin_table', startY:20, theme:'grid', headStyles:{fillColor:[0,95,115]}, styles:{fontSize:10} });
     doc.save('All_Students.pdf');
   }
 </script>
