@@ -23,25 +23,30 @@
   <p id="status"></p>
 
   <script type="module">
+    /* ---------------- FIREBASE SDK IMPORTS ---------------- */
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getFirestore, addDoc, collection, serverTimestamp } 
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+    import { getFirestore, addDoc, collection, serverTimestamp }
       from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-    // 🔥 REPLACE WITH YOUR OWN FIREBASE CONFIG
+    /* ---------------- FIREBASE CONFIG ---------------- */
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT.firebaseapp.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT.appspot.com",
-      messagingSenderId: "SENDER_ID",
-      appId: "APP_ID"
+      apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
+      authDomain: "studentregistration-b3f93.firebaseapp.com",
+      databaseURL: "https://studentregistration-b3f93-default-rtdb.firebaseio.com",
+      projectId: "studentregistration-b3f93",
+      storageBucket: "studentregistration-b3f93.firebasestorage.app",
+      messagingSenderId: "429282074438",
+      appId: "1:429282074438:web:d50150839003b34a3ecf47",
+      measurementId: "G-8CG0TSN909"
     };
 
-    // Initialize Firebase
+    /* ---------------- INITIALIZE FIREBASE ---------------- */
     const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
     const db = getFirestore(app);
 
-    // Save data to Firestore
+    /* ---------------- SAVE DATA FUNCTION ---------------- */
     window.saveStudent = async function () {
       const name = document.getElementById("name").value.trim();
       const course = document.getElementById("course").value.trim();
@@ -61,9 +66,9 @@
           createdAt: serverTimestamp()
         });
 
-        status.innerText = "✅ Data saved successfully";
+        status.innerText = "✅ Registration saved successfully!";
       } catch (error) {
-        status.innerText = "❌ Firestore blocked the request";
+        status.innerText = "❌ Firestore permission error";
         console.error(error);
       }
     };
