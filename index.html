@@ -1,78 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Student Registration</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Msambweni Technical & Vocational College Portal</title>
+
+<!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+  import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+  // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
+    authDomain: "studentregistration-b3f93.firebaseapp.com",
+    databaseURL: "https://studentregistration-b3f93-default-rtdb.firebaseio.com",
+    projectId: "studentregistration-b3f93",
+    storageBucket: "studentregistration-b3f93.firebasestorage.app",
+    messagingSenderId: "429282074438",
+    appId: "1:429282074438:web:d50150839003b34a3ecf47",
+    measurementId: "G-8CG0TSN909"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+
+  window.firebaseDB = db;
+  window.firebaseAuth = auth;
+</script>
+
+<!-- jsPDF CDN for PDFs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- Modern CSS -->
+<style>
+  body{font-family:'Segoe UI',sans-serif;margin:0;padding:0;background:#f5f5f5;}
+  header{background:linear-gradient(90deg,#005f73,#0a9396); color:white; padding:30px; text-align:center;}
+  header h1{margin:0;font-size:2rem;}
+  nav{display:flex;justify-content:center;background:#94d2bd;flex-wrap:wrap;}
+  nav a{color:#001219;padding:15px 25px;text-decoration:none;font-weight:bold;transition:0.3s;}
+  nav a:hover{background:#0a9396;color:white;border-radius:5px;}
+  section{padding:20px;max-width:1200px;margin:20px auto;background:white;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,0.1);}
+  input, select, button{padding:10px;margin:5px 0;width:100%;max-width:400px;border-radius:5px;border:1px solid #ccc;}
+  button{background:#005f73;color:white;border:none;cursor:pointer;transition:0.3s;}
+  button:hover{background:#0a9396;}
+  table{width:100%;border-collapse:collapse;margin-top:20px;}
+  th, td{padding:10px;border:1px solid #ccc;text-align:left;}
+  th{background:#94d2bd;cursor:pointer;}
+  th:hover{background:#0a9396;color:white;}
+  .modal{display:none;position:fixed;z-index:10;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,0.5);}
+  .modal-content{background:white;margin:5% auto;padding:20px;border-radius:10px;width:90%;max-width:900px;position:relative;}
+  .close{position:absolute;top:10px;right:20px;font-size:28px;cursor:pointer;}
+  @media(max-width:768px){nav{flex-direction:column;} input,button,select{width:100%;}}
+</style>
 </head>
+
 <body>
 
-  <h2>Student Registration Form</h2>
+<header>
+  <h1>Msambweni Technical & Vocational College</h1>
+  <p>Empowering Skills for a Brighter Future</p>
+</header>
 
-  <label>Full Name</label><br>
-  <input type="text" id="name"><br><br>
+<nav>
+  <a href="#student-portal">Student Portal</a>
+  <a href="#admin-dashboard">Admin Dashboard</a>
+</nav>
 
-  <label>Course</label><br>
-  <input type="text" id="course"><br><br>
+<!-- STUDENT PORTAL -->
+<section id="student-portal">
+  <h2>Student Portal</h2>
+  <button onclick="openModal('modalRegister')">Register Student</button>
+  <button onclick="loadTable('results')">View Results</button>
+  <button onclick="loadTable('fees')">Fee Statements</button>
+  <button onclick="loadTable('attendance')">Attendance</button>
+  <button onclick="loadTable('notifications')">Notifications</button>
 
-  <label>Email</label><br>
-  <input type="email" id="email"><br><br>
+  <div id="student_table_container">
+    <table id="student_table">
+      <thead>
+        <tr><th>Name</th><th>Reg No</th><th>Course</th><th>Units</th><th>Year</th><th>Actions</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button onclick="downloadTablePDF()">Download PDF</button>
+  </div>
+</section>
 
-  <button onclick="saveStudent()">Submit</button>
+<!-- ADMIN DASHBOARD -->
+<section id="admin-dashboard">
+  <h2>Admin Dashboard</h2>
+  <input type="email" id="admin_email" placeholder="Email">
+  <input type="password" id="admin_password" placeholder="Password">
+  <select id="admin_role">
+    <option value="">Select Role</option>
+    <option value="admin">Admin</option>
+    <option value="finance">Finance Officer</option>
+    <option value="exam">Exam Officer</option>
+    <option value="registry">Registry Officer</option>
+    <option value="sports">Sports Officer</option>
+    <option value="administration">Administration</option>
+  </select>
+  <button onclick="adminLogin()">Login</button>
+  <button onclick="signOutUser()">Logout</button>
+  <p id="admin_status"></p>
 
-  <p id="status"></p>
+  <table id="admin_table">
+    <thead>
+      <tr><th>Name</th><th>Reg No</th><th>Course</th><th>Units</th><th>Year</th><th>Role</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <button onclick="downloadAdminPDF()">Download PDF</button>
+</section>
 
-  <script type="module">
-    /* ---------------- FIREBASE SDK IMPORTS ---------------- */
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-    import { getFirestore, addDoc, collection, serverTimestamp }
-      from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+<!-- MODAL FOR STUDENT REGISTRATION -->
+<div id="modalRegister" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modalRegister')">&times;</span>
+    <h3>Student Registration</h3>
+    <input type="text" id="s_name" placeholder="Full Name">
+    <input type="text" id="s_reg" placeholder="Reg No">
+    <input type="number" id="s_year" placeholder="Year of Admission">
+    <input type="text" id="s_course" placeholder="Course">
+    <input type="text" id="s_unit1" placeholder="Unit 1">
+    <input type="text" id="s_unit2" placeholder="Unit 2">
+    <input type="text" id="s_unit3" placeholder="Unit 3">
+    <input type="text" id="s_unit4" placeholder="Unit 4">
+    <button onclick="registerStudent()">Submit</button>
+    <p id="reg_status"></p>
+  </div>
+</div>
 
-    /* ---------------- FIREBASE CONFIG ---------------- */
-    const firebaseConfig = {
-      apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
-      authDomain: "studentregistration-b3f93.firebaseapp.com",
-      databaseURL: "https://studentregistration-b3f93-default-rtdb.firebaseio.com",
-      projectId: "studentregistration-b3f93",
-      storageBucket: "studentregistration-b3f93.firebasestorage.app",
-      messagingSenderId: "429282074438",
-      appId: "1:429282074438:web:d50150839003b34a3ecf47",
-      measurementId: "G-8CG0TSN909"
-    };
+<script type="module">
+  import { firebaseDB, firebaseAuth } from './';
+  import { addDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  const { jsPDF } = window.jspdf;
 
-    /* ---------------- INITIALIZE FIREBASE ---------------- */
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-    const db = getFirestore(app);
+  // MODALS
+  function openModal(id){ document.getElementById(id).style.display="block"; }
+  function closeModal(id){ document.getElementById(id).style.display="none"; }
 
-    /* ---------------- SAVE DATA FUNCTION ---------------- */
-    window.saveStudent = async function () {
-      const name = document.getElementById("name").value.trim();
-      const course = document.getElementById("course").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const status = document.getElementById("status");
+  // Register student
+  async function registerStudent(){
+    const name=document.getElementById('s_name').value.trim();
+    const reg=document.getElementById('s_reg').value.trim();
+    const year=document.getElementById('s_year').value.trim();
+    const course=document.getElementById('s_course').value.trim();
+    const units=[
+      document.getElementById('s_unit1').value.trim(),
+      document.getElementById('s_unit2').value.trim(),
+      document.getElementById('s_unit3').value.trim(),
+      document.getElementById('s_unit4').value.trim()
+    ];
+    const status=document.getElementById('reg_status');
+    if(!name||!reg||!year||!course||units.some(u=>"")){status.innerText="❌ Fill all fields"; return;}
+    try{
+      await addDoc(collection(firebaseDB,'students'),{name,reg,year,course,units,createdAt:serverTimestamp()});
+      status.innerText="✅ Student Registered Successfully";
+      closeModal('modalRegister');
+      loadTable('results');
+    }catch(e){console.error(e); status.innerText="❌ Error";}
+  }
 
-      if (!name || !course || !email) {
-        status.innerText = "❌ Please fill all fields";
-        return;
-      }
+  // Load Firestore table
+  async function loadTable(type){
+    const tbody=document.querySelector('#student_table tbody');
+    tbody.innerHTML='';
+    const querySnapshot=await getDocs(collection(firebaseDB,'students'));
+    querySnapshot.forEach(doc=>{
+      const data=doc.data();
+      const row=tbody.insertRow();
+      row.insertCell(0).innerText=data.name;
+      row.insertCell(1).innerText=data.reg;
+      row.insertCell(2).innerText=data.course;
+      row.insertCell(3).innerText?data.units.join(', '):'';
+      row.insertCell(4).innerText=data.year;
+      row.insertCell(5).innerText=type==='results'?'Student':'';
+    });
+  }
 
-      try {
-        await addDoc(collection(db, "students"), {
-          name: name,
-          course: course,
-          email: email,
-          createdAt: serverTimestamp()
-        });
+  // PDF download
+  function downloadTablePDF(){
+    const table=document.getElementById('student_table');
+    const doc=new jsPDF();
+    let y=10;
+    for(let r=0;r<table.rows.length;r++){
+      const row=table.rows[r];
+      const text=Array.from(row.cells).map(c=>c.innerText).join(' | ');
+      doc.text(text,10,y); y+=10;
+    }
+    doc.save('table.pdf');
+  }
 
-        status.innerText = "✅ Registration saved successfully!";
-      } catch (error) {
-        status.innerText = "❌ Firestore permission error";
-        console.error(error);
-      }
-    };
-  </script>
+  // Admin login
+  async function adminLogin(){
+    const email=document.getElementById('admin_email').value.trim();
+    const password=document.getElementById('admin_password').value;
+    const status=document.getElementById('admin_status');
+    if(!email||!password){status.innerText="❌ Fill all fields"; return;}
+    try{
+      await signInWithEmailAndPassword(firebaseAuth,email,password);
+      status.innerText="✅ Logged in";
+      loadTable('results');
+    }catch(e){console.error(e); status.innerText="❌ Login failed";}
+  }
+
+  async function signOutUser(){
+    await signOut(firebaseAuth);
+    document.getElementById('admin_status').innerText="✅ Logged out";
+  }
+
+  function downloadAdminPDF(){
+    const table=document.getElementById('admin_table');
+    const doc=new jsPDF();
+    let y=10;
+    for(let r=0;r<table.rows.length;r++){
+      const row=table.rows[r];
+      const text=Array.from(row.cells).map(c=>c.innerText).join(' | ');
+      doc.text(text,10,y); y+=10;
+    }
+    doc.save('admin_students.pdf');
+  }
+</script>
 
 </body>
 </html>
