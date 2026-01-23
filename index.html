@@ -9,10 +9,10 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-  import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, collection, addDoc, getDocs, serverTimestamp, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-  // Your Firebase configuration
+  // Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
     authDomain: "studentregistration-b3f93.firebaseapp.com",
@@ -24,24 +24,26 @@
     measurementId: "G-8CG0TSN909"
   };
 
-  // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
   const db = getFirestore(app);
   const auth = getAuth(app);
-
   window.firebaseDB = db;
   window.firebaseAuth = auth;
 </script>
 
-<!-- jsPDF CDN for PDFs -->
+<!-- jsPDF and autoTable for tables -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
 <!-- Modern CSS -->
 <style>
   body{font-family:'Segoe UI',sans-serif;margin:0;padding:0;background:#f5f5f5;}
-  header{background:linear-gradient(90deg,#005f73,#0a9396); color:white; padding:30px; text-align:center;}
+  header{display:flex;align-items:center;justify-content:flex-start;background:linear-gradient(90deg,#005f73,#0a9396); color:white; padding:20px;}
+  header img{height:80px;margin-right:20px;}
+  header div{text-align:left;}
   header h1{margin:0;font-size:2rem;}
+  header p{margin:5px 0 0 0;font-size:1rem;}
   nav{display:flex;justify-content:center;background:#94d2bd;flex-wrap:wrap;}
   nav a{color:#001219;padding:15px 25px;text-decoration:none;font-weight:bold;transition:0.3s;}
   nav a:hover{background:#0a9396;color:white;border-radius:5px;}
@@ -54,37 +56,59 @@
   th{background:#94d2bd;cursor:pointer;}
   th:hover{background:#0a9396;color:white;}
   .modal{display:none;position:fixed;z-index:10;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,0.5);}
-  .modal-content{background:white;margin:5% auto;padding:20px;border-radius:10px;width:90%;max-width:900px;position:relative;}
+  .modal-content{background:white;margin:5% auto;padding:20px;border-radius:10px;width:90%;max-width:700px;position:relative;}
   .close{position:absolute;top:10px;right:20px;font-size:28px;cursor:pointer;}
   @media(max-width:768px){nav{flex-direction:column;} input,button,select{width:100%;}}
 </style>
 </head>
-
 <body>
 
 <header>
-  <h1>Msambweni Technical & Vocational College</h1>
-  <p>Empowering Skills for a Brighter Future</p>
+  <img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/91/Kenya_education_logo.png/220px-Kenya_education_logo.png" alt="College Logo">
+  <div>
+    <h1>Msambweni Technical & Vocational College</h1>
+    <p>Empowering Skills for a Brighter Future</p>
+  </div>
 </header>
 
 <nav>
+  <a href="#login-section">Login / Signup</a>
   <a href="#student-portal">Student Portal</a>
   <a href="#admin-dashboard">Admin Dashboard</a>
 </nav>
 
-<!-- STUDENT PORTAL -->
-<section id="student-portal">
-  <h2>Student Portal</h2>
-  <button onclick="openModal('modalRegister')">Register Student</button>
-  <button onclick="loadTable('results')">View Results</button>
-  <button onclick="loadTable('fees')">Fee Statements</button>
-  <button onclick="loadTable('attendance')">Attendance</button>
-  <button onclick="loadTable('notifications')">Notifications</button>
+<!-- LOGIN / SIGNUP -->
+<section id="login-section">
+  <h2>Login / Signup</h2>
+  <input type="email" id="user_email" placeholder="Email">
+  <input type="password" id="user_password" placeholder="Password">
+  <select id="user_role">
+    <option value="">Select Role</option>
+    <option value="student">Student</option>
+    <option value="admin">Admin</option>
+    <option value="finance">Finance Officer</option>
+    <option value="exam">Exam Officer</option>
+    <option value="registry">Registry Officer</option>
+    <option value="sports">Sports Officer</option>
+    <option value="administration">Administration</option>
+  </select>
+  <button onclick="signupUser()">Create Account</button>
+  <button onclick="loginUser()">Login</button>
+  <button onclick="resetPassword()">Forgot Password</button>
+  <p id="auth_status"></p>
+</section>
 
+<!-- STUDENT PORTAL -->
+<section id="student-portal" style="display:none;">
+  <h2>Student Portal</h2>
+  <p>Welcome, <span id="student_name"></span></p>
+  <button onclick="openModal('modalStudentRegister')">Register / Update Info</button>
+  <button onclick="loadTable()">View Data</button>
+  <button onclick="logout()">Logout</button>
   <div id="student_table_container">
     <table id="student_table">
       <thead>
-        <tr><th>Name</th><th>Reg No</th><th>Course</th><th>Units</th><th>Year</th><th>Actions</th></tr>
+        <tr><th>Name</th><th>Reg No</th><th>Course</th><th>Units</th><th>Year</th><th>Fees</th><th>Attendance</th><th>Notifications</th></tr>
       </thead>
       <tbody></tbody>
     </table>
@@ -93,37 +117,25 @@
 </section>
 
 <!-- ADMIN DASHBOARD -->
-<section id="admin-dashboard">
+<section id="admin-dashboard" style="display:none;">
   <h2>Admin Dashboard</h2>
-  <input type="email" id="admin_email" placeholder="Email">
-  <input type="password" id="admin_password" placeholder="Password">
-  <select id="admin_role">
-    <option value="">Select Role</option>
-    <option value="admin">Admin</option>
-    <option value="finance">Finance Officer</option>
-    <option value="exam">Exam Officer</option>
-    <option value="registry">Registry Officer</option>
-    <option value="sports">Sports Officer</option>
-    <option value="administration">Administration</option>
-  </select>
-  <button onclick="adminLogin()">Login</button>
-  <button onclick="signOutUser()">Logout</button>
-  <p id="admin_status"></p>
-
+  <p>Welcome, <span id="admin_name"></span></p>
+  <button onclick="loadAdminTable()">Load All Students</button>
+  <button onclick="logout()">Logout</button>
   <table id="admin_table">
     <thead>
-      <tr><th>Name</th><th>Reg No</th><th>Course</th><th>Units</th><th>Year</th><th>Role</th></tr>
+      <tr><th>Name</th><th>Reg No</th><th>Course</th><th>Units</th><th>Year</th><th>Fees</th><th>Attendance</th><th>Notifications</th><th>Role</th></tr>
     </thead>
     <tbody></tbody>
   </table>
   <button onclick="downloadAdminPDF()">Download PDF</button>
 </section>
 
-<!-- MODAL FOR STUDENT REGISTRATION -->
-<div id="modalRegister" class="modal">
+<!-- MODAL: STUDENT REGISTRATION / UPDATE -->
+<div id="modalStudentRegister" class="modal">
   <div class="modal-content">
-    <span class="close" onclick="closeModal('modalRegister')">&times;</span>
-    <h3>Student Registration</h3>
+    <span class="close" onclick="closeModal('modalStudentRegister')">&times;</span>
+    <h3>Student Registration / Update</h3>
     <input type="text" id="s_name" placeholder="Full Name">
     <input type="text" id="s_reg" placeholder="Reg No">
     <input type="number" id="s_year" placeholder="Year of Admission">
@@ -132,6 +144,9 @@
     <input type="text" id="s_unit2" placeholder="Unit 2">
     <input type="text" id="s_unit3" placeholder="Unit 3">
     <input type="text" id="s_unit4" placeholder="Unit 4">
+    <input type="text" id="s_fees" placeholder="Fee Statement">
+    <input type="text" id="s_attendance" placeholder="Attendance">
+    <input type="text" id="s_notifications" placeholder="Notifications">
     <button onclick="registerStudent()">Submit</button>
     <p id="reg_status"></p>
   </div>
@@ -139,94 +154,138 @@
 
 <script type="module">
   import { firebaseDB, firebaseAuth } from './';
-  import { addDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-  import { signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { addDoc, collection, getDocs, serverTimestamp, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
   const { jsPDF } = window.jspdf;
 
   // MODALS
-  function openModal(id){ document.getElementById(id).style.display="block"; }
-  function closeModal(id){ document.getElementById(id).style.display="none"; }
+  function openModal(id){ document.getElementById(id).style.display='block'; }
+  function closeModal(id){ document.getElementById(id).style.display='none'; }
 
-  // Register student
-  async function registerStudent(){
-    const name=document.getElementById('s_name').value.trim();
-    const reg=document.getElementById('s_reg').value.trim();
-    const year=document.getElementById('s_year').value.trim();
-    const course=document.getElementById('s_course').value.trim();
-    const units=[
-      document.getElementById('s_unit1').value.trim(),
-      document.getElementById('s_unit2').value.trim(),
-      document.getElementById('s_unit3').value.trim(),
-      document.getElementById('s_unit4').value.trim()
-    ];
-    const status=document.getElementById('reg_status');
-    if(!name||!reg||!year||!course||units.some(u=>"")){status.innerText="❌ Fill all fields"; return;}
+  // AUTH
+  async function signupUser(){
+    const email=document.getElementById('user_email').value;
+    const password=document.getElementById('user_password').value;
+    const role=document.getElementById('user_role').value;
+    const status=document.getElementById('auth_status');
+    if(!email||!password||!role){status.innerText="❌ Fill all fields"; return;}
     try{
-      await addDoc(collection(firebaseDB,'students'),{name,reg,year,course,units,createdAt:serverTimestamp()});
-      status.innerText="✅ Student Registered Successfully";
-      closeModal('modalRegister');
-      loadTable('results');
-    }catch(e){console.error(e); status.innerText="❌ Error";}
+      const userCred=await createUserWithEmailAndPassword(firebaseAuth,email,password);
+      await addDoc(collection(firebaseDB,'users'),{
+        uid:userCred.user.uid,email,role,createdAt:serverTimestamp()
+      });
+      status.innerText=`✅ Account created for ${role}`;
+    }catch(e){status.innerText="❌ "+e.message;}
   }
 
-  // Load Firestore table
-  async function loadTable(type){
+  async function loginUser(){
+    const email=document.getElementById('user_email').value;
+    const password=document.getElementById('user_password').value;
+    const role=document.getElementById('user_role').value;
+    const status=document.getElementById('auth_status');
+    if(!email||!password||!role){status.innerText="❌ Fill all fields"; return;}
+    try{
+      const userCred=await signInWithEmailAndPassword(firebaseAuth,email,password);
+      const usersSnap = await getDocs(query(collection(firebaseDB,'users'), where('uid','==',userCred.user.uid)));
+      const userData = usersSnap.docs[0].data();
+      if(userData.role!==role){status.innerText="❌ Role mismatch"; await signOut(firebaseAuth); return;}
+      status.innerText=`✅ Logged in as ${role}`;
+      if(role==='student'){document.getElementById('student-portal').style.display='block'; document.getElementById('student_name').innerText=email;}
+      else{document.getElementById('admin-dashboard').style.display='block'; document.getElementById('admin_name').innerText=email;}
+      document.getElementById('login-section').style.display='none';
+    }catch(e){status.innerText="❌ "+e.message;}
+  }
+
+  async function resetPassword(){
+    const email=document.getElementById('user_email').value;
+    const status=document.getElementById('auth_status');
+    if(!email){status.innerText="❌ Enter email"; return;}
+    try{await sendPasswordResetEmail(firebaseAuth,email); status.innerText="✅ Reset link sent";}catch(e){status.innerText="❌ "+e.message;}
+  }
+
+  async function logout(){
+    await signOut(firebaseAuth);
+    document.getElementById('student-portal').style.display='none';
+    document.getElementById('admin-dashboard').style.display='none';
+    document.getElementById('login-section').style.display='block';
+    document.getElementById('auth_status').innerText="✅ Logged out";
+  }
+
+  // REGISTER / UPDATE STUDENT
+  async function registerStudent(){
+    const name=document.getElementById('s_name').value;
+    const reg=document.getElementById('s_reg').value;
+    const year=document.getElementById('s_year').value;
+    const course=document.getElementById('s_course').value;
+    const units=[document.getElementById('s_unit1').value,document.getElementById('s_unit2').value,document.getElementById('s_unit3').value,document.getElementById('s_unit4').value];
+    const fees=document.getElementById('s_fees').value;
+    const attendance=document.getElementById('s_attendance').value;
+    const notifications=document.getElementById('s_notifications').value;
+    const status=document.getElementById('reg_status');
+    if(!name||!reg||!year||!course||units.some(u=>"")){status.innerText="❌ Fill all required fields"; return;}
+    try{
+      await addDoc(collection(firebaseDB,'students'),{name,reg,year,course,units,fees,attendance,notifications,createdAt:serverTimestamp()});
+      status.innerText="✅ Student data saved";
+      closeModal('modalStudentRegister');
+      loadTable();
+    }catch(e){status.innerText="❌ "+e.message;}
+  }
+
+  // LOAD TABLES
+  async function loadTable(){
     const tbody=document.querySelector('#student_table tbody');
     tbody.innerHTML='';
-    const querySnapshot=await getDocs(collection(firebaseDB,'students'));
-    querySnapshot.forEach(doc=>{
-      const data=doc.data();
+    const snapshot=await getDocs(collection(firebaseDB,'students'));
+    snapshot.forEach(doc=>{
+      const d=doc.data();
       const row=tbody.insertRow();
-      row.insertCell(0).innerText=data.name;
-      row.insertCell(1).innerText=data.reg;
-      row.insertCell(2).innerText=data.course;
-      row.insertCell(3).innerText?data.units.join(', '):'';
-      row.insertCell(4).innerText=data.year;
-      row.insertCell(5).innerText=type==='results'?'Student':'';
+      row.insertCell(0).innerText=d.name;
+      row.insertCell(1).innerText=d.reg;
+      row.insertCell(2).innerText=d.course;
+      row.insertCell(3).innerText=d.units.join(', ');
+      row.insertCell(4).innerText=d.year;
+      row.insertCell(5).innerText=d.fees||'';
+      row.insertCell(6).innerText=d.attendance||'';
+      row.insertCell(7).innerText=d.notifications||'';
     });
   }
 
-  // PDF download
-  function downloadTablePDF(){
+  async function loadAdminTable(){
+    const tbody=document.querySelector('#admin_table tbody');
+    tbody.innerHTML='';
+    const snapshot=await getDocs(collection(firebaseDB,'students'));
+    snapshot.forEach(doc=>{
+      const d=doc.data();
+      const row=tbody.insertRow();
+      row.insertCell(0).innerText=d.name;
+      row.insertCell(1).innerText=d.reg;
+      row.insertCell(2).innerText=d.course;
+      row.insertCell(3).innerText=d.units.join(', ');
+      row.insertCell(4).innerText=d.year;
+      row.insertCell(5).innerText=d.fees||'';
+      row.insertCell(6).innerText=d.attendance||'';
+      row.insertCell(7).innerText=d.notifications||'';
+      row.insertCell(8).innerText="Student";
+    });
+  }
+
+  // MODERN PDF with autoTable
+  async function downloadTablePDF(){
     const table=document.getElementById('student_table');
     const doc=new jsPDF();
-    let y=10;
-    for(let r=0;r<table.rows.length;r++){
-      const row=table.rows[r];
-      const text=Array.from(row.cells).map(c=>c.innerText).join(' | ');
-      doc.text(text,10,y); y+=10;
-    }
-    doc.save('table.pdf');
+    doc.setFontSize(14);
+    doc.text("Msambweni Technical & Vocational College - Student Data", 10, 10);
+    doc.autoTable({ html: '#student_table', startY:20, theme:'grid', headStyles:{fillColor:[0,95,115]}, styles:{fontSize:10} });
+    doc.save('Student_Data.pdf');
   }
 
-  // Admin login
-  async function adminLogin(){
-    const email=document.getElementById('admin_email').value.trim();
-    const password=document.getElementById('admin_password').value;
-    const status=document.getElementById('admin_status');
-    if(!email||!password){status.innerText="❌ Fill all fields"; return;}
-    try{
-      await signInWithEmailAndPassword(firebaseAuth,email,password);
-      status.innerText="✅ Logged in";
-      loadTable('results');
-    }catch(e){console.error(e); status.innerText="❌ Login failed";}
-  }
-
-  async function signOutUser(){
-    await signOut(firebaseAuth);
-    document.getElementById('admin_status').innerText="✅ Logged out";
-  }
-
-  function downloadAdminPDF(){
+  async function downloadAdminPDF(){
     const table=document.getElementById('admin_table');
     const doc=new jsPDF();
-    let y=10;
-    for(let r=0;r<table.rows.length;r++){
-      const row=table.rows[r];
-      const text=Array.from(row.cells).map(c=>c.innerText).join(' | ');
-      doc.text(text,10,y); y+=10;
-    }
-    doc.save('admin_students.pdf');
+    doc.setFontSize(14);
+    doc.text("Msambweni Technical & Vocational College - All Students", 10, 10);
+    doc.autoTable({ html: '#admin_table', startY:20, theme:'grid', headStyles:{fillColor:[0,95,115]}, styles:{fontSize:10} });
+    doc.save('All_Students.pdf');
   }
 </script>
 
