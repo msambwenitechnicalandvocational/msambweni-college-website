@@ -67,6 +67,25 @@ button:hover{background:#093373;}
 </head>
 <body>
 
+<!-- MODERN BANNERS -->
+<div style="width:100%;background:#1abc9c;color:white;text-align:center;padding:20px;font-size:24px;font-weight:bold;">
+  MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE
+</div>
+
+<div style="width:100%;background:white;color:#000;display:flex;justify-content:space-between;align-items:center;padding:20px;">
+  <img src="logo_left.png" alt="Left Logo" style="height:80px;width:auto;">
+  <img src="logo_right.png" alt="Right Logo" style="height:80px;width:auto;">
+</div>
+
+<div style="width:100%;background:#f8f8f8;color:#333;text-align:center;padding:30px;">
+  <div style="max-width:900px;margin:0 auto;">
+    <h2 style="color:#1a237e;">Our Mission</h2>
+    <p>To provide quality technical and vocational education that equips students with practical skills for the job market and lifelong learning.</p>
+    <h2 style="color:#1a237e;">Our Vision</h2>
+    <p>To be a leading institution recognized for excellence in technical and vocational education and training in Kenya and beyond.</p>
+  </div>
+</div>
+
 <!-- LOGIN -->
 <div id="loginBox">
   <h3>MTVC Secure Login</h3>
@@ -201,6 +220,7 @@ button:hover{background:#093373;}
 </div>
 
 <script>
+// Firebase initialization
 firebase.initializeApp({
  apiKey:"AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
  authDomain:"studentregistration-b3f93.firebaseapp.com",
@@ -223,7 +243,7 @@ async function signup(){
   }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
 }
 
-/* ===== LOGIN with ROLE BASED ACCESS ===== */
+/* ===== LOGIN ===== */
 async function login(){
   loginMsg.style.color="blue"; loginMsg.innerText="Logging in...";
   try{
@@ -235,51 +255,124 @@ async function login(){
     loginBox.style.display="none";
     portal.style.display="block";
     loginMsg.style.color="green"; loginMsg.innerText="🎉 Logged in!";
-
-    // Hide all sections first
-    const allSections = document.querySelectorAll("#content > .card, #content > form");
-    allSections.forEach(sec => sec.style.display = "none");
-
-    // Hide all sidebar links first
-    document.querySelectorAll("#sidebar a").forEach(link => link.style.display="none");
-
-    // Dashboard always visible
-    document.getElementById("dashboard").style.display = "block";
-    document.querySelector("#sidebar a[onclick=\"menuClick('dashboard')\"]").style.display = "flex";
-
-    if(userRole==="student"){
-      document.getElementById("student").style.display="block";
-      document.getElementById("academics").style.display="block";
-      document.getElementById("notifications").style.display="block";
-      document.querySelector("#sidebar a[onclick=\"toggleSubmenu('studentSub')\"]").style.display="flex";
-      document.querySelector("#sidebar a[onclick=\"toggleSubmenu('academicsSub')\"]").style.display="flex";
-    }
-    if(userRole==="staff"){
-      document.getElementById("staff").style.display="block";
-      document.querySelector("#sidebar a[onclick=\"toggleSubmenu('staffSub')\"]").style.display="flex";
-    }
-    if(userRole==="finance"){
-      document.getElementById("finance").style.display="block";
-      document.querySelector("#sidebar a[onclick=\"toggleSubmenu('financeSub')\"]").style.display="flex";
-    }
-    if(userRole==="admin"){
-      allSections.forEach(sec => sec.style.display="block");
-      document.querySelectorAll("#sidebar a").forEach(link => link.style.display="flex");
-    }
-
     updateDashboard();
     loadNotifications();
+
+    // Role-based display
+    const financeElements = document.querySelectorAll("#finance, #financeSub");
+    const studentElements = document.querySelectorAll("#student, #studentSub");
+    const staffElements = document.querySelectorAll("#staff, #staffSub");
+    const adminElements = document.querySelectorAll("#admin, #adminSub");
+
+    if(userRole==="student"){
+      financeElements.forEach(e=>e.style.display="none");
+      staffElements.forEach(e=>e.style.display="none");
+      adminElements.forEach(e=>e.style.display="none");
+    } else if(userRole==="staff"){
+      financeElements.forEach(e=>e.style.display="none");
+      studentElements.forEach(e=>e.style.display="none");
+      adminElements.forEach(e=>e.style.display="none");
+    } else if(userRole==="finance"){
+      studentElements.forEach(e=>e.style.display="none");
+      staffElements.forEach(e=>e.style.display="none");
+      adminElements.forEach(e=>e.style.display="none");
+    } else if(userRole==="admin"){
+      // admin sees all
+    }
 
   }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
 }
 
-/* SIDEBAR TOGGLE */
+/* ===== SIDEBAR FUNCTIONS ===== */
 function toggleSidebar(){document.getElementById("sidebar").classList.toggle("collapsed");}
-function menuClick(id){document.querySelectorAll("#content > .card, #content > form").forEach(d=>d.style.display="none"); document.getElementById(id).style.display="block";}
+function menuClick(id){document.querySelectorAll("#content > .card, #content > div").forEach(d=>d.style.display="none"); document.getElementById(id).style.display="block";}
 function toggleSubmenu(id){const el=document.getElementById(id); el.style.display=el.style.display==='block'?'none':'block';}
 function logout(){auth.signOut(); location.reload();}
 
-/* ===== DASHBOARD, SAVE, PDF, NOTIFICATIONS functions remain same as previous code ===== */
+/* ===== DASHBOARD ===== */
+async function updateDashboard(){
+  const studentsSnap = await db.collection("students").get();
+  const staffSnap = await db.collection("staff").get();
+  const financeSnap = await db.collection("finance").get();
+  document.getElementById("totalStudents").innerText = studentsSnap.size;
+  document.getElementById("totalStaff").innerText = staffSnap.size;
+  let totalPaid=0, totalBalance=0;
+  financeSnap.forEach(d=>{totalPaid+=d.data().paid||0; totalBalance+=((40000-d.data().paid)||0);});
+  document.getElementById("totalFees").innerText = totalPaid;
+  document.getElementById("totalBalance").innerText = totalBalance;
+}
+
+/* ===== SAVE & PDF FUNCTIONS ===== */
+function alertEmptyFields(obj,message){
+  for(const key in obj){
+    if(obj[key]===""||obj[key]===null||obj[key]===undefined||obj[key]===0){
+      alert(message); return true;
+    }
+  }
+  return false;
+}
+
+async function saveStudent(){
+  const data={name:stuName.value, reg:stuReg.value, email:stuEmail.value, term:stuTerm.value, year:stuYear.value, course:stuCourse.value};
+  if(alertEmptyFields(data,"Please fill all student fields")) return;
+  data.timestamp=new Date().toLocaleString();
+  await db.collection("students").doc(data.reg).set(data);
+  stuMsg.innerText="Saved ✅"; downloadStudentPDF(data);
+  loadNotifications();
+}
+
+async function saveFinance(){
+  const data={reg:fReg.value, name:fName.value, paid:parseFloat(fPaid.value)||0, term:fTerm.value, year:fYear.value};
+  if(alertEmptyFields(data,"Please fill all finance fields")) return;
+  data.balance=40000-data.paid; data.timestamp=new Date().toLocaleString();
+  await db.collection("finance").doc(data.reg+data.term+data.year).set(data);
+  fMsg.innerText="Saved ✅"; downloadFinancePDF(data);
+  loadNotifications();
+}
+
+function getGrade(score){
+  if(score>=80) return "Mastery";
+  if(score>=70) return "Proficient";
+  if(score>=60) return "Competent";
+  return "Not Competent";
+}
+async function saveResult(){
+  const data={reg:aReg.value, name:aName.value, unit:aUnit.value, score:parseFloat(aScore.value)||0, term:aTerm.value, year:aYear.value};
+  if(alertEmptyFields(data,"Please fill all academic result fields")) return;
+  data.grade=getGrade(data.score); data.timestamp=new Date().toLocaleString();
+  await db.collection("academics").doc(data.reg+data.unit+data.term+data.year).set(data);
+  aMsg.innerText="Saved ✅"; downloadResultPDF(data);
+  loadNotifications();
+}
+
+async function saveStaff(){
+  const data={name:sName.value, role:sRole.value, email:sEmail.value, phone:sPhone.value, dept:sDept.value};
+  if(alertEmptyFields(data,"Please fill all staff fields")) return;
+  data.timestamp=new Date().toLocaleString();
+  await db.collection("staff").doc(data.email).set(data);
+  sMsg.innerText="Saved ✅"; downloadStaffPDF(data);
+  loadNotifications();
+}
+
+function saveAdmin(){adMsg.innerText="Saved ✅";}
+
+/* ===== NOTIFICATIONS ===== */
+async function loadNotifications(){
+  const notifyList = document.getElementById("notifyList");
+  notifyList.innerHTML = "";
+  const studentsSnap = await db.collection("students").orderBy("timestamp","desc").limit(5).get();
+  studentsSnap.forEach(doc=>{const d=doc.data(); notifyList.innerHTML += `<div class="notification-item">Student Registered: <b>${d.name}</b> (${d.reg}) at ${d.timestamp}</div>`;});
+  const financeSnap = await db.collection("finance").orderBy("timestamp","desc").limit(5).get();
+  financeSnap.forEach(doc=>{const d=doc.data(); notifyList.innerHTML += `<div class="notification-item">Fee Paid: <b>${d.name}</b> (${d.reg}) Ksh ${d.paid} at ${d.timestamp}</div>`;});
+  const academicsSnap = await db.collection("academics").orderBy("timestamp","desc").limit(5).get();
+  academicsSnap.forEach(doc=>{const d=doc.data(); notifyList.innerHTML += `<div class="notification-item">Result Added: <b>${d.name}</b> (${d.reg}) Score: ${d.score} Grade: ${d.grade} at ${d.timestamp}</div>`;});
+}
+
+/* ===== PDF DOWNLOADS ===== */
+function downloadStudentPDF(d){const doc=new jspdf.jsPDF(); doc.setFontSize(14); doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10); doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Email: ${d.email}`,10,40); doc.text(`Course: ${d.course}`,10,50); doc.text(`Term: ${d.term}`,10,60); doc.text(`Year: ${d.year}`,10,70); doc.text(`Timestamp: ${d.timestamp}`,10,80); doc.save(`Student_${d.reg}.pdf`);}
+function downloadFinancePDF(d){const doc=new jspdf.jsPDF(); doc.setFontSize(14); doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10); doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Term: ${d.term}`,10,40); doc.text(`Year: ${d.year}`,10,50); doc.text(`Paid: Ksh ${d.paid}`,10,60); doc.text(`Balance: Ksh ${d.balance}`,10,70); doc.text(`Timestamp: ${d.timestamp}`,10,80); doc.save(`Fee_${d.reg}_${d.term}_${d.year}.pdf`);}
+function downloadResultPDF(d){const doc=new jspdf.jsPDF(); doc.setFontSize(14); doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10); doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Unit: ${d.unit}`,10,40); doc.text(`Score: ${d.score}`,10,50); doc.text(`Grade: ${d.grade}`,10,60); doc.text(`Term: ${d.term}`,10,70); doc.text(`Year: ${d.year}`,10,80); doc.text(`Timestamp: ${d.timestamp}`,10,90); doc.save(`Result_${d.reg}_${d.unit}.pdf`);}
+function downloadStaffPDF(d){const doc=new jspdf.jsPDF(); doc.setFontSize(14); doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10); doc.text(`Name: ${d.name}`,10,20); doc.text(`Role: ${d.role}`,10,30); doc.text(`Email: ${d.email}`,10,40); doc.text(`Phone: ${d.phone}`,10,50); doc.text(`Dept: ${d.dept}`,10,60); doc.text(`Timestamp: ${d.timestamp}`,10,70); doc.save(`Staff_${d.email}.pdf`);}
 </script>
 </body>
 </html>
