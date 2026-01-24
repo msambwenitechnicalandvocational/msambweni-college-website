@@ -13,7 +13,7 @@ img{max-width:100%;display:block;}
 header{background:#0d47a1;color:#fff;padding:1rem 0;position:sticky;top:0;z-index:1000;}
 nav{display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto;padding:0 1rem;}
 nav .logo{font-size:1.5rem;font-weight:bold;display:flex;align-items:center;gap:0.5rem;}
-nav .logo img{height:40px;width:40px;border-radius:5px;}
+nav .logo img{height:80px;width:80px;border-radius:5px;}
 nav ul{list-style:none;display:flex;gap:1rem;position:relative;}
 nav ul li{position:relative;padding:0.5rem;}
 nav ul li a{color:#fff;font-weight:500;}
@@ -30,7 +30,7 @@ nav ul li:hover ul{display:block;}
 section{padding:4rem 1rem;max-width:1200px;margin:0 auto;}
 section h2{text-align:center;font-size:2rem;margin-bottom:2rem;color:#0d47a1;border-bottom:2px solid #1976d2;display:inline-block;padding-bottom:0.5rem;}
 #about{background:#e3f2fd;}
-#about p,max-width:900px;margin:0 auto 1rem auto;font-size:1.1rem;}
+#about p{max-width:900px;margin:0 auto 1rem auto;font-size:1.1rem;}
 #about ul{max-width:900px;margin:0 auto;margin-top:1rem;list-style:disc;padding-left:1.5rem;}
 #courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;}
 .course{background:#fff;padding:1.5rem;border-radius:10px;box-shadow:0 4px 6px rgba(0,0,0,0.1);transition:0.3s;}
@@ -53,6 +53,11 @@ section h2{text-align:center;font-size:2rem;margin-bottom:2rem;color:#0d47a1;bor
 #portal input{padding:0.8rem;border:1px solid #ccc;border-radius:5px;}
 #portal button{padding:0.8rem;border:none;border-radius:5px;background:#0d47a1;color:#fff;cursor:pointer;font-weight:bold;}
 #portal button:hover{background:#1976d2;}
+#admin{background:#f3e5f5;display:flex;flex-direction:column;align-items:center;padding:2rem;}
+#admin form{display:flex;flex-direction:column;max-width:400px;width:100%;gap:1rem;}
+#admin input{padding:0.8rem;border:1px solid #ccc;border-radius:5px;}
+#admin button{padding:0.8rem;border:none;border-radius:5px;background:#8e24aa;color:#fff;cursor:pointer;font-weight:bold;}
+#admin button:hover{background:#ba68c8;}
 #contact form{display:flex;flex-direction:column;max-width:500px;margin:0 auto;gap:1rem;}
 #contact input,#contact textarea{padding:0.8rem;border:1px solid #ccc;border-radius:5px;}
 #contact button{padding:0.8rem;border:none;border-radius:5px;background:#0d47a1;color:#fff;cursor:pointer;font-weight:bold;}
@@ -82,6 +87,7 @@ footer{background:#0d47a1;color:#fff;text-align:center;padding:1rem;margin-top:2
     <li><a href="#announcements">Announcements</a></li>
     <li><a href="#library">Library</a></li>
     <li><a href="#masomo">Masomo</a></li>
+    <li><a href="#admin">Admin Upload</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
 </nav>
@@ -107,8 +113,8 @@ footer{background:#0d47a1;color:#fff;text-align:center;padding:1rem;margin-top:2
 <section id="courses">
 <h2>Our Courses</h2>
 <div class="course">
-<h3>Computer Science</h3>
-<p>Programming, software, networking projects.</p>
+<h3>ICT</h3>
+<p>Information and Communication Technology, programming, networking, hardware maintenance.</p>
 </div>
 <div class="course">
 <h3>Business Management</h3>
@@ -155,6 +161,20 @@ footer{background:#0d47a1;color:#fff;text-align:center;padding:1rem;margin-top:2
 <p id="loginMessage" style="margin-top:1rem;color:red;"></p>
 </section>
 
+<section id="admin">
+<h2>Admin Upload Portal</h2>
+<form id="adminForm" onsubmit="uploadData(event)">
+<input type="text" id="fileName" placeholder="File Name" required>
+<input type="url" id="fileURL" placeholder="File URL" required>
+<select id="fileType">
+  <option value="courseFiles">Course File</option>
+  <option value="libraryBooks">Library Book</option>
+</select>
+<button type="submit">Upload</button>
+<p id="adminMessage" style="margin-top:0.5rem;color:red;"></p>
+</form>
+</section>
+
 <section id="contact">
 <h2>Contact Us</h2>
 <form id="contactForm" onsubmit="submitContact(event)">
@@ -171,9 +191,9 @@ footer{background:#0d47a1;color:#fff;text-align:center;padding:1rem;margin-top:2
 </footer>
 
 <script type="module">
-// Firebase Imports
+// Firebase
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -217,43 +237,29 @@ async function createAccount(){
   }
 }
 
-// Library
-async function searchBook(){
-  const queryVal = document.getElementById("bookSearch").value.toLowerCase();
-  const resultsDiv = document.getElementById("results");
-  const snapshot = await getDocs(collection(db,"libraryBooks"));
-  let html="<ul>";
-  snapshot.forEach(doc=>{
-    const data=doc.data();
-    if(data.name.toLowerCase().includes(queryVal)){
-      html+=`<li>${data.name} - <a href="${data.file}" target="_blank" onclick="trackDownload('${data.name}')">Download</a></li>`;
-    }
-  });
-  html+="</ul>";
-  resultsDiv.innerHTML=html;
-}
-async function trackDownload(bookName){
-  await addDoc(collection(db,"downloads"),{book:bookName,timestamp:new Date()});
-}
-
-// Masomo
+// Masomo Portal
 async function masomoLogin(e){
   e.preventDefault();
   const id = document.getElementById("masomoId").value;
   const pw = document.getElementById("masomoPw").value;
   const msg = document.getElementById("masomoMessage");
+  const filesList = document.getElementById("courseFiles");
   msg.style.color="blue"; msg.innerText="Logging in...";
+  filesList.innerHTML = "<li>Loading course files...</li>";
   try{
     await signInWithEmailAndPassword(auth,id+"@msambweni.com",pw);
     msg.style.color="green"; msg.innerText="Login successful!";
     loadCourseFiles();
   } catch(err){
     msg.style.color="red"; msg.innerText=err.message;
+    filesList.innerHTML="";
   }
 }
 async function loadCourseFiles(){
-  const filesList=document.getElementById("courseFiles"); filesList.innerHTML="";
+  const filesList=document.getElementById("courseFiles");
+  filesList.innerHTML="";
   const snapshot = await getDocs(collection(db,"courseFiles"));
+  if(snapshot.empty){ filesList.innerHTML="<li>No course files available.</li>"; return;}
   snapshot.forEach(doc=>{
     const data=doc.data();
     const li=document.createElement("li");
@@ -262,10 +268,34 @@ async function loadCourseFiles(){
   });
 }
 
+// Library
+async function searchBook(){
+  const queryVal = document.getElementById("bookSearch").value.toLowerCase();
+  const resultsDiv = document.getElementById("results");
+  resultsDiv.innerHTML = "Searching...";
+  const snapshot = await getDocs(collection(db,"libraryBooks"));
+  let html="<ul>"; let found=false;
+  snapshot.forEach(doc=>{
+    const data=doc.data();
+    if(data.name.toLowerCase().includes(queryVal)){
+      html+=`<li>${data.name} - <a href="${data.file}" target="_blank" onclick="trackDownload('${data.name}')">Download</a></li>`;
+      found=true;
+    }
+  });
+  html+="</ul>";
+  resultsDiv.innerHTML = found ? html : "<p>No books found.</p>";
+}
+async function trackDownload(bookName){
+  await addDoc(collection(db,"downloads"),{book:bookName,timestamp:new Date()});
+}
+
 // Announcements
 async function loadAnnouncements(){
   const list=document.getElementById("announcementsList");
+  list.innerHTML="Loading announcements...";
   const snapshot = await getDocs(collection(db,"announcements"));
+  list.innerHTML="";
+  if(snapshot.empty){ list.innerHTML="<p>No announcements at the moment.</p>"; return;}
   snapshot.forEach(doc=>{
     const div=document.createElement("div");
     div.className="announcement";
@@ -275,14 +305,33 @@ async function loadAnnouncements(){
 }
 loadAnnouncements();
 
+// Admin Upload
+async function uploadData(e){
+  e.preventDefault();
+  const name = document.getElementById("fileName").value;
+  const url = document.getElementById("fileURL").value;
+  const type = document.getElementById("fileType").value;
+  const msg = document.getElementById("adminMessage");
+  msg.style.color="blue"; msg.innerText="Uploading...";
+  try{
+    await addDoc(collection(db,type),{name:name,file:url});
+    msg.style.color="green"; msg.innerText="Upload successful!";
+    document.getElementById("adminForm").reset();
+  } catch(err){
+    msg.style.color="red"; msg.innerText=err.message;
+  }
+}
+
 // Contact Form
 function submitContact(e){
   e.preventDefault();
-  alert("Message sent!"); 
-  document.getElementById("contactForm").reset();
+  const msg=document.getElementById("contactMessage");
+  msg.style.color="blue"; msg.innerText="Sending message...";
+  setTimeout(()=>{
+    msg.style.color="green"; msg.innerText="Message sent!";
+    document.getElementById("contactForm").reset();
+  },800);
 }
 </script>
 </body>
 </html>
-
-
