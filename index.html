@@ -14,6 +14,7 @@ table{border-collapse:collapse;width:100%;max-width:800px;}
 table,th,td{border:1px solid #ccc;}
 th,td{padding:8px;text-align:left;}
 .card{background:white;padding:15px;margin-bottom:20px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+.msg{color:green;font-weight:bold;}
 </style>
 </head>
 <body>
@@ -147,25 +148,41 @@ document.addEventListener("DOMContentLoaded", () => {
   const SUPABASE_KEY = "sb_publishable_823RtCxy7OHVfPHskoydeQ_O21XMVKO";
   const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  // ===== LOGIN / SIGNUP =====
-  const loginBtn = document.getElementById('loginBtn');
-  const signupBtn = document.getElementById('signupBtn');
-  const loginMsg = document.getElementById('loginMsg');
+  const loginBox = document.getElementById("loginBox");
+  const portal = document.getElementById("portal");
+  const loginMsg = document.getElementById("loginMsg");
 
-  loginBtn.addEventListener('click', async ()=>{
+  // ===== Check session on page load =====
+  async function checkSession() {
+    const { data: { session } } = await supabase.auth.getSession();
+    if(session){
+      loginBox.style.display = "none";
+      portal.style.display = "block";
+      menuClick('dashboard');
+      loadDashboard();
+      loadContacts();
+    }
+  }
+  checkSession();
+
+  // ===== LOGIN / SIGNUP =====
+  document.getElementById('loginBtn').addEventListener('click', async ()=>{
     const emailVal = email.value.trim();
     const passwordVal = password.value.trim();
     loginMsg.style.color="blue"; loginMsg.innerText="Logging in...";
     try{
-      const { data:user, error } = await supabase.auth.signInWithPassword({email:emailVal,password:passwordVal});
+      const { data: { user }, error } = await supabase.auth.signInWithPassword({email:emailVal,password:passwordVal});
       if(error) throw error;
-      loginBox.style.display="none"; portal.style.display="block";
+      loginBox.style.display="none";
+      portal.style.display="block";
+      menuClick('dashboard');
       loginMsg.style.color="green"; loginMsg.innerText="🎉 Logged in!";
-      loadDashboard(); loadContacts();
+      loadDashboard();
+      loadContacts();
     }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
   });
 
-  signupBtn.addEventListener('click', async ()=>{
+  document.getElementById('signupBtn').addEventListener('click', async ()=>{
     const emailVal = email.value.trim();
     const passwordVal = password.value.trim();
     const roleVal = role.value;
@@ -174,17 +191,17 @@ document.addEventListener("DOMContentLoaded", () => {
     try{
       const { data: existing } = await supabase.from('users').select('*').eq('email', emailVal);
       if(existing.length>0){loginMsg.style.color="red";loginMsg.innerText="Account exists";return;}
-      const { data: user, error: signErr } = await supabase.auth.signUp({email:emailVal,password:passwordVal});
+      const { data: { user }, error: signErr } = await supabase.auth.signUp({email:emailVal,password:passwordVal});
       if(signErr) throw signErr;
-      const { error: dbErr } = await supabase.from('users').insert([{id:user.user.id,email:emailVal,role:roleVal}]);
+      const { error: dbErr } = await supabase.from('users').insert([{id:user.id,email:emailVal,role:roleVal}]);
       if(dbErr) throw dbErr;
       loginMsg.style.color="green"; loginMsg.innerText="✅ Account created!";
     }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
   });
 
   function toggleSidebar(){document.getElementById("sidebar").classList.toggle("collapsed");}
-  function menuClick(id){document.querySelectorAll("#content > .card").forEach(d=>d.style.display="none"); document.getElementById(id).style.display="block";}
-  async function logout(){await supabase.auth.signOut();location.reload();}
+  window.menuClick = function(id){document.querySelectorAll("#content > .card").forEach(d=>d.style.display="none"); document.getElementById(id).style.display="block";}
+  window.logout = async function(){await supabase.auth.signOut();location.reload();}
 
   // ===== DASHBOARD =====
   async function loadDashboard(){
@@ -225,7 +242,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if(!reg||!nameVal||!term||!year){fMsg.innerText="Fill all fields";return;}
     const balance=40000-paid, timestamp=new Date().toLocaleString();
     await supabase.from('finance').upsert([{reg,name:nameVal,paid,balance,term,year,timestamp}]);
-    fMsg.innerText="Saved ✅"; loadDashboard();
+    fMsg.innerText="Saved ✅";
+    loadDashboard();
   });
 
   // ===== ACADEMICS =====
@@ -243,10 +261,13 @@ document.addEventListener("DOMContentLoaded", () => {
   contactForm.addEventListener('submit', async e=>{
     e.preventDefault();
     const name=contactForm.name.value.trim(), emailVal=contactForm.email.value.trim(), message=contactForm.message.value.trim();
-    if(!name||!emailVal||!message) return alert("Fill all fields");
+    if(!name||!emailVal||!message){alert("Fill all fields");return;}
     const timestamp=new Date().toLocaleString();
-    await supabase.from('contacts').insert([{name,email:emailVal,message,timestamp}]);
-    contactForm.reset(); loadContacts();
+    const { error } = await supabase.from('contacts').insert([{name,email:emailVal,message,timestamp}]);
+    if(error){ alert("Error: "+error.message); return; }
+    alert("Message sent ✅");
+    contactForm.reset();
+    loadContacts();
   });
 
   async function loadContacts(){
