@@ -1,986 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+package com.msambweni.portal;
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.*;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
+import com.google.firebase.cloud.FirestoreClient;
+import com.lowagie.text.*;
+import com.lowagie.text.pdf.PdfWriter;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-<!-- jsPDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+import java.io.*;
+import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
-<style>
-/* ===== BODY & BASE ===== */
-body{margin:0;font-family:Segoe UI,sans-serif;background:#f0f2f5;}
-header{height:60px;background:#1abc9c;color:#fff;display:flex;align-items:center;padding:0 20px;position:fixed;width:100%;top:0;z-index:3;justify-content:space-between;}
-header img{height:50px;margin-right:10px;}
-#loginBox{width:360px;margin:180px auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 5px 20px rgba(0,0,0,0.2);}
-#loginBox h3{text-align:center;color:#1abc9c;}
-input,select,button{width:100%;padding:12px;margin:8px 0;border-radius:6px;border:1px solid #ccc;font-size:14px;}
-input:focus, select:focus{border:2px solid #3498db; outline:none;}
-button, .small-btn{background:#3498db; color:white; font-weight:bold; border:none; cursor:pointer; transition:0.3s; border-radius:6px;}
-button:hover, .small-btn:hover{background:#2980b9;}
-button.pdf-btn{background:#f1c40f; color:#1a237e; font-weight:bold;}
-button.pdf-btn:hover{background:#f39c12;}
-#portal{display:none;}
+@SpringBootApplication
+@Controller
+public class MsambweniPortalApplication {
 
-/* ===== SIDEBAR ===== */
-#sidebar{width:250px;background:#1abc9c;color:white;position:fixed;top:60px;bottom:0;overflow-y:auto;transition:0.3s;}
-#sidebar.collapsed{width:60px;}
-#sidebar a{display:flex;align-items:center;padding:14px 20px;color:white;text-decoration:none;transition:0.3s;font-weight:bold;}
-#sidebar a:hover{background:#16a085; border-radius:5px;}
-#sidebar a.active{background:#f1c40f;color:#1a237e;font-weight:bold;}
-#sidebar .icon{width:25px;display:inline-block;text-align:center;}
-#sidebar .text{flex:1;white-space:nowrap;overflow:hidden;}
-#sidebar.collapsed .text{display:none;}
-#sidebar .submenu{display:none;padding-left:40px;background:#16a085;border-left:4px solid #f1c40f;border-radius:6px;}
-#sidebar.collapsed .submenu{padding-left:0;position:absolute;left:60px;width:200px;top:auto;z-index:10;}
-#sidebar .submenu a{color:white;font-weight:normal;}
-#sidebar .submenu a:hover{background:#f39c12;}
+    private Firestore db;
 
-/* ===== CONTENT ===== */
-#content{margin-left:250px;margin-top:60px;padding:20px;transition:0.3s;}
-#sidebar.collapsed ~ #content{margin-left:60px;}
-.card{background:#fff;padding:20px;border-radius:10px;box-shadow:0 5px 15px rgba(0,0,0,0.1);margin-bottom:20px;}
-.msg{font-weight:bold;color:green;margin-top:10px;}
+    public static void main(String[] args) {
+        SpringApplication.run(MsambweniPortalApplication.class, args);
+    }
 
-/* ===== TABLES ===== */
-.table{width:100%;border-collapse:collapse;margin-top:15px;}
-.table th,.table td{border:1px solid #ccc;padding:8px;text-align:center;}
-.table th{background:#1abc9c;color:#fff;}
-.table tr:nth-child(even){background:#f2f2f2;}
+    // ===== INIT FIRESTORE =====
+    public void initFirestore() throws IOException {
+        if (db != null) return;
+        FileInputStream serviceAccount = new FileInputStream("serviceAccountKey.json");
+        FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .build();
+        if (FirebaseApp.getApps().isEmpty()) FirebaseApp.initializeApp(options);
+        db = FirestoreClient.getFirestore();
+    }
 
-/* ===== DASHBOARD CARDS ===== */
-.dashboard-cards{display:flex;flex-wrap:wrap;gap:15px;margin-top:15px;}
-.dashboard-card{flex:1 1 200px;padding:20px;border-radius:10px;color:#fff;font-weight:bold;text-align:center;box-shadow:0 5px 15px rgba(0,0,0,0.1);transition:0.3s;}
-.dashboard-card h2{margin:10px 0;font-size:28px;}
-.dashboard-card span{font-size:14px;color:#f0f0f0;}
-.dashboard-card.card-students{background:#1abc9c;}
-.dashboard-card.card-staff{background:#3498db;}
-.dashboard-card.card-fees{background:#f1c40f;color:#1a237e;}
-.dashboard-card.card-balance{background:#e67e22;}
+    // ===== HOME =====
+    @GetMapping("/")
+    public String home() {
+        return "<html><body><h1>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h1>"
+                + "<a href='/login'>Login</a> | <a href='/dashboard'>Dashboard</a></body></html>";
+    }
 
-/* ===== NOTIFICATIONS ===== */
-.notification-item{border-left:4px solid #3498db;padding-left:10px;margin:4px 0;}
+    // ===== LOGIN PAGE =====
+    @GetMapping("/login")
+    public String loginPage() {
+        return "<html><body><h2>Login</h2>"
+                + "<form method='post' action='/dashboard'>"
+                + "Email: <input type='email' name='email'><br>"
+                + "Password: <input type='password' name='password'><br>"
+                + "<button type='submit'>Login</button>"
+                + "</form></body></html>";
+    }
 
-/* ===== TOGGLE BUTTON ===== */
-.toggle-btn{background:#3498db;color:white;font-weight:bold;border-radius:6px;}
+    // ===== DASHBOARD =====
+    @PostMapping("/dashboard")
+    @ResponseBody
+    public String dashboard() throws IOException, ExecutionException, InterruptedException {
+        initFirestore();
 
-/* ===== MODERN BANNERS ===== */
-.green-banner{width:100%;background:#1abc9c;color:white;text-align:center;padding:50px 20px;font-size:36px;font-weight:bold;}
-.white-banner{width:100%;background:white;color:#000;display:flex;justify-content:space-between;align-items:center;padding:20px 40px;}
-.white-banner img{height:90px;}
-.mission-banner{width:100%;background:#f0f2f5;color:#333;text-align:center;padding:30px 20px;font-size:18px;line-height:1.6;}
+        ApiFuture<QuerySnapshot> studentsSnap = db.collection("students").get();
+        ApiFuture<QuerySnapshot> staffSnap = db.collection("staff").get();
+        ApiFuture<QuerySnapshot> financeSnap = db.collection("finance").get();
 
-/* ===== RESPONSIVE ===== */
-@media(max-width:768px){
-  #sidebar{width:100%;position:relative;}
-  #sidebar.collapsed{width:100%;}
-  #content{margin-left:0;}
-  .dashboard-cards{flex-direction:column;}
-  .white-banner{flex-direction:column; gap:15px;}
-  .white-banner img{height:70px;}
+        int totalStudents = studentsSnap.get().size();
+        int totalStaff = staffSnap.get().size();
+
+        double totalPaid = 0, totalBalance = 0;
+        for (DocumentSnapshot d : financeSnap.get().getDocuments()) {
+            double paid = d.getDouble("paid") != null ? d.getDouble("paid") : 0;
+            totalPaid += paid;
+            totalBalance += 40000 - paid;
+        }
+
+        return "<html><body><h1>Dashboard</h1>"
+                + "<p>Total Students: " + totalStudents + "</p>"
+                + "<p>Total Staff: " + totalStaff + "</p>"
+                + "<p>Total Fees Paid: " + totalPaid + "</p>"
+                + "<p>Total Balance: " + totalBalance + "</p>"
+                + "<h3>Register Student</h3>"
+                + "<form method='post' action='/student'>"
+                + "Name: <input name='name'><br>Reg No: <input name='reg'><br>Email: <input name='email'><br>"
+                + "Course: <input name='course'><br>Term: <input name='term'><br>Year: <input name='year'><br>"
+                + "<button type='submit'>Save & Download PDF</button>"
+                + "</form></body></html>";
+    }
+
+    // ===== SAVE STUDENT + PDF =====
+    @PostMapping("/student")
+    public ResponseEntity<InputStreamResource> saveStudent(@RequestParam Map<String, String> params) throws Exception {
+        initFirestore();
+
+        String reg = params.get("reg");
+        db.collection("students").document(reg).set(params);
+
+        // PDF
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Document doc = new Document();
+        PdfWriter.getInstance(doc, out);
+        doc.open();
+        doc.add(new Paragraph("STUDENT RECORD"));
+        for (Map.Entry<String, String> e : params.entrySet()) {
+            doc.add(new Paragraph(e.getKey() + ": " + e.getValue()));
+        }
+        doc.close();
+
+        InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(out.toByteArray()));
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=Student_" + reg + ".pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .contentLength(out.size())
+                .body(resource);
+    }
 }
-</style>
-</head>
-<body>
-
-  
-
-<!-- GREEN BANNER WITH NAVIGATION -->
-<div class="green-banner">
-  <div class="college-name">MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</div>
-  <nav class="college-nav">
-    <a href="#home">Home</a>
-    <a href="#about">About KyU</a>
-    <a href="#academics">Academics</a>
-    <a href="#admissions">Admissions</a>
-    <a href="#resources">Resources</a>
-    <a href="#library">Library</a>
-    <a href="#students">Students</a>
-    <a href="#contacts">Contacts</a>
-  </nav>
-</div>
-
-<style>
-/* Navigation under Green Banner */
-.green-banner .college-name {
-  font-size: 36px;
-  font-weight: bold;
-  margin-bottom: 15px;
-}
-
-.green-banner .college-nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
-  font-size: 16px;
-}
-
-.green-banner .college-nav a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  padding: 8px 15px;
-  border-radius: 6px;
-  transition: background 0.3s, color 0.3s;
-}
-
-.green-banner .college-nav a:hover {
-  background: white;
-  color: #1abc9c;
-}
-
-@media(max-width:768px){
-  .green-banner .college-nav {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-</style>
-
-
-
-  
-<!-- WHITE BANNER -->
-<div class="white-banner">
-  <img src="knec.png" alt="KNEC Logo">
-  <img src="logo.jpg" alt="College Logo">
-</div>
-
-<!-- MISSION & VISION -->
-<div class="mission-banner">
-  <b>Our Mission:</b> To provide quality technical and vocational education to empower students with practical skills.<br>
-  <b>Our Vision:</b> To be a leading technical and vocational college recognized for excellence and innovation.
-</div>
-
-<!-- LOGIN -->
-<div id="loginBox">
-  <h3>MTVC Secure Login</h3>
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password">
-  <select id="role">
-    <option value="">Select Role</option>
-    <option value="student">Student</option>
-    <option value="staff">Staff</option>
-    <option value="finance">Finance</option>
-    <option value="admin">Admin</option>
-  </select>
-  <button type="button" onclick="login()">Login</button>
-  <button type="button" onclick="signup()">Create Account</button>
-  <p id="loginMsg"></p>
-</div>
-
-<!-- PORTAL -->
-<div id="portal">
-<header>
-  <div style="display:flex;align-items:center;">
-    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
-    <img src="logo.png" alt="MTVC Logo">
-    <h3 style="margin-left:10px;">MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h3>
-  </div>
-</header>
-
-<div id="sidebar">
-  <a onclick="menuClick('dashboard')"><span class="icon">🏠</span><span class="text">Dashboard</span></a>
-  <a onclick="toggleSubmenu('studentSub')"><span class="icon">🎓</span><span class="text">Students ▼</span></a>
-  <div id="studentSub" class="submenu">
-      <a onclick="menuClick('student')">Registration</a>
-  </div>
-  <a onclick="toggleSubmenu('academicsSub')"><span class="icon">📘</span><span class="text">Academics ▼</span></a>
-  <div id="academicsSub" class="submenu">
-      <a onclick="menuClick('academics')">Results</a>
-      <a onclick="menuClick('notifications')">Notifications</a>
-  </div>
-  <a onclick="toggleSubmenu('financeSub')"><span class="icon">💰</span><span class="text">Finance ▼</span></a>
-  <div id="financeSub" class="submenu">
-      <a onclick="menuClick('finance')">Fee Payment</a>
-  </div>
-  <a onclick="toggleSubmenu('staffSub')"><span class="icon">👨‍🏫</span><span class="text">Staff ▼</span></a>
-  <div id="staffSub" class="submenu">
-      <a onclick="menuClick('staff')">Staff Details</a>
-  </div>
-  <a onclick="toggleSubmenu('adminSub')"><span class="icon">⚙</span><span class="text">Admin ▼</span></a>
-  <div id="adminSub" class="submenu">
-      <a onclick="menuClick('admin')">Settings</a>
-  </div>
-  <a onclick="logout()"><span class="icon">🚪</span><span class="text">Logout</span></a>
-</div>
-
-<div id="content">
-  <!-- Dashboard -->
-  <div class="card" id="dashboard">
-    <h3>Dashboard</h3>
-    <div class="dashboard-cards">
-      <div class="dashboard-card card-students"><h2 id="totalStudents">0</h2><span>Total Students</span></div>
-      <div class="dashboard-card card-staff"><h2 id="totalStaff">0</h2><span>Total Staff</span></div>
-      <div class="dashboard-card card-fees"><h2 id="totalFees">0</h2><span>Total Fees Paid</span></div>
-      <div class="dashboard-card card-balance"><h2 id="totalBalance">0</h2><span>Total Balance</span></div>
-    </div>
-  </div>
-
-  <!-- STUDENT -->
-  <form class="card" id="student" onsubmit="return false;">
-    <h3>Student Registration</h3>
-    <input id="stuName" placeholder="Name">
-    <input id="stuReg" placeholder="Reg No">
-    <input id="stuEmail" placeholder="Email">
-    <input id="stuTerm" placeholder="Term (e.g., 1,2,3)">
-    <input id="stuYear" placeholder="Year">
-    <input id="stuCourse" placeholder="Course">
-    <button type="button" onclick="saveStudent()">Save & Download PDF</button>
-    <p class="msg" id="stuMsg"></p>
-  </form>
-
-  <!-- FINANCE -->
-  <form class="card" id="finance" onsubmit="return false;">
-    <h3>Finance</h3>
-    <input id="fReg" placeholder="Reg No">
-    <input id="fName" placeholder="Name">
-    <input id="fPaid" type="number" placeholder="Amount Paid">
-    <input id="fTerm" placeholder="Term">
-    <input id="fYear" placeholder="Year">
-    <button type="button" onclick="saveFinance()">Save & Download Fee PDF</button>
-    <p class="msg" id="fMsg"></p>
-    <div id="feeStatement"></div>
-  </form>
-
-  <!-- ACADEMICS -->
-  <form class="card" id="academics" onsubmit="return false;">
-    <h3>Academic Results</h3>
-    <input id="aReg" placeholder="Reg No">
-    <input id="aName" placeholder="Name">
-    <input id="aUnit" placeholder="Unit">
-    <input id="aScore" type="number" placeholder="Score">
-    <input id="aTerm" placeholder="Term">
-    <input id="aYear" placeholder="Year">
-    <button type="button" onclick="saveResult()">Save & Download PDF</button>
-    <p class="msg" id="aMsg"></p>
-    <div id="transcript"></div>
-  </form>
-
-  <!-- NOTIFICATIONS -->
-  <div class="card" id="notifications">
-    <h3>Notifications</h3>
-    <div id="notifyList"></div>
-  </div>
-
-  <!-- STAFF -->
-  <form class="card" id="staff" onsubmit="return false;">
-    <h3>Staff Details</h3>
-    <input id="sName" placeholder="Name">
-    <input id="sRole" placeholder="Role">
-    <input id="sEmail" placeholder="Email">
-    <input id="sPhone" placeholder="Phone">
-    <input id="sDept" placeholder="Department">
-    <button type="button" onclick="saveStaff()">Save & Download PDF</button>
-    <p class="msg" id="sMsg"></p>
-  </form>
-
-  <!-- ADMIN -->
-  <form class="card" id="admin" onsubmit="return false;">
-    <h3>Admin Settings</h3>
-    <input id="adName" placeholder="Setting">
-    <button type="button" onclick="saveAdmin()">Save</button>
-    <p class="msg" id="adMsg"></p>
-  </form>
-</div>
-</div>
-
-<script>
-firebase.initializeApp({
- apiKey:"AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
- authDomain:"studentregistration-b3f93.firebaseapp.com",
- projectId:"studentregistration-b3f93",
- databaseURL:"https://studentregistration-b3f93-default-rtdb.firebaseio.com"
-});
-const auth=firebase.auth();
-const db=firebase.firestore();
-
-/* ===== SIGNUP ===== */
-async function signup(){
-  if(!email.value||!password.value||!role.value){loginMsg.innerText="Fill all fields"; return;}
-  loginMsg.style.color="blue"; loginMsg.innerText="Creating account...";
-  try{
-    const existing = await db.collection("users").where("email","==",email.value).get();
-    if(existing.size>0){loginMsg.innerText=`Account with this email exists`; return;}
-    const cred = await auth.createUserWithEmailAndPassword(email.value,password.value);
-    await db.collection("users").doc(cred.user.uid).set({email:email.value, role:role.value});
-    loginMsg.style.color="green"; loginMsg.innerText="✅ Account created successfully!";
-  }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
-}
-
-/* ===== LOGIN ===== */
-async function login(){
-  loginMsg.style.color="blue"; loginMsg.innerText="Logging in...";
-  try{
-    const cred = await auth.signInWithEmailAndPassword(email.value,password.value);
-    const doc = await db.collection("users").doc(cred.user.uid).get();
-    if(!doc.exists){loginMsg.style.color="red"; loginMsg.innerText="User data not found"; return;}
-    const userRole = doc.data().role || "unknown";
-
-    loginBox.style.display="none";
-    portal.style.display="block";
-    loginMsg.style.color="green"; loginMsg.innerText="🎉 Logged in!";
-    updateDashboard();
-    loadNotifications();
-  }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
-}
-
-/* SIDEBAR FUNCTIONS */
-function toggleSidebar(){document.getElementById("sidebar").classList.toggle("collapsed");}
-function menuClick(id){document.querySelectorAll("#content > .card, #content > div").forEach(d=>d.style.display="none"); document.getElementById(id).style.display="block";}
-function toggleSubmenu(id){const el=document.getElementById(id); el.style.display=el.style.display==='block'?'none':'block';}
-function logout(){auth.signOut(); location.reload();}
-
-/* ===== DASHBOARD ===== */
-async function updateDashboard(){
-  const studentsSnap = await db.collection("students").get();
-  const staffSnap = await db.collection("staff").get();
-  const financeSnap = await db.collection("finance").get();
-  document.getElementById("totalStudents").innerText = studentsSnap.size;
-  document.getElementById("totalStaff").innerText = staffSnap.size;
-  let totalPaid=0, totalBalance=0;
-  financeSnap.forEach(d=>{totalPaid+=d.data().paid||0; totalBalance+=((40000-d.data().paid)||0);});
-  document.getElementById("totalFees").innerText = totalPaid;
-  document.getElementById("totalBalance").innerText = totalBalance;
-}
-
-/* ===== SAVE STUDENT ===== */
-async function saveStudent(){
-  const name=stuName.value, reg=stuReg.value, email=stuEmail.value, term=stuTerm.value, year=stuYear.value, course=stuCourse.value;
-  if(!name||!reg||!email||!term||!year||!course){stuMsg.innerText="Fill all fields"; return;}
-  const timestamp=new Date().toLocaleString();
-  await db.collection("students").doc(reg).set({name, reg, email, term, year, course, timestamp});
-  stuMsg.innerText="Saved ✅"; downloadStudentPDF({name, reg, email, term, year, course, timestamp});
-  loadNotifications();
-}
-
-/* ===== SAVE FINANCE ===== */
-async function saveFinance(){
-  const reg=fReg.value, name=fName.value, paid=parseFloat(fPaid.value)||0, term=fTerm.value, year=fYear.value;
-  if(!reg||!name||!term||!year){fMsg.innerText="Fill all fields"; return;}
-  const balance=40000-paid;
-  const timestamp=new Date().toLocaleString();
-  await db.collection("finance").doc(reg+term+year).set({reg, name, paid, balance, term, year, timestamp});
-  fMsg.innerText="Saved ✅"; downloadFinancePDF({reg, name, paid, balance, term, year, timestamp});
-  loadNotifications();
-}
-
-/* ===== SAVE RESULT ===== */
-function getGrade(score){
-  if(score>=80) return "Mastery";
-  if(score>=70) return "Proficient";
-  if(score>=60) return "Competent";
-  return "Not Competent";
-}
-async function saveResult(){
-  const reg=aReg.value, name=aName.value, unit=aUnit.value, score=parseFloat(aScore.value)||0, term=aTerm.value, year=aYear.value;
-  if(!reg||!name||!unit||!score||!term||!year){aMsg.innerText="Fill all fields"; return;}
-  const grade=getGrade(score);
-  const timestamp=new Date().toLocaleString();
-  await db.collection("academics").doc(reg+unit+term+year).set({reg,name,unit,score,grade,term,year,timestamp});
-  aMsg.innerText="Saved ✅"; downloadResultPDF({reg,name,unit,score,grade,term,year,timestamp});
-  loadNotifications();
-}
-
-/* ===== SAVE STAFF ===== */
-async function saveStaff(){
-  const name=sName.value, role=sRole.value, email=sEmail.value, phone=sPhone.value, dept=sDept.value;
-  if(!name||!role||!email||!phone||!dept){sMsg.innerText="Fill all fields"; return;}
-  const timestamp=new Date().toLocaleString();
-  await db.collection("staff").doc(email).set({name,role,email,phone,dept,timestamp});
-  sMsg.innerText="Saved ✅"; downloadStaffPDF({name,role,email,phone,dept,timestamp});
-  loadNotifications();
-}
-
-/* ===== SAVE ADMIN ===== */
-function saveAdmin(){adMsg.innerText="Saved ✅";}
-
-/* ===== NOTIFICATIONS ===== */
-async function loadNotifications(){
-  const notifyList = document.getElementById("notifyList");
-  notifyList.innerHTML = "";
-  const studentsSnap = await db.collection("students").orderBy("timestamp","desc").limit(5).get();
-  studentsSnap.forEach(doc=>{const d=doc.data(); notifyList.innerHTML += `<div class="notification-item">Student Registered: <b>${d.name}</b> (${d.reg}) at ${d.timestamp}</div>`;});
-  const financeSnap = await db.collection("finance").orderBy("timestamp","desc").limit(5).get();
-  financeSnap.forEach(doc=>{const d=doc.data(); notifyList.innerHTML += `<div class="notification-item">Fee Paid: <b>${d.name}</b> (${d.reg}) Ksh ${d.paid} at ${d.timestamp}</div>`;});
-  const academicsSnap = await db.collection("academics").orderBy("timestamp","desc").limit(5).get();
-  academicsSnap.forEach(doc=>{const d=doc.data(); notifyList.innerHTML += `<div class="notification-item">Result Added: <b>${d.name}</b> (${d.reg}) Score: ${d.score} Grade: ${d.grade} at ${d.timestamp}</div>`;});
-}
-
-/* ===== PDF DOWNLOADS ===== */
-function downloadStudentPDF(d){
-  const doc = new jspdf.jsPDF(); doc.setFontSize(14);
-  doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE", 10,10);
-  doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Email: ${d.email}`,10,40);
-  doc.text(`Course: ${d.course}`,10,50); doc.text(`Term: ${d.term}`,10,60); doc.text(`Year: ${d.year}`,10,70); doc.text(`Timestamp: ${d.timestamp}`,10,80);
-  doc.save(`Student_${d.reg}.pdf`);
-}
-function downloadFinancePDF(d){
-  const doc = new jspdf.jsPDF(); doc.setFontSize(14);
-  doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);
-  doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Term: ${d.term}`,10,40);
-  doc.text(`Year: ${d.year}`,10,50); doc.text(`Paid: Ksh ${d.paid}`,10,60); doc.text(`Balance: Ksh ${d.balance}`,10,70);
-  doc.text(`Timestamp: ${d.timestamp}`,10,80); doc.save(`Fee_${d.reg}_${d.term}_${d.year}.pdf`);
-}
-function downloadResultPDF(d){
-  const doc = new jspdf.jsPDF(); doc.setFontSize(14);
-  doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);
-  doc.text(`Name: ${d.name}`,10,20); doc.text(`Reg: ${d.reg}`,10,30); doc.text(`Unit: ${d.unit}`,10,40);
-  doc.text(`Score: ${d.score}`,10,50); doc.text(`Grade: ${d.grade}`,10,60);
-  doc.text(`Term: ${d.term}`,10,70); doc.text(`Year: ${d.year}`,10,80); doc.text(`Timestamp: ${d.timestamp}`,10,90);
-  doc.save(`Result_${d.reg}_${d.unit}.pdf`);
-}
-function downloadStaffPDF(d){
-  const doc = new jspdf.jsPDF(); doc.setFontSize(14);
-  doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);
-  doc.text(`Name: ${d.name}`,10,20); doc.text(`Role: ${d.role}`,10,30); doc.text(`Email: ${d.email}`,10,40);
-  doc.text(`Phone: ${d.phone}`,10,50); doc.text(`Dept: ${d.dept}`,10,60); doc.text(`Timestamp: ${d.timestamp}`,10,70);
-  doc.save(`Staff_${d.email}.pdf`);
-}
-</script>
-
-  <!-- ===== ICT DEPARTMENT PORTAL ===== -->
-<div id="ict-portal">
-
-<style>
-/* ===== MODERN BLUE THEME ===== */
-#ict-portal {
-  min-height: 100vh;
-  background: linear-gradient(135deg,#0d47a1,#1976d2,#42a5f5);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family:Segoe UI, sans-serif;
-}
-
-/* ===== PORTAL BOX ===== */
-.portal-box {
-  width: 400px;
-  background: #fff;
-  padding: 30px;
-  border-radius: 14px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-  animation: fadeIn 0.6s ease;
-}
-
-.portal-box h2 {
-  text-align:center;
-  color:#0d47a1;
-  margin-bottom:20px;
-}
-
-.portal-box input {
-  width:100%;
-  padding:12px;
-  margin:10px 0;
-  border-radius:8px;
-  border:1px solid #ccc;
-  font-size:14px;
-}
-
-.portal-box input:focus {
-  outline:none;
-  border:2px solid #1976d2;
-}
-
-.portal-box button {
-  width:100%;
-  padding:12px;
-  background:#1976d2;
-  color:white;
-  border:none;
-  border-radius:8px;
-  font-size:15px;
-  font-weight:bold;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.portal-box button:hover {
-  background:#0d47a1;
-}
-
-.portal-links {
-  text-align:center;
-  margin-top:12px;
-}
-
-.portal-links span {
-  color:#1976d2;
-  cursor:pointer;
-  font-size:14px;
-}
-
-.portal-links span:hover {
-  text-decoration:underline;
-}
-
-.msg {
-  text-align:center;
-  margin-top:10px;
-  font-weight:bold;
-}
-
-/* ===== DASHBOARD ===== */
-#dashboardPortal {
-  display:none;
-  width:100%;
-  min-height:100vh;
-  background:#f4f6f9;
-  padding:20px;
-}
-
-.dashboard-header {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.dashboard-header h2 {
-  color:#0d47a1;
-}
-
-.logout-btn {
-  background:#e53935;
-  padding:10px 14px;
-  border:none;
-  color:white;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-.dashboard-widgets {
-  display:flex;
-  flex-wrap:wrap;
-  gap:15px;
-  margin-top:20px;
-}
-
-.widget-card {
-  flex:1 1 180px;
-  background:#1976d2;
-  color:white;
-  border-radius:10px;
-  padding:20px;
-  text-align:center;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-.widget-card h3 {
-  margin:10px 0;
-}
-
-.widget-card span {
-  font-size:14px;
-  color:#bbdefb;
-}
-
-/* ===== TABLES ===== */
-.table {
-  width:100%;
-  border-collapse: collapse;
-  margin-top:15px;
-  background:white;
-}
-
-.table th, .table td {
-  border:1px solid #ccc;
-  padding:8px;
-  text-align:center;
-}
-
-.table th {
-  background:#1976d2;
-  color:white;
-}
-
-.table tr:nth-child(even) {
-  background:#f2f2f2;
-}
-
-/* ===== TABS ===== */
-.tabs {
-  display:flex;
-  gap:5px;
-  margin-top:20px;
-}
-
-.tab {
-  flex:1;
-  background:#0d47a1;
-  color:white;
-  padding:10px;
-  text-align:center;
-  cursor:pointer;
-  border-radius:6px;
-}
-
-.tab.active {
-  background:#1976d2;
-}
-
-/* ===== TAB CONTENT ===== */
-.tab-content {
-  display:none;
-  margin-top:15px;
-}
-
-.tab-content.active {
-  display:block;
-}
-
-/* ===== FADE ANIMATION ===== */
-@keyframes fadeIn {
-  from {opacity:0; transform:translateY(20px);}
-  to {opacity:1; transform:translateY(0);}
-}
-</style>
-
-<!-- ===== LOGIN FORM ===== -->
-<div class="portal-box" id="loginForm">
-  <h2>ICT Portal Login</h2>
-  <input id="loginEmail" placeholder="Email">
-  <input id="loginPassword" type="password" placeholder="Password">
-  <button onclick="loginUser()">Login</button>
-  <div class="portal-links">
-    <span onclick="showSignup()">Create account</span> ·
-    <span onclick="showReset()">Forgot password?</span>
-  </div>
-  <div class="msg" id="loginMsg"></div>
-</div>
-
-<!-- ===== SIGNUP FORM ===== -->
-<div class="portal-box" id="signupForm" style="display:none;">
-  <h2>Create Account</h2>
-  <input id="signupEmail" placeholder="Email">
-  <input id="signupPassword" type="password" placeholder="Password">
-  <button onclick="signupUser()">Create Account</button>
-  <div class="portal-links">
-    <span onclick="showLogin()">Back to login</span>
-  </div>
-  <div class="msg" id="signupMsg"></div>
-</div>
-
-<!-- ===== RESET PASSWORD ===== -->
-<div class="portal-box" id="resetForm" style="display:none;">
-  <h2>Reset Password</h2>
-  <input id="resetEmail" placeholder="Email">
-  <button onclick="resetPassword()">Send Reset Link</button>
-  <div class="portal-links">
-    <span onclick="showLogin()">Back to login</span>
-  </div>
-  <div class="msg" id="resetMsg"></div>
-</div>
-
-<!-- ===== DASHBOARD ===== -->
-<div id="dashboardPortal">
-  <div class="dashboard-header">
-    <h2>ICT Department Dashboard</h2>
-    <button class="logout-btn" onclick="logoutUser()">Logout</button>
-  </div>
-
-  <!-- WIDGETS -->
-  <div class="dashboard-widgets">
-    <div class="widget-card" id="totalStudents">
-      <h3>0</h3>
-      <span>Total Students</span>
-    </div>
-    <div class="widget-card" id="totalStaff">
-      <h3>0</h3>
-      <span>Total Staff</span>
-    </div>
-    <div class="widget-card" id="totalTickets">
-      <h3>0</h3>
-      <span>Pending Tickets</span>
-    </div>
-    <div class="widget-card" id="systemStatus">
-      <h3>Online</h3>
-      <span>System Status</span>
-    </div>
-  </div>
-
-  <!-- TABS -->
-  <div class="tabs">
-    <div class="tab active" onclick="showTab('usersTab',this)">Users & Access</div>
-    <div class="tab" onclick="showTab('systemsTab',this)">Systems</div>
-    <div class="tab" onclick="showTab('networkTab',this)">Network</div>
-    <div class="tab" onclick="showTab('assetsTab',this)">Assets</div>
-    <div class="tab" onclick="showTab('ticketsTab',this)">Tickets</div>
-    <div class="tab" onclick="showTab('docsTab',this)">Documents</div>
-  </div>
-
-  <!-- TAB CONTENT -->
-  <div id="usersTab" class="tab-content active">
-    <h3>User Management</h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Email</th>
-          <th>Role</th>
-          <th>Department</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="userTableBody"></tbody>
-    </table>
-  </div>
-
-  <div id="systemsTab" class="tab-content">
-    <h3>Systems Management</h3>
-    <p>Enable/Disable College Systems & Maintenance Mode</p>
-  </div>
-
-  <div id="networkTab" class="tab-content">
-    <h3>Network & Internet</h3>
-    <p>Internet uptime, Bandwidth, Devices, IPs</p>
-  </div>
-
-  <div id="assetsTab" class="tab-content">
-    <h3>Hardware & Assets</h3>
-    <p>Track Computers, Printers, CCTV, Projectors, Smart locks</p>
-  </div>
-
-  <div id="ticketsTab" class="tab-content">
-    <h3>ICT Support Tickets</h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Ticket ID</th>
-          <th>User</th>
-          <th>Issue</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody id="ticketTableBody"></tbody>
-    </table>
-  </div>
-
-  <div id="docsTab" class="tab-content">
-    <h3>Documents & Downloads</h3>
-    <p>System Manuals, Guides, Diagrams (Downloadable)</p>
-  </div>
-</div>
-
-</div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, getDocs, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-/* ===== CONFIG ===== */
-const firebaseConfig = {
-  apiKey: "AIzaSyAhiabnqiPW1Y_USf7r_UW2KymUyfiYmVs",
-  authDomain: "studentregistration-b3f93.firebaseapp.com",
-  databaseURL: "https://studentregistration-b3f93-default-rtdb.firebaseio.com",
-  projectId: "studentregistration-b3f93",
-  storageBucket: "studentregistration-b3f93.appspot.com",
-  messagingSenderId: "429282074438",
-  appId: "1:429282074438:web:d50150839003b34a3ecf47",
-  measurementId: "G-8CG0TSN909"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-/* ===== LOGIN/SIGNUP/RESET ===== */
-window.loginUser = async ()=>{
-  try{
-    await signInWithEmailAndPassword(auth, loginEmail.value, loginPassword.value);
-    loginForm.style.display="none";
-    dashboardPortal.style.display="block";
-    loadDashboard();
-  }catch(e){
-    loginMsg.innerText=e.message; loginMsg.style.color="red";
-  }
-};
-
-window.signupUser = async ()=>{
-  try{
-    await createUserWithEmailAndPassword(auth, signupEmail.value, signupPassword.value);
-    signupMsg.innerText="Account created ✔"; signupMsg.style.color="green";
-    setTimeout(showLogin,1500);
-  }catch(e){
-    signupMsg.innerText=e.message; signupMsg.style.color="red";
-  }
-};
-
-window.resetPassword = async ()=>{
-  try{
-    await sendPasswordResetEmail(auth, resetEmail.value);
-    resetMsg.innerText="Reset email sent ✔"; resetMsg.style.color="green";
-  }catch(e){
-    resetMsg.innerText=e.message; resetMsg.style.color="red";
-  }
-};
-
-window.logoutUser = async ()=>{
-  await signOut(auth);
-  location.reload();
-};
-
-/* ===== SHOW/HIDE FORMS ===== */
-window.showSignup=()=>{loginForm.style.display="none"; signupForm.style.display="block"; resetForm.style.display="none";}
-window.showLogin=()=>{loginForm.style.display="block"; signupForm.style.display="none"; resetForm.style.display="none";}
-window.showReset=()=>{loginForm.style.display="none"; signupForm.style.display="none"; resetForm.style.display="block";}
-
-/* ===== DASHBOARD TAB FUNCTION ===== */
-window.showTab=(id,el)=>{
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  el.classList.add("active");
-  document.querySelectorAll(".tab-content").forEach(tc=>tc.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-};
-
-/* ===== LOAD DASHBOARD DATA ===== */
-async function loadDashboard(){
-  // Users
-  const usersSnap = await getDocs(collection(db,"users"));
-  userTableBody.innerHTML="";
-  usersSnap.forEach(docSnap=>{
-    const d=docSnap.data();
-    userTableBody.innerHTML+=`<tr>
-      <td>${d.email}</td>
-      <td>${d.role}</td>
-      <td>${d.department||'-'}</td>
-      <td>Actions</td>
-    </tr>`;
-  });
-  totalStudents.innerText = usersSnap.docs.filter(u=>u.data().role==="Student").length;
-  totalStaff.innerText = usersSnap.docs.filter(u=>u.data().role==="Staff").length;
-
-  // Tickets
-  const ticketsSnap = await getDocs(collection(db,"tickets"));
-  ticketTableBody.innerHTML="";
-  ticketsSnap.forEach(docSnap=>{
-    const t=docSnap.data();
-    ticketTableBody.innerHTML+=`<tr>
-      <td>${docSnap.id}</td>
-      <td>${t.user}</td>
-      <td>${t.issue}</td>
-      <td>${t.status}</td>
-    </tr>`;
-  });
-  totalTickets.innerText = ticketsSnap.size;
-}
-</script>
-
-
-  
-</body>
-</html>
-
-
-
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-container">
-    <div class="footer-brand">
-      <strong>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</strong><br>
-      P.O. Box 123, Msambweni, Kwale County, Kenya
-    </div>
-    <div class="footer-contact">
-      <span>Email: info@mtvc.ac.ke</span> | 
-      <span>Phone: +254 701 234 567</span>
-    </div>
-    <div class="footer-links">
-      <strong>Resources:</strong>
-      <a href="https://www.youtube.com/@MSAMBWENI-TVC" target="_blank"><i class="fab fa-youtube"></i> MTVC</a>
-      <a href="https://www.kuccps.ac.ke" target="_blank">KUCCPS</a>
-      <a href="https://www.helb.co.ke" target="_blank">HELB</a>
-      <a href="https://www.cdacc.go.ke" target="_blank">CDACC</a>
-    </div>
-    <div class="footer-social">
-      <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
-      <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
-      <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-    </div>
-  </div>
-  <div class="footer-copy">&copy; 2026 MSAMBWENI TVC. All rights reserved.</div>
-</footer>
-
-<!-- FONT AWESOME LINK -->
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-<style>
-/* FOOTER STYLING - BLUE VERSION */
-.footer {
-  background: #0d47a1; /* Blue background */
-  color: white;
-  padding: 30px 50px 15px 50px;
-  font-family: 'Segoe UI', sans-serif;
-  margin-top: 20px;
-}
-
-.footer-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  max-width: 1200px;
-  margin: auto;
-}
-
-.footer a {
-  color: white;
-  margin: 0 8px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.footer a:hover {
-  color: #f1c40f; /* Yellow hover for contrast */
-  text-decoration: underline;
-}
-
-.footer-brand, .footer-contact, .footer-social, .footer-links {
-  flex: 1 1 200px;
-  text-align: center;
-  margin: 5px 0;
-}
-
-.footer-copy {
-  margin-top: 15px;
-  font-size: 13px;
-  text-align: center;
-  color: #f0f0f0;
-  border-top: 1px solid rgba(255,255,255,0.3);
-  padding-top: 10px;
-}
-
-.footer a i {
-  margin-right: 5px;
-}
-
-/* Responsive Footer */
-@media(max-width:768px){
-  .footer-container {
-    flex-direction: column;
-    text-align: center;
-    gap: 10px;
-  }
-  .footer a {margin: 5px;}
-}
-</style>
-
-
-
-
-
-
-
-
-
-
-
-
