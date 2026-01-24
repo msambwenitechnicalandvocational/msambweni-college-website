@@ -5,46 +5,47 @@
 <title>Student Portal | Msambweni TVC</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- CSP-safe Supabase JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.37.0/dist/supabase.js"></script>
 
 <style>
 body{
-  font-family:Arial, sans-serif;
-  background:#f0f2f5;
-  margin:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
+  font-family: Arial, sans-serif;
+  background: #f0f2f5;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 .box{
-  background:white;
-  width:360px;
-  padding:25px;
-  border-radius:10px;
-  box-shadow:0 10px 25px rgba(0,0,0,.15);
+  background: white;
+  width: 360px;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.15);
 }
 h2{text-align:center}
-input,button{
-  width:100%;
-  padding:10px;
-  margin-top:10px;
+input, button{
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
 }
 button{
-  background:#0d47a1;
-  color:white;
-  border:none;
-  cursor:pointer;
+  background: #0d47a1;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
-button:hover{opacity:.9}
+button:hover{opacity: .9}
 #dashboard{display:none}
-#msg{color:red;text-align:center;margin-top:10px}
+#msg{color:red; text-align:center; margin-top:10px;}
 </style>
 </head>
 
 <body>
 
-<!-- ===== AUTH ===== -->
+<!-- ===== AUTH BOX ===== -->
 <div class="box" id="auth">
   <h2>Student Portal</h2>
 
@@ -67,29 +68,34 @@ button:hover{opacity:.9}
 </div>
 
 <script>
-/* ================= SUPABASE CONFIG ================= */
+// ================= SUPABASE CONFIG =================
 const supabaseUrl = "https://yareoanqiirpxjrazunu.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhcmVvYW5xaWlycHhqcmF6dW51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkyNTY2NDcsImV4cCI6MjA4NDgzMjY0N30.prh1y07Us3cdeei0N2sa2vEqhnkfwoUY29GZLC7wqvg";
 
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-/* ================= HELPERS ================= */
+// ================= ELEMENT REFERENCES =================
 const authBox = document.getElementById("auth");
 const dashBox = document.getElementById("dashboard");
 const msg = document.getElementById("msg");
 const studentInfo = document.getElementById("studentInfo");
 
-/* ================= SIGN UP ================= */
+// ================= SIGN UP =================
 async function signup(){
   msg.innerText = "Creating account...";
 
+  const nameVal = document.getElementById("name").value;
+  const regVal = document.getElementById("regno").value;
+  const emailVal = document.getElementById("email").value;
+  const passVal = document.getElementById("password").value;
+
   const { data, error } = await supabase.auth.signUp({
-    email: document.getElementById("email").value,
-    password: document.getElementById("password").value,
-    options:{
-      data:{
-        name: document.getElementById("name").value,
-        regno: document.getElementById("regno").value
+    email: emailVal,
+    password: passVal,
+    options: {
+      data: {
+        name: nameVal,
+        regno: regVal
       }
     }
   });
@@ -98,36 +104,40 @@ async function signup(){
   msg.innerText = error ? error.message : "Account created. You can login now.";
 }
 
-/* ================= LOGIN ================= */
+// ================= LOGIN =================
 async function login(){
   msg.innerText = "Logging in...";
 
+  const emailVal = document.getElementById("email").value;
+  const passVal = document.getElementById("password").value;
+
   const { data, error } = await supabase.auth.signInWithPassword({
-    email: document.getElementById("email").value,
-    password: document.getElementById("password").value
+    email: emailVal,
+    password: passVal
   });
 
   console.log("LOGIN:", data, error);
 
   if(error){
     msg.innerText = error.message;
-  }else{
+  } else {
     showDashboard();
   }
 }
 
-/* ================= LOGOUT ================= */
+// ================= LOGOUT =================
 async function logout(){
   await supabase.auth.signOut();
   location.reload();
 }
 
-/* ================= DASHBOARD ================= */
+// ================= SHOW DASHBOARD =================
 async function showDashboard(){
   const { data, error } = await supabase.auth.getUser();
 
   if(error){
     console.error(error);
+    msg.innerText = "Error retrieving user info.";
     return;
   }
 
@@ -141,7 +151,7 @@ async function showDashboard(){
   `;
 }
 
-/* ================= AUTO LOGIN ================= */
+// ================= AUTO LOGIN =================
 supabase.auth.getSession().then(({ data }) => {
   if(data.session){
     showDashboard();
