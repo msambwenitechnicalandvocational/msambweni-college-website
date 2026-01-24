@@ -3,320 +3,284 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KYU College Portal</title>
+<title>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ===== GLOBAL STYLES ===== */
-* { margin:0; padding:0; box-sizing:border-box; font-family: 'Roboto', sans-serif; }
-body { line-height:1.6; color:#333; background:#f4f4f4; }
-a { text-decoration:none; color:inherit; }
-img { max-width:100%; display:block; }
-
-/* ===== NAVIGATION ===== */
-header { background:#0d47a1; color:#fff; padding:1rem 0; position:sticky; top:0; z-index:1000; }
-nav { display:flex; justify-content:space-between; align-items:center; max-width:1200px; margin:0 auto; padding:0 1rem; }
-nav .logo { font-size:1.5rem; font-weight:bold; }
-nav ul { list-style:none; display:flex; gap:1rem; position:relative; }
-nav ul li { position:relative; padding:0.5rem; }
-nav ul li a { color:#fff; font-weight:500; }
-nav ul li a:hover { text-decoration:underline; }
-nav ul li ul { display:none; position:absolute; top:2.5rem; left:0; background:#1976d2; list-style:none; padding:0.5rem 0; border-radius:5px; min-width:180px; }
-nav ul li ul li { padding:0.5rem 1rem; }
-nav ul li ul li a { color:#fff; }
-nav ul li:hover ul { display:block; }
-
-/* ===== HERO ===== */
-#hero { background:linear-gradient(135deg,#0d47a1,#1976d2,#42a5f5); color:#fff; padding:4rem 1rem; text-align:center; }
-#hero h1 { font-size:2.5rem; margin-bottom:1rem; }
-#hero p { font-size:1.2rem; margin-bottom:2rem; }
-#hero button { padding:0.8rem 2rem; background:#fff; color:#0d47a1; border:none; font-weight:bold; cursor:pointer; border-radius:5px; transition:0.3s; }
-#hero button:hover { background:#e3f2fd; }
-
-/* ===== SECTIONS ===== */
-section { padding:4rem 1rem; max-width:1200px; margin:0 auto; }
-section h2 { text-align:center; font-size:2rem; margin-bottom:2rem; color:#0d47a1; border-bottom:2px solid #1976d2; display:inline-block; padding-bottom:0.5rem; }
-
-/* ===== ABOUT ===== */
-#about { background:#e3f2fd; }
-#about p { max-width:900px; margin:0 auto 1rem auto; font-size:1.1rem; }
-#about ul { max-width:900px; margin:0 auto; margin-top:1rem; list-style:disc; padding-left:1.5rem; }
-
-/* ===== COURSES ===== */
-#courses { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1.5rem; }
-.course { background:#fff; padding:1.5rem; border-radius:10px; box-shadow:0 4px 6px rgba(0,0,0,0.1); transition:0.3s; }
-.course:hover { transform:translateY(-5px); box-shadow:0 6px 12px rgba(0,0,0,0.15); }
-.course h3 { margin-bottom:0.5rem; color:#0d47a1; }
-.course p { font-size:0.95rem; }
-
-/* ===== LIBRARY ===== */
-#library { background:#f1f8e9; }
-#library input, #library button { padding:0.7rem; border-radius:5px; border:1px solid #0d47a1; margin-right:0.5rem; }
-#library button { background:#0d47a1; color:#fff; cursor:pointer; border:none; }
-#library button:hover { background:#1976d2; }
-#library #results { margin-top:1rem; }
-
-/* ===== MASOMO / COURSES PORTAL ===== */
-#masomo { background:#fff; display:flex; justify-content:center; flex-direction:column; align-items:center; }
-#masomo ul { list-style:none; }
-#masomo li { padding:0.5rem 0; }
-#masomo a { color:#0d47a1; font-weight:bold; }
-
-/* ===== ANNOUNCEMENTS ===== */
-#announcements { background:#e8f5e9; max-width:900px; margin:0 auto; border-radius:10px; padding:1rem; }
-.announcement { background:#c8e6c9; margin-bottom:1rem; padding:1rem; border-radius:5px; }
-
-/* ===== PORTALS ===== */
-#portal { background:#fff; display:flex; justify-content:center; align-items:center; flex-direction:column; }
-#portal form { display:flex; flex-direction:column; max-width:300px; width:100%; gap:1rem; }
-#portal input { padding:0.8rem; border:1px solid #ccc; border-radius:5px; }
-#portal button { padding:0.8rem; border:none; border-radius:5px; background:#0d47a1; color:#fff; cursor:pointer; font-weight:bold; }
-#portal button:hover { background:#1976d2; }
-
-/* ===== CONTACT ===== */
-#contact form { display:flex; flex-direction:column; max-width:500px; margin:0 auto; gap:1rem; }
-#contact input, #contact textarea { padding:0.8rem; border:1px solid #ccc; border-radius:5px; }
-#contact button { padding:0.8rem; border:none; border-radius:5px; background:#0d47a1; color:#fff; cursor:pointer; font-weight:bold; }
-#contact button:hover { background:#1976d2; }
-
-/* ===== FOOTER ===== */
-footer { background:#0d47a1; color:#fff; text-align:center; padding:1rem; margin-top:2rem; }
-
-/* ===== RESPONSIVE ===== */
-@media(max-width:768px){
-  nav ul { flex-direction:column; gap:0.5rem; }
-  #hero h1 { font-size:2rem; }
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Roboto',sans-serif;}
+body{line-height:1.6;color:#333;background:#f4f4f4;}
+a{text-decoration:none;color:inherit;}
+img{max-width:100%;display:block;}
+header{background:#0d47a1;color:#fff;padding:1rem 0;position:sticky;top:0;z-index:1000;}
+nav{display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto;padding:0 1rem;}
+nav .logo{font-size:1.5rem;font-weight:bold;display:flex;align-items:center;gap:0.5rem;}
+nav .logo img{height:40px;width:40px;border-radius:5px;}
+nav ul{list-style:none;display:flex;gap:1rem;position:relative;}
+nav ul li{position:relative;padding:0.5rem;}
+nav ul li a{color:#fff;font-weight:500;}
+nav ul li a:hover{text-decoration:underline;}
+nav ul li ul{display:none;position:absolute;top:2.5rem;left:0;background:#1976d2;list-style:none;padding:0.5rem 0;border-radius:5px;min-width:180px;}
+nav ul li ul li{padding:0.5rem 1rem;}
+nav ul li ul li a{color:#fff;}
+nav ul li:hover ul{display:block;}
+#hero{background:linear-gradient(135deg,#0d47a1,#1976d2,#42a5f5);color:#fff;padding:4rem 1rem;text-align:center;}
+#hero h1{font-size:2.5rem;margin-bottom:1rem;}
+#hero p{font-size:1.2rem;margin-bottom:2rem;}
+#hero button{padding:0.8rem 2rem;background:#fff;color:#0d47a1;border:none;font-weight:bold;cursor:pointer;border-radius:5px;transition:0.3s;}
+#hero button:hover{background:#e3f2fd;}
+section{padding:4rem 1rem;max-width:1200px;margin:0 auto;}
+section h2{text-align:center;font-size:2rem;margin-bottom:2rem;color:#0d47a1;border-bottom:2px solid #1976d2;display:inline-block;padding-bottom:0.5rem;}
+#about{background:#e3f2fd;}
+#about p,max-width:900px;margin:0 auto 1rem auto;font-size:1.1rem;}
+#about ul{max-width:900px;margin:0 auto;margin-top:1rem;list-style:disc;padding-left:1.5rem;}
+#courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;}
+.course{background:#fff;padding:1.5rem;border-radius:10px;box-shadow:0 4px 6px rgba(0,0,0,0.1);transition:0.3s;}
+.course:hover{transform:translateY(-5px);box-shadow:0 6px 12px rgba(0,0,0,0.15);}
+.course h3{margin-bottom:0.5rem;color:#0d47a1;}
+.course p{font-size:0.95rem;}
+#library{background:#f1f8e9;}
+#library input,#library button{padding:0.7rem;border-radius:5px;border:1px solid #0d47a1;margin-right:0.5rem;}
+#library button{background:#0d47a1;color:#fff;cursor:pointer;border:none;}
+#library button:hover{background:#1976d2;}
+#library #results{margin-top:1rem;}
+#masomo{background:#fff;display:flex;justify-content:center;flex-direction:column;align-items:center;}
+#masomo ul{list-style:none;}
+#masomo li{padding:0.5rem 0;}
+#masomo a{color:#0d47a1;font-weight:bold;}
+#announcements{background:#e8f5e9;max-width:900px;margin:0 auto;border-radius:10px;padding:1rem;}
+.announcement{background:#c8e6c9;margin-bottom:1rem;padding:1rem;border-radius:5px;}
+#portal{background:#fff;display:flex;justify-content:center;align-items:center;flex-direction:column;}
+#portal form{display:flex;flex-direction:column;max-width:300px;width:100%;gap:1rem;}
+#portal input{padding:0.8rem;border:1px solid #ccc;border-radius:5px;}
+#portal button{padding:0.8rem;border:none;border-radius:5px;background:#0d47a1;color:#fff;cursor:pointer;font-weight:bold;}
+#portal button:hover{background:#1976d2;}
+#contact form{display:flex;flex-direction:column;max-width:500px;margin:0 auto;gap:1rem;}
+#contact input,#contact textarea{padding:0.8rem;border:1px solid #ccc;border-radius:5px;}
+#contact button{padding:0.8rem;border:none;border-radius:5px;background:#0d47a1;color:#fff;cursor:pointer;font-weight:bold;}
+#contact button:hover{background:#1976d2;}
+footer{background:#0d47a1;color:#fff;text-align:center;padding:1rem;margin-top:2rem;}
+@media(max-width:768px){nav ul{flex-direction:column;gap:0.5rem;}#hero h1{font-size:2rem;}}
 </style>
 </head>
 <body>
 
-<!-- ===== NAVIGATION ===== -->
 <header>
-  <nav>
-    <div class="logo">KYU College</div>
-    <ul>
-      <li><a href="#hero">Home</a></li>
-      <li>
-        <a href="#about">About</a>
-      </li>
-      <li>
-        <a href="#academics">Academics</a>
-        <ul>
-          <li><a href="#courses">Programs</a></li>
-          <li><a href="#courses">Departments</a></li>
-          <li><a href="#courses">Special Courses</a></li>
-        </ul>
-      </li>
-      <li><a href="#announcements">Announcements</a></li>
-      <li><a href="#library">Library</a></li>
-      <li><a href="#masomo">Masomo</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+<nav>
+  <div class="logo">
+    <img src="https://i.ibb.co/3mN8ZTm/kyu-logo.png" alt="MSAMBWENI TVC Logo"> MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE
+  </div>
+  <ul>
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li>
+      <a href="#academics">Academics</a>
+      <ul>
+        <li><a href="#courses">Programs</a></li>
+        <li><a href="#courses">Departments</a></li>
+        <li><a href="#courses">Special Courses</a></li>
+      </ul>
+    </li>
+    <li><a href="#announcements">Announcements</a></li>
+    <li><a href="#library">Library</a></li>
+    <li><a href="#masomo">Masomo</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 </header>
 
-<!-- ===== HERO ===== -->
 <section id="hero">
-  <h1>Welcome to KYU College</h1>
-  <p>Your gateway to excellence in education and innovation.</p>
-  <button onclick="alert('Enroll Now Clicked!')">Enroll Now</button>
+<h1>Welcome to MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h1>
+<p>Your gateway to excellence in education and innovation.</p>
+<button onclick="alert('Enroll Now Clicked!')">Enroll Now</button>
 </section>
 
-<!-- ===== ABOUT ===== -->
 <section id="about">
-  <h2>About Us</h2>
-  <p><strong>Mission:</strong> To provide quality education and practical skills.</p>
-  <p><strong>Vision:</strong> To be a leading institution recognized for excellence in teaching and research.</p>
-  <p><strong>History:</strong> Established in 1995, KYU College has grown into a modern institution offering diverse programs.</p>
-  <p><strong>Facilities:</strong></p>
-  <ul>
-    <li>Lecture halls, computer labs, libraries, sports complex, hostels.</li>
-  </ul>
+<h2>About Us</h2>
+<p><strong>Mission:</strong> To provide quality education and practical skills.</p>
+<p><strong>Vision:</strong> To be a leading institution recognized for excellence in teaching and research.</p>
+<p><strong>History:</strong> Established in 1995, MSAMBWENI TVC has grown into a modern institution offering diverse programs.</p>
+<p><strong>Facilities:</strong></p>
+<ul>
+<li>Lecture halls, computer labs, libraries, sports complex, hostels.</li>
+</ul>
 </section>
 
-<!-- ===== COURSES ===== -->
 <section id="courses">
-  <h2>Our Courses</h2>
-  <div class="course">
-    <h3>Computer Science</h3>
-    <p>Programming, software, networking projects.</p>
-  </div>
-  <div class="course">
-    <h3>Business Management</h3>
-    <p>Leadership, entrepreneurship, management.</p>
-  </div>
-  <div class="course">
-    <h3>Engineering</h3>
-    <p>Civil, Electrical, Mechanical engineering.</p>
-  </div>
+<h2>Our Courses</h2>
+<div class="course">
+<h3>Computer Science</h3>
+<p>Programming, software, networking projects.</p>
+</div>
+<div class="course">
+<h3>Business Management</h3>
+<p>Leadership, entrepreneurship, management.</p>
+</div>
+<div class="course">
+<h3>Engineering</h3>
+<p>Civil, Electrical, Mechanical engineering.</p>
+</div>
 </section>
 
-<!-- ===== ANNOUNCEMENTS ===== -->
 <section id="announcements">
-  <h2>Announcements</h2>
-  <div id="announcementsList"></div>
+<h2>Announcements</h2>
+<div id="announcementsList"></div>
 </section>
 
-<!-- ===== LIBRARY ===== -->
 <section id="library">
-  <h2>Virtual Library</h2>
-  <p>Search and download books:</p>
-  <input type="text" id="bookSearch" placeholder="Enter book name">
-  <button onclick="searchBook()">Search</button>
-  <div id="results"></div>
+<h2>Virtual Library</h2>
+<p>Search and download books:</p>
+<input type="text" id="bookSearch" placeholder="Enter book name">
+<button onclick="searchBook()">Search</button>
+<div id="results"></div>
 </section>
 
-<!-- ===== MASOMO COURSES PORTAL ===== -->
 <section id="masomo">
-  <h2>Masomo / Courses Portal</h2>
-  <form id="masomoForm" onsubmit="masomoLogin(event)">
-    <input type="text" id="masomoId" placeholder="Student ID" required>
-    <input type="password" id="masomoPw" placeholder="Password" required>
-    <button type="submit">Login</button>
-  </form>
-  <ul id="courseFiles" style="margin-top:1rem;"></ul>
+<h2>Masomo / Courses Portal</h2>
+<form id="masomoForm" onsubmit="masomoLogin(event)">
+<input type="text" id="masomoId" placeholder="Student ID" required>
+<input type="password" id="masomoPw" placeholder="Password" required>
+<button type="submit">Login</button>
+</form>
+<ul id="courseFiles" style="margin-top:1rem;"></ul>
+<p id="masomoMessage" style="color:red;margin-top:0.5rem;"></p>
 </section>
 
-<!-- ===== STUDENT PORTAL LOGIN ===== -->
 <section id="portal">
-  <h2>Student Portal Login</h2>
-  <form id="loginForm" onsubmit="studentLogin(event)">
-    <input type="email" id="studentEmail" placeholder="Email" required>
-    <input type="password" id="studentPw" placeholder="Password" required>
-    <button type="submit">Login</button>
-  </form>
-  <p id="loginMessage" style="margin-top:1rem;color:red;"></p>
+<h2>Student Portal</h2>
+<form id="loginForm" onsubmit="studentLogin(event)">
+<input type="email" id="studentEmail" placeholder="Email" required>
+<input type="password" id="studentPw" placeholder="Password" required>
+<button type="submit">Login</button>
+</form>
+<button onclick="createAccount()" style="margin-top:0.5rem;background:#42a5f5;">Create Account</button>
+<p id="loginMessage" style="margin-top:1rem;color:red;"></p>
 </section>
 
-<!-- ===== CONTACT ===== -->
 <section id="contact">
-  <h2>Contact Us</h2>
-  <form id="contactForm" onsubmit="submitContact(event)">
-    <input type="text" placeholder="Full Name" id="fullName" required>
-    <input type="email" placeholder="Email Address" id="email" required>
-    <textarea placeholder="Message" id="message" rows="5" required></textarea>
-    <button type="submit">Send Message</button>
-  </form>
-  <p id="contactMessage" style="margin-top:1rem;color:green;"></p>
+<h2>Contact Us</h2>
+<form id="contactForm" onsubmit="submitContact(event)">
+<input type="text" placeholder="Full Name" id="fullName" required>
+<input type="email" placeholder="Email Address" id="email" required>
+<textarea placeholder="Message" id="message" rows="5" required></textarea>
+<button type="submit">Send Message</button>
+</form>
+<p id="contactMessage" style="margin-top:1rem;color:green;"></p>
 </section>
 
 <footer>
-  &copy; 2026 KYU College. All rights reserved.
+&copy; 2026 MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE. All rights reserved.
 </footer>
 
-<!-- ===== FIREBASE SDK ===== -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-  import { getFirestore, collection, getDocs, query, where, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+// Firebase Imports
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
-  };
+const firebaseConfig = {
+  apiKey: "AIzaSyDMxeTX31Uj9L7eMpY8IyfnYxHBNQV7IXs",
+  authDomain: "studio-3268737377-cc795.firebaseapp.com",
+  projectId: "studio-3268737377-cc795",
+  storageBucket: "studio-3268737377-cc795.firebasestorage.app",
+  messagingSenderId: "640227749188",
+  appId: "1:640227749188:web:2bfbb211dd375f92e37b11"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth();
-  const db = getFirestore();
-
-  // ===== STUDENT LOGIN =====
-  async function studentLogin(e){
-    e.preventDefault();
-    const email = document.getElementById("studentEmail").value;
-    const password = document.getElementById("studentPw").value;
-    try {
-      await signInWithEmailAndPassword(auth,email,password);
-      document.getElementById("loginMessage").style.color="green";
-      document.getElementById("loginMessage").innerText="Login Successful!";
-    } catch(error){
-      document.getElementById("loginMessage").style.color="red";
-      document.getElementById("loginMessage").innerText=error.message;
-    }
+// Student Login
+async function studentLogin(e){
+  e.preventDefault();
+  const email = document.getElementById("studentEmail").value;
+  const password = document.getElementById("studentPw").value;
+  const msg = document.getElementById("loginMessage");
+  msg.style.color="blue"; msg.innerText="Logging in...";
+  try{
+    await signInWithEmailAndPassword(auth,email,password);
+    msg.style.color="green"; msg.innerText="Login Successful!";
+  } catch(err){
+    msg.style.color="red"; msg.innerText=err.message;
   }
+}
 
-  // ===== LIBRARY SEARCH & TRACK =====
-  async function searchBook(){
-    const queryVal = document.getElementById("bookSearch").value.toLowerCase();
-    const resultsDiv = document.getElementById("results");
-    const booksCol = collection(db,"libraryBooks");
-    const q = query(booksCol,where("name_lower","array-contains",queryVal));
-    const snapshot = await getDocs(booksCol);
-    if(snapshot.empty){ resultsDiv.innerHTML="<p>No books found.</p>"; return; }
-    let html = "<ul>";
-    snapshot.forEach(doc=>{
-      const data=doc.data();
-      html += `<li>${data.name} - <a href="${data.file}" target="_blank" onclick="trackDownload('${data.name}')">Download</a></li>`;
-    });
-    html += "</ul>";
-    resultsDiv.innerHTML=html;
+// Create Account
+async function createAccount(){
+  const email = document.getElementById("studentEmail").value;
+  const password = document.getElementById("studentPw").value;
+  const msg = document.getElementById("loginMessage");
+  msg.style.color="blue"; msg.innerText="Creating account...";
+  try{
+    await createUserWithEmailAndPassword(auth,email,password);
+    msg.style.color="green"; msg.innerText="Account Created Successfully!";
+  } catch(err){
+    msg.style.color="red"; msg.innerText=err.message;
   }
+}
 
-  async function trackDownload(bookName){
-    await addDoc(collection(db,"downloads"),{
-      book:bookName,
-      timestamp: new Date()
-    });
-  }
-
-  // ===== MASOMO PORTAL =====
-  async function masomoLogin(e){
-    e.preventDefault();
-    const id = document.getElementById("masomoId").value;
-    const pw = document.getElementById("masomoPw").value;
-    // Authenticate via Firebase Auth
-    try{
-      await signInWithEmailAndPassword(auth,id+"@kyu.com",pw);
-      document.getElementById("masomoMessage").style.color="green";
-      document.getElementById("masomoMessage").innerText="Login successful!";
-      loadCourseFiles();
-    } catch(err){
-      document.getElementById("masomoMessage").style.color="red";
-      document.getElementById("masomoMessage").innerText=err.message;
-    }
-  }
-
-  async function loadCourseFiles(){
-    const filesList = document.getElementById("courseFiles");
-    filesList.innerHTML="";
-    const snapshot = await getDocs(collection(db,"courseFiles"));
-    snapshot.forEach(doc=>{
-      const data = doc.data();
-      const li = document.createElement("li");
-      li.innerHTML=`<a href="${data.file}" target="_blank">${data.name}</a>`;
-      filesList.appendChild(li);
-    });
-  }
-
-  // ===== ANNOUNCEMENTS =====
-  async function loadAnnouncements(){
-    const list = document.getElementById("announcementsList");
-    const snapshot = await getDocs(collection(db,"announcements"));
-    snapshot.forEach(doc=>{
-      const div = document.createElement("div");
-      div.className="announcement";
-      div.innerHTML=doc.data().title+": "+doc.data().details;
-      list.appendChild(div);
-    });
-  }
-
-  onAuthStateChanged(auth,user=>{
-    if(user){
-      console.log("User logged in: ",user.email);
+// Library
+async function searchBook(){
+  const queryVal = document.getElementById("bookSearch").value.toLowerCase();
+  const resultsDiv = document.getElementById("results");
+  const snapshot = await getDocs(collection(db,"libraryBooks"));
+  let html="<ul>";
+  snapshot.forEach(doc=>{
+    const data=doc.data();
+    if(data.name.toLowerCase().includes(queryVal)){
+      html+=`<li>${data.name} - <a href="${data.file}" target="_blank" onclick="trackDownload('${data.name}')">Download</a></li>`;
     }
   });
+  html+="</ul>";
+  resultsDiv.innerHTML=html;
+}
+async function trackDownload(bookName){
+  await addDoc(collection(db,"downloads"),{book:bookName,timestamp:new Date()});
+}
 
-  loadAnnouncements();
-
-  // ===== CONTACT FORM =====
-  function submitContact(e){
-    e.preventDefault();
-    alert("Message sent!"); 
-    document.getElementById("contactForm").reset();
+// Masomo
+async function masomoLogin(e){
+  e.preventDefault();
+  const id = document.getElementById("masomoId").value;
+  const pw = document.getElementById("masomoPw").value;
+  const msg = document.getElementById("masomoMessage");
+  msg.style.color="blue"; msg.innerText="Logging in...";
+  try{
+    await signInWithEmailAndPassword(auth,id+"@msambweni.com",pw);
+    msg.style.color="green"; msg.innerText="Login successful!";
+    loadCourseFiles();
+  } catch(err){
+    msg.style.color="red"; msg.innerText=err.message;
   }
+}
+async function loadCourseFiles(){
+  const filesList=document.getElementById("courseFiles"); filesList.innerHTML="";
+  const snapshot = await getDocs(collection(db,"courseFiles"));
+  snapshot.forEach(doc=>{
+    const data=doc.data();
+    const li=document.createElement("li");
+    li.innerHTML=`<a href="${data.file}" target="_blank">${data.name}</a>`;
+    filesList.appendChild(li);
+  });
+}
+
+// Announcements
+async function loadAnnouncements(){
+  const list=document.getElementById("announcementsList");
+  const snapshot = await getDocs(collection(db,"announcements"));
+  snapshot.forEach(doc=>{
+    const div=document.createElement("div");
+    div.className="announcement";
+    div.innerHTML=doc.data().title+": "+doc.data().details;
+    list.appendChild(div);
+  });
+}
+loadAnnouncements();
+
+// Contact Form
+function submitContact(e){
+  e.preventDefault();
+  alert("Message sent!"); 
+  document.getElementById("contactForm").reset();
+}
 </script>
 </body>
 </html>
