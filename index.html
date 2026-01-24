@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MTVC Portal</title>
 <style>
-  body{font-family:sans-serif;margin:0;padding:0;background:#f0f2f5;}
-  #loginBox, #portal{padding:20px;}
-  input, select, textarea, button{display:block;margin:10px 0;padding:8px;width:100%;max-width:400px;}
-  #sidebar{width:200px;float:left;background:#1976d2;color:white;padding:10px;min-height:90vh;}
-  #content{margin-left:220px;padding:20px;}
-  table{border-collapse:collapse;width:100%;max-width:800px;}
-  table, th, td{border:1px solid #ccc;}
-  th, td{padding:8px;text-align:left;}
-  .card{background:white;padding:15px;margin-bottom:20px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
+body{font-family:sans-serif;margin:0;padding:0;background:#f0f2f5;}
+#loginBox,#portal{padding:20px;}
+input,select,textarea,button{display:block;margin:10px 0;padding:8px;width:100%;max-width:400px;}
+#sidebar{width:200px;float:left;background:#1976d2;color:white;padding:10px;min-height:90vh;}
+#content{margin-left:220px;padding:20px;}
+table{border-collapse:collapse;width:100%;max-width:800px;}
+table,th,td{border:1px solid #ccc;}
+th,td{padding:8px;text-align:left;}
+.card{background:white;padding:15px;margin-bottom:20px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
 </style>
 </head>
 <body>
@@ -30,8 +30,8 @@
     <option value="finance">Finance</option>
     <option value="admin">Admin</option>
   </select>
-  <button type="button" onclick="login()">Login</button>
-  <button type="button" onclick="signup()">Create Account</button>
+  <button type="button" id="loginBtn">Login</button>
+  <button type="button" id="signupBtn">Create Account</button>
   <p id="loginMsg"></p>
 </div>
 
@@ -74,7 +74,7 @@
     <input id="stuTerm" placeholder="Term (1,2,3)">
     <input id="stuYear" placeholder="Year">
     <input id="stuCourse" placeholder="Course">
-    <button type="button" onclick="saveStudent()">Save & Download PDF</button>
+    <button type="button" id="saveStudentBtn">Save & Download PDF</button>
     <p class="msg" id="stuMsg"></p>
   </form>
 
@@ -86,7 +86,7 @@
     <input id="sEmail" placeholder="Email">
     <input id="sPhone" placeholder="Phone">
     <input id="sDept" placeholder="Department">
-    <button type="button" onclick="saveStaff()">Save & Download PDF</button>
+    <button type="button" id="saveStaffBtn">Save & Download PDF</button>
     <p class="msg" id="sMsg"></p>
   </form>
 
@@ -98,7 +98,7 @@
     <input id="fPaid" type="number" placeholder="Amount Paid">
     <input id="fTerm" placeholder="Term">
     <input id="fYear" placeholder="Year">
-    <button type="button" onclick="saveFinance()">Save & Download Fee PDF</button>
+    <button type="button" id="saveFinanceBtn">Save & Download Fee PDF</button>
     <p class="msg" id="fMsg"></p>
   </form>
 
@@ -111,7 +111,7 @@
     <input id="aScore" type="number" placeholder="Score">
     <input id="aTerm" placeholder="Term">
     <input id="aYear" placeholder="Year">
-    <button type="button" onclick="saveResult()">Save & Download PDF</button>
+    <button type="button" id="saveResultBtn">Save & Download PDF</button>
     <p class="msg" id="aMsg"></p>
   </form>
 
@@ -135,18 +135,42 @@
 </div>
 </div>
 
+<!-- Supabase first -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.35.0/dist/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- Main JS -->
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Supabase setup
   const SUPABASE_URL = "https://lsntdhhtvgyzqxhnedjp.supabase.co";
   const SUPABASE_KEY = "sb_publishable_823RtCxy7OHVfPHskoydeQ_O21XMVKO";
   const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
   // ===== LOGIN / SIGNUP =====
-  async function signup(){
-    const emailVal=email.value.trim(), passwordVal=password.value.trim(), roleVal=role.value;
+  const loginBtn = document.getElementById('loginBtn');
+  const signupBtn = document.getElementById('signupBtn');
+  const loginMsg = document.getElementById('loginMsg');
+
+  loginBtn.addEventListener('click', async ()=>{
+    const emailVal = email.value.trim();
+    const passwordVal = password.value.trim();
+    loginMsg.style.color="blue"; loginMsg.innerText="Logging in...";
+    try{
+      const { data:user, error } = await supabase.auth.signInWithPassword({email:emailVal,password:passwordVal});
+      if(error) throw error;
+      loginBox.style.display="none"; portal.style.display="block";
+      loginMsg.style.color="green"; loginMsg.innerText="🎉 Logged in!";
+      loadDashboard(); loadContacts();
+    }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
+  });
+
+  signupBtn.addEventListener('click', async ()=>{
+    const emailVal = email.value.trim();
+    const passwordVal = password.value.trim();
+    const roleVal = role.value;
     if(!emailVal||!passwordVal||!roleVal){loginMsg.style.color="red";loginMsg.innerText="Fill all fields";return;}
-    loginMsg.style.color="blue";loginMsg.innerText="Creating account...";
+    loginMsg.style.color="blue"; loginMsg.innerText="Creating account...";
     try{
       const { data: existing } = await supabase.from('users').select('*').eq('email', emailVal);
       if(existing.length>0){loginMsg.style.color="red";loginMsg.innerText="Account exists";return;}
@@ -154,25 +178,13 @@
       if(signErr) throw signErr;
       const { error: dbErr } = await supabase.from('users').insert([{id:user.user.id,email:emailVal,role:roleVal}]);
       if(dbErr) throw dbErr;
-      loginMsg.style.color="green";loginMsg.innerText="✅ Account created!";
-    }catch(e){loginMsg.style.color="red";loginMsg.innerText=e.message;}
-  }
+      loginMsg.style.color="green"; loginMsg.innerText="✅ Account created!";
+    }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
+  });
 
-  async function login(){
-    const emailVal=email.value.trim(), passwordVal=password.value.trim();
-    loginMsg.style.color="blue";loginMsg.innerText="Logging in...";
-    try{
-      const { data:user, error } = await supabase.auth.signInWithPassword({email:emailVal,password:passwordVal});
-      if(error) throw error;
-      loginBox.style.display="none"; portal.style.display="block";
-      loginMsg.style.color="green";loginMsg.innerText="🎉 Logged in!";
-      loadDashboard(); loadContacts();
-    }catch(e){loginMsg.style.color="red";loginMsg.innerText=e.message;}
-  }
-
-  async function logout(){await supabase.auth.signOut();location.reload();}
   function toggleSidebar(){document.getElementById("sidebar").classList.toggle("collapsed");}
   function menuClick(id){document.querySelectorAll("#content > .card").forEach(d=>d.style.display="none"); document.getElementById(id).style.display="block";}
+  async function logout(){await supabase.auth.signOut();location.reload();}
 
   // ===== DASHBOARD =====
   async function loadDashboard(){
@@ -188,43 +200,43 @@
   }
 
   // ===== STUDENT =====
-  async function saveStudent(){
+  document.getElementById('saveStudentBtn').addEventListener('click', async ()=>{
     const name=stuName.value, reg=stuReg.value, emailVal=stuEmail.value, term=stuTerm.value, year=stuYear.value, course=stuCourse.value;
     if(!name||!reg||!emailVal||!term||!year||!course){stuMsg.innerText="Fill all fields";return;}
     const timestamp=new Date().toLocaleString();
     await supabase.from('students').upsert([{reg,name,email:emailVal,term,year,course,timestamp}]);
     stuMsg.innerText="Saved ✅"; downloadStudentPDF({name,reg,email:emailVal,term,year,course,timestamp});
     loadDashboard();
-  }
+  });
 
   // ===== STAFF =====
-  async function saveStaff(){
+  document.getElementById('saveStaffBtn').addEventListener('click', async ()=>{
     const nameVal=sName.value, roleVal=sRole.value, emailVal=sEmail.value, phoneVal=sPhone.value, deptVal=sDept.value;
     if(!nameVal||!roleVal||!emailVal||!phoneVal||!deptVal){sMsg.innerText="Fill all fields";return;}
     const timestamp=new Date().toLocaleString();
     await supabase.from('staff').upsert([{name:nameVal,role:roleVal,email:emailVal,phone:phoneVal,dept:deptVal,timestamp}]);
     sMsg.innerText="Saved ✅"; downloadStaffPDF({name:nameVal,role:roleVal,email:emailVal,phone:phoneVal,dept:deptVal,timestamp});
     loadDashboard();
-  }
+  });
 
   // ===== FINANCE =====
-  async function saveFinance(){
+  document.getElementById('saveFinanceBtn').addEventListener('click', async ()=>{
     const reg=fReg.value,nameVal=fName.value,paid=parseFloat(fPaid.value)||0,term=fTerm.value,year=fYear.value;
     if(!reg||!nameVal||!term||!year){fMsg.innerText="Fill all fields";return;}
     const balance=40000-paid, timestamp=new Date().toLocaleString();
     await supabase.from('finance').upsert([{reg,name:nameVal,paid,balance,term,year,timestamp}]);
     fMsg.innerText="Saved ✅"; loadDashboard();
-  }
+  });
 
   // ===== ACADEMICS =====
-  function getGrade(score){if(score>=80)return "Mastery";if(score>=70)return "Proficient";if(score>=60)return "Competent";return "Not Competent";}
-  async function saveResult(){
+  document.getElementById('saveResultBtn').addEventListener('click', async ()=>{
     const reg=aReg.value,nameVal=aName.value,unit=aUnit.value,score=parseFloat(aScore.value)||0,term=aTerm.value,year=aYear.value;
     if(!reg||!nameVal||!unit||!score||!term||!year){aMsg.innerText="Fill all fields";return;}
-    const grade=getGrade(score), timestamp=new Date().toLocaleString();
+    const grade=(score>=80?"Mastery":score>=70?"Proficient":score>=60?"Competent":"Not Competent");
+    const timestamp=new Date().toLocaleString();
     await supabase.from('academics').upsert([{reg,name:nameVal,unit,score,grade,term,year,timestamp}]);
     aMsg.innerText="Saved ✅";
-  }
+  });
 
   // ===== CONTACT FORM =====
   const contactForm=document.getElementById('contact-form');
@@ -252,6 +264,7 @@
   function downloadStaffPDF(d){const doc=new jspdf.jsPDF();doc.setFontSize(14);doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);doc.text(`Name: ${d.name}`,10,20);doc.text(`Role: ${d.role}`,10,30);doc.text(`Email: ${d.email}`,10,40);doc.text(`Phone: ${d.phone}`,10,50);doc.text(`Dept: ${d.dept}`,10,60);doc.text(`Timestamp: ${d.timestamp}`,10,70);doc.save(`Staff_${d.email}.pdf`);}
   function downloadFinancePDF(d){const doc=new jspdf.jsPDF();doc.setFontSize(14);doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);doc.text(`Name: ${d.name}`,10,20);doc.text(`Reg: ${d.reg}`,10,30);doc.text(`Term: ${d.term}`,10,40);doc.text(`Year: ${d.year}`,10,50);doc.text(`Paid: Ksh ${d.paid}`,10,60);doc.text(`Balance: Ksh ${d.balance}`,10,70);doc.text(`Timestamp: ${d.timestamp}`,10,80);doc.save(`Fee_${d.reg}_${d.term}_${d.year}.pdf`);}
   function downloadResultPDF(d){const doc=new jspdf.jsPDF();doc.setFontSize(14);doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);doc.text(`Name: ${d.name}`,10,20);doc.text(`Reg: ${d.reg}`,10,30);doc.text(`Unit: ${d.unit}`,10,40);doc.text(`Score: ${d.score}`,10,50);doc.text(`Grade: ${d.grade}`,10,60);doc.text(`Term: ${d.term}`,10,70);doc.text(`Year: ${d.year}`,10,80);doc.text(`Timestamp: ${d.timestamp}`,10,90);doc.save(`Result_${d.reg}_${d.unit}.pdf`);}
+});
 </script>
 </body>
 </html>
