@@ -37,9 +37,8 @@ button{
   cursor:pointer;
 }
 button:hover{opacity:.9}
-a{cursor:pointer;color:#0d47a1}
 #dashboard{display:none}
-#msg{color:red;text-align:center}
+#msg{color:red;text-align:center;margin-top:10px}
 </style>
 </head>
 
@@ -68,39 +67,47 @@ a{cursor:pointer;color:#0d47a1}
 </div>
 
 <script>
-// 🔴 REPLACE THESE WITH YOUR SUPABASE DETAILS
+/* ================= SUPABASE CONFIG ================= */
 const supabaseUrl = "https://yareoanqiirpxjrazunu.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhcmVvYW5xaWlycHhqcmF6dW51Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkyNTY2NDcsImV4cCI6MjA4NDgzMjY0N30.prh1y07Us3cdeei0N2sa2vEqhnkfwoUY29GZLC7wqvg";
 
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-// ===== SIGN UP =====
-async function signup(){
-  const nameVal = name.value;
-  const regVal = regno.value;
-  const emailVal = email.value;
-  const passVal = password.value;
+/* ================= HELPERS ================= */
+const authBox = document.getElementById("auth");
+const dashBox = document.getElementById("dashboard");
+const msg = document.getElementById("msg");
+const studentInfo = document.getElementById("studentInfo");
 
-  const { error } = await supabase.auth.signUp({
-    email: emailVal,
-    password: passVal,
+/* ================= SIGN UP ================= */
+async function signup(){
+  msg.innerText = "Creating account...";
+
+  const { data, error } = await supabase.auth.signUp({
+    email: document.getElementById("email").value,
+    password: document.getElementById("password").value,
     options:{
       data:{
-        name: nameVal,
-        regno: regVal
+        name: document.getElementById("name").value,
+        regno: document.getElementById("regno").value
       }
     }
   });
 
-  msg.innerText = error ? error.message : "Account created! Check email.";
+  console.log("SIGNUP:", data, error);
+  msg.innerText = error ? error.message : "Account created. You can login now.";
 }
 
-// ===== LOGIN =====
+/* ================= LOGIN ================= */
 async function login(){
-  const { error } = await supabase.auth.signInWithPassword({
-    email: email.value,
-    password: password.value
+  msg.innerText = "Logging in...";
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: document.getElementById("email").value,
+    password: document.getElementById("password").value
   });
+
+  console.log("LOGIN:", data, error);
 
   if(error){
     msg.innerText = error.message;
@@ -109,17 +116,23 @@ async function login(){
   }
 }
 
-// ===== LOGOUT =====
+/* ================= LOGOUT ================= */
 async function logout(){
   await supabase.auth.signOut();
   location.reload();
 }
 
-// ===== SHOW DASHBOARD =====
+/* ================= DASHBOARD ================= */
 async function showDashboard(){
-  const { data } = await supabase.auth.getUser();
-  auth.style.display="none";
-  dashboard.style.display="block";
+  const { data, error } = await supabase.auth.getUser();
+
+  if(error){
+    console.error(error);
+    return;
+  }
+
+  authBox.style.display = "none";
+  dashBox.style.display = "block";
 
   studentInfo.innerHTML = `
     <b>Name:</b> ${data.user.user_metadata.name}<br>
@@ -128,12 +141,13 @@ async function showDashboard(){
   `;
 }
 
-// ===== AUTO LOGIN =====
-supabase.auth.getSession().then(({data})=>{
-  if(data.session) showDashboard();
+/* ================= AUTO LOGIN ================= */
+supabase.auth.getSession().then(({ data }) => {
+  if(data.session){
+    showDashboard();
+  }
 });
 </script>
 
 </body>
 </html>
-
