@@ -226,176 +226,291 @@ MSAMBWENI TVC is committed to providing quality technical and vocational educati
 <button type="submit">Send Message</button>
 </form>
 </section>
-  <script>
-/* ===============================
-   STORAGE KEYS
-================================ */
-const USERS_KEY = "students";
-const SESSION_KEY = "loggedInStudent";
+  
+</body>
+</html>
 
-/* ===============================
-   HELPERS
-================================ */
-function getUsers(){
-  return JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Student Portal | MSAMBWENI TVC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --blue:#0d47a1;
+  --blue-light:#1976d2;
+  --yellow:#fbc02d;
+  --bg:#f4f6f9;
 }
 
-function saveUsers(users){
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+min-height:100vh;
+background:linear-gradient(135deg,var(--blue),var(--blue-light));
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
-function msg(text, color="red"){
-  const m = document.getElementById("message");
-  if(m){
-    m.style.color = color;
-    m.innerText = text;
-  }
+/* MAIN CARD */
+.container{
+width:420px;
+background:white;
+border-radius:20px;
+padding:30px;
+box-shadow:0 30px 60px rgba(0,0,0,0.25);
+animation:fade 0.6s ease;
 }
 
-/* ===============================
-   FORM SWITCH
-================================ */
+/* LOGO */
+.logo{
+text-align:center;
+margin-bottom:20px;
+}
+.logo img{
+width:90px;
+height:90px;
+object-fit:contain;
+}
+.logo h2{
+color:var(--blue);
+margin-top:8px;
+}
+
+/* TABS */
+.tabs{
+display:flex;
+border-radius:12px;
+overflow:hidden;
+margin-bottom:20px;
+border:2px solid var(--yellow);
+}
+.tabs button{
+flex:1;
+padding:10px;
+border:none;
+background:#e3f2fd;
+font-weight:600;
+cursor:pointer;
+color:var(--blue);
+}
+.tabs button.active{
+background:var(--yellow);
+color:#000;
+}
+
+/* FORMS */
+form{display:none;}
+form.active{display:block;}
+
+input{
+width:100%;
+padding:12px;
+margin-bottom:12px;
+border-radius:10px;
+border:1px solid #ccc;
+}
+input:focus{
+outline:none;
+border-color:var(--yellow);
+}
+
+/* BUTTONS */
+button.submit{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:var(--blue);
+color:white;
+font-weight:600;
+cursor:pointer;
+}
+button.submit:hover{
+background:var(--blue-light);
+}
+
+/* MESSAGE */
+.message{
+text-align:center;
+margin-top:10px;
+font-size:0.9rem;
+}
+
+/* DASHBOARD */
+#dashboard{display:none;}
+
+.card{
+background:var(--bg);
+padding:14px;
+border-radius:12px;
+margin-bottom:10px;
+border-left:6px solid var(--yellow);
+}
+
+.logout{
+background:#c62828!important;
+margin-top:10px;
+}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- ================= AUTH ================= -->
+<div id="auth">
+
+  <div class="logo">
+    <img src="logo.jpg" alt="Logo">
+    <h2>Student Portal</h2>
+  </div>
+
+  <div class="tabs">
+    <button id="loginTab" class="active" onclick="showForm('login')">Login</button>
+    <button id="registerTab" onclick="showForm('register')">Create Account</button>
+  </div>
+
+  <!-- LOGIN -->
+  <form id="loginForm" class="active" onsubmit="login(event)">
+    <input id="loginEmail" type="email" placeholder="Email" required>
+    <input id="loginPassword" type="password" placeholder="Password" required>
+    <button class="submit">Login</button>
+  </form>
+
+  <!-- REGISTER -->
+  <form id="registerForm" onsubmit="register(event)">
+    <input id="regName" type="text" placeholder="Full Name" required>
+    <input id="regEmail" type="email" placeholder="Email" required>
+    <input id="regPassword" type="password" placeholder="Password" required>
+    <button class="submit">Create Account</button>
+  </form>
+
+  <div id="message" class="message"></div>
+</div>
+
+<!-- ================= DASHBOARD ================= -->
+<div id="dashboard">
+
+  <div class="logo">
+    <img src="logo.jpg">
+    <h2>Student Dashboard</h2>
+  </div>
+
+  <div class="card">
+    <strong>Name:</strong> <span id="dashName"></span>
+  </div>
+  <div class="card">
+    <strong>Email:</strong> <span id="dashEmail"></span>
+  </div>
+  <div class="card">
+    <strong>Student ID:</strong> <span id="dashId"></span>
+  </div>
+
+  <button class="submit" onclick="downloadPDF()">Download PDF</button>
+  <button class="submit logout" onclick="logout()">Logout</button>
+</div>
+
+</div>
+
+<script>
+/* STORAGE */
+const USERS_KEY="students";
+const SESSION_KEY="loggedInStudent";
+
+/* HELPERS */
+function getUsers(){return JSON.parse(localStorage.getItem(USERS_KEY))||[];}
+function saveUsers(u){localStorage.setItem(USERS_KEY,JSON.stringify(u));}
+function msg(t,c="red"){message.style.color=c;message.innerText=t;}
+
+/* SWITCH */
 function showForm(type){
-  document.querySelectorAll("form").forEach(f=>f.classList.remove("active"));
-  document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
-  document.getElementById(type+"Form").classList.add("active");
-  document.getElementById(type+"Tab").classList.add("active");
-  msg("");
+document.querySelectorAll("form").forEach(f=>f.classList.remove("active"));
+document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+document.getElementById(type+"Form").classList.add("active");
+document.getElementById(type+"Tab").classList.add("active");
+msg("");
 }
 
-/* ===============================
-   REGISTER
-================================ */
+/* REGISTER */
 function register(e){
-  e.preventDefault();
-
-  const name = regName.value.trim();
-  const email = regEmail.value.trim();
-  const password = regPassword.value;
-
-  if(!name || !email || !password){
-    msg("All fields are required");
-    return;
-  }
-
-  let users = getUsers();
-  if(users.find(u=>u.email===email)){
-    msg("Account already exists");
-    return;
-  }
-
-  const student = {
-    id: "MTVC-" + Date.now(),
-    name,
-    email,
-    password,
-    date: new Date().toLocaleString()
-  };
-
-  users.push(student);
-  saveUsers(users);
-
-  msg("Account created successfully!", "green");
-  downloadPDF(student);
+e.preventDefault();
+let users=getUsers();
+if(users.find(u=>u.email===regEmail.value)){msg("Account exists");return;}
+const student={
+id:"MTVC-"+Date.now(),
+name:regName.value,
+email:regEmail.value,
+password:regPassword.value
+};
+users.push(student);
+saveUsers(users);
+msg("Account created successfully","green");
 }
 
-/* ===============================
-   LOGIN
-================================ */
+/* LOGIN */
 function login(e){
-  e.preventDefault();
-
-  const email = loginEmail.value.trim();
-  const password = loginPassword.value;
-
-  const user = getUsers().find(
-    u => u.email===email && u.password===password
-  );
-
-  if(!user){
-    msg("Invalid login details");
-    return;
-  }
-
-  localStorage.setItem(SESSION_KEY, user.email);
-  window.location.href = "dashboard.html"; // dashboard page
+e.preventDefault();
+const user=getUsers().find(u=>u.email===loginEmail.value&&u.password===loginPassword.value);
+if(!user){msg("Invalid login");return;}
+localStorage.setItem(SESSION_KEY,user.email);
+loadDashboard();
 }
 
-/* ===============================
-   LOGOUT
-================================ */
-function logout(){
-  localStorage.removeItem(SESSION_KEY);
-  window.location.href = "index.html";
-}
-
-/* ===============================
-   LOAD DASHBOARD
-================================ */
+/* DASHBOARD */
 function loadDashboard(){
-  const email = localStorage.getItem(SESSION_KEY);
-  if(!email){
-    window.location.href = "index.html";
-    return;
-  }
-
-  const user = getUsers().find(u=>u.email===email);
-  if(!user) return;
-
-  document.getElementById("dashName").innerText = user.name;
-  document.getElementById("dashEmail").innerText = user.email;
-  document.getElementById("dashId").innerText = user.id;
+const email=localStorage.getItem(SESSION_KEY);
+if(!email)return;
+const user=getUsers().find(u=>u.email===email);
+if(!user)return;
+auth.style.display="none";
+dashboard.style.display="block";
+dashName.innerText=user.name;
+dashEmail.innerText=user.email;
+dashId.innerText=user.id;
 }
 
-/* ===============================
-   RESET PASSWORD (LOCAL DEMO)
-================================ */
-function resetPassword(e){
-  e.preventDefault();
-
-  const email = resetEmail.value.trim();
-  const users = getUsers();
-  const user = users.find(u=>u.email===email);
-
-  if(!user){
-    msg("Email not found");
-    return;
-  }
-
-  msg("Password reset successful (local demo)", "green");
+/* LOGOUT */
+function logout(){
+localStorage.removeItem(SESSION_KEY);
+location.reload();
 }
 
-/* ===============================
-   PDF DOWNLOAD
-================================ */
-function downloadPDF(student){
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF();
-
-  pdf.setFontSize(14);
-  pdf.text("MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE", 20, 20);
-
-  pdf.setFontSize(12);
-  pdf.text("STUDENT REGISTRATION DETAILS", 20, 35);
-
-  pdf.line(20, 38, 190, 38);
-
-  pdf.text("Student ID: " + student.id, 20, 50);
-  pdf.text("Name: " + student.name, 20, 60);
-  pdf.text("Email: " + student.email, 20, 70);
-  pdf.text("Registration Date: " + student.date, 20, 80);
-
-  pdf.text("Issued by MSAMBWENI TVC Student Portal", 20, 105);
-
-  pdf.save("Student_Registration.pdf");
+/* PDF */
+function downloadPDF(){
+const {jsPDF}=window.jspdf;
+const pdf=new jsPDF();
+pdf.setFontSize(14);
+pdf.text("MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE",20,20);
+pdf.text("STUDENT DETAILS",20,35);
+pdf.text("Name: "+dashName.innerText,20,50);
+pdf.text("Email: "+dashEmail.innerText,20,60);
+pdf.text("Student ID: "+dashId.innerText,20,70);
+pdf.save("Student_Details.pdf");
 }
+
+/* AUTO */
+loadDashboard();
 </script>
-
-
-<footer>
-&copy; 2026 MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE
-</footer>
 
 </body>
 </html>
+
 
