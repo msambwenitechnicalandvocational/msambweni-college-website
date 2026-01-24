@@ -226,6 +226,171 @@ MSAMBWENI TVC is committed to providing quality technical and vocational educati
 <button type="submit">Send Message</button>
 </form>
 </section>
+  <script>
+/* ===============================
+   STORAGE KEYS
+================================ */
+const USERS_KEY = "students";
+const SESSION_KEY = "loggedInStudent";
+
+/* ===============================
+   HELPERS
+================================ */
+function getUsers(){
+  return JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+}
+
+function saveUsers(users){
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+}
+
+function msg(text, color="red"){
+  const m = document.getElementById("message");
+  if(m){
+    m.style.color = color;
+    m.innerText = text;
+  }
+}
+
+/* ===============================
+   FORM SWITCH
+================================ */
+function showForm(type){
+  document.querySelectorAll("form").forEach(f=>f.classList.remove("active"));
+  document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+  document.getElementById(type+"Form").classList.add("active");
+  document.getElementById(type+"Tab").classList.add("active");
+  msg("");
+}
+
+/* ===============================
+   REGISTER
+================================ */
+function register(e){
+  e.preventDefault();
+
+  const name = regName.value.trim();
+  const email = regEmail.value.trim();
+  const password = regPassword.value;
+
+  if(!name || !email || !password){
+    msg("All fields are required");
+    return;
+  }
+
+  let users = getUsers();
+  if(users.find(u=>u.email===email)){
+    msg("Account already exists");
+    return;
+  }
+
+  const student = {
+    id: "MTVC-" + Date.now(),
+    name,
+    email,
+    password,
+    date: new Date().toLocaleString()
+  };
+
+  users.push(student);
+  saveUsers(users);
+
+  msg("Account created successfully!", "green");
+  downloadPDF(student);
+}
+
+/* ===============================
+   LOGIN
+================================ */
+function login(e){
+  e.preventDefault();
+
+  const email = loginEmail.value.trim();
+  const password = loginPassword.value;
+
+  const user = getUsers().find(
+    u => u.email===email && u.password===password
+  );
+
+  if(!user){
+    msg("Invalid login details");
+    return;
+  }
+
+  localStorage.setItem(SESSION_KEY, user.email);
+  window.location.href = "dashboard.html"; // dashboard page
+}
+
+/* ===============================
+   LOGOUT
+================================ */
+function logout(){
+  localStorage.removeItem(SESSION_KEY);
+  window.location.href = "index.html";
+}
+
+/* ===============================
+   LOAD DASHBOARD
+================================ */
+function loadDashboard(){
+  const email = localStorage.getItem(SESSION_KEY);
+  if(!email){
+    window.location.href = "index.html";
+    return;
+  }
+
+  const user = getUsers().find(u=>u.email===email);
+  if(!user) return;
+
+  document.getElementById("dashName").innerText = user.name;
+  document.getElementById("dashEmail").innerText = user.email;
+  document.getElementById("dashId").innerText = user.id;
+}
+
+/* ===============================
+   RESET PASSWORD (LOCAL DEMO)
+================================ */
+function resetPassword(e){
+  e.preventDefault();
+
+  const email = resetEmail.value.trim();
+  const users = getUsers();
+  const user = users.find(u=>u.email===email);
+
+  if(!user){
+    msg("Email not found");
+    return;
+  }
+
+  msg("Password reset successful (local demo)", "green");
+}
+
+/* ===============================
+   PDF DOWNLOAD
+================================ */
+function downloadPDF(student){
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
+
+  pdf.setFontSize(14);
+  pdf.text("MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE", 20, 20);
+
+  pdf.setFontSize(12);
+  pdf.text("STUDENT REGISTRATION DETAILS", 20, 35);
+
+  pdf.line(20, 38, 190, 38);
+
+  pdf.text("Student ID: " + student.id, 20, 50);
+  pdf.text("Name: " + student.name, 20, 60);
+  pdf.text("Email: " + student.email, 20, 70);
+  pdf.text("Registration Date: " + student.date, 20, 80);
+
+  pdf.text("Issued by MSAMBWENI TVC Student Portal", 20, 105);
+
+  pdf.save("Student_Registration.pdf");
+}
+</script>
+
 
 <footer>
 &copy; 2026 MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE
@@ -233,3 +398,4 @@ MSAMBWENI TVC is committed to providing quality technical and vocational educati
 
 </body>
 </html>
+
