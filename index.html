@@ -3,126 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</title>
+<title>MSAMBWENI TVC</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0d47a1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MSAMBWENI TVC">
+<link rel="icon" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 
 <style>
+:root{
+--blue:#0d47a1;
+--blue-light:#1976d2;
+--yellow:#fbc02d;
+--bg:#f4f6f9;
+}
+
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Roboto',sans-serif;}
-body{line-height:1.6;color:#333;background:#f4f4f4;}
-a{text-decoration:none;color:inherit;}
-img{max-width:100%;display:block;border-radius:8px;}
+body{background:#f4f6f9;color:#333;}
+img{max-width:100%;border-radius:8px;}
+a{text-decoration:none;color:inherit}
 
-header{background:#0d47a1;color:#fff;padding:1rem 0;position:sticky;top:0;z-index:1000;}
-nav{display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto;padding:0 1rem;}
-nav .logo{display:flex;align-items:center;gap:0.7rem;font-weight:bold;font-size:1.4rem;}
-nav .logo img{height:80px;width:80px;}
+/* Header */
+header{background:var(--blue);color:#fff;position:sticky;top:0;z-index:1000;}
+nav{max-width:1200px;margin:auto;padding:1rem;}
+.nav-row{display:flex;justify-content:space-between;align-items:center;}
+.logo{display:flex;align-items:center;gap:10px;font-size:1.2rem;font-weight:bold;}
+.logo img{width:60px;height:60px;}
+.menu-toggle{display:none;font-size:1.8rem;cursor:pointer;}
 nav ul{list-style:none;display:flex;gap:1rem;}
-nav ul li a{color:#fff;font-weight:500;}
-nav ul li a:hover{text-decoration:underline;}
-
-#hero{
-background:linear-gradient(135deg,#0d47a1,#1976d2,#42a5f5);
-color:#fff;
-padding:4rem 1rem;
-text-align:center;
-}
-#hero h1{font-size:2.5rem;margin-bottom:1rem;}
-#hero p{font-size:1.2rem;}
-
-section{padding:4rem 1rem;max-width:1200px;margin:auto;}
-section h2{
-text-align:center;
-font-size:2rem;
-margin-bottom:2rem;
-color:#0d47a1;
-border-bottom:2px solid #1976d2;
-display:inline-block;
-padding-bottom:0.5rem;
-}
-
-/* ABOUT */
-#about{background:#e3f2fd;}
-.about-gallery{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:1rem;
-margin-top:2rem;
-}
-
-/* COURSES */
-#courses{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:1.5rem;
-}
-.course{
-background:#fff;
-padding:1rem;
-border-radius:10px;
-box-shadow:0 4px 6px rgba(0,0,0,0.1);
-}
-.course img{height:180px;width:100%;object-fit:cover;margin-bottom:0.5rem;}
-.course h3{color:#0d47a1;margin-bottom:0.3rem;}
-
-/* ANNOUNCEMENTS */
-#announcements{background:#e8f5e9;border-radius:10px;}
-.announcement{
-background:#c8e6c9;
-padding:1rem;
-margin-bottom:1rem;
-border-radius:5px;
-display:flex;
-gap:1rem;
-align-items:center;
-}
-.announcement img{width:120px;height:80px;object-fit:cover;}
-
-/* LIBRARY */
-#library{background:#f1f8e9;}
-.library-gallery{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:1rem;
-margin-top:2rem;
-}
-.library-gallery img{height:200px;object-fit:cover;}
-
-/* CONTACT */
-#contact form{
-display:flex;
-flex-direction:column;
-max-width:500px;
-margin:auto;
-gap:1rem;
-}
-#contact input,#contact textarea{
-padding:0.8rem;
-border-radius:5px;
-border:1px solid #ccc;
-}
-#contact button{
-background:#0d47a1;
-color:#fff;
-border:none;
-padding:0.8rem;
-border-radius:5px;
-cursor:pointer;
-}
-#contact button:hover{background:#1976d2;}
-
-footer{
-background:#0d47a1;
-color:#fff;
-text-align:center;
-padding:1rem;
-margin-top:2rem;
-}
-
+nav ul li a{color:white;font-weight:500;}
 @media(max-width:768px){
-nav ul{flex-direction:column;}
-#hero h1{font-size:2rem;}
+.menu-toggle{display:block;}
+nav ul{display:none;flex-direction:column;background:var(--blue);padding:1rem;margin-top:1rem;border-radius:10px;}
+nav ul.show{display:flex;}
 }
+
+/* Hero */
+#hero{background:linear-gradient(135deg,var(--blue),var(--blue-light));color:white;text-align:center;padding:4rem 1rem;}
+#hero h1{font-size:clamp(1.6rem,5vw,2.5rem);}
+#hero p{font-size:1.1rem;margin-top:10px;}
+
+/* Sections */
+section{padding:3rem 1rem;max-width:1200px;margin:auto;}
+section h2{text-align:center;margin-bottom:2rem;color:var(--blue);border-bottom:3px solid var(--yellow);display:inline-block;padding-bottom:5px;}
+
+/* About */
+#about{background:#e3f2fd;}
+.about-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:2rem;}
+
+/* Courses */
+#courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;}
+.course{background:white;padding:1rem;border-radius:12px;box-shadow:0 4px 8px rgba(0,0,0,.1);}
+
+/* Announcements */
+#announcements{background:#e8f5e9;border-radius:12px;}
+.announcement{background:#c8e6c9;padding:1rem;margin-bottom:1rem;border-radius:8px;}
+
+/* Library */
+#library{background:#f1f8e9;}
+.library-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;}
+
+/* Footer */
+footer{background:var(--blue);color:white;text-align:center;padding:1rem;margin-top:2rem;}
+
+/* ===== PORTAL ===== */
+#portal{display:none;min-height:100vh;background:linear-gradient(135deg,var(--blue),var(--blue-light));display:flex;align-items:center;justify-content:center;padding:1rem;}
+.portal-box{width:100%;max-width:420px;background:white;border-radius:20px;padding:25px;box-shadow:0 25px 50px rgba(0,0,0,.3);}
+.portal-logo{text-align:center;margin-bottom:15px;}
+.portal-logo img{width:80px;height:80px;}
+.portal-logo h2{color:var(--blue);}
+
+/* Tabs */
+.tabs{display:flex;border:2px solid var(--yellow);border-radius:12px;overflow:hidden;margin-bottom:15px;}
+.tabs button{flex:1;padding:10px;border:none;background:#e3f2fd;font-weight:600;cursor:pointer;color:var(--blue);}
+.tabs button.active{background:var(--yellow);}
+
+/* Forms */
+form{display:none;}
+form.active{display:block;}
+input{width:100%;padding:12px;margin-bottom:12px;border-radius:10px;border:1px solid #ccc;font-size:1rem;}
+button.submit{width:100%;padding:12px;border:none;border-radius:10px;background:var(--blue);color:white;font-weight:600;font-size:1rem;cursor:pointer;}
+.message{text-align:center;font-size:.9rem;}
+
+/* Dashboard */
+#dashboard{display:none;}
+.card{background:var(--bg);padding:14px;border-radius:12px;margin-bottom:10px;border-left:6px solid var(--yellow);font-size:.95rem;}
+.logout{background:#c62828!important;}
 </style>
 </head>
 
@@ -130,387 +107,176 @@ nav ul{flex-direction:column;}
 
 <header>
 <nav>
-  <div class="logo">
-    <img src="logo.jpg" alt="College Logo">
-    MSAMBWENI TVC
-  </div>
-  <ul>
-    <li><a href="#hero">Home</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#courses">Courses</a></li>
-    <li><a href="#announcements">Announcements</a></li>
-    <li><a href="#library">Library</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+<div class="nav-row">
+<div class="logo"><img src="logo.jpg">MSAMBWENI TVC</div>
+<div class="menu-toggle" onclick="toggleMenu()">☰</div>
+</div>
+<ul id="menu">
+<li><a href="#hero">Home</a></li>
+<li><a href="#about">About</a></li>
+<li><a href="#courses">Courses</a></li>
+<li><a href="#announcements">Announcements</a></li>
+<li><a href="#library">Library</a></li>
+<li><a href="#" onclick="openPortal()">Student Portal</a></li>
+</ul>
 </nav>
 </header>
 
 <section id="hero">
-<h1>Welcome to MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h1>
-<p>Empowering skills, shaping the future.</p>
+<h1>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h1>
+<p>Empowering skills, shaping the future</p>
 </section>
 
 <section id="about">
 <h2>About Us</h2>
-<p>
-MSAMBWENI TVC is committed to providing quality technical and vocational education.
-</p>
-
+<p>We provide quality technical and vocational education.</p>
 <div class="about-gallery">
-  <img src="campus1.jpg" alt="Campus Photo">
-  <img src="campus2.jpg" alt="Students">
-  <img src="campus3.jpg" alt="Workshop">
+<img src="campus1.jpg">
+<img src="campus2.jpg">
+<img src="campus3.jpg">
 </div>
 </section>
 
 <section>
 <h2>Our Courses</h2>
 <div id="courses">
-  <div class="course">
-    <img src="ict.jpg" alt="ICT">
-    <h3>ICT</h3>
-    <p>Programming, networking, hardware maintenance.</p>
-  </div>
-
-  <div class="course">
-    <img src="business.jpg" alt="Business">
-    <h3>Business Management</h3>
-    <p>Entrepreneurship, leadership and management.</p>
-  </div>
-
-  <div class="course">
-    <img src="engineering.jpg" alt="Engineering">
-    <h3>Engineering</h3>
-    <p>Civil, Electrical and Mechanical engineering.</p>
-  </div>
+<div class="course"><h3>ICT</h3><p>Programming & Networking</p></div>
+<div class="course"><h3>Business</h3><p>Entrepreneurship</p></div>
+<div class="course"><h3>Engineering</h3><p>Technical Skills</p></div>
 </div>
 </section>
 
 <section id="announcements">
 <h2>Announcements</h2>
-
-<div class="announcement">
-  <img src="notice1.jpg" alt="Notice">
-  <div>
-    <strong>Admissions Open</strong>
-    <p>New students are welcome to apply for March intake.</p>
-  </div>
-</div>
-
-<div class="announcement">
-  <img src="notice2.jpg" alt="Notice">
-  <div>
-    <strong>Examinations</strong>
-    <p>End semester exams start on 10th March.</p>
-  </div>
-</div>
+<div class="announcement">Admissions Ongoing</div>
+<div class="announcement">Exams Begin Soon</div>
 </section>
 
 <section id="library">
 <h2>Virtual Library</h2>
-<p>Access learning materials and digital resources.</p>
-
 <div class="library-gallery">
-  <img src="library1.jpg" alt="Library">
-  <img src="library2.jpg" alt="Books">
-  <img src="library3.jpg" alt="E-learning">
+<img src="library1.jpg">
+<img src="library2.jpg">
+<img src="library3.jpg">
 </div>
 </section>
 
-<section id="contact">
-<h2>Contact Us</h2>
-<form>
-<input type="text" placeholder="Full Name" required>
-<input type="email" placeholder="Email Address" required>
-<textarea rows="5" placeholder="Message" required></textarea>
-<button type="submit">Send Message</button>
-</form>
-</section>
-  
-</body>
-</html>
+<footer>© 2026 MSAMBWENI TVC</footer>
 
+<!-- ===== PORTAL ===== -->
+<div id="portal">
+<div class="portal-box">
 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Student Portal | MSAMBWENI TVC</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- jsPDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-<style>
-:root{
-  --blue:#0d47a1;
-  --blue-light:#1976d2;
-  --yellow:#fbc02d;
-  --bg:#f4f6f9;
-}
-
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-
-body{
-min-height:100vh;
-background:linear-gradient(135deg,var(--blue),var(--blue-light));
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
-/* MAIN CARD */
-.container{
-width:420px;
-background:white;
-border-radius:20px;
-padding:30px;
-box-shadow:0 30px 60px rgba(0,0,0,0.25);
-animation:fade 0.6s ease;
-}
-
-/* LOGO */
-.logo{
-text-align:center;
-margin-bottom:20px;
-}
-.logo img{
-width:90px;
-height:90px;
-object-fit:contain;
-}
-.logo h2{
-color:var(--blue);
-margin-top:8px;
-}
-
-/* TABS */
-.tabs{
-display:flex;
-border-radius:12px;
-overflow:hidden;
-margin-bottom:20px;
-border:2px solid var(--yellow);
-}
-.tabs button{
-flex:1;
-padding:10px;
-border:none;
-background:#e3f2fd;
-font-weight:600;
-cursor:pointer;
-color:var(--blue);
-}
-.tabs button.active{
-background:var(--yellow);
-color:#000;
-}
-
-/* FORMS */
-form{display:none;}
-form.active{display:block;}
-
-input{
-width:100%;
-padding:12px;
-margin-bottom:12px;
-border-radius:10px;
-border:1px solid #ccc;
-}
-input:focus{
-outline:none;
-border-color:var(--yellow);
-}
-
-/* BUTTONS */
-button.submit{
-width:100%;
-padding:12px;
-border:none;
-border-radius:10px;
-background:var(--blue);
-color:white;
-font-weight:600;
-cursor:pointer;
-}
-button.submit:hover{
-background:var(--blue-light);
-}
-
-/* MESSAGE */
-.message{
-text-align:center;
-margin-top:10px;
-font-size:0.9rem;
-}
-
-/* DASHBOARD */
-#dashboard{display:none;}
-
-.card{
-background:var(--bg);
-padding:14px;
-border-radius:12px;
-margin-bottom:10px;
-border-left:6px solid var(--yellow);
-}
-
-.logout{
-background:#c62828!important;
-margin-top:10px;
-}
-
-@keyframes fade{
-from{opacity:0;transform:translateY(20px);}
-to{opacity:1;transform:translateY(0);}
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<!-- ================= AUTH ================= -->
 <div id="auth">
-
-  <div class="logo">
-    <img src="logo.jpg" alt="Logo">
-    <h2>Student Portal</h2>
-  </div>
-
-  <div class="tabs">
-    <button id="loginTab" class="active" onclick="showForm('login')">Login</button>
-    <button id="registerTab" onclick="showForm('register')">Create Account</button>
-  </div>
-
-  <!-- LOGIN -->
-  <form id="loginForm" class="active" onsubmit="login(event)">
-    <input id="loginEmail" type="email" placeholder="Email" required>
-    <input id="loginPassword" type="password" placeholder="Password" required>
-    <button class="submit">Login</button>
-  </form>
-
-  <!-- REGISTER -->
-  <form id="registerForm" onsubmit="register(event)">
-    <input id="regName" type="text" placeholder="Full Name" required>
-    <input id="regEmail" type="email" placeholder="Email" required>
-    <input id="regPassword" type="password" placeholder="Password" required>
-    <button class="submit">Create Account</button>
-  </form>
-
-  <div id="message" class="message"></div>
+<div class="portal-logo"><img src="logo.jpg"><h2>Student Portal</h2></div>
+<div class="tabs">
+<button id="loginTab" class="active" onclick="showForm('login')">Login</button>
+<button id="registerTab" onclick="showForm('register')">Register</button>
 </div>
 
-<!-- ================= DASHBOARD ================= -->
+<form id="loginForm" class="active" onsubmit="login(event)">
+<input id="loginEmail" type="email" placeholder="Email" required>
+<input id="loginPassword" type="password" placeholder="Password" required>
+<button class="submit">Login</button>
+</form>
+
+<form id="registerForm" onsubmit="register(event)">
+<input id="regName" placeholder="Full Name" required>
+<input id="regEmail" type="email" placeholder="Email" required>
+<input id="regPassword" type="password" placeholder="Password" required>
+<button class="submit">Create Account</button>
+</form>
+
+<div id="message" class="message"></div>
+</div>
+
 <div id="dashboard">
-
-  <div class="logo">
-    <img src="logo.jpg">
-    <h2>Student Dashboard</h2>
-  </div>
-
-  <div class="card">
-    <strong>Name:</strong> <span id="dashName"></span>
-  </div>
-  <div class="card">
-    <strong>Email:</strong> <span id="dashEmail"></span>
-  </div>
-  <div class="card">
-    <strong>Student ID:</strong> <span id="dashId"></span>
-  </div>
-
-  <button class="submit" onclick="downloadPDF()">Download PDF</button>
-  <button class="submit logout" onclick="logout()">Logout</button>
+<div class="portal-logo"><h2>Dashboard</h2></div>
+<div class="card">Name: <span id="dashName"></span></div>
+<div class="card">Email: <span id="dashEmail"></span></div>
+<div class="card">ID: <span id="dashId"></span></div>
+<button class="submit" onclick="downloadPDF()">Download PDF</button>
+<button class="submit logout" onclick="logout()">Logout</button>
 </div>
 
+</div>
 </div>
 
 <script>
-/* STORAGE */
-const USERS_KEY="students";
-const SESSION_KEY="loggedInStudent";
+/* MENU */
+function toggleMenu(){document.getElementById("menu").classList.toggle("show");}
+function openPortal(){document.getElementById("portal").style.display="flex";window.scrollTo(0,0);}
 
-/* HELPERS */
+/* LocalStorage Keys */
+const USERS_KEY="students", SESSION_KEY="session";
+
+/* Helpers */
 function getUsers(){return JSON.parse(localStorage.getItem(USERS_KEY))||[];}
 function saveUsers(u){localStorage.setItem(USERS_KEY,JSON.stringify(u));}
-function msg(t,c="red"){message.style.color=c;message.innerText=t;}
 
-/* SWITCH */
+/* Tabs */
 function showForm(type){
 document.querySelectorAll("form").forEach(f=>f.classList.remove("active"));
 document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
 document.getElementById(type+"Form").classList.add("active");
 document.getElementById(type+"Tab").classList.add("active");
-msg("");
+document.getElementById("message").innerText="";
 }
 
-/* REGISTER */
+/* Register */
 function register(e){
 e.preventDefault();
 let users=getUsers();
-if(users.find(u=>u.email===regEmail.value)){msg("Account exists");return;}
-const student={
-id:"MTVC-"+Date.now(),
-name:regName.value,
-email:regEmail.value,
-password:regPassword.value
-};
-users.push(student);
+if(users.find(u=>u.email===regEmail.value)){message.innerText="Account exists";return;}
+users.push({id:"MTVC-"+Date.now(),name:regName.value,email:regEmail.value,password:regPassword.value});
 saveUsers(users);
-msg("Account created successfully","green");
+message.style.color="green";message.innerText="Account created";
 }
 
-/* LOGIN */
+/* Login */
 function login(e){
 e.preventDefault();
-const user=getUsers().find(u=>u.email===loginEmail.value&&u.password===loginPassword.value);
-if(!user){msg("Invalid login");return;}
-localStorage.setItem(SESSION_KEY,user.email);
+let u=getUsers().find(x=>x.email===loginEmail.value&&x.password===loginPassword.value);
+if(!u){message.style.color="red";message.innerText="Invalid login";return;}
+localStorage.setItem(SESSION_KEY,u.email);
 loadDashboard();
 }
 
-/* DASHBOARD */
+/* Dashboard */
 function loadDashboard(){
-const email=localStorage.getItem(SESSION_KEY);
+let email=localStorage.getItem(SESSION_KEY);
 if(!email)return;
-const user=getUsers().find(u=>u.email===email);
-if(!user)return;
-auth.style.display="none";
-dashboard.style.display="block";
-dashName.innerText=user.name;
-dashEmail.innerText=user.email;
-dashId.innerText=user.id;
+let u=getUsers().find(x=>x.email===email);
+if(!u)return;
+document.getElementById("auth").style.display="none";
+document.getElementById("dashboard").style.display="block";
+dashName.innerText=u.name;
+dashEmail.innerText=u.email;
+dashId.innerText=u.id;
 }
 
-/* LOGOUT */
-function logout(){
-localStorage.removeItem(SESSION_KEY);
-location.reload();
-}
+/* Logout */
+function logout(){localStorage.removeItem(SESSION_KEY);location.reload();}
 
 /* PDF */
 function downloadPDF(){
 const {jsPDF}=window.jspdf;
-const pdf=new jsPDF();
-pdf.setFontSize(14);
-pdf.text("MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE",20,20);
-pdf.text("STUDENT DETAILS",20,35);
-pdf.text("Name: "+dashName.innerText,20,50);
-pdf.text("Email: "+dashEmail.innerText,20,60);
-pdf.text("Student ID: "+dashId.innerText,20,70);
-pdf.save("Student_Details.pdf");
+let pdf=new jsPDF();
+pdf.text("MSAMBWENI TVC STUDENT DETAILS",20,20);
+pdf.text("Name: "+dashName.innerText,20,40);
+pdf.text("Email: "+dashEmail.innerText,20,50);
+pdf.text("ID: "+dashId.innerText,20,60);
+pdf.save("student_details.pdf");
 }
 
-/* AUTO */
+/* Auto load dashboard if session exists */
 loadDashboard();
+
+/* Register service worker */
+if("serviceWorker" in navigator){
+navigator.serviceWorker.register("service-worker.js");
+}
 </script>
 
 </body>
 </html>
-
-
