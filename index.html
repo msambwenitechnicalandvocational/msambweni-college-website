@@ -1,120 +1,322 @@
-package com.msambweni.portal;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KYU College Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ===== GLOBAL STYLES ===== */
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Roboto', sans-serif; }
+body { line-height:1.6; color:#333; background:#f4f4f4; }
+a { text-decoration:none; color:inherit; }
+img { max-width:100%; display:block; }
 
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.cloud.firestore.*;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.cloud.FirestoreClient;
-import com.lowagie.text.*;
-import com.lowagie.text.pdf.PdfWriter;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.*;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+/* ===== NAVIGATION ===== */
+header { background:#0d47a1; color:#fff; padding:1rem 0; position:sticky; top:0; z-index:1000; }
+nav { display:flex; justify-content:space-between; align-items:center; max-width:1200px; margin:0 auto; padding:0 1rem; }
+nav .logo { font-size:1.5rem; font-weight:bold; }
+nav ul { list-style:none; display:flex; gap:1rem; position:relative; }
+nav ul li { position:relative; padding:0.5rem; }
+nav ul li a { color:#fff; font-weight:500; }
+nav ul li a:hover { text-decoration:underline; }
+nav ul li ul { display:none; position:absolute; top:2.5rem; left:0; background:#1976d2; list-style:none; padding:0.5rem 0; border-radius:5px; min-width:180px; }
+nav ul li ul li { padding:0.5rem 1rem; }
+nav ul li ul li a { color:#fff; }
+nav ul li:hover ul { display:block; }
 
-import java.io.*;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
+/* ===== HERO ===== */
+#hero { background:linear-gradient(135deg,#0d47a1,#1976d2,#42a5f5); color:#fff; padding:4rem 1rem; text-align:center; }
+#hero h1 { font-size:2.5rem; margin-bottom:1rem; }
+#hero p { font-size:1.2rem; margin-bottom:2rem; }
+#hero button { padding:0.8rem 2rem; background:#fff; color:#0d47a1; border:none; font-weight:bold; cursor:pointer; border-radius:5px; transition:0.3s; }
+#hero button:hover { background:#e3f2fd; }
 
-@SpringBootApplication
-@Controller
-public class MsambweniPortalApplication {
+/* ===== SECTIONS ===== */
+section { padding:4rem 1rem; max-width:1200px; margin:0 auto; }
+section h2 { text-align:center; font-size:2rem; margin-bottom:2rem; color:#0d47a1; border-bottom:2px solid #1976d2; display:inline-block; padding-bottom:0.5rem; }
 
-    private Firestore db;
+/* ===== ABOUT ===== */
+#about { background:#e3f2fd; }
+#about p { max-width:900px; margin:0 auto 1rem auto; font-size:1.1rem; }
+#about ul { max-width:900px; margin:0 auto; margin-top:1rem; list-style:disc; padding-left:1.5rem; }
 
-    public static void main(String[] args) {
-        SpringApplication.run(MsambweniPortalApplication.class, args);
-    }
+/* ===== COURSES ===== */
+#courses { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:1.5rem; }
+.course { background:#fff; padding:1.5rem; border-radius:10px; box-shadow:0 4px 6px rgba(0,0,0,0.1); transition:0.3s; }
+.course:hover { transform:translateY(-5px); box-shadow:0 6px 12px rgba(0,0,0,0.15); }
+.course h3 { margin-bottom:0.5rem; color:#0d47a1; }
+.course p { font-size:0.95rem; }
 
-    // ===== INIT FIRESTORE =====
-    public void initFirestore() throws IOException {
-        if (db != null) return;
-        FileInputStream serviceAccount = new FileInputStream("serviceAccountKey.json");
-        FirebaseOptions options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                .build();
-        if (FirebaseApp.getApps().isEmpty()) FirebaseApp.initializeApp(options);
-        db = FirestoreClient.getFirestore();
-    }
+/* ===== LIBRARY ===== */
+#library { background:#f1f8e9; }
+#library input, #library button { padding:0.7rem; border-radius:5px; border:1px solid #0d47a1; margin-right:0.5rem; }
+#library button { background:#0d47a1; color:#fff; cursor:pointer; border:none; }
+#library button:hover { background:#1976d2; }
+#library #results { margin-top:1rem; }
 
-    // ===== HOME =====
-    @GetMapping("/")
-    public String home() {
-        return "<html><body><h1>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h1>"
-                + "<a href='/login'>Login</a> | <a href='/dashboard'>Dashboard</a></body></html>";
-    }
+/* ===== MASOMO / COURSES PORTAL ===== */
+#masomo { background:#fff; display:flex; justify-content:center; flex-direction:column; align-items:center; }
+#masomo ul { list-style:none; }
+#masomo li { padding:0.5rem 0; }
+#masomo a { color:#0d47a1; font-weight:bold; }
 
-    // ===== LOGIN PAGE =====
-    @GetMapping("/login")
-    public String loginPage() {
-        return "<html><body><h2>Login</h2>"
-                + "<form method='post' action='/dashboard'>"
-                + "Email: <input type='email' name='email'><br>"
-                + "Password: <input type='password' name='password'><br>"
-                + "<button type='submit'>Login</button>"
-                + "</form></body></html>";
-    }
+/* ===== ANNOUNCEMENTS ===== */
+#announcements { background:#e8f5e9; max-width:900px; margin:0 auto; border-radius:10px; padding:1rem; }
+.announcement { background:#c8e6c9; margin-bottom:1rem; padding:1rem; border-radius:5px; }
 
-    // ===== DASHBOARD =====
-    @PostMapping("/dashboard")
-    @ResponseBody
-    public String dashboard() throws IOException, ExecutionException, InterruptedException {
-        initFirestore();
+/* ===== PORTALS ===== */
+#portal { background:#fff; display:flex; justify-content:center; align-items:center; flex-direction:column; }
+#portal form { display:flex; flex-direction:column; max-width:300px; width:100%; gap:1rem; }
+#portal input { padding:0.8rem; border:1px solid #ccc; border-radius:5px; }
+#portal button { padding:0.8rem; border:none; border-radius:5px; background:#0d47a1; color:#fff; cursor:pointer; font-weight:bold; }
+#portal button:hover { background:#1976d2; }
 
-        ApiFuture<QuerySnapshot> studentsSnap = db.collection("students").get();
-        ApiFuture<QuerySnapshot> staffSnap = db.collection("staff").get();
-        ApiFuture<QuerySnapshot> financeSnap = db.collection("finance").get();
+/* ===== CONTACT ===== */
+#contact form { display:flex; flex-direction:column; max-width:500px; margin:0 auto; gap:1rem; }
+#contact input, #contact textarea { padding:0.8rem; border:1px solid #ccc; border-radius:5px; }
+#contact button { padding:0.8rem; border:none; border-radius:5px; background:#0d47a1; color:#fff; cursor:pointer; font-weight:bold; }
+#contact button:hover { background:#1976d2; }
 
-        int totalStudents = studentsSnap.get().size();
-        int totalStaff = staffSnap.get().size();
+/* ===== FOOTER ===== */
+footer { background:#0d47a1; color:#fff; text-align:center; padding:1rem; margin-top:2rem; }
 
-        double totalPaid = 0, totalBalance = 0;
-        for (DocumentSnapshot d : financeSnap.get().getDocuments()) {
-            double paid = d.getDouble("paid") != null ? d.getDouble("paid") : 0;
-            totalPaid += paid;
-            totalBalance += 40000 - paid;
-        }
-
-        return "<html><body><h1>Dashboard</h1>"
-                + "<p>Total Students: " + totalStudents + "</p>"
-                + "<p>Total Staff: " + totalStaff + "</p>"
-                + "<p>Total Fees Paid: " + totalPaid + "</p>"
-                + "<p>Total Balance: " + totalBalance + "</p>"
-                + "<h3>Register Student</h3>"
-                + "<form method='post' action='/student'>"
-                + "Name: <input name='name'><br>Reg No: <input name='reg'><br>Email: <input name='email'><br>"
-                + "Course: <input name='course'><br>Term: <input name='term'><br>Year: <input name='year'><br>"
-                + "<button type='submit'>Save & Download PDF</button>"
-                + "</form></body></html>";
-    }
-
-    // ===== SAVE STUDENT + PDF =====
-    @PostMapping("/student")
-    public ResponseEntity<InputStreamResource> saveStudent(@RequestParam Map<String, String> params) throws Exception {
-        initFirestore();
-
-        String reg = params.get("reg");
-        db.collection("students").document(reg).set(params);
-
-        // PDF
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        Document doc = new Document();
-        PdfWriter.getInstance(doc, out);
-        doc.open();
-        doc.add(new Paragraph("STUDENT RECORD"));
-        for (Map.Entry<String, String> e : params.entrySet()) {
-            doc.add(new Paragraph(e.getKey() + ": " + e.getValue()));
-        }
-        doc.close();
-
-        InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(out.toByteArray()));
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=Student_" + reg + ".pdf")
-                .contentType(MediaType.APPLICATION_PDF)
-                .contentLength(out.size())
-                .body(resource);
-    }
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  nav ul { flex-direction:column; gap:0.5rem; }
+  #hero h1 { font-size:2rem; }
 }
+</style>
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+<header>
+  <nav>
+    <div class="logo">KYU College</div>
+    <ul>
+      <li><a href="#hero">Home</a></li>
+      <li>
+        <a href="#about">About</a>
+      </li>
+      <li>
+        <a href="#academics">Academics</a>
+        <ul>
+          <li><a href="#courses">Programs</a></li>
+          <li><a href="#courses">Departments</a></li>
+          <li><a href="#courses">Special Courses</a></li>
+        </ul>
+      </li>
+      <li><a href="#announcements">Announcements</a></li>
+      <li><a href="#library">Library</a></li>
+      <li><a href="#masomo">Masomo</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <h1>Welcome to KYU College</h1>
+  <p>Your gateway to excellence in education and innovation.</p>
+  <button onclick="alert('Enroll Now Clicked!')">Enroll Now</button>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+  <h2>About Us</h2>
+  <p><strong>Mission:</strong> To provide quality education and practical skills.</p>
+  <p><strong>Vision:</strong> To be a leading institution recognized for excellence in teaching and research.</p>
+  <p><strong>History:</strong> Established in 1995, KYU College has grown into a modern institution offering diverse programs.</p>
+  <p><strong>Facilities:</strong></p>
+  <ul>
+    <li>Lecture halls, computer labs, libraries, sports complex, hostels.</li>
+  </ul>
+</section>
+
+<!-- ===== COURSES ===== -->
+<section id="courses">
+  <h2>Our Courses</h2>
+  <div class="course">
+    <h3>Computer Science</h3>
+    <p>Programming, software, networking projects.</p>
+  </div>
+  <div class="course">
+    <h3>Business Management</h3>
+    <p>Leadership, entrepreneurship, management.</p>
+  </div>
+  <div class="course">
+    <h3>Engineering</h3>
+    <p>Civil, Electrical, Mechanical engineering.</p>
+  </div>
+</section>
+
+<!-- ===== ANNOUNCEMENTS ===== -->
+<section id="announcements">
+  <h2>Announcements</h2>
+  <div id="announcementsList"></div>
+</section>
+
+<!-- ===== LIBRARY ===== -->
+<section id="library">
+  <h2>Virtual Library</h2>
+  <p>Search and download books:</p>
+  <input type="text" id="bookSearch" placeholder="Enter book name">
+  <button onclick="searchBook()">Search</button>
+  <div id="results"></div>
+</section>
+
+<!-- ===== MASOMO COURSES PORTAL ===== -->
+<section id="masomo">
+  <h2>Masomo / Courses Portal</h2>
+  <form id="masomoForm" onsubmit="masomoLogin(event)">
+    <input type="text" id="masomoId" placeholder="Student ID" required>
+    <input type="password" id="masomoPw" placeholder="Password" required>
+    <button type="submit">Login</button>
+  </form>
+  <ul id="courseFiles" style="margin-top:1rem;"></ul>
+</section>
+
+<!-- ===== STUDENT PORTAL LOGIN ===== -->
+<section id="portal">
+  <h2>Student Portal Login</h2>
+  <form id="loginForm" onsubmit="studentLogin(event)">
+    <input type="email" id="studentEmail" placeholder="Email" required>
+    <input type="password" id="studentPw" placeholder="Password" required>
+    <button type="submit">Login</button>
+  </form>
+  <p id="loginMessage" style="margin-top:1rem;color:red;"></p>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact">
+  <h2>Contact Us</h2>
+  <form id="contactForm" onsubmit="submitContact(event)">
+    <input type="text" placeholder="Full Name" id="fullName" required>
+    <input type="email" placeholder="Email Address" id="email" required>
+    <textarea placeholder="Message" id="message" rows="5" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+  <p id="contactMessage" style="margin-top:1rem;color:green;"></p>
+</section>
+
+<footer>
+  &copy; 2026 KYU College. All rights reserved.
+</footer>
+
+<!-- ===== FIREBASE SDK ===== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, collection, getDocs, query, where, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth();
+  const db = getFirestore();
+
+  // ===== STUDENT LOGIN =====
+  async function studentLogin(e){
+    e.preventDefault();
+    const email = document.getElementById("studentEmail").value;
+    const password = document.getElementById("studentPw").value;
+    try {
+      await signInWithEmailAndPassword(auth,email,password);
+      document.getElementById("loginMessage").style.color="green";
+      document.getElementById("loginMessage").innerText="Login Successful!";
+    } catch(error){
+      document.getElementById("loginMessage").style.color="red";
+      document.getElementById("loginMessage").innerText=error.message;
+    }
+  }
+
+  // ===== LIBRARY SEARCH & TRACK =====
+  async function searchBook(){
+    const queryVal = document.getElementById("bookSearch").value.toLowerCase();
+    const resultsDiv = document.getElementById("results");
+    const booksCol = collection(db,"libraryBooks");
+    const q = query(booksCol,where("name_lower","array-contains",queryVal));
+    const snapshot = await getDocs(booksCol);
+    if(snapshot.empty){ resultsDiv.innerHTML="<p>No books found.</p>"; return; }
+    let html = "<ul>";
+    snapshot.forEach(doc=>{
+      const data=doc.data();
+      html += `<li>${data.name} - <a href="${data.file}" target="_blank" onclick="trackDownload('${data.name}')">Download</a></li>`;
+    });
+    html += "</ul>";
+    resultsDiv.innerHTML=html;
+  }
+
+  async function trackDownload(bookName){
+    await addDoc(collection(db,"downloads"),{
+      book:bookName,
+      timestamp: new Date()
+    });
+  }
+
+  // ===== MASOMO PORTAL =====
+  async function masomoLogin(e){
+    e.preventDefault();
+    const id = document.getElementById("masomoId").value;
+    const pw = document.getElementById("masomoPw").value;
+    // Authenticate via Firebase Auth
+    try{
+      await signInWithEmailAndPassword(auth,id+"@kyu.com",pw);
+      document.getElementById("masomoMessage").style.color="green";
+      document.getElementById("masomoMessage").innerText="Login successful!";
+      loadCourseFiles();
+    } catch(err){
+      document.getElementById("masomoMessage").style.color="red";
+      document.getElementById("masomoMessage").innerText=err.message;
+    }
+  }
+
+  async function loadCourseFiles(){
+    const filesList = document.getElementById("courseFiles");
+    filesList.innerHTML="";
+    const snapshot = await getDocs(collection(db,"courseFiles"));
+    snapshot.forEach(doc=>{
+      const data = doc.data();
+      const li = document.createElement("li");
+      li.innerHTML=`<a href="${data.file}" target="_blank">${data.name}</a>`;
+      filesList.appendChild(li);
+    });
+  }
+
+  // ===== ANNOUNCEMENTS =====
+  async function loadAnnouncements(){
+    const list = document.getElementById("announcementsList");
+    const snapshot = await getDocs(collection(db,"announcements"));
+    snapshot.forEach(doc=>{
+      const div = document.createElement("div");
+      div.className="announcement";
+      div.innerHTML=doc.data().title+": "+doc.data().details;
+      list.appendChild(div);
+    });
+  }
+
+  onAuthStateChanged(auth,user=>{
+    if(user){
+      console.log("User logged in: ",user.email);
+    }
+  });
+
+  loadAnnouncements();
+
+  // ===== CONTACT FORM =====
+  function submitContact(e){
+    e.preventDefault();
+    alert("Message sent!"); 
+    document.getElementById("contactForm").reset();
+  }
+</script>
+</body>
+</html>
