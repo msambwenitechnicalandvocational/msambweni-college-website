@@ -89,6 +89,8 @@ button.pdf-btn:hover{background:#f39c12;}
 </head>
 <body>
 
+  
+
 <!-- GREEN BANNER WITH NAVIGATION -->
 <div class="green-banner">
   <div class="college-name">MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</div>
@@ -103,6 +105,48 @@ button.pdf-btn:hover{background:#f39c12;}
     <a href="#contacts">Contacts</a>
   </nav>
 </div>
+
+<style>
+/* Navigation under Green Banner */
+.green-banner .college-name {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.green-banner .college-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  font-size: 16px;
+}
+
+.green-banner .college-nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 15px;
+  border-radius: 6px;
+  transition: background 0.3s, color 0.3s;
+}
+
+.green-banner .college-nav a:hover {
+  background: white;
+  color: #1abc9c;
+}
+
+@media(max-width:768px){
+  .green-banner .college-nav {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+</style>
+
+
+
+  
 <!-- WHITE BANNER -->
 <div class="white-banner">
   <img src="knec.png" alt="KNEC Logo">
@@ -1054,6 +1098,7 @@ async function loadDashboard(){
   .footer a {margin: 5px;}
 }
 </style>
+
 
 
 
