@@ -3,335 +3,255 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE Portal</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<title>MTVC Portal</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Roboto',sans-serif;}
-body{line-height:1.6;color:#333;background:#f4f4f4;}
-a{text-decoration:none;color:inherit;}
-img{max-width:100%;display:block;}
-header{background:#0d47a1;color:#fff;padding:1rem 0;position:sticky;top:0;z-index:1000;}
-nav{display:flex;justify-content:space-between;align-items:center;max-width:1200px;margin:0 auto;padding:0 1rem;}
-nav .logo{font-size:1.5rem;font-weight:bold;display:flex;align-items:center;gap:0.5rem;}
-nav .logo img{height:80px;width:80px;border-radius:5px;}
-nav ul{list-style:none;display:flex;gap:1rem;position:relative;}
-nav ul li{position:relative;padding:0.5rem;}
-nav ul li a{color:#fff;font-weight:500;}
-nav ul li a:hover{text-decoration:underline;}
-nav ul li ul{display:none;position:absolute;top:2.5rem;left:0;background:#1976d2;list-style:none;padding:0.5rem 0;border-radius:5px;min-width:180px;}
-nav ul li ul li{padding:0.5rem 1rem;}
-nav ul li ul li a{color:#fff;}
-nav ul li:hover ul{display:block;}
-#hero{background:linear-gradient(135deg,#0d47a1,#1976d2,#42a5f5);color:#fff;padding:4rem 1rem;text-align:center;}
-#hero h1{font-size:2.5rem;margin-bottom:1rem;}
-#hero p{font-size:1.2rem;margin-bottom:2rem;}
-#hero button{padding:0.8rem 2rem;background:#fff;color:#0d47a1;border:none;font-weight:bold;cursor:pointer;border-radius:5px;transition:0.3s;}
-#hero button:hover{background:#e3f2fd;}
-section{padding:4rem 1rem;max-width:1200px;margin:0 auto;}
-section h2{text-align:center;font-size:2rem;margin-bottom:2rem;color:#0d47a1;border-bottom:2px solid #1976d2;display:inline-block;padding-bottom:0.5rem;}
-#about{background:#e3f2fd;}
-#about p{max-width:900px;margin:0 auto 1rem auto;font-size:1.1rem;}
-#about ul{max-width:900px;margin:0 auto;margin-top:1rem;list-style:disc;padding-left:1.5rem;}
-#courses{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;}
-.course{background:#fff;padding:1.5rem;border-radius:10px;box-shadow:0 4px 6px rgba(0,0,0,0.1);transition:0.3s;}
-.course:hover{transform:translateY(-5px);box-shadow:0 6px 12px rgba(0,0,0,0.15);}
-.course h3{margin-bottom:0.5rem;color:#0d47a1;}
-.course p{font-size:0.95rem;}
-#library{background:#f1f8e9;}
-#library input,#library button{padding:0.7rem;border-radius:5px;border:1px solid #0d47a1;margin-right:0.5rem;}
-#library button{background:#0d47a1;color:#fff;cursor:pointer;border:none;}
-#library button:hover{background:#1976d2;}
-#library #results{margin-top:1rem;}
-#masomo{background:#fff;display:flex;justify-content:center;flex-direction:column;align-items:center;}
-#masomo ul{list-style:none;}
-#masomo li{padding:0.5rem 0;}
-#masomo a{color:#0d47a1;font-weight:bold;}
-#announcements{background:#e8f5e9;max-width:900px;margin:0 auto;border-radius:10px;padding:1rem;}
-.announcement{background:#c8e6c9;margin-bottom:1rem;padding:1rem;border-radius:5px;}
-#portal{background:#fff;display:flex;justify-content:center;align-items:center;flex-direction:column;}
-#portal form{display:flex;flex-direction:column;max-width:300px;width:100%;gap:1rem;}
-#portal input{padding:0.8rem;border:1px solid #ccc;border-radius:5px;}
-#portal button{padding:0.8rem;border:none;border-radius:5px;background:#0d47a1;color:#fff;cursor:pointer;font-weight:bold;}
-#portal button:hover{background:#1976d2;}
-#admin{background:#f3e5f5;display:flex;flex-direction:column;align-items:center;padding:2rem;}
-#admin form{display:flex;flex-direction:column;max-width:400px;width:100%;gap:1rem;}
-#admin input{padding:0.8rem;border:1px solid #ccc;border-radius:5px;}
-#admin button{padding:0.8rem;border:none;border-radius:5px;background:#8e24aa;color:#fff;cursor:pointer;font-weight:bold;}
-#admin button:hover{background:#ba68c8;}
-#contact form{display:flex;flex-direction:column;max-width:500px;margin:0 auto;gap:1rem;}
-#contact input,#contact textarea{padding:0.8rem;border:1px solid #ccc;border-radius:5px;}
-#contact button{padding:0.8rem;border:none;border-radius:5px;background:#0d47a1;color:#fff;cursor:pointer;font-weight:bold;}
-#contact button:hover{background:#1976d2;}
-footer{background:#0d47a1;color:#fff;text-align:center;padding:1rem;margin-top:2rem;}
-@media(max-width:768px){nav ul{flex-direction:column;gap:0.5rem;}#hero h1{font-size:2rem;}}
+  body{font-family:sans-serif;margin:0;padding:0;background:#f0f2f5;}
+  #loginBox, #portal{padding:20px;}
+  input, select, textarea, button{display:block;margin:10px 0;padding:8px;width:100%;max-width:400px;}
+  #sidebar{width:200px;float:left;background:#1976d2;color:white;padding:10px;min-height:90vh;}
+  #content{margin-left:220px;padding:20px;}
+  table{border-collapse:collapse;width:100%;max-width:800px;}
+  table, th, td{border:1px solid #ccc;}
+  th, td{padding:8px;text-align:left;}
+  .card{background:white;padding:15px;margin-bottom:20px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
 </style>
 </head>
 <body>
 
+<!-- LOGIN -->
+<div id="loginBox">
+  <h3>MTVC Secure Login</h3>
+  <input id="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Password">
+  <select id="role">
+    <option value="">Select Role</option>
+    <option value="student">Student</option>
+    <option value="staff">Staff</option>
+    <option value="finance">Finance</option>
+    <option value="admin">Admin</option>
+  </select>
+  <button type="button" onclick="login()">Login</button>
+  <button type="button" onclick="signup()">Create Account</button>
+  <p id="loginMsg"></p>
+</div>
+
+<!-- PORTAL -->
+<div id="portal" style="display:none">
 <header>
-<nav>
-  <div class="logo">
-    <img src="logo.jpg" alt="MSAMBWENI TVC Logo"> MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE
+  <div style="display:flex;align-items:center;">
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+    <img src="logo.png" alt="MTVC Logo" style="height:40px;margin-left:10px;">
+    <h3 style="margin-left:10px;">MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h3>
   </div>
-  <ul>
-    <li><a href="#hero">Home</a></li>
-    <li><a href="#about">About</a></li>
-    <li>
-      <a href="#academics">Academics</a>
-      <ul>
-        <li><a href="#courses">Programs</a></li>
-        <li><a href="#courses">Departments</a></li>
-        <li><a href="#courses">Special Courses</a></li>
-      </ul>
-    </li>
-    <li><a href="#announcements">Announcements</a></li>
-    <li><a href="#library">Library</a></li>
-    <li><a href="#masomo">Masomo</a></li>
-    <li><a href="#admin">Admin Upload</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
 </header>
 
-<section id="hero">
-<h1>Welcome to MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h1>
-<p>Your gateway to excellence in education and innovation.</p>
-<button onclick="alert('Enroll Now Clicked!')">Enroll Now</button>
-</section>
-
-<section id="about">
-<h2>About Us</h2>
-<p><strong>Mission:</strong> To provide quality education and practical skills.</p>
-<p><strong>Vision:</strong> To be a leading institution recognized for excellence in teaching and research.</p>
-<p><strong>History:</strong> Established in 1995, MSAMBWENI TVC has grown into a modern institution offering diverse programs.</p>
-<p><strong>Facilities:</strong></p>
-<ul>
-<li>Lecture halls, computer labs, libraries, sports complex, hostels.</li>
-</ul>
-</section>
-
-<section id="courses">
-<h2>Our Courses</h2>
-<div class="course">
-<h3>ICT</h3>
-<p>Information and Communication Technology, programming, networking, hardware maintenance.</p>
+<div id="sidebar">
+  <a onclick="menuClick('dashboard')">Dashboard</a>
+  <a onclick="menuClick('student')">Student Registration</a>
+  <a onclick="menuClick('staff')">Staff Registration</a>
+  <a onclick="menuClick('finance')">Finance</a>
+  <a onclick="menuClick('academics')">Academic Results</a>
+  <a onclick="menuClick('contact')">Contact Form</a>
+  <a onclick="logout()">Logout</a>
 </div>
-<div class="course">
-<h3>Business Management</h3>
-<p>Leadership, entrepreneurship, management.</p>
+
+<div id="content">
+  <!-- Dashboard -->
+  <div class="card" id="dashboard">
+    <h3>Dashboard</h3>
+    <div>Total Students: <span id="totalStudents">0</span></div>
+    <div>Total Staff: <span id="totalStaff">0</span></div>
+    <div>Total Fees Paid: <span id="totalFees">0</span></div>
+    <div>Total Balance: <span id="totalBalance">0</span></div>
+  </div>
+
+  <!-- Student Registration -->
+  <form class="card" id="student" style="display:none;" onsubmit="return false;">
+    <h3>Student Registration</h3>
+    <input id="stuName" placeholder="Name">
+    <input id="stuReg" placeholder="Reg No">
+    <input id="stuEmail" placeholder="Email">
+    <input id="stuTerm" placeholder="Term (1,2,3)">
+    <input id="stuYear" placeholder="Year">
+    <input id="stuCourse" placeholder="Course">
+    <button type="button" onclick="saveStudent()">Save & Download PDF</button>
+    <p class="msg" id="stuMsg"></p>
+  </form>
+
+  <!-- Staff Registration -->
+  <form class="card" id="staff" style="display:none;" onsubmit="return false;">
+    <h3>Staff Registration</h3>
+    <input id="sName" placeholder="Name">
+    <input id="sRole" placeholder="Role">
+    <input id="sEmail" placeholder="Email">
+    <input id="sPhone" placeholder="Phone">
+    <input id="sDept" placeholder="Department">
+    <button type="button" onclick="saveStaff()">Save & Download PDF</button>
+    <p class="msg" id="sMsg"></p>
+  </form>
+
+  <!-- Finance -->
+  <form class="card" id="finance" style="display:none;" onsubmit="return false;">
+    <h3>Finance</h3>
+    <input id="fReg" placeholder="Reg No">
+    <input id="fName" placeholder="Name">
+    <input id="fPaid" type="number" placeholder="Amount Paid">
+    <input id="fTerm" placeholder="Term">
+    <input id="fYear" placeholder="Year">
+    <button type="button" onclick="saveFinance()">Save & Download Fee PDF</button>
+    <p class="msg" id="fMsg"></p>
+  </form>
+
+  <!-- Academic Results -->
+  <form class="card" id="academics" style="display:none;" onsubmit="return false;">
+    <h3>Academic Results</h3>
+    <input id="aReg" placeholder="Reg No">
+    <input id="aName" placeholder="Name">
+    <input id="aUnit" placeholder="Unit">
+    <input id="aScore" type="number" placeholder="Score">
+    <input id="aTerm" placeholder="Term">
+    <input id="aYear" placeholder="Year">
+    <button type="button" onclick="saveResult()">Save & Download PDF</button>
+    <p class="msg" id="aMsg"></p>
+  </form>
+
+  <!-- Contact Form -->
+  <div class="card" id="contact" style="display:none;">
+    <h3>Contact Form</h3>
+    <form id="contact-form">
+      <input type="text" name="name" placeholder="Name" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <textarea name="message" placeholder="Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+    <h4>Submissions</h4>
+    <table id="contactTable">
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Message</th><th>Timestamp</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 </div>
-<div class="course">
-<h3>Engineering</h3>
-<p>Civil, Electrical, Mechanical engineering.</p>
 </div>
-</section>
 
-<section id="announcements">
-<h2>Announcements</h2>
-<div id="announcementsList"></div>
-</section>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.35.0/dist/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+  const SUPABASE_URL = "https://lsntdhhtvgyzqxhnedjp.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_823RtCxy7OHVfPHskoydeQ_O21XMVKO";
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-<section id="library">
-<h2>Virtual Library</h2>
-<p>Search and download books:</p>
-<input type="text" id="bookSearch" placeholder="Enter book name">
-<button onclick="searchBook()">Search</button>
-<div id="results"></div>
-</section>
-
-<section id="masomo">
-<h2>Masomo / Courses Portal</h2>
-<form id="masomoForm" onsubmit="masomoLogin(event)">
-<input type="text" id="masomoId" placeholder="Student ID" required>
-<input type="password" id="masomoPw" placeholder="Password" required>
-<button type="submit">Login</button>
-</form>
-<ul id="courseFiles" style="margin-top:1rem;"></ul>
-<p id="masomoMessage" style="color:red;margin-top:0.5rem;"></p>
-</section>
-
-<section id="portal">
-<h2>Student Portal</h2>
-<form id="loginForm" onsubmit="studentLogin(event)">
-<input type="email" id="studentEmail" placeholder="Email" required>
-<input type="password" id="studentPw" placeholder="Password" required>
-<button type="submit">Login</button>
-</form>
-<button onclick="createAccount()" style="margin-top:0.5rem;background:#42a5f5;">Create Account</button>
-<p id="loginMessage" style="margin-top:1rem;color:red;"></p>
-</section>
-
-<section id="admin">
-<h2>Admin Upload Portal</h2>
-<form id="adminForm" onsubmit="uploadData(event)">
-<input type="text" id="fileName" placeholder="File Name" required>
-<input type="url" id="fileURL" placeholder="File URL" required>
-<select id="fileType">
-  <option value="courseFiles">Course File</option>
-  <option value="libraryBooks">Library Book</option>
-</select>
-<button type="submit">Upload</button>
-<p id="adminMessage" style="margin-top:0.5rem;color:red;"></p>
-</form>
-</section>
-
-<section id="contact">
-<h2>Contact Us</h2>
-<form id="contactForm" onsubmit="submitContact(event)">
-<input type="text" placeholder="Full Name" id="fullName" required>
-<input type="email" placeholder="Email Address" id="email" required>
-<textarea placeholder="Message" id="message" rows="5" required></textarea>
-<button type="submit">Send Message</button>
-</form>
-<p id="contactMessage" style="margin-top:1rem;color:green;"></p>
-</section>
-
-<footer>
-&copy; 2026 MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE. All rights reserved.
-</footer>
-
-<script type="module">
-// Firebase
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDMxeTX31Uj9L7eMpY8IyfnYxHBNQV7IXs",
-  authDomain: "studio-3268737377-cc795.firebaseapp.com",
-  projectId: "studio-3268737377-cc795",
-  storageBucket: "studio-3268737377-cc795.firebasestorage.app",
-  messagingSenderId: "640227749188",
-  appId: "1:640227749188:web:2bfbb211dd375f92e37b11"
-};
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// Student Login
-async function studentLogin(e){
-  e.preventDefault();
-  const email = document.getElementById("studentEmail").value;
-  const password = document.getElementById("studentPw").value;
-  const msg = document.getElementById("loginMessage");
-  msg.style.color="blue"; msg.innerText="Logging in...";
-  try{
-    await signInWithEmailAndPassword(auth,email,password);
-    msg.style.color="green"; msg.innerText="Login Successful!";
-  } catch(err){
-    msg.style.color="red"; msg.innerText=err.message;
+  // ===== LOGIN / SIGNUP =====
+  async function signup(){
+    const emailVal=email.value.trim(), passwordVal=password.value.trim(), roleVal=role.value;
+    if(!emailVal||!passwordVal||!roleVal){loginMsg.style.color="red";loginMsg.innerText="Fill all fields";return;}
+    loginMsg.style.color="blue";loginMsg.innerText="Creating account...";
+    try{
+      const { data: existing } = await supabase.from('users').select('*').eq('email', emailVal);
+      if(existing.length>0){loginMsg.style.color="red";loginMsg.innerText="Account exists";return;}
+      const { data: user, error: signErr } = await supabase.auth.signUp({email:emailVal,password:passwordVal});
+      if(signErr) throw signErr;
+      const { error: dbErr } = await supabase.from('users').insert([{id:user.user.id,email:emailVal,role:roleVal}]);
+      if(dbErr) throw dbErr;
+      loginMsg.style.color="green";loginMsg.innerText="✅ Account created!";
+    }catch(e){loginMsg.style.color="red";loginMsg.innerText=e.message;}
   }
-}
 
-// Create Account
-async function createAccount(){
-  const email = document.getElementById("studentEmail").value;
-  const password = document.getElementById("studentPw").value;
-  const msg = document.getElementById("loginMessage");
-  msg.style.color="blue"; msg.innerText="Creating account...";
-  try{
-    await createUserWithEmailAndPassword(auth,email,password);
-    msg.style.color="green"; msg.innerText="Account Created Successfully!";
-  } catch(err){
-    msg.style.color="red"; msg.innerText=err.message;
+  async function login(){
+    const emailVal=email.value.trim(), passwordVal=password.value.trim();
+    loginMsg.style.color="blue";loginMsg.innerText="Logging in...";
+    try{
+      const { data:user, error } = await supabase.auth.signInWithPassword({email:emailVal,password:passwordVal});
+      if(error) throw error;
+      loginBox.style.display="none"; portal.style.display="block";
+      loginMsg.style.color="green";loginMsg.innerText="🎉 Logged in!";
+      loadDashboard(); loadContacts();
+    }catch(e){loginMsg.style.color="red";loginMsg.innerText=e.message;}
   }
-}
 
-// Masomo Portal
-async function masomoLogin(e){
-  e.preventDefault();
-  const id = document.getElementById("masomoId").value;
-  const pw = document.getElementById("masomoPw").value;
-  const msg = document.getElementById("masomoMessage");
-  const filesList = document.getElementById("courseFiles");
-  msg.style.color="blue"; msg.innerText="Logging in...";
-  filesList.innerHTML = "<li>Loading course files...</li>";
-  try{
-    await signInWithEmailAndPassword(auth,id+"@msambweni.com",pw);
-    msg.style.color="green"; msg.innerText="Login successful!";
-    loadCourseFiles();
-  } catch(err){
-    msg.style.color="red"; msg.innerText=err.message;
-    filesList.innerHTML="";
+  async function logout(){await supabase.auth.signOut();location.reload();}
+  function toggleSidebar(){document.getElementById("sidebar").classList.toggle("collapsed");}
+  function menuClick(id){document.querySelectorAll("#content > .card").forEach(d=>d.style.display="none"); document.getElementById(id).style.display="block";}
+
+  // ===== DASHBOARD =====
+  async function loadDashboard(){
+    const { data: students } = await supabase.from('students').select('*');
+    const { data: staff } = await supabase.from('staff').select('*');
+    const { data: finance } = await supabase.from('finance').select('*');
+    document.getElementById("totalStudents").innerText=students.length;
+    document.getElementById("totalStaff").innerText=staff.length;
+    let totalPaid=0,totalBalance=0;
+    finance.forEach(f=>{totalPaid+=f.paid||0; totalBalance+=((40000-f.paid)||0);});
+    document.getElementById("totalFees").innerText=totalPaid;
+    document.getElementById("totalBalance").innerText=totalBalance;
   }
-}
-async function loadCourseFiles(){
-  const filesList=document.getElementById("courseFiles");
-  filesList.innerHTML="";
-  const snapshot = await getDocs(collection(db,"courseFiles"));
-  if(snapshot.empty){ filesList.innerHTML="<li>No course files available.</li>"; return;}
-  snapshot.forEach(doc=>{
-    const data=doc.data();
-    const li=document.createElement("li");
-    li.innerHTML=`<a href="${data.file}" target="_blank">${data.name}</a>`;
-    filesList.appendChild(li);
+
+  // ===== STUDENT =====
+  async function saveStudent(){
+    const name=stuName.value, reg=stuReg.value, emailVal=stuEmail.value, term=stuTerm.value, year=stuYear.value, course=stuCourse.value;
+    if(!name||!reg||!emailVal||!term||!year||!course){stuMsg.innerText="Fill all fields";return;}
+    const timestamp=new Date().toLocaleString();
+    await supabase.from('students').upsert([{reg,name,email:emailVal,term,year,course,timestamp}]);
+    stuMsg.innerText="Saved ✅"; downloadStudentPDF({name,reg,email:emailVal,term,year,course,timestamp});
+    loadDashboard();
+  }
+
+  // ===== STAFF =====
+  async function saveStaff(){
+    const nameVal=sName.value, roleVal=sRole.value, emailVal=sEmail.value, phoneVal=sPhone.value, deptVal=sDept.value;
+    if(!nameVal||!roleVal||!emailVal||!phoneVal||!deptVal){sMsg.innerText="Fill all fields";return;}
+    const timestamp=new Date().toLocaleString();
+    await supabase.from('staff').upsert([{name:nameVal,role:roleVal,email:emailVal,phone:phoneVal,dept:deptVal,timestamp}]);
+    sMsg.innerText="Saved ✅"; downloadStaffPDF({name:nameVal,role:roleVal,email:emailVal,phone:phoneVal,dept:deptVal,timestamp});
+    loadDashboard();
+  }
+
+  // ===== FINANCE =====
+  async function saveFinance(){
+    const reg=fReg.value,nameVal=fName.value,paid=parseFloat(fPaid.value)||0,term=fTerm.value,year=fYear.value;
+    if(!reg||!nameVal||!term||!year){fMsg.innerText="Fill all fields";return;}
+    const balance=40000-paid, timestamp=new Date().toLocaleString();
+    await supabase.from('finance').upsert([{reg,name:nameVal,paid,balance,term,year,timestamp}]);
+    fMsg.innerText="Saved ✅"; loadDashboard();
+  }
+
+  // ===== ACADEMICS =====
+  function getGrade(score){if(score>=80)return "Mastery";if(score>=70)return "Proficient";if(score>=60)return "Competent";return "Not Competent";}
+  async function saveResult(){
+    const reg=aReg.value,nameVal=aName.value,unit=aUnit.value,score=parseFloat(aScore.value)||0,term=aTerm.value,year=aYear.value;
+    if(!reg||!nameVal||!unit||!score||!term||!year){aMsg.innerText="Fill all fields";return;}
+    const grade=getGrade(score), timestamp=new Date().toLocaleString();
+    await supabase.from('academics').upsert([{reg,name:nameVal,unit,score,grade,term,year,timestamp}]);
+    aMsg.innerText="Saved ✅";
+  }
+
+  // ===== CONTACT FORM =====
+  const contactForm=document.getElementById('contact-form');
+  contactForm.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const name=contactForm.name.value.trim(), emailVal=contactForm.email.value.trim(), message=contactForm.message.value.trim();
+    if(!name||!emailVal||!message) return alert("Fill all fields");
+    const timestamp=new Date().toLocaleString();
+    await supabase.from('contacts').insert([{name,email:emailVal,message,timestamp}]);
+    contactForm.reset(); loadContacts();
   });
-}
 
-// Library
-async function searchBook(){
-  const queryVal = document.getElementById("bookSearch").value.toLowerCase();
-  const resultsDiv = document.getElementById("results");
-  resultsDiv.innerHTML = "Searching...";
-  const snapshot = await getDocs(collection(db,"libraryBooks"));
-  let html="<ul>"; let found=false;
-  snapshot.forEach(doc=>{
-    const data=doc.data();
-    if(data.name.toLowerCase().includes(queryVal)){
-      html+=`<li>${data.name} - <a href="${data.file}" target="_blank" onclick="trackDownload('${data.name}')">Download</a></li>`;
-      found=true;
-    }
-  });
-  html+="</ul>";
-  resultsDiv.innerHTML = found ? html : "<p>No books found.</p>";
-}
-async function trackDownload(bookName){
-  await addDoc(collection(db,"downloads"),{book:bookName,timestamp:new Date()});
-}
-
-// Announcements
-async function loadAnnouncements(){
-  const list=document.getElementById("announcementsList");
-  list.innerHTML="Loading announcements...";
-  const snapshot = await getDocs(collection(db,"announcements"));
-  list.innerHTML="";
-  if(snapshot.empty){ list.innerHTML="<p>No announcements at the moment.</p>"; return;}
-  snapshot.forEach(doc=>{
-    const div=document.createElement("div");
-    div.className="announcement";
-    div.innerHTML=doc.data().title+": "+doc.data().details;
-    list.appendChild(div);
-  });
-}
-loadAnnouncements();
-
-// Admin Upload
-async function uploadData(e){
-  e.preventDefault();
-  const name = document.getElementById("fileName").value;
-  const url = document.getElementById("fileURL").value;
-  const type = document.getElementById("fileType").value;
-  const msg = document.getElementById("adminMessage");
-  msg.style.color="blue"; msg.innerText="Uploading...";
-  try{
-    await addDoc(collection(db,type),{name:name,file:url});
-    msg.style.color="green"; msg.innerText="Upload successful!";
-    document.getElementById("adminForm").reset();
-  } catch(err){
-    msg.style.color="red"; msg.innerText=err.message;
+  async function loadContacts(){
+    const { data: contacts } = await supabase.from('contacts').select('*').order('timestamp',{ascending:false});
+    const tbody=document.querySelector('#contactTable tbody'); tbody.innerHTML='';
+    contacts.forEach(c=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${c.name}</td><td>${c.email}</td><td>${c.message}</td><td>${c.timestamp}</td>`;
+      tbody.appendChild(tr);
+    });
   }
-}
 
-// Contact Form
-function submitContact(e){
-  e.preventDefault();
-  const msg=document.getElementById("contactMessage");
-  msg.style.color="blue"; msg.innerText="Sending message...";
-  setTimeout(()=>{
-    msg.style.color="green"; msg.innerText="Message sent!";
-    document.getElementById("contactForm").reset();
-  },800);
-}
+  // ===== PDF Downloads =====
+  function downloadStudentPDF(d){const doc=new jspdf.jsPDF();doc.setFontSize(14);doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);doc.text(`Name: ${d.name}`,10,20);doc.text(`Reg: ${d.reg}`,10,30);doc.text(`Email: ${d.email}`,10,40);doc.text(`Course: ${d.course}`,10,50);doc.text(`Term: ${d.term}`,10,60);doc.text(`Year: ${d.year}`,10,70);doc.text(`Timestamp: ${d.timestamp}`,10,80);doc.save(`Student_${d.reg}.pdf`);}
+  function downloadStaffPDF(d){const doc=new jspdf.jsPDF();doc.setFontSize(14);doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);doc.text(`Name: ${d.name}`,10,20);doc.text(`Role: ${d.role}`,10,30);doc.text(`Email: ${d.email}`,10,40);doc.text(`Phone: ${d.phone}`,10,50);doc.text(`Dept: ${d.dept}`,10,60);doc.text(`Timestamp: ${d.timestamp}`,10,70);doc.save(`Staff_${d.email}.pdf`);}
+  function downloadFinancePDF(d){const doc=new jspdf.jsPDF();doc.setFontSize(14);doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);doc.text(`Name: ${d.name}`,10,20);doc.text(`Reg: ${d.reg}`,10,30);doc.text(`Term: ${d.term}`,10,40);doc.text(`Year: ${d.year}`,10,50);doc.text(`Paid: Ksh ${d.paid}`,10,60);doc.text(`Balance: Ksh ${d.balance}`,10,70);doc.text(`Timestamp: ${d.timestamp}`,10,80);doc.save(`Fee_${d.reg}_${d.term}_${d.year}.pdf`);}
+  function downloadResultPDF(d){const doc=new jspdf.jsPDF();doc.setFontSize(14);doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);doc.text(`Name: ${d.name}`,10,20);doc.text(`Reg: ${d.reg}`,10,30);doc.text(`Unit: ${d.unit}`,10,40);doc.text(`Score: ${d.score}`,10,50);doc.text(`Grade: ${d.grade}`,10,60);doc.text(`Term: ${d.term}`,10,70);doc.text(`Year: ${d.year}`,10,80);doc.text(`Timestamp: ${d.timestamp}`,10,90);doc.save(`Result_${d.reg}_${d.unit}.pdf`);}
 </script>
 </body>
 </html>
