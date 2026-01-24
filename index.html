@@ -136,28 +136,31 @@ th,td{padding:8px;text-align:left;}
 </div>
 </div>
 
-<!-- Supabase first -->
+<!-- Supabase & jsPDF -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.35.0/dist/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-<!-- Main JS -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // Supabase setup
+  // ===== Supabase setup =====
   const SUPABASE_URL = "https://lsntdhhtvgyzqxhnedjp.supabase.co";
   const SUPABASE_KEY = "sb_publishable_823RtCxy7OHVfPHskoydeQ_O21XMVKO";
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+  // ===== Element references =====
   const loginBox = document.getElementById("loginBox");
   const portal = document.getElementById("portal");
   const loginMsg = document.getElementById("loginMsg");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const roleInput = document.getElementById("role");
 
-  // ===== Check session on page load =====
+  // ===== Check session =====
   async function checkSession() {
     const { data: { session } } = await supabase.auth.getSession();
     if(session){
-      loginBox.style.display = "none";
-      portal.style.display = "block";
+      loginBox.style.display="none";
+      portal.style.display="block";
       menuClick('dashboard');
       loadDashboard();
       loadContacts();
@@ -165,13 +168,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   checkSession();
 
-  // ===== LOGIN / SIGNUP =====
-  document.getElementById('loginBtn').addEventListener('click', async ()=>{
-    const emailVal = email.value.trim();
-    const passwordVal = password.value.trim();
+  // ===== LOGIN =====
+  document.getElementById('loginBtn').addEventListener('click', async () => {
+    const emailVal = emailInput.value.trim();
+    const passwordVal = passwordInput.value.trim();
     loginMsg.style.color="blue"; loginMsg.innerText="Logging in...";
-    try{
-      const { data: { user }, error } = await supabase.auth.signInWithPassword({email:emailVal,password:passwordVal});
+    try {
+      const { data: { user }, error } = await supabase.auth.signInWithPassword({ email: emailVal, password: passwordVal });
       if(error) throw error;
       loginBox.style.display="none";
       portal.style.display="block";
@@ -179,90 +182,56 @@ document.addEventListener("DOMContentLoaded", () => {
       loginMsg.style.color="green"; loginMsg.innerText="🎉 Logged in!";
       loadDashboard();
       loadContacts();
-    }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
+    } catch(e) {
+      loginMsg.style.color="red"; loginMsg.innerText = e.message;
+    }
   });
 
-  document.getElementById('signupBtn').addEventListener('click', async ()=>{
-    const emailVal = email.value.trim();
-    const passwordVal = password.value.trim();
-    const roleVal = role.value;
-    if(!emailVal||!passwordVal||!roleVal){loginMsg.style.color="red";loginMsg.innerText="Fill all fields";return;}
+  // ===== SIGNUP =====
+  document.getElementById('signupBtn').addEventListener('click', async () => {
+    const emailVal = emailInput.value.trim();
+    const passwordVal = passwordInput.value.trim();
+    const roleVal = roleInput.value;
+    if(!emailVal||!passwordVal||!roleVal){ loginMsg.style.color="red"; loginMsg.innerText="Fill all fields"; return;}
     loginMsg.style.color="blue"; loginMsg.innerText="Creating account...";
-    try{
+    try {
       const { data: existing } = await supabase.from('users').select('*').eq('email', emailVal);
-      if(existing.length>0){loginMsg.style.color="red";loginMsg.innerText="Account exists";return;}
-      const { data: { user }, error: signErr } = await supabase.auth.signUp({email:emailVal,password:passwordVal});
+      if(existing.length>0){ loginMsg.style.color="red"; loginMsg.innerText="Account exists"; return; }
+      const { data: { user }, error: signErr } = await supabase.auth.signUp({ email: emailVal, password: passwordVal });
       if(signErr) throw signErr;
-      const { error: dbErr } = await supabase.from('users').insert([{id:user.id,email:emailVal,role:roleVal}]);
+      const { error: dbErr } = await supabase.from('users').insert([{ id:user.id, email:emailVal, role:roleVal }]);
       if(dbErr) throw dbErr;
       loginMsg.style.color="green"; loginMsg.innerText="✅ Account created!";
-    }catch(e){loginMsg.style.color="red"; loginMsg.innerText=e.message;}
+    } catch(e){ loginMsg.style.color="red"; loginMsg.innerText=e.message; }
   });
 
-  function toggleSidebar(){document.getElementById("sidebar").classList.toggle("collapsed");}
-  window.menuClick = function(id){document.querySelectorAll("#content > .card").forEach(d=>d.style.display="none"); document.getElementById(id).style.display="block";}
-  window.logout = async function(){await supabase.auth.signOut();location.reload();}
+  // ===== UI helpers =====
+  window.menuClick = function(id){ document.querySelectorAll("#content > .card").forEach(d=>d.style.display="none"); document.getElementById(id).style.display="block"; }
+  window.logout = async function(){ await supabase.auth.signOut(); location.reload(); }
+  window.toggleSidebar = function(){ document.getElementById("sidebar").classList.toggle("collapsed"); }
 
-  // ===== DASHBOARD =====
+  // ===== Dashboard & forms =====
   async function loadDashboard(){
     const { data: students } = await supabase.from('students').select('*');
     const { data: staff } = await supabase.from('staff').select('*');
     const { data: finance } = await supabase.from('finance').select('*');
-    document.getElementById("totalStudents").innerText=students.length;
-    document.getElementById("totalStaff").innerText=staff.length;
-    let totalPaid=0,totalBalance=0;
-    finance.forEach(f=>{totalPaid+=f.paid||0; totalBalance+=((40000-f.paid)||0);});
-    document.getElementById("totalFees").innerText=totalPaid;
-    document.getElementById("totalBalance").innerText=totalBalance;
+    document.getElementById("totalStudents").innerText = students.length;
+    document.getElementById("totalStaff").innerText = staff.length;
+    let totalPaid=0, totalBalance=0;
+    finance.forEach(f=>{ totalPaid+=f.paid||0; totalBalance+=((40000-f.paid)||0); });
+    document.getElementById("totalFees").innerText = totalPaid;
+    document.getElementById("totalBalance").innerText = totalBalance;
   }
 
-  // ===== STUDENT =====
-  document.getElementById('saveStudentBtn').addEventListener('click', async ()=>{
-    const name=stuName.value, reg=stuReg.value, emailVal=stuEmail.value, term=stuTerm.value, year=stuYear.value, course=stuCourse.value;
-    if(!name||!reg||!emailVal||!term||!year||!course){stuMsg.innerText="Fill all fields";return;}
-    const timestamp=new Date().toLocaleString();
-    await supabase.from('students').upsert([{reg,name,email:emailVal,term,year,course,timestamp}]);
-    stuMsg.innerText="Saved ✅"; downloadStudentPDF({name,reg,email:emailVal,term,year,course,timestamp});
-    loadDashboard();
-  });
-
-  // ===== STAFF =====
-  document.getElementById('saveStaffBtn').addEventListener('click', async ()=>{
-    const nameVal=sName.value, roleVal=sRole.value, emailVal=sEmail.value, phoneVal=sPhone.value, deptVal=sDept.value;
-    if(!nameVal||!roleVal||!emailVal||!phoneVal||!deptVal){sMsg.innerText="Fill all fields";return;}
-    const timestamp=new Date().toLocaleString();
-    await supabase.from('staff').upsert([{name:nameVal,role:roleVal,email:emailVal,phone:phoneVal,dept:deptVal,timestamp}]);
-    sMsg.innerText="Saved ✅"; downloadStaffPDF({name:nameVal,role:roleVal,email:emailVal,phone:phoneVal,dept:deptVal,timestamp});
-    loadDashboard();
-  });
-
-  // ===== FINANCE =====
-  document.getElementById('saveFinanceBtn').addEventListener('click', async ()=>{
-    const reg=fReg.value,nameVal=fName.value,paid=parseFloat(fPaid.value)||0,term=fTerm.value,year=fYear.value;
-    if(!reg||!nameVal||!term||!year){fMsg.innerText="Fill all fields";return;}
-    const balance=40000-paid, timestamp=new Date().toLocaleString();
-    await supabase.from('finance').upsert([{reg,name:nameVal,paid,balance,term,year,timestamp}]);
-    fMsg.innerText="Saved ✅";
-    loadDashboard();
-  });
-
-  // ===== ACADEMICS =====
-  document.getElementById('saveResultBtn').addEventListener('click', async ()=>{
-    const reg=aReg.value,nameVal=aName.value,unit=aUnit.value,score=parseFloat(aScore.value)||0,term=aTerm.value,year=aYear.value;
-    if(!reg||!nameVal||!unit||!score||!term||!year){aMsg.innerText="Fill all fields";return;}
-    const grade=(score>=80?"Mastery":score>=70?"Proficient":score>=60?"Competent":"Not Competent");
-    const timestamp=new Date().toLocaleString();
-    await supabase.from('academics').upsert([{reg,name:nameVal,unit,score,grade,term,year,timestamp}]);
-    aMsg.innerText="Saved ✅";
-  });
-
-  // ===== CONTACT FORM =====
-  const contactForm=document.getElementById('contact-form');
+  // ===== Contact Form =====
+  const contactForm = document.getElementById('contact-form');
   contactForm.addEventListener('submit', async e=>{
     e.preventDefault();
-    const name=contactForm.name.value.trim(), emailVal=contactForm.email.value.trim(), message=contactForm.message.value.trim();
-    if(!name||!emailVal||!message){alert("Fill all fields");return;}
-    const timestamp=new Date().toLocaleString();
+    const name = contactForm.name.value.trim();
+    const emailVal = contactForm.email.value.trim();
+    const message = contactForm.message.value.trim();
+    if(!name||!emailVal||!message){ alert("Fill all fields"); return; }
+    const timestamp = new Date().toLocaleString();
     const { error } = await supabase.from('contacts').insert([{name,email:emailVal,message,timestamp}]);
     if(error){ alert("Error: "+error.message); return; }
     alert("Message sent ✅");
@@ -272,19 +241,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function loadContacts(){
     const { data: contacts } = await supabase.from('contacts').select('*').order('timestamp',{ascending:false});
-    const tbody=document.querySelector('#contactTable tbody'); tbody.innerHTML='';
+    const tbody = document.querySelector('#contactTable tbody'); tbody.innerHTML='';
     contacts.forEach(c=>{
-      const tr=document.createElement('tr');
+      const tr = document.createElement('tr');
       tr.innerHTML=`<td>${c.name}</td><td>${c.email}</td><td>${c.message}</td><td>${c.timestamp}</td>`;
       tbody.appendChild(tr);
     });
   }
 
-  // ===== PDF Downloads =====
+  // ===== PDF download functions =====
   function downloadStudentPDF(d){const doc=new jspdf.jsPDF();doc.setFontSize(14);doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);doc.text(`Name: ${d.name}`,10,20);doc.text(`Reg: ${d.reg}`,10,30);doc.text(`Email: ${d.email}`,10,40);doc.text(`Course: ${d.course}`,10,50);doc.text(`Term: ${d.term}`,10,60);doc.text(`Year: ${d.year}`,10,70);doc.text(`Timestamp: ${d.timestamp}`,10,80);doc.save(`Student_${d.reg}.pdf`);}
-  function downloadStaffPDF(d){const doc=new jspdf.jsPDF();doc.setFontSize(14);doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);doc.text(`Name: ${d.name}`,10,20);doc.text(`Role: ${d.role}`,10,30);doc.text(`Email: ${d.email}`,10,40);doc.text(`Phone: ${d.phone}`,10,50);doc.text(`Dept: ${d.dept}`,10,60);doc.text(`Timestamp: ${d.timestamp}`,10,70);doc.save(`Staff_${d.email}.pdf`);}
-  function downloadFinancePDF(d){const doc=new jspdf.jsPDF();doc.setFontSize(14);doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);doc.text(`Name: ${d.name}`,10,20);doc.text(`Reg: ${d.reg}`,10,30);doc.text(`Term: ${d.term}`,10,40);doc.text(`Year: ${d.year}`,10,50);doc.text(`Paid: Ksh ${d.paid}`,10,60);doc.text(`Balance: Ksh ${d.balance}`,10,70);doc.text(`Timestamp: ${d.timestamp}`,10,80);doc.save(`Fee_${d.reg}_${d.term}_${d.year}.pdf`);}
-  function downloadResultPDF(d){const doc=new jspdf.jsPDF();doc.setFontSize(14);doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",10,10);doc.text(`Name: ${d.name}`,10,20);doc.text(`Reg: ${d.reg}`,10,30);doc.text(`Unit: ${d.unit}`,10,40);doc.text(`Score: ${d.score}`,10,50);doc.text(`Grade: ${d.grade}`,10,60);doc.text(`Term: ${d.term}`,10,70);doc.text(`Year: ${d.year}`,10,80);doc.text(`Timestamp: ${d.timestamp}`,10,90);doc.save(`Result_${d.reg}_${d.unit}.pdf`);}
 });
 </script>
 </body>
