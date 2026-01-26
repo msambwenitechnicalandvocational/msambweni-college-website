@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Msambweni Technical & Vocational College Portal</title>
+<title>Msambweni TVC Complete Portal</title>
 <style>
 :root {--blue:#0d47a1; --yellow:#fbc02d;}
 body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:#f4f7fb;color:#333;}
@@ -27,11 +27,6 @@ input,select,textarea{width:100%;padding:11px;margin:9px 0;border-radius:10px;bo
 button.full{width:100%;background:linear-gradient(90deg,var(--blue),var(--yellow));color:#fff;font-weight:600;border-radius:25px;border:none;cursor:pointer;}
 button.full:hover{opacity:.9;}
 .link{text-align:center;color:var(--blue);cursor:pointer;font-size:13px;margin-top:8px;}
-.dashboard{display:none;max-width:950px;margin:40px auto;background:#fff;border-radius:20px;padding:30px;box-shadow:0 16px 35px rgba(0,0,0,0.3);}
-.dashboard h2{color:var(--blue);text-align:center;margin-bottom:20px;}
-.section{margin-bottom:25px;}
-.section h3{color:var(--blue);border-bottom:2px solid var(--yellow);padding-bottom:5px;}
-.files a{display:block;padding:12px 15px;margin:10px 0;background:linear-gradient(90deg,#e3f2fd,#fffde7);border-left:6px solid var(--yellow);border-radius:10px;text-decoration:none;color:var(--blue);font-weight:500;}
 .logout{background:#9e9e9e !important;margin-top:18px;}
 button.submit{background:linear-gradient(90deg,var(--blue),var(--yellow));color:#fff;width:100%;padding:12px;font-weight:600;border-radius:25px;border:none;cursor:pointer;}
 button.submit:hover{opacity:.9;}
@@ -54,14 +49,13 @@ footer{width:100%;margin-top:50px;font-family:'Segoe UI',Arial,sans-serif;}
 </header>
 
 <div class="container" id="portalHome">
-<div class="portal"><h2>📚 Library Portal</h2><p>Access library resources.</p><button onclick="enterPortal('library')">Enter</button></div>
-<div class="portal"><h2>💻 Masomo Portal</h2><p>Notes, assignments, exams.</p><button onclick="enterPortal('masomo')">Enter</button></div>
-<div class="portal"><h2>💰 Finance Portal</h2><p>Student fee records.</p><button onclick="enterPortal('finance')">Enter</button></div>
-<div class="portal"><h2>🎓 Student Portal</h2><p>Announcements & courses.</p><button onclick="enterPortal('student')">Enter</button></div>
-<div class="portal"><h2>🧑‍💼 Staff / Lecturer / Admin Portal</h2><p>Staff & admin access.</p><button onclick="enterPortal('admin')">Enter</button></div>
+<div class="portal"><h2>📚 Library Portal</h2><p>Access library resources.</p><button onclick="openPortal('library')">Enter</button></div>
+<div class="portal"><h2>💻 Masomo Portal</h2><p>Notes, assignments, exams.</p><button onclick="openPortal('masomo')">Enter</button></div>
+<div class="portal"><h2>💰 Finance Portal</h2><p>Student fee records.</p><button onclick="openPortal('finance')">Enter</button></div>
+<div class="portal"><h2>🎓 Student Portal</h2><p>Announcements & courses.</p><button onclick="openPortal('student')">Enter</button></div>
+<div class="portal"><h2>🧑‍💼 Staff / Lecturer / Admin Portal</h2><p>Staff & admin access.</p><button onclick="openPortal('admin')">Enter</button></div>
 </div>
 
-<!-- Authentication Modal -->
 <div class="modal" id="authModal">
   <div class="box" id="loginBox">
     <div style="text-align:center;margin-bottom:10px"><img src="files/msambweni-logo.png" style="height:70px" /></div>
@@ -94,7 +88,6 @@ footer{width:100%;margin-top:50px;font-family:'Segoe UI',Arial,sans-serif;}
   </div>
 </div>
 
-<!-- Footer -->
 <footer>
   <div class="footer-top">
     <h2>Msambweni Technical & Vocational College</h2>
@@ -120,14 +113,18 @@ footer{width:100%;margin-top:50px;font-family:'Segoe UI',Arial,sans-serif;}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 let users = JSON.parse(localStorage.getItem('users')||'[]');
-function saveUsers(){localStorage.setItem('users',JSON.stringify(users));}
+let currentUser = null;
 
-// Show/hide auth forms
+window.onload = () => {
+  document.getElementById('authModal').style.display='none'; // portals visible initially
+  document.getElementById('portalHome').style.display='grid';
+};
+
+function saveUsers(){localStorage.setItem('users',JSON.stringify(users));}
 function showRegister(){document.getElementById('loginBox').style.display='none';document.getElementById('registerBox').style.display='block';document.getElementById('forgotBox').style.display='none';}
 function showLogin(){document.getElementById('loginBox').style.display='block';document.getElementById('registerBox').style.display='none';document.getElementById('forgotBox').style.display='none';}
 function showForgot(){document.getElementById('loginBox').style.display='none';document.getElementById('registerBox').style.display='none';document.getElementById('forgotBox').style.display='block';}
 
-// Auth Functions
 function register(){
   const name=document.getElementById('regName').value;
   const user=document.getElementById('regUser').value;
@@ -138,30 +135,35 @@ function register(){
 }
 
 function login(){
-  const u=users.find(x=>x.user===document.getElementById('loginUser').value && x.pass===document.getElementById('loginPass').value);
-  if(!u){document.getElementById('loginMsg').innerText='Invalid login';return;}
+  const u = users.find(x=>x.user===document.getElementById('loginUser').value && x.pass===document.getElementById('loginPass').value);
+  if(!u){document.getElementById('loginMsg').innerText='Invalid login'; return;}
+  currentUser = u;
   document.getElementById('authModal').style.display='none';
-  document.getElementById('portalHome').style.display='grid';
-  alert('Welcome '+u.name+'! Open your portal from the home page.');
+  alert('Welcome '+u.name+'! Use portal buttons below based on your role.');
 }
 
 function forgot(){
-  const u=users.find(x=>x.user===document.getElementById('fpUser').value);
-  if(!u){document.getElementById('fpMsg').innerText='User not found';return;}
-  document.getElementById('fpMsg').style.color='green';document.getElementById('fpMsg').innerText='Password: '+u.pass;
+  const u = users.find(x=>x.user===document.getElementById('fpUser').value);
+  if(!u){document.getElementById('fpMsg').innerText='User not found'; return;}
+  document.getElementById('fpMsg').style.color='green'; document.getElementById('fpMsg').innerText='Password: '+u.pass;
 }
 
-// Portal entry after login
-function enterPortal(portal){
-  if(users.length===0){document.getElementById('authModal').style.display='flex';return;}
-  alert(portal+' portal opened. Download PDFs available.');
-  // PDFs example
+function openPortal(portal){
+  if(!currentUser){alert('Please login first!');document.getElementById('authModal').style.display='flex'; return;}
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
-  doc.text(portal.toUpperCase()+' Portal Data', 20, 20);
+  doc.text(portal.toUpperCase()+' Portal Data - Msambweni TVC',20,20);
   let y=30;
-  users.forEach(u=>{doc.text(u.name+' | '+u.user+' | '+u.role,20,y);y+=10;});
+  if(currentUser.role==='admin'){
+    users.forEach(u=>{doc.text(u.name+' | '+u.user+' | '+u.role,20,y); y+=10;});
+  } else {
+    doc.text('Name: '+currentUser.name,20,y); y+=10;
+    doc.text('Username: '+currentUser.user,20,y); y+=10;
+    doc.text('Role: '+currentUser.role,20,y); y+=10;
+    if(currentUser.role==='student') doc.text('Fees & Results Placeholder',20,y);
+  }
   doc.save(portal+'_data.pdf');
+  alert(portal+' portal opened. PDF downloaded.');
 }
 </script>
 </body>
