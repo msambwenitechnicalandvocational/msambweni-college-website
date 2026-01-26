@@ -56,9 +56,9 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px s
     <h3 id="portalLoginTitle">Portal Login</h3>
     <input id="portalUser" placeholder="Username">
     <input id="portalPass" type="password" placeholder="Password">
-    <button class="full" onclick="loginPortal()">Login</button>
-    <div class="link" onclick="showRegister()">Create Account</div>
-    <div class="link" onclick="showForgot()">Forgot Password?</div>
+    <button class="full" id="loginBtn">Login</button>
+    <div class="link" id="createAccountLink">Create Account</div>
+    <div class="link" id="forgotPassLink">Forgot Password?</div>
     <p class="msg" id="portalLoginMsg"></p>
   </div>
 
@@ -73,16 +73,16 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px s
       <option value="finance">Finance</option>
       <option value="admin">Admin</option>
     </select>
-    <button class="full" onclick="registerUser()">Register</button>
-    <div class="link" onclick="showLogin()">Back to Login</div>
+    <button class="full" id="registerBtn">Register</button>
+    <div class="link" id="backToLoginReg">Back to Login</div>
     <p class="msg" id="regMsg"></p>
   </div>
 
   <div class="box" id="forgotBox" style="display:none">
     <h3>Forgot Password</h3>
     <input id="fpUser" placeholder="Username">
-    <button class="full" onclick="recoverPassword()">Recover</button>
-    <div class="link" onclick="showLogin()">Back to Login</div>
+    <button class="full" id="recoverBtn">Recover</button>
+    <div class="link" id="backToLoginFP">Back to Login</div>
     <p class="msg" id="fpMsg"></p>
   </div>
 </div>
@@ -115,16 +115,10 @@ const portalRoles = {
 };
 
 // Files per portal
-let libraryFiles = JSON.parse(localStorage.getItem('libraryFiles')||'[{"title":"Networking Basics","file":"files/networking.pdf"},{"title":"Electronics 101","file":"files/electronics.pdf"}]');
-let masomoFiles = JSON.parse(localStorage.getItem('masomoFiles')||'[{"title":"Math Assignment","file":"files/math.pdf"},{"title":"ICT Notes","file":"files/ict.pdf"}]');
-const financeData = [
-  {student:'Student One',feeStatus:'Paid',receipt:'files/receipt1.pdf'},
-  {student:'Student Two',feeStatus:'Pending',receipt:'files/receipt2.pdf'}
-];
-const studentResults = [
-  {course:'ICT',score:'85'},
-  {course:'Math',score:'78'}
-];
+let libraryFiles = JSON.parse(localStorage.getItem('libraryFiles')||'[{"title":"Networking Basics","file":"files/networking.pdf"}]');
+let masomoFiles = JSON.parse(localStorage.getItem('masomoFiles')||'[{"title":"Math Assignment","file":"files/math.pdf"}]');
+const financeData = [{student:'Student One',feeStatus:'Paid',receipt:'files/receipt1.pdf'}];
+const studentResults = [{course:'ICT',score:'85'}];
 
 let currentPortal = '';
 let currentUser = null;
@@ -138,16 +132,20 @@ const portalLoginMsg = document.getElementById('portalLoginMsg');
 const regMsg = document.getElementById('regMsg');
 const fpMsg = document.getElementById('fpMsg');
 
+// Show login modal
 function showPortalLogin(portal){
   currentPortal = portal;
   authModal.style.display='flex';
   showLogin();
 }
+
+// Show different modal views
 function showLogin(){ loginBox.style.display='block'; registerBox.style.display='none'; forgotBox.style.display='none'; portalLoginMsg.innerText=''; }
 function showRegister(){ loginBox.style.display='none'; registerBox.style.display='block'; forgotBox.style.display='none'; regMsg.innerText=''; }
 function showForgot(){ loginBox.style.display='none'; registerBox.style.display='none'; forgotBox.style.display='block'; fpMsg.innerText=''; }
 
-function loginPortal(){
+// Login function
+document.getElementById('loginBtn').onclick = function(){
   const user = document.getElementById('portalUser').value;
   const pass = document.getElementById('portalPass').value;
   const u = users.find(x=>x.user===user && x.pass===pass);
@@ -159,9 +157,10 @@ function loginPortal(){
   currentUser = u;
   authModal.style.display='none';
   openPortalContent(currentPortal);
-}
+};
 
-function registerUser(){
+// Register function
+document.getElementById('registerBtn').onclick = function(){
   const name = document.getElementById('regName').value;
   const user = document.getElementById('regUser').value;
   const pass = document.getElementById('regPass').value;
@@ -171,56 +170,50 @@ function registerUser(){
   localStorage.setItem('users',JSON.stringify(users));
   regMsg.style.color='green';
   regMsg.innerText='Account created successfully';
-}
+};
 
-function recoverPassword(){
+// Forgot password function
+document.getElementById('recoverBtn').onclick = function(){
   const user = document.getElementById('fpUser').value;
   const u = users.find(x=>x.user===user);
   if(!u){ fpMsg.innerText='User not found'; return;}
   fpMsg.style.color='green';
   fpMsg.innerText='Password: '+u.pass;
-}
+};
 
+// Links
+document.getElementById('createAccountLink').onclick = showRegister;
+document.getElementById('forgotPassLink').onclick = showForgot;
+document.getElementById('backToLoginReg').onclick = showLogin;
+document.getElementById('backToLoginFP').onclick = showLogin;
+
+// Open portal content
 function openPortalContent(name){
   document.getElementById('portalHome').style.display='none';
   document.getElementById('portalContent').style.display='block';
   document.getElementById('portalTitle').innerText = name.toUpperCase()+' PORTAL';
   let data = `<p>Welcome <strong>${currentUser.name}</strong> (${currentUser.role})</p>`;
-
   if(name==='library'){
     data += '<h3>Library Files:</h3><ul>';
     libraryFiles.forEach(f=>data+=`<li>${f.title} <button class="download-btn" onclick="downloadFile('${f.file}')">Download PDF</button></li>`);
     data+='</ul>';
-    if(currentUser.role==='lecturer' || currentUser.role==='admin'){
-      data += `<h4>Upload File</h4>
-      <input type="text" id="uploadTitleLib" placeholder="File Title"><br>
-      <input type="text" id="uploadFileLib" placeholder="File URL"><br>
-      <button class="full" onclick="uploadFile('library')">Upload</button>`;
-    }
   } else if(name==='masomo'){
-    data += '<h3>Notes & Assignments:</h3><ul>';
+    data += '<h3>Masomo Files:</h3><ul>';
     masomoFiles.forEach(f=>data+=`<li>${f.title} <button class="download-btn" onclick="downloadFile('${f.file}')">Download PDF</button></li>`);
     data+='</ul>';
-    if(currentUser.role==='lecturer' || currentUser.role==='admin'){
-      data += `<h4>Upload File</h4>
-      <input type="text" id="uploadTitleMas" placeholder="File Title"><br>
-      <input type="text" id="uploadFileMas" placeholder="File URL"><br>
-      <button class="full" onclick="uploadFile('masomo')">Upload</button>`;
-    }
   } else if(name==='finance'){
-    data += '<h3>Student Fees:</h3><table><tr><th>Student</th><th>Status</th><th>Receipt</th></tr>';
-    financeData.forEach(f=>data+=`<tr><td>${f.student}</td><td>${f.feeStatus}</td><td><button class="download-btn" onclick="downloadFile('${f.receipt}')">Download</button></td></tr>`);
-    data+='</table>';
+    data += '<h3>Finance Records:</h3><ul>';
+    financeData.forEach(f=>data+=`<li>${f.student} - ${f.feeStatus} <button class="download-btn" onclick="downloadFile('${f.receipt}')">Download Receipt</button></li>`);
+    data+='</ul>';
   } else if(name==='student'){
-    data += '<h3>Results:</h3><table><tr><th>Course</th><th>Score</th></tr>';
-    studentResults.forEach(r=>data+=`<tr><td>${r.course}</td><td>${r.score}</td></tr>`);
-    data+='</table>';
+    data += '<h3>Results:</h3><ul>';
+    studentResults.forEach(r=>data+=`<li>${r.course}: ${r.score}</li>`);
+    data+='</ul>';
   } else if(name==='admin'){
-    data += '<h3>Users:</h3><table><tr><th>Name</th><th>Username</th><th>Role</th></tr>';
-    users.forEach(u=>data+=`<tr><td>${u.name}</td><td>${u.user}</td><td>${u.role}</td></tr>`);
-    data+='</table>';
+    data += '<h3>All Users:</h3><ul>';
+    users.forEach(u=>data+=`<li>${u.name} (${u.user}) - ${u.role}</li>`);
+    data+='</ul>';
   }
-
   document.getElementById('portalData').innerHTML = data;
 }
 
@@ -231,20 +224,12 @@ function backHome(){
 }
 
 function downloadFile(file){
-  const a = document.createElement('a');
-  a.href = file;
-  a.download = file.split('/').pop();
+  const a=document.createElement('a');
+  a.href=file;
+  a.download=file.split('/').pop();
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-}
-
-function uploadFile(portal){
-  let title='', file='';
-  if(portal==='library'){ title=document.getElementById('uploadTitleLib').value; file=document.getElementById('uploadFileLib').value; libraryFiles.push({title,file}); localStorage.setItem('libraryFiles',JSON.stringify(libraryFiles)); }
-  else if(portal==='masomo'){ title=document.getElementById('uploadTitleMas').value; file=document.getElementById('uploadFileMas').value; masomoFiles.push({title,file}); localStorage.setItem('masomoFiles',JSON.stringify(masomoFiles)); }
-  alert('File uploaded successfully!');
-  openPortalContent(portal);
 }
 </script>
 
