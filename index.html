@@ -50,7 +50,7 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px s
   <div class="portal"><h2>🧑‍💼 Staff / Admin Portal</h2><button onclick="showPortalLogin('admin')">Enter</button></div>
 </div>
 
-<!-- Portal Authentication Modal -->
+<!-- Authentication Modal -->
 <div class="modal" id="authModal">
   <div class="box" id="loginBox">
     <h3 id="portalLoginTitle">Portal Login</h3>
@@ -98,13 +98,14 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px s
 // Users storage
 let users = JSON.parse(localStorage.getItem('users')||'[]');
 if(users.length===0){
-  users.push({name:'Admin User',user:'admin',pass:'admin123',role:'admin'});
-  users.push({name:'Student User',user:'student1',pass:'pass123',role:'student'});
-  users.push({name:'Finance User',user:'finance1',pass:'finance123',role:'finance'});
-  users.push({name:'Lecturer User',user:'lecturer1',pass:'lec123',role:'lecturer'});
+  users.push({name:'Admin',user:'admin',pass:'admin123',role:'admin'});
+  users.push({name:'Lecturer',user:'lecturer1',pass:'lec123',role:'lecturer'});
+  users.push({name:'Student',user:'student1',pass:'pass123',role:'student'});
+  users.push({name:'Finance',user:'finance1',pass:'finance123',role:'finance'});
   localStorage.setItem('users',JSON.stringify(users));
 }
 
+// Portal roles
 const portalRoles = {
   'library':['student','lecturer','finance','admin'],
   'masomo':['student','lecturer'],
@@ -113,21 +114,13 @@ const portalRoles = {
   'admin':['admin']
 };
 
-const libraryBooks = [
-  {title:'Networking Basics',file:'files/networking.pdf'},
-  {title:'Electronics 101',file:'files/electronics.pdf'}
-];
-
-const masomoNotes = [
-  {title:'Math Assignment',file:'files/math.pdf'},
-  {title:'ICT Notes',file:'files/ict.pdf'}
-];
-
+// Files per portal
+let libraryFiles = JSON.parse(localStorage.getItem('libraryFiles')||'[{"title":"Networking Basics","file":"files/networking.pdf"},{"title":"Electronics 101","file":"files/electronics.pdf"}]');
+let masomoFiles = JSON.parse(localStorage.getItem('masomoFiles')||'[{"title":"Math Assignment","file":"files/math.pdf"},{"title":"ICT Notes","file":"files/ict.pdf"}]');
 const financeData = [
   {student:'Student One',feeStatus:'Paid',receipt:'files/receipt1.pdf'},
   {student:'Student Two',feeStatus:'Pending',receipt:'files/receipt2.pdf'}
 ];
-
 const studentResults = [
   {course:'ICT',score:'85'},
   {course:'Math',score:'78'}
@@ -150,12 +143,9 @@ function showPortalLogin(portal){
   authModal.style.display='flex';
   showLogin();
 }
-
 function showLogin(){ loginBox.style.display='block'; registerBox.style.display='none'; forgotBox.style.display='none'; portalLoginMsg.innerText=''; }
 function showRegister(){ loginBox.style.display='none'; registerBox.style.display='block'; forgotBox.style.display='none'; regMsg.innerText=''; }
 function showForgot(){ loginBox.style.display='none'; registerBox.style.display='none'; forgotBox.style.display='block'; fpMsg.innerText=''; }
-
-function closeAuth(){ authModal.style.display='none'; }
 
 function loginPortal(){
   const user = document.getElementById('portalUser').value;
@@ -167,7 +157,7 @@ function loginPortal(){
     return;
   }
   currentUser = u;
-  closeAuth();
+  authModal.style.display='none';
   openPortalContent(currentPortal);
 }
 
@@ -196,14 +186,27 @@ function openPortalContent(name){
   document.getElementById('portalContent').style.display='block';
   document.getElementById('portalTitle').innerText = name.toUpperCase()+' PORTAL';
   let data = `<p>Welcome <strong>${currentUser.name}</strong> (${currentUser.role})</p>`;
+
   if(name==='library'){
-    data += '<h3>Books Available:</h3><ul>';
-    libraryBooks.forEach(b=>data+=`<li>${b.title} <button class="download-btn" onclick="downloadFile('${b.file}')">Download PDF</button></li>`);
+    data += '<h3>Library Files:</h3><ul>';
+    libraryFiles.forEach(f=>data+=`<li>${f.title} <button class="download-btn" onclick="downloadFile('${f.file}')">Download PDF</button></li>`);
     data+='</ul>';
+    if(currentUser.role==='lecturer' || currentUser.role==='admin'){
+      data += `<h4>Upload File</h4>
+      <input type="text" id="uploadTitleLib" placeholder="File Title"><br>
+      <input type="text" id="uploadFileLib" placeholder="File URL"><br>
+      <button class="full" onclick="uploadFile('library')">Upload</button>`;
+    }
   } else if(name==='masomo'){
     data += '<h3>Notes & Assignments:</h3><ul>';
-    masomoNotes.forEach(n=>data+=`<li>${n.title} <button class="download-btn" onclick="downloadFile('${n.file}')">Download PDF</button></li>`);
+    masomoFiles.forEach(f=>data+=`<li>${f.title} <button class="download-btn" onclick="downloadFile('${f.file}')">Download PDF</button></li>`);
     data+='</ul>';
+    if(currentUser.role==='lecturer' || currentUser.role==='admin'){
+      data += `<h4>Upload File</h4>
+      <input type="text" id="uploadTitleMas" placeholder="File Title"><br>
+      <input type="text" id="uploadFileMas" placeholder="File URL"><br>
+      <button class="full" onclick="uploadFile('masomo')">Upload</button>`;
+    }
   } else if(name==='finance'){
     data += '<h3>Student Fees:</h3><table><tr><th>Student</th><th>Status</th><th>Receipt</th></tr>';
     financeData.forEach(f=>data+=`<tr><td>${f.student}</td><td>${f.feeStatus}</td><td><button class="download-btn" onclick="downloadFile('${f.receipt}')">Download</button></td></tr>`);
@@ -217,6 +220,7 @@ function openPortalContent(name){
     users.forEach(u=>data+=`<tr><td>${u.name}</td><td>${u.user}</td><td>${u.role}</td></tr>`);
     data+='</table>';
   }
+
   document.getElementById('portalData').innerHTML = data;
 }
 
@@ -233,6 +237,14 @@ function downloadFile(file){
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+}
+
+function uploadFile(portal){
+  let title='', file='';
+  if(portal==='library'){ title=document.getElementById('uploadTitleLib').value; file=document.getElementById('uploadFileLib').value; libraryFiles.push({title,file}); localStorage.setItem('libraryFiles',JSON.stringify(libraryFiles)); }
+  else if(portal==='masomo'){ title=document.getElementById('uploadTitleMas').value; file=document.getElementById('uploadFileMas').value; masomoFiles.push({title,file}); localStorage.setItem('masomoFiles',JSON.stringify(masomoFiles)); }
+  alert('File uploaded successfully!');
+  openPortalContent(portal);
 }
 </script>
 
