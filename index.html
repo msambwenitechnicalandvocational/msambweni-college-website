@@ -5,11 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Msambweni Technical & Vocational College Portal</title>
 <style>
-:root {
-  --blue:#0d47a1; --blue-light:#1976d2; --yellow:#fbc02d; --green:#2e7d32;
-  --purple:#6a1b9a; --red:#c62828; --bg:#f4f7fb;
-}
-body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:#333;}
+:root {--blue:#0d47a1; --yellow:#fbc02d;}
+body{margin:0;font-family:'Segoe UI',Arial,sans-serif;background:#f4f7fb;color:#333;}
 header{background:linear-gradient(90deg,var(--blue),var(--yellow));color:#fff;padding:25px 15px;text-align:center;box-shadow:0 6px 15px rgba(0,0,0,0.25);}
 header img{height:70px;margin-bottom:10px;}
 .container{max-width:1100px;margin:40px auto;padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:25px;}
@@ -38,6 +35,15 @@ button.full:hover{opacity:.9;}
 .logout{background:#9e9e9e !important;margin-top:18px;}
 button.submit{background:linear-gradient(90deg,var(--blue),var(--yellow));color:#fff;width:100%;padding:12px;font-weight:600;border-radius:25px;border:none;cursor:pointer;}
 button.submit:hover{opacity:.9;}
+footer{width:100%;margin-top:50px;font-family:'Segoe UI',Arial,sans-serif;}
+.footer-top{background:linear-gradient(90deg,#0d47a1,#1976d2);color:#fff;padding:25px;text-align:center;}
+.footer-links{background:linear-gradient(90deg,#fbc02d,#ffeb3b);color:#333;padding:30px;text-align:center;display:flex;flex-wrap:wrap;justify-content:center;gap:15px;}
+.footer-column{display:flex;flex-direction:column;min-width:120px;align-items:center;}
+.footer-column strong{margin-bottom:10px;font-size:18px;}
+.footer-btn{display:inline-block;padding:10px 20px;margin:5px 0;background:#0d47a1;color:#fff;border-radius:25px;text-decoration:none;font-weight:600;transition:all .3s ease;}
+.footer-btn:hover{background:#1976d2;transform:translateY(-2px);}
+.footer-bottom{background:linear-gradient(90deg,#0d47a1,#1976d2);color:#fff;padding:20px;text-align:center;font-size:14px;}
+@media (max-width:768px){.footer-links{flex-direction:column;}.footer-btn{width:80%;margin:5px auto;}}
 </style>
 </head>
 <body>
@@ -46,149 +52,57 @@ button.submit:hover{opacity:.9;}
 <h1>Msambweni Technical & Vocational College</h1>
 <p>Complete College Portal</p>
 </header>
+
 <div class="container" id="portalHome">
-<div class="portal"><h2>📚 Library Portal</h2><p>Access library resources.</p><button onclick="openPortal('library')">Enter</button></div>
-<div class="portal"><h2>💻 Masomo Portal</h2><p>Notes, assignments, exams.</p><button onclick="openPortal('masomo')">Enter</button></div>
-<div class="portal"><h2>💰 Finance Portal</h2><p>Student fee records.</p><button onclick="openPortal('finance')">Enter</button></div>
-<div class="portal"><h2>🎓 Student Portal</h2><p>Announcements & courses.</p><button onclick="openPortal('student')">Enter</button></div>
-<div class="portal"><h2>🧑‍💼 Staff / Lecturer / Admin Portal</h2><p>Staff & admin access.</p><button onclick="openPortal('admin')">Enter</button></div>
+<div class="portal"><h2>📚 Library Portal</h2><p>Access library resources.</p><button onclick="enterPortal('library')">Enter</button></div>
+<div class="portal"><h2>💻 Masomo Portal</h2><p>Notes, assignments, exams.</p><button onclick="enterPortal('masomo')">Enter</button></div>
+<div class="portal"><h2>💰 Finance Portal</h2><p>Student fee records.</p><button onclick="enterPortal('finance')">Enter</button></div>
+<div class="portal"><h2>🎓 Student Portal</h2><p>Announcements & courses.</p><button onclick="enterPortal('student')">Enter</button></div>
+<div class="portal"><h2>🧑‍💼 Staff / Lecturer / Admin Portal</h2><p>Staff & admin access.</p><button onclick="enterPortal('admin')">Enter</button></div>
 </div>
 
-<!-- Login/Register/Forgot -->
+<!-- Authentication Modal -->
 <div class="modal" id="authModal">
-<div class="box" id="loginBox">
-<div style="text-align:center;margin-bottom:10px"><img src="files/msambweni-logo.png" style="height:70px" /></div>
-<h3>Portal Login</h3>
-<input id="loginUser" placeholder="Username / Admission No" />
-<input id="loginPass" type="password" placeholder="Password" />
-<button class="full" onclick="login()">Login</button>
-<div class="link" onclick="showRegister()">Create account</div>
-<div class="link" onclick="showForgot()">Forgot password?</div>
-<p id="loginMsg" class="msg"></p>
-</div>
-<div class="box" id="registerBox" style="display:none">
-<div style="text-align:center;margin-bottom:10px"><img src="files/msambweni-logo.png" style="height:70px" /></div>
-<h3>Create Account</h3>
-<input id="regName" placeholder="Full Name" />
-<input id="regUser" placeholder="Username / Admission No" />
-<input id="regPass" type="password" placeholder="Password" />
-<select id="regRole"><option value="student">Student</option><option value="lecturer">Lecturer</option><option value="support">Supporting Staff</option><option value="finance">Finance</option><option value="admin">Admin</option></select>
-<button class="full" onclick="register()">Register</button>
-<div class="link" onclick="showLogin()">Back to login</div>
-<p class="msg" id="regMsg"></p>
-</div>
-<div class="box" id="forgotBox" style="display:none">
-<div style="text-align:center;margin-bottom:10px"><img src="files/msambweni-logo.png" style="height:70px" /></div>
-<h3>Forgot Password</h3>
-<input id="fpUser" placeholder="Username / Admission No" />
-<button class="full" onclick="forgot()">Recover</button>
-<div class="link" onclick="showLogin()">Back to login</div>
-<p id="fpMsg" class="msg"></p>
-</div>
-
-<!-- Dashboards -->
-<div class="dashboard" id="masomoDashboard">
-<h2>Masomo LMS (Lecturer)</h2>
-<div class="section"><h3>Upload Notes / Exams</h3><input id="noteTitle" placeholder="Title" /><input type="file" id="noteFile" /><button class="submit" onclick="uploadNote()">Upload</button><div id="notesList"></div></div>
-<div class="section"><h3>Assignments</h3><input id="assignTitle" placeholder="Title" /><input type="file" id="assignFile" /><button class="submit" onclick="uploadAssignment()">Upload</button><div id="assignList"></div></div>
-<button class="logout" onclick="logout()">Logout</button>
+  <div class="box" id="loginBox">
+    <div style="text-align:center;margin-bottom:10px"><img src="files/msambweni-logo.png" style="height:70px" /></div>
+    <h3>Portal Login</h3>
+    <input id="loginUser" placeholder="Username / Admission No" />
+    <input id="loginPass" type="password" placeholder="Password" />
+    <button class="full" onclick="login()">Login</button>
+    <div class="link" onclick="showRegister()">Create account</div>
+    <div class="link" onclick="showForgot()">Forgot password?</div>
+    <p id="loginMsg" class="msg"></p>
+  </div>
+  <div class="box" id="registerBox" style="display:none">
+    <div style="text-align:center;margin-bottom:10px"><img src="files/msambweni-logo.png" style="height:70px" /></div>
+    <h3>Create Account</h3>
+    <input id="regName" placeholder="Full Name" />
+    <input id="regUser" placeholder="Username / Admission No" />
+    <input id="regPass" type="password" placeholder="Password" />
+    <select id="regRole"><option value="student">Student</option><option value="lecturer">Lecturer</option><option value="support">Supporting Staff</option><option value="finance">Finance</option><option value="admin">Admin</option></select>
+    <button class="full" onclick="register()">Register</button>
+    <div class="link" onclick="showLogin()">Back to login</div>
+    <p id="regMsg" class="msg"></p>
+  </div>
+  <div class="box" id="forgotBox" style="display:none">
+    <div style="text-align:center;margin-bottom:10px"><img src="files/msambweni-logo.png" style="height:70px" /></div>
+    <h3>Forgot Password</h3>
+    <input id="fpUser" placeholder="Username / Admission No" />
+    <button class="full" onclick="forgot()">Recover</button>
+    <div class="link" onclick="showLogin()">Back to login</div>
+    <p id="fpMsg" class="msg"></p>
+  </div>
 </div>
 
-<div class="dashboard" id="studentDashboard">
-<h2>Student Dashboard</h2>
-<div class="section"><h3>Announcements</h3><div id="announcements"></div></div>
-<div class="section"><h3>Courses</h3><div id="courses"></div></div>
-<button class="logout" onclick="logout()">Logout</button>
-</div>
-
-<div class="dashboard" id="adminDashboard">
-<h2>Admin Portal</h2>
-<div class="section"><h3>User Management</h3><div id="userList"></div></div>
-<button class="logout" onclick="logout()">Logout</button>
-</div>
-
-<div class="dashboard" id="financeDashboard">
-<h2>Finance Portal</h2>
-<div class="section"><h3>Student Fee Records</h3><input id="studentName" placeholder="Student Name" /><input id="studentFee" type="number" placeholder="Fee Amount" /><button class="submit" onclick="addFee()">Add / Update Fee</button><div id="feeList"></div></div>
-<button class="logout" onclick="logout()">Logout</button>
-</div>
-
-<script>
-// DOM Elements
-const studentDashboard = document.getElementById('studentDashboard');
-const masomoDashboard = document.getElementById('masomoDashboard');
-const adminDashboard = document.getElementById('adminDashboard');
-const financeDashboard = document.getElementById('financeDashboard');
-const portalHome = document.getElementById('portalHome');
-const authModal = document.getElementById('authModal');
-const loginBox = document.getElementById('loginBox');
-const registerBox = document.getElementById('registerBox');
-const forgotBox = document.getElementById('forgotBox');
-const loginMsg = document.getElementById('loginMsg');
-const regMsg = document.getElementById('regMsg');
-const fpMsg = document.getElementById('fpMsg');
-
-// Data Storage
-let users = JSON.parse(localStorage.getItem('users')||'[]');
-let notes = JSON.parse(localStorage.getItem('notes')||'[]');
-let assignments = JSON.parse(localStorage.getItem('assignments')||'[]');
-let fees = JSON.parse(localStorage.getItem('fees')||'[]');
-let announcements = ["Semester starts 1st Feb","New library books arrived"];
-let courses = ["Networking","Cybersecurity","Software Development"];
-
-function saveUsers(){localStorage.setItem('users',JSON.stringify(users));}
-
-// Auth Functions
-function showRegister(){loginBox.style.display='none';registerBox.style.display='block';forgotBox.style.display='none';}
-function showLogin(){loginBox.style.display='block';registerBox.style.display='none';forgotBox.style.display='none';}
-function showForgot(){loginBox.style.display='none';registerBox.style.display='none';forgotBox.style.display='block';}
-function register(){if(users.find(u=>u.user===regUser.value)){regMsg.innerText='User exists';return;}users.push({name:regName.value,user:regUser.value,pass:regPass.value,role:regRole.value});saveUsers();regMsg.style.color='green';regMsg.innerText='Account created successfully';}
-function login(){const u=users.find(x=>x.user===loginUser.value&&x.pass===loginPass.value);if(!u){loginMsg.innerText='Invalid login';return;}portalHome.style.display='none';hideAllDashboards();if(u.role==='student'){studentDashboard.style.display='block';}else if(u.role==='lecturer'){masomoDashboard.style.display='block';}else if(u.role==='support'||u.role==='admin'){adminDashboard.style.display='block';}else if(u.role==='finance'){financeDashboard.style.display='block';}displayAnnouncements();displayCourses();}
-function forgot(){const u=users.find(x=>x.user===fpUser.value);if(!u){fpMsg.innerText='User not found';return;}fpMsg.style.color='green';fpMsg.innerText='Password: '+u.pass;}
-function logout(){location.reload();}
-
-// Dashboards
-function hideAllDashboards(){studentDashboard.style.display='none';masomoDashboard.style.display='none';adminDashboard.style.display='none';financeDashboard.style.display='none';}
-
-// Portal navigation function
-function openPortal(role){hideAllDashboards();portalHome.style.display='none';authModal.style.display='flex';if(role==='student'){loginBox.style.display='block';}else if(role==='masomo'){loginBox.style.display='block';}else if(role==='finance'){loginBox.style.display='block';}else if(role==='admin'){loginBox.style.display='block';}else if(role==='library'){loginBox.style.display='block';}}
-
-// Masomo
-function uploadNote(){const t=document.getElementById('noteTitle').value,f=document.getElementById('noteFile').files[0];if(t&&f){let url=URL.createObjectURL(f); notes.push({title:t,link:url}); localStorage.setItem('notes',JSON.stringify(notes)); displayNotes();}}
-function uploadAssignment(){const t=document.getElementById('assignTitle').value,f=document.getElementById('assignFile').files[0];if(t&&f){let url=URL.createObjectURL(f); assignments.push({title:t,link:url}); localStorage.setItem('assignments',JSON.stringify(assignments)); displayAssignments();}}
-function displayNotes(){const c=document.getElementById('notesList');c.innerHTML='';notes.forEach(n=>{const a=document.createElement('a');a.href=n.link;a.target='_blank';a.innerText=n.title;c.appendChild(a);});}
-function displayAssignments(){const c=document.getElementById('assignList');c.innerHTML='';assignments.forEach(a=>{const l=document.createElement('a');l.href=a.link;l.target='_blank';l.innerText=a.title;c.appendChild(l);});}
-
-// Finance
-function addFee(){const n=document.getElementById('studentName').value,f=document.getElementById('studentFee').value;if(n&&f){const e=fees.find(x=>x.name===n);if(e){e.amount=f}else{fees.push({name:n,amount:f});}localStorage.setItem('fees',JSON.stringify(fees)); displayFees();}}
-function displayFees(){const c=document.getElementById('feeList');c.innerHTML='';fees.forEach(f=>{const d=document.createElement('div');d.innerText=f.name+' : KES '+f.amount;c.appendChild(d);});}
-
-// Admin
-function displayUsers(){const c=document.getElementById('userList');c.innerHTML='';users.forEach(u=>{const d=document.createElement('div');d.innerText=u.name+' ('+u.role+')';c.appendChild(d);});}
-
-// Student
-function displayAnnouncements(){const c=document.getElementById('announcements');c.innerHTML='';announcements.forEach(a=>{const d=document.createElement('div');d.innerText=a;c.appendChild(d);});}
-function displayCourses(){const c=document.getElementById('courses');c.innerHTML='';courses.forEach(a=>{const d=document.createElement('div');d.innerText=a;c.appendChild(d);});}
-
-// Init
-displayNotes(); displayAssignments(); displayFees(); displayUsers(); displayAnnouncements(); displayCourses();
-</script>
-  
-</body>
-</html>
-
-<!-- Modern Full-Width Footer with Button-Style Links for Msambweni Technical & Vocational College -->
-<footer style="width:100%;margin-top:50px;font-family:'Segoe UI',Arial,sans-serif;">
-  <!-- Top Blue Strip -->
-  <div style="background:linear-gradient(90deg,#0d47a1,#1976d2);color:#fff;padding:25px 15px;text-align:center;">
+<!-- Footer -->
+<footer>
+  <div class="footer-top">
     <h2>Msambweni Technical & Vocational College</h2>
     <p>Empowering Students with Skills for the Future</p>
   </div>
-
-  <!-- Links Section with Button-style Links -->
-  <div style="background:linear-gradient(90deg,#fbc02d,#ffeb3b);color:#333;padding:30px 15px; text-align:center;">
-    <strong style="display:block;margin-bottom:15px; font-size:18px;">Quick Links</strong>
-    <div class="footer-links" style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px;">
+  <div class="footer-links">
+    <div class="footer-column">
+      <strong>Quick Links</strong>
       <a href="https://www.cdacc.go.ke" target="_blank" class="footer-btn">CDACC</a>
       <a href="https://www.knec.ac.ke" target="_blank" class="footer-btn">KNEC</a>
       <a href="https://www.helb.co.ke" target="_blank" class="footer-btn">HELB</a>
@@ -197,44 +111,58 @@ displayNotes(); displayAssignments(); displayFees(); displayUsers(); displayAnno
       <a href="https://www.youtube.com/@MAMBWENI-TVC" target="_blank" class="footer-btn">YouTube</a>
     </div>
   </div>
-
-  <!-- Bottom Blue Strip -->
-  <div style="background:linear-gradient(90deg,#0d47a1,#1976d2);color:#fff;padding:20px 15px;text-align:center;font-size:14px;">
+  <div class="footer-bottom">
     <p>&copy; 2026 Msambweni Technical & Vocational College. All Rights Reserved.</p>
     <p>Address: P.O. Box 123, Msambweni, Kenya | Phone: 0743 774 601 | Email: info@msambwenitvc.ac.ke</p>
   </div>
 </footer>
 
-<style>
-/* Footer Button Styles */
-.footer-btn {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 5px 0;
-  background: #0d47a1;
-  color: #fff;
-  border-radius: 25px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+let users = JSON.parse(localStorage.getItem('users')||'[]');
+function saveUsers(){localStorage.setItem('users',JSON.stringify(users));}
+
+// Show/hide auth forms
+function showRegister(){document.getElementById('loginBox').style.display='none';document.getElementById('registerBox').style.display='block';document.getElementById('forgotBox').style.display='none';}
+function showLogin(){document.getElementById('loginBox').style.display='block';document.getElementById('registerBox').style.display='none';document.getElementById('forgotBox').style.display='none';}
+function showForgot(){document.getElementById('loginBox').style.display='none';document.getElementById('registerBox').style.display='none';document.getElementById('forgotBox').style.display='block';}
+
+// Auth Functions
+function register(){
+  const name=document.getElementById('regName').value;
+  const user=document.getElementById('regUser').value;
+  const pass=document.getElementById('regPass').value;
+  const role=document.getElementById('regRole').value;
+  if(users.find(u=>u.user===user)){document.getElementById('regMsg').innerText='User exists';return;}
+  users.push({name,user,pass,role});saveUsers();document.getElementById('regMsg').style.color='green';document.getElementById('regMsg').innerText='Account created successfully';showLogin();
 }
-.footer-btn:hover {
-  background: #1976d2;
-  transform: translateY(-2px);
+
+function login(){
+  const u=users.find(x=>x.user===document.getElementById('loginUser').value && x.pass===document.getElementById('loginPass').value);
+  if(!u){document.getElementById('loginMsg').innerText='Invalid login';return;}
+  document.getElementById('authModal').style.display='none';
+  document.getElementById('portalHome').style.display='grid';
+  alert('Welcome '+u.name+'! Open your portal from the home page.');
 }
 
-/* Responsive Layout */
-@media (max-width: 768px) {
-  .footer-links { flex-direction: column; gap: 10px; }
-  .footer-btn { width: 80%; margin: 5px auto; }
+function forgot(){
+  const u=users.find(x=>x.user===document.getElementById('fpUser').value);
+  if(!u){document.getElementById('fpMsg').innerText='User not found';return;}
+  document.getElementById('fpMsg').style.color='green';document.getElementById('fpMsg').innerText='Password: '+u.pass;
 }
-@media (min-width: 769px) {
-  .footer-links { flex-direction: row; }
-  .footer-btn { margin: 0 8px; }
+
+// Portal entry after login
+function enterPortal(portal){
+  if(users.length===0){document.getElementById('authModal').style.display='flex';return;}
+  alert(portal+' portal opened. Download PDFs available.');
+  // PDFs example
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  doc.text(portal.toUpperCase()+' Portal Data', 20, 20);
+  let y=30;
+  users.forEach(u=>{doc.text(u.name+' | '+u.user+' | '+u.role,20,y);y+=10;});
+  doc.save(portal+'_data.pdf');
 }
-</style>
-
-
-
-
-
+</script>
+</body>
+</html>
