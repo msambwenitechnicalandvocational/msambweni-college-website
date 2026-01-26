@@ -116,8 +116,8 @@ let users = JSON.parse(localStorage.getItem('users')||'[]');
 let currentUser = null;
 
 window.onload = () => {
-  document.getElementById('authModal').style.display='none';
   document.getElementById('portalHome').style.display='grid';
+  document.getElementById('authModal').style.display='none';
 };
 
 function saveUsers(){localStorage.setItem('users',JSON.stringify(users));}
