@@ -116,7 +116,7 @@ let users = JSON.parse(localStorage.getItem('users')||'[]');
 let currentUser = null;
 
 window.onload = () => {
-  document.getElementById('authModal').style.display='none'; // portals visible initially
+  document.getElementById('authModal').style.display='none';
   document.getElementById('portalHome').style.display='grid';
 };
 
@@ -139,6 +139,9 @@ function login(){
   if(!u){document.getElementById('loginMsg').innerText='Invalid login'; return;}
   currentUser = u;
   document.getElementById('authModal').style.display='none';
+  document.getElementById('loginMsg').innerText='';
+  document.getElementById('fpMsg').innerText='';
+  document.getElementById('regMsg').innerText='';
   alert('Welcome '+u.name+'! Use portal buttons below based on your role.');
 }
 
@@ -164,6 +167,12 @@ function openPortal(portal){
   }
   doc.save(portal+'_data.pdf');
   alert(portal+' portal opened. PDF downloaded.');
+}
+
+function logout(){
+  currentUser = null;
+  showLogin();
+  document.getElementById('authModal').style.display='flex';
 }
 </script>
 </body>
