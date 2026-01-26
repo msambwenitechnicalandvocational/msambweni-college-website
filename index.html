@@ -20,7 +20,7 @@ header img{height:70px}
 .portal:nth-child(4) button{background:#6a1b9a}
 .portal:nth-child(5) button{background:#c62828}
 
-.modal{display:none;position:fixed;inset:0;background:rgba(13,71,161,.85);display:flex;justify-content:center;align-items:center;z-index:10}
+.modal{display:flex;position:fixed;inset:0;background:rgba(13,71,161,.85);justify-content:center;align-items:center;z-index:10}
 .box{background:#fff;padding:25px;border-radius:18px;width:90%;max-width:400px}
 input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #ccc}
 .full{width:100%;padding:12px;background:linear-gradient(90deg,var(--blue),var(--yellow));border:none;color:#fff;border-radius:25px;font-weight:600;cursor:pointer}
@@ -39,11 +39,11 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px s
 </header>
 
 <div class="container" id="portalHome">
-  <div class="portal"><h2>📚 Library Portal</h2><button onclick="openPortal('library')">Enter</button></div>
-  <div class="portal"><h2>💻 Masomo Portal</h2><button onclick="openPortal('masomo')">Enter</button></div>
-  <div class="portal"><h2>💰 Finance Portal</h2><button onclick="openPortal('finance')">Enter</button></div>
-  <div class="portal"><h2>🎓 Student Portal</h2><button onclick="openPortal('student')">Enter</button></div>
-  <div class="portal"><h2>🧑‍💼 Staff / Admin Portal</h2><button onclick="openPortal('admin')">Enter</button></div>
+  <div class="portal"><h2>📚 Library Portal</h2><button onclick="openPortal('Library')">Enter</button></div>
+  <div class="portal"><h2>💻 Masomo Portal</h2><button onclick="openPortal('Masomo')">Enter</button></div>
+  <div class="portal"><h2>💰 Finance Portal</h2><button onclick="openPortal('Finance')">Enter</button></div>
+  <div class="portal"><h2>🎓 Student Portal</h2><button onclick="openPortal('Student')">Enter</button></div>
+  <div class="portal"><h2>🧑‍💼 Staff / Admin Portal</h2><button onclick="openPortal('Admin')">Enter</button></div>
 </div>
 
 <div id="authModal" class="modal">
@@ -84,7 +84,7 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px s
 
 <div id="portalContent" class="portal-content">
   <h2 id="portalTitle"></h2>
-  <p id="portalData"></p>
+  <div id="portalData"></div>
   <button class="full" onclick="backHome()">Back to Home</button>
 </div>
 
@@ -92,7 +92,14 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px s
 let users = JSON.parse(localStorage.getItem('users')||'[]');
 let currentUser = null;
 
-function saveUsers(){localStorage.setItem('users', JSON.stringify(users))}
+// Show login modal on page load
+window.onload = () => {
+  authModal.style.display = 'flex';
+  portalHome.style.display = 'none';
+  portalContent.style.display = 'none';
+};
+
+function saveUsers(){localStorage.setItem('users',JSON.stringify(users))}
 
 function resetAuth(){
   loginBox.style.display='block';
@@ -118,7 +125,8 @@ function login(){
   if(!u){loginMsg.innerText='Invalid login';return;}
   currentUser = u;
   authModal.style.display='none';
-  portalHome.style.display='grid';
+  portalHome.style.display = 'grid';
+  portalContent.style.display = 'none';
   alert(`Welcome ${u.name}!`);
 }
 
@@ -132,27 +140,29 @@ function openPortal(name){
   if(!currentUser){authModal.style.display='flex';resetAuth();return;}
   portalHome.style.display='none';
   portalContent.style.display='block';
-  portalTitle.innerText = name.toUpperCase()+' PORTAL';
-  let data = `Welcome ${currentUser.name} (${currentUser.role})\n\n`;
-  if(currentUser.role==='admin'){data+='Admin tools and user management here.';}
-  else if(currentUser.role==='student'){data+='Student courses, results, and announcements here.';}
-  else if(currentUser.role==='finance'){data+='Finance info and fees management here.';}
-  else{data+='General portal content.';}
-  portalData.innerText = data;
-}
+  portalTitle.innerText = name.toUpperCase() + " PORTAL";
 
-function logout(){
-  currentUser=null;
-  portalHome.style.display='grid';
-  portalContent.style.display='none';
-  authModal.style.display='flex';
-  resetAuth();
+  let data = `<p>Welcome <strong>${currentUser.name}</strong> (${currentUser.role})</p>`;
+  if(currentUser.role==='admin'){data += '<p>Admin tools and user management here.</p>';}
+  else if(currentUser.role==='student'){data += '<p>Student courses, results, and announcements here.</p>';}
+  else if(currentUser.role==='finance'){data += '<p>Finance info and fees management here.</p>';}
+  else{data += '<p>General portal content.</p>';}
+  portalData.innerHTML = data;
 }
 
 function backHome(){
   portalContent.style.display='none';
   portalHome.style.display='grid';
 }
+
+function logout(){
+  currentUser = null;
+  portalHome.style.display='none';
+  portalContent.style.display='none';
+  authModal.style.display='flex';
+  resetAuth();
+}
 </script>
+
 </body>
 </html>
