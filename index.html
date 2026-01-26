@@ -20,13 +20,18 @@ header img{height:70px}
 .portal:nth-child(4) button{background:#6a1b9a}
 .portal:nth-child(5) button{background:#c62828}
 
-.modal{display:flex;position:fixed;inset:0;background:rgba(13,71,161,.85);justify-content:center;align-items:center;z-index:10}
+.modal{display:none;position:fixed;inset:0;background:rgba(13,71,161,.85);display:flex;justify-content:center;align-items:center;z-index:10}
 .box{background:#fff;padding:25px;border-radius:18px;width:90%;max-width:400px}
 input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #ccc}
 .full{width:100%;padding:12px;background:linear-gradient(90deg,var(--blue),var(--yellow));border:none;color:#fff;border-radius:25px;font-weight:600;cursor:pointer}
 .link{text-align:center;color:var(--blue);cursor:pointer;font-size:13px;margin-top:8px}
 .msg{font-size:13px;text-align:center}
-.portal-content{display:none;max-width:800px;margin:20px auto;padding:20px;background:#fff;border-radius:15px;box-shadow:0 10px 20px rgba(0,0,0,.2)}
+.portal-content{display:none;max-width:900px;margin:20px auto;padding:20px;background:#fff;border-radius:15px;box-shadow:0 10px 20px rgba(0,0,0,.2)}
+.portal-content h2{color:var(--blue)}
+.portal-content table{width:100%;border-collapse:collapse;margin-top:15px}
+.portal-content th,td{border:1px solid #ccc;padding:8px;text-align:left}
+.portal-content th{background:var(--blue);color:#fff}
+button.back{margin-top:15px;background:#9e9e9e;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -39,13 +44,14 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px s
 </header>
 
 <div class="container" id="portalHome">
-  <div class="portal"><h2>📚 Library Portal</h2><button onclick="openPortal('Library')">Enter</button></div>
-  <div class="portal"><h2>💻 Masomo Portal</h2><button onclick="openPortal('Masomo')">Enter</button></div>
-  <div class="portal"><h2>💰 Finance Portal</h2><button onclick="openPortal('Finance')">Enter</button></div>
-  <div class="portal"><h2>🎓 Student Portal</h2><button onclick="openPortal('Student')">Enter</button></div>
-  <div class="portal"><h2>🧑‍💼 Staff / Admin Portal</h2><button onclick="openPortal('Admin')">Enter</button></div>
+  <div class="portal"><h2>📚 Library Portal</h2><button onclick="openPortal('library')">Enter</button></div>
+  <div class="portal"><h2>💻 Masomo Portal</h2><button onclick="openPortal('masomo')">Enter</button></div>
+  <div class="portal"><h2>💰 Finance Portal</h2><button onclick="openPortal('finance')">Enter</button></div>
+  <div class="portal"><h2>🎓 Student Portal</h2><button onclick="openPortal('student')">Enter</button></div>
+  <div class="portal"><h2>🧑‍💼 Staff / Admin Portal</h2><button onclick="openPortal('admin')">Enter</button></div>
 </div>
 
+<!-- Auth Modal -->
 <div id="authModal" class="modal">
   <div class="box" id="loginBox">
     <h3>Login</h3>
@@ -82,31 +88,25 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px s
   </div>
 </div>
 
+<!-- Portal Content -->
 <div id="portalContent" class="portal-content">
   <h2 id="portalTitle"></h2>
   <div id="portalData"></div>
-  <button class="full" onclick="backHome()">Back to Home</button>
+  <button class="back" onclick="backHome()">Back to Home</button>
 </div>
 
 <script>
 let users = JSON.parse(localStorage.getItem('users')||'[]');
 let currentUser = null;
 
-// Show login modal on page load
-window.onload = () => {
-  authModal.style.display = 'flex';
-  portalHome.style.display = 'none';
-  portalContent.style.display = 'none';
-};
-
-function saveUsers(){localStorage.setItem('users',JSON.stringify(users))}
+function saveUsers(){localStorage.setItem('users', JSON.stringify(users))}
 
 function resetAuth(){
   loginBox.style.display='block';
   registerBox.style.display='none';
   forgotBox.style.display='none';
-  loginUser.value='';loginPass.value='';loginMsg.innerText='';
-  regMsg.innerText='';fpMsg.innerText='';
+  loginUser.value='';loginPass.value='';
+  loginMsg.innerText='';regMsg.innerText='';fpMsg.innerText='';
 }
 
 function showRegister(){loginBox.style.display='none';registerBox.style.display='block';forgotBox.style.display='none';}
@@ -125,8 +125,7 @@ function login(){
   if(!u){loginMsg.innerText='Invalid login';return;}
   currentUser = u;
   authModal.style.display='none';
-  portalHome.style.display = 'grid';
-  portalContent.style.display = 'none';
+  portalHome.style.display='grid';
   alert(`Welcome ${u.name}!`);
 }
 
@@ -140,27 +139,56 @@ function openPortal(name){
   if(!currentUser){authModal.style.display='flex';resetAuth();return;}
   portalHome.style.display='none';
   portalContent.style.display='block';
-  portalTitle.innerText = name.toUpperCase() + " PORTAL";
+  portalTitle.innerText = name.toUpperCase()+' PORTAL';
+  let dataHTML = '';
 
-  let data = `<p>Welcome <strong>${currentUser.name}</strong> (${currentUser.role})</p>`;
-  if(currentUser.role==='admin'){data += '<p>Admin tools and user management here.</p>';}
-  else if(currentUser.role==='student'){data += '<p>Student courses, results, and announcements here.</p>';}
-  else if(currentUser.role==='finance'){data += '<p>Finance info and fees management here.</p>';}
-  else{data += '<p>General portal content.</p>';}
-  portalData.innerHTML = data;
+  if(name==='student'){
+    dataHTML += `<h3>My Courses</h3>
+    <table>
+      <tr><th>Course</th><th>Grade</th></tr>
+      <tr><td>Networking</td><td>A</td></tr>
+      <tr><td>Electronics</td><td>B+</td></tr>
+    </table>
+    <h3>Announcements</h3><ul><li>Semester starts Feb 2026</li><li>Library books due March</li></ul>`;
+  } else if(name==='finance'){
+    dataHTML += `<h3>Fees Status</h3>
+    <table>
+      <tr><th>Semester</th><th>Status</th></tr>
+      <tr><td>2026 Semester 1</td><td>Paid</td></tr>
+      <tr><td>2026 Semester 2</td><td>Pending</td></tr>
+    </table>`;
+  } else if(name==='admin'){
+    dataHTML += `<h3>All Users</h3>
+    <table>
+      <tr><th>Name</th><th>Username</th><th>Role</th></tr>`;
+    users.forEach(u=>{dataHTML+=`<tr><td>${u.name}</td><td>${u.user}</td><td>${u.role}</td></tr>`;});
+    dataHTML += `</table>`;
+  } else if(name==='masomo'){
+    dataHTML += `<h3>Masomo Resources</h3>
+    <ul><li><a href="#">Networking Notes PDF</a></li>
+        <li><a href="#">Electronics Lab Manual</a></li></ul>`;
+  } else if(name==='library'){
+    dataHTML += `<h3>Library Resources</h3>
+    <ul><li><a href="#">TVET Reference Books</a></li>
+        <li><a href="#">Past Exam Papers</a></li></ul>`;
+  } else{
+    dataHTML='No content yet.';
+  }
+
+  portalData.innerHTML = dataHTML;
+}
+
+function logout(){
+  currentUser=null;
+  portalHome.style.display='grid';
+  portalContent.style.display='none';
+  authModal.style.display='flex';
+  resetAuth();
 }
 
 function backHome(){
   portalContent.style.display='none';
   portalHome.style.display='grid';
-}
-
-function logout(){
-  currentUser = null;
-  portalHome.style.display='none';
-  portalContent.style.display='none';
-  authModal.style.display='flex';
-  resetAuth();
 }
 </script>
 
