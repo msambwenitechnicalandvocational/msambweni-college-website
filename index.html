@@ -3,13 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Msambweni TVC Complete Portal</title>
+<title>Msambweni TVC Portal</title>
 <style>
 :root{--blue:#0d47a1;--yellow:#fbc02d}
 body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f4f7fb}
 header{background:linear-gradient(90deg,var(--blue),var(--yellow));color:#fff;padding:25px;text-align:center;position:relative}
 header img{height:70px}
-.logout{position:absolute;top:20px;right:20px;padding:10px 15px;background:#9e9e9e;border:none;border-radius:8px;color:#fff;cursor:pointer}
 .container{max-width:1100px;margin:40px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:25px}
 .portal{background:#fff;border-radius:18px;padding:25px;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.25)}
 .portal h2{color:var(--blue)}
@@ -25,13 +24,14 @@ header img{height:70px}
 input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #ccc}
 .full{width:100%;padding:12px;background:linear-gradient(90deg,var(--blue),var(--yellow));border:none;color:#fff;border-radius:25px;font-weight:600;cursor:pointer}
 .link{text-align:center;color:var(--blue);cursor:pointer;font-size:13px;margin-top:8px}
-.msg{font-size:13px;text-align:center}
+.msg{font-size:13px;text-align:center;color:red}
 .portal-content{display:none;max-width:900px;margin:20px auto;padding:20px;background:#fff;border-radius:15px;box-shadow:0 10px 20px rgba(0,0,0,.2)}
-.portal-content h2{color:var(--blue)}
-.portal-content table{width:100%;border-collapse:collapse;margin-top:15px}
-.portal-content th,td{border:1px solid #ccc;padding:8px;text-align:left}
-.portal-content th{background:var(--blue);color:#fff}
-button.back{margin-top:15px;background:#9e9e9e;color:#fff;border:none;padding:10px 20px;border-radius:8px;cursor:pointer}
+.logout{background:#9e9e9e;color:#fff;border:none;border-radius:10px;padding:10px 15px;cursor:pointer;margin-top:10px}
+.portal-content h3{color:var(--blue)}
+.portal-content table{width:100%;border-collapse:collapse;margin-top:10px}
+.portal-content th, .portal-content td{border:1px solid #ccc;padding:8px;text-align:left}
+.portal-content th{background:#1976d2;color:#fff}
+.download-btn{background:var(--yellow);color:#333;padding:6px 12px;border:none;border-radius:8px;cursor:pointer;margin-top:5px}
 </style>
 </head>
 <body>
@@ -40,51 +40,25 @@ button.back{margin-top:15px;background:#9e9e9e;color:#fff;border:none;padding:10
 <img src="files/msambweni-logo.png" alt="Logo">
 <h1>Msambweni Technical & Vocational College</h1>
 <p>Complete College Portal</p>
-<button class="logout" onclick="logout()">Logout / Home</button>
 </header>
 
 <div class="container" id="portalHome">
-  <div class="portal"><h2>📚 Library Portal</h2><button onclick="openPortal('library')">Enter</button></div>
-  <div class="portal"><h2>💻 Masomo Portal</h2><button onclick="openPortal('masomo')">Enter</button></div>
-  <div class="portal"><h2>💰 Finance Portal</h2><button onclick="openPortal('finance')">Enter</button></div>
-  <div class="portal"><h2>🎓 Student Portal</h2><button onclick="openPortal('student')">Enter</button></div>
-  <div class="portal"><h2>🧑‍💼 Staff / Admin Portal</h2><button onclick="openPortal('admin')">Enter</button></div>
+  <div class="portal"><h2>📚 Library Portal</h2><button onclick="showPortalLogin('library')">Enter</button></div>
+  <div class="portal"><h2>💻 Masomo Portal</h2><button onclick="showPortalLogin('masomo')">Enter</button></div>
+  <div class="portal"><h2>💰 Finance Portal</h2><button onclick="showPortalLogin('finance')">Enter</button></div>
+  <div class="portal"><h2>🎓 Student Portal</h2><button onclick="showPortalLogin('student')">Enter</button></div>
+  <div class="portal"><h2>🧑‍💼 Staff / Admin Portal</h2><button onclick="showPortalLogin('admin')">Enter</button></div>
 </div>
 
-<!-- Auth Modal -->
-<div id="authModal" class="modal">
-  <div class="box" id="loginBox">
-    <h3>Login</h3>
-    <input id="loginUser" placeholder="Username">
-    <input id="loginPass" type="password" placeholder="Password">
-    <button class="full" onclick="login()">Login</button>
-    <div class="link" onclick="showRegister()">Create account</div>
-    <div class="link" onclick="showForgot()">Forgot password?</div>
-    <p class="msg" id="loginMsg"></p>
-  </div>
-
-  <div class="box" id="registerBox" style="display:none">
-    <h3>Create Account</h3>
-    <input id="regName" placeholder="Full Name">
-    <input id="regUser" placeholder="Username">
-    <input id="regPass" type="password" placeholder="Password">
-    <select id="regRole">
-      <option value="student">Student</option>
-      <option value="lecturer">Lecturer</option>
-      <option value="finance">Finance</option>
-      <option value="admin">Admin</option>
-    </select>
-    <button class="full" onclick="register()">Register</button>
-    <div class="link" onclick="showLogin()">Back to login</div>
-    <p class="msg" id="regMsg"></p>
-  </div>
-
-  <div class="box" id="forgotBox" style="display:none">
-    <h3>Recover Password</h3>
-    <input id="fpUser" placeholder="Username">
-    <button class="full" onclick="forgot()">Recover</button>
-    <div class="link" onclick="showLogin()">Back to login</div>
-    <p class="msg" id="fpMsg"></p>
+<!-- Portal Login Modal -->
+<div class="modal" id="portalLoginModal">
+  <div class="box">
+    <h3 id="portalLoginTitle">Portal Login</h3>
+    <input id="portalUser" placeholder="Username">
+    <input id="portalPass" type="password" placeholder="Password">
+    <button class="full" onclick="loginPortal()">Login</button>
+    <div class="link" onclick="closePortalLogin()">Cancel</div>
+    <p class="msg" id="portalLoginMsg"></p>
   </div>
 </div>
 
@@ -92,103 +66,121 @@ button.back{margin-top:15px;background:#9e9e9e;color:#fff;border:none;padding:10
 <div id="portalContent" class="portal-content">
   <h2 id="portalTitle"></h2>
   <div id="portalData"></div>
-  <button class="back" onclick="backHome()">Back to Home</button>
+  <button class="logout" onclick="backHome()">Back to Portals</button>
 </div>
 
 <script>
 let users = JSON.parse(localStorage.getItem('users')||'[]');
+if(users.length===0){
+  users.push({name:'Admin User',user:'admin',pass:'admin123',role:'admin'});
+  users.push({name:'Student User',user:'student1',pass:'pass123',role:'student'});
+  users.push({name:'Finance User',user:'finance1',pass:'finance123',role:'finance'});
+  users.push({name:'Lecturer User',user:'lecturer1',pass:'lec123',role:'lecturer'});
+  localStorage.setItem('users',JSON.stringify(users));
+}
+
+const portalRoles = {
+  'library':['student','lecturer','finance','admin'],
+  'masomo':['student','lecturer'],
+  'finance':['finance'],
+  'student':['student'],
+  'admin':['admin']
+};
+
+const libraryBooks = [
+  {title:'Networking Basics',file:'files/networking.pdf'},
+  {title:'Electronics 101',file:'files/electronics.pdf'}
+];
+
+const masomoNotes = [
+  {title:'Math Assignment',file:'files/math.pdf'},
+  {title:'ICT Notes',file:'files/ict.pdf'}
+];
+
+const financeData = [
+  {student:'Student One',feeStatus:'Paid',receipt:'files/receipt1.pdf'},
+  {student:'Student Two',feeStatus:'Pending',receipt:'files/receipt2.pdf'}
+];
+
+const studentResults = [
+  {course:'ICT',score:'85'},
+  {course:'Math',score:'78'}
+];
+
+let currentPortal = '';
 let currentUser = null;
 
-function saveUsers(){localStorage.setItem('users', JSON.stringify(users))}
+const portalLoginModal = document.getElementById('portalLoginModal');
+const portalLoginTitle = document.getElementById('portalLoginTitle');
+const portalUser = document.getElementById('portalUser');
+const portalPass = document.getElementById('portalPass');
+const portalLoginMsg = document.getElementById('portalLoginMsg');
 
-function resetAuth(){
-  loginBox.style.display='block';
-  registerBox.style.display='none';
-  forgotBox.style.display='none';
-  loginUser.value='';loginPass.value='';
-  loginMsg.innerText='';regMsg.innerText='';fpMsg.innerText='';
+function showPortalLogin(portal){
+  currentPortal = portal;
+  portalLoginTitle.innerText = portal.toUpperCase() + ' PORTAL LOGIN';
+  portalLoginModal.style.display = 'flex';
+  portalLoginMsg.innerText='';
+  portalUser.value=''; portalPass.value='';
 }
 
-function showRegister(){loginBox.style.display='none';registerBox.style.display='block';forgotBox.style.display='none';}
-function showLogin(){resetAuth();}
-function showForgot(){loginBox.style.display='none';registerBox.style.display='none';forgotBox.style.display='block';}
+function closePortalLogin(){portalLoginModal.style.display='none'}
 
-function register(){
-  if(!regName.value||!regUser.value||!regPass.value){regMsg.innerText='All fields required';return;}
-  if(users.find(u=>u.user===regUser.value)){regMsg.innerText='User exists';return;}
-  users.push({name:regName.value,user:regUser.value,pass:regPass.value,role:regRole.value});
-  saveUsers();regMsg.style.color='green';regMsg.innerText='Account created';setTimeout(showLogin,1000);
-}
-
-function login(){
-  const u = users.find(x=>x.user===loginUser.value && x.pass===loginPass.value);
-  if(!u){loginMsg.innerText='Invalid login';return;}
-  currentUser = u;
-  authModal.style.display='none';
-  portalHome.style.display='grid';
-  alert(`Welcome ${u.name}!`);
-}
-
-function forgot(){
-  const u = users.find(x=>x.user===fpUser.value);
-  if(!u){fpMsg.innerText='User not found';return;}
-  fpMsg.style.color='green';fpMsg.innerText='Password: '+u.pass;
-}
-
-function openPortal(name){
-  if(!currentUser){authModal.style.display='flex';resetAuth();return;}
-  portalHome.style.display='none';
-  portalContent.style.display='block';
-  portalTitle.innerText = name.toUpperCase()+' PORTAL';
-  let dataHTML = '';
-
-  if(name==='student'){
-    dataHTML += `<h3>My Courses</h3>
-    <table>
-      <tr><th>Course</th><th>Grade</th></tr>
-      <tr><td>Networking</td><td>A</td></tr>
-      <tr><td>Electronics</td><td>B+</td></tr>
-    </table>
-    <h3>Announcements</h3><ul><li>Semester starts Feb 2026</li><li>Library books due March</li></ul>`;
-  } else if(name==='finance'){
-    dataHTML += `<h3>Fees Status</h3>
-    <table>
-      <tr><th>Semester</th><th>Status</th></tr>
-      <tr><td>2026 Semester 1</td><td>Paid</td></tr>
-      <tr><td>2026 Semester 2</td><td>Pending</td></tr>
-    </table>`;
-  } else if(name==='admin'){
-    dataHTML += `<h3>All Users</h3>
-    <table>
-      <tr><th>Name</th><th>Username</th><th>Role</th></tr>`;
-    users.forEach(u=>{dataHTML+=`<tr><td>${u.name}</td><td>${u.user}</td><td>${u.role}</td></tr>`;});
-    dataHTML += `</table>`;
-  } else if(name==='masomo'){
-    dataHTML += `<h3>Masomo Resources</h3>
-    <ul><li><a href="#">Networking Notes PDF</a></li>
-        <li><a href="#">Electronics Lab Manual</a></li></ul>`;
-  } else if(name==='library'){
-    dataHTML += `<h3>Library Resources</h3>
-    <ul><li><a href="#">TVET Reference Books</a></li>
-        <li><a href="#">Past Exam Papers</a></li></ul>`;
-  } else{
-    dataHTML='No content yet.';
+function loginPortal(){
+  const u = users.find(x=>x.user===portalUser.value && x.pass===portalPass.value);
+  if(!u){portalLoginMsg.innerText='Invalid username or password'; return;}
+  if(!portalRoles[currentPortal].includes(u.role)){
+    portalLoginMsg.innerText = `Access denied: ${u.role} cannot access ${currentPortal} portal`;
+    return;
   }
-
-  portalData.innerHTML = dataHTML;
+  currentUser = u;
+  portalLoginModal.style.display='none';
+  openPortalContent(currentPortal);
 }
 
-function logout(){
-  currentUser=null;
-  portalHome.style.display='grid';
-  portalContent.style.display='none';
-  authModal.style.display='flex';
-  resetAuth();
+function openPortalContent(name){
+  document.getElementById('portalHome').style.display='none';
+  document.getElementById('portalContent').style.display='block';
+  document.getElementById('portalTitle').innerText = name.toUpperCase()+' PORTAL';
+
+  let data = `<p>Welcome <strong>${currentUser.name}</strong> (${currentUser.role})</p>`;
+  if(name==='library'){
+    data += '<h3>Books Available:</h3><ul>';
+    libraryBooks.forEach(b=>data+=`<li>${b.title} <button class="download-btn" onclick="downloadFile('${b.file}')">Download PDF</button></li>`);
+    data+='</ul>';
+  } else if(name==='masomo'){
+    data += '<h3>Notes & Assignments:</h3><ul>';
+    masomoNotes.forEach(n=>data+=`<li>${n.title} <button class="download-btn" onclick="downloadFile('${n.file}')">Download PDF</button></li>`);
+    data+='</ul>';
+  } else if(name==='finance'){
+    data += '<h3>Student Fees:</h3><table><tr><th>Student</th><th>Status</th><th>Receipt</th></tr>';
+    financeData.forEach(f=>data+=`<tr><td>${f.student}</td><td>${f.feeStatus}</td><td><button class="download-btn" onclick="downloadFile('${f.receipt}')">Download</button></td></tr>`);
+    data+='</table>';
+  } else if(name==='student'){
+    data += '<h3>Results:</h3><table><tr><th>Course</th><th>Score</th></tr>';
+    studentResults.forEach(r=>data+=`<tr><td>${r.course}</td><td>${r.score}</td></tr>`);
+    data+='</table>';
+  } else if(name==='admin'){
+    data += '<h3>Users:</h3><table><tr><th>Name</th><th>Username</th><th>Role</th></tr>';
+    users.forEach(u=>data+=`<tr><td>${u.name}</td><td>${u.user}</td><td>${u.role}</td></tr>`);
+    data+='</table>';
+  }
+  document.getElementById('portalData').innerHTML = data;
 }
 
 function backHome(){
-  portalContent.style.display='none';
-  portalHome.style.display='grid';
+  currentUser = null;
+  document.getElementById('portalContent').style.display='none';
+  document.getElementById('portalHome').style.display='grid';
+}
+
+function downloadFile(file){
+  const a = document.createElement('a');
+  a.href = file;
+  a.download = file.split('/').pop();
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }
 </script>
 
