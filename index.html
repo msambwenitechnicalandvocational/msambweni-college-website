@@ -14,6 +14,7 @@ header{
   background:linear-gradient(90deg,#0d47a1,#1976d2);
   color:white;
   padding:15px 20px;
+  text-align:center;
   position:fixed;
   width:100%;
   top:0;
@@ -33,27 +34,30 @@ nav a:hover{text-decoration:underline;}
 
 /* HERO SLIDER */
 .hero{
-  width:100%;
-  height:80vh; /* taller banner */
+  height:90vh; /* bigger banner */
   position:relative;
   overflow:hidden;
   margin-top:80px;
 }
-.hero .slider{
-  width:100%;
-  height:100%;
-  position:relative;
-}
-.hero .slide{
+.hero-slide{
   position:absolute;
   top:0;
   left:100%;
   width:100%;
   height:100%;
-  object-fit:cover;
+  background-size:cover;
+  background-position:center;
   transition:1s;
 }
-.hero .slide.active{left:0;}
+.hero-slide.active{left:0;}
+.hero-overlay{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.35);
+}
 .hero-text{
   position:absolute;
   top:50%;
@@ -61,46 +65,26 @@ nav a:hover{text-decoration:underline;}
   transform:translate(-50%,-50%);
   color:white;
   text-align:center;
-  text-shadow:2px 2px 10px rgba(0,0,0,0.6);
+  text-shadow:2px 2px 8px rgba(0,0,0,0.7);
+  font-size:2em;
+  width:80%;
+  max-width:900px;
+  animation:fadeText 1s ease-in-out;
 }
-.hero-text h1{font-size:3rem;margin-bottom:10px;}
-.hero-text p{font-size:1.5rem;}
+.hero-text h1{
+  font-size:3em;
+  margin-bottom:10px;
+}
+.hero-text p{
+  font-size:1.2em;
+}
 
-/* ARROWS */
-.arrow{
-  position:absolute;
-  top:50%;
-  transform:translateY(-50%);
-  font-size:2rem;
-  color:white;
-  background:rgba(0,0,0,0.4);
-  padding:10px;
-  border-radius:50%;
-  cursor:pointer;
-  user-select:none;
-  z-index:10;
+/* text animation */
+@keyframes fadeText {
+  0%{opacity:0; transform:translate(-50%,-60%);}
+  50%{opacity:1; transform:translate(-50%,-50%);}
+  100%{opacity:0; transform:translate(-50%,-40%);}
 }
-.arrow.left{left:20px;}
-.arrow.right{right:20px;}
-.arrow:hover{background:rgba(0,0,0,0.6);}
-
-/* DOTS */
-.dots{
-  position:absolute;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  display:flex;
-  gap:10px;
-}
-.dot{
-  width:12px;
-  height:12px;
-  border-radius:50%;
-  background:rgba(255,255,255,0.5);
-  cursor:pointer;
-}
-.dot.active{background:white;}
 
 /* CONTAINER */
 .container{
@@ -127,7 +111,7 @@ nav a:hover{text-decoration:underline;}
 .slider{
   position:relative;
   width:100%;
-  height:200px;
+  height:250px;
   overflow:hidden;
   border-radius:10px;
   margin-bottom:10px;
@@ -187,8 +171,9 @@ footer a:hover{text-decoration:underline;}
   .card{flex:1 1 100%;}
   header{flex-direction:column;align-items:flex-start;}
   header img{margin-bottom:10px;}
-  .hero-text h1{font-size:2rem;}
-  .hero-text p{font-size:1rem;}
+  .hero-text h1{font-size:2em;}
+  .hero-text p{font-size:1em;}
+  .hero{height:60vh;}
 }
 </style>
 </head>
@@ -209,21 +194,13 @@ footer a:hover{text-decoration:underline;}
 
 <!-- HERO SLIDER -->
 <section class="hero" id="home">
-  <div class="slider" id="heroSlider">
-    <img class="slide active" src="p01.jpg" alt="p01.jpg">
-    <img class="slide" src="" alt="Banner 2">
-    <img class="slide" src="" alt="Banner 3">
-  </div>
-  <div class="hero-text">
+  <div class="hero-slide active" style="background-image:url('banner1.jpg');"></div>
+  <div class="hero-slide" style="background-image:url('banner2.jpg');"></div>
+  <div class="hero-slide" style="background-image:url('banner3.jpg');"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-text" id="heroText">
     <h1>Welcome to Msambweni TVC</h1>
     <p>Modern Campus | Student Growth | Future‑Ready Skills</p>
-  </div>
-  <div class="arrow left" id="prev">&#10094;</div>
-  <div class="arrow right" id="next">&#10095;</div>
-  <div class="dots" id="heroDots">
-    <div class="dot active"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
   </div>
 </section>
 
@@ -233,57 +210,57 @@ footer a:hover{text-decoration:underline;}
   <!-- ICT Department -->
   <div class="card">
     <div class="slider" id="ictSlider">
-      <img class="slide active" src="" alt="ICT Photo 1">
-      <img class="slide" src="" alt="ICT Photo 2">
-      <img class="slide" src="" alt="ICT Photo 3">
+      <img class="slide active" src="po1.jpg" alt="ICT Photo 1">
+      <img class="slide" src="po2.jpg" alt="ICT Photo 2">
+      <img class="slide" src="po3.jpg" alt="ICT Photo 3">
       <div class="slide-caption">ICT Department Labs</div>
     </div>
     <h3>ICT Department</h3>
-    <a class="download-btn" href="#" download>Course Outline</a>
-    <a class="download-btn" href="#" download>Notes</a>
-    <a class="download-btn" href="#" download>Timetable</a>
+    <a class="download-btn" href="documents/ict_course_outline.pdf" download>Course Outline</a>
+    <a class="download-btn" href="documents/ict_notes.pdf" download>Notes</a>
+    <a class="download-btn" href="documents/ict_timetable.pdf" download>Timetable</a>
   </div>
 
   <!-- Business Department -->
   <div class="card">
     <div class="slider" id="businessSlider">
-      <img class="slide active" src="" alt="Business Photo 1">
-      <img class="slide" src="" alt="Business Photo 2">
-      <img class="slide" src="" alt="Business Photo 3">
+      <img class="slide active" src="business1.jpg" alt="Business Photo 1">
+      <img class="slide" src="business2.jpg" alt="Business Photo 2">
+      <img class="slide" src="business3.jpg" alt="Business Photo 3">
       <div class="slide-caption">Business Studies Block</div>
     </div>
     <h3>Business Department</h3>
-    <a class="download-btn" href="#" download>Course Outline</a>
-    <a class="download-btn" href="#" download>Notes</a>
-    <a class="download-btn" href="#" download>Timetable</a>
+    <a class="download-btn" href="documents/business_course_outline.pdf" download>Course Outline</a>
+    <a class="download-btn" href="documents/business_notes.pdf" download>Notes</a>
+    <a class="download-btn" href="documents/business_timetable.pdf" download>Timetable</a>
   </div>
 
   <!-- Hospitality Department -->
   <div class="card">
     <div class="slider" id="hospitalitySlider">
-      <img class="slide active" src="" alt="Hospitality Photo 1">
-      <img class="slide" src="" alt="Hospitality Photo 2">
-      <img class="slide" src="" alt="Hospitality Photo 3">
+      <img class="slide active" src="hospitality1.jpg" alt="Hospitality Photo 1">
+      <img class="slide" src="hospitality2.jpg" alt="Hospitality Photo 2">
+      <img class="slide" src="hospitality3.jpg" alt="Hospitality Photo 3">
       <div class="slide-caption">Hospitality Training Area</div>
     </div>
     <h3>Hospitality Department</h3>
-    <a class="download-btn" href="#" download>Course Outline</a>
-    <a class="download-btn" href="#" download>Notes</a>
-    <a class="download-btn" href="#" download>Timetable</a>
+    <a class="download-btn" href="documents/hospitality_course_outline.pdf" download>Course Outline</a>
+    <a class="download-btn" href="documents/hospitality_notes.pdf" download>Notes</a>
+    <a class="download-btn" href="documents/hospitality_timetable.pdf" download>Timetable</a>
   </div>
 
   <!-- Engineering Department -->
   <div class="card">
     <div class="slider" id="engineeringSlider">
-      <img class="slide active" src="" alt="Engineering Photo 1">
-      <img class="slide" src="" alt="Engineering Photo 2">
-      <img class="slide" src="" alt="Engineering Photo 3">
+      <img class="slide active" src="engineering1.jpg" alt="Engineering Photo 1">
+      <img class="slide" src="engineering2.jpg" alt="Engineering Photo 2">
+      <img class="slide" src="engineering3.jpg" alt="Engineering Photo 3">
       <div class="slide-caption">Engineering Workshop</div>
     </div>
     <h3>Engineering Department</h3>
-    <a class="download-btn" href="#" download>Course Outline</a>
-    <a class="download-btn" href="#" download>Notes</a>
-    <a class="download-btn" href="#" download>Timetable</a>
+    <a class="download-btn" href="documents/engineering_course_outline.pdf" download>Course Outline</a>
+    <a class="download-btn" href="documents/engineering_notes.pdf" download>Notes</a>
+    <a class="download-btn" href="documents/engineering_timetable.pdf" download>Timetable</a>
   </div>
 
 </section>
@@ -307,7 +284,16 @@ footer a:hover{text-decoration:underline;}
 </footer>
 
 <script>
-// GENERIC SLIDER FUNCTION
+// HERO SLIDER
+let currentHero = 0;
+const heroSlides = document.querySelectorAll('.hero-slide');
+setInterval(()=>{
+  heroSlides[currentHero].classList.remove('active');
+  currentHero = (currentHero + 1) % heroSlides.length;
+  heroSlides[currentHero].classList.add('active');
+},4000);
+
+// DEPARTMENT SLIDERS
 function initSlider(sliderId){
   const slider = document.getElementById(sliderId);
   const slides = slider.querySelectorAll('.slide');
@@ -321,36 +307,7 @@ function initSlider(sliderId){
 
 // Start department sliders
 ['ictSlider','businessSlider','hospitalitySlider','engineeringSlider'].forEach(id=>initSlider(id));
-
-// HERO BANNER SLIDER WITH ARROWS AND DOTS
-const heroSlider = document.getElementById('heroSlider');
-const heroSlides = heroSlider.querySelectorAll('.slide');
-const dots = document.querySelectorAll('#heroDots .dot');
-let currentHero = 0;
-
-function showHeroSlide(index){
-  heroSlides.forEach(s=>s.classList.remove('active'));
-  dots.forEach(d=>d.classList.remove('active'));
-  heroSlides[index].classList.add('active');
-  dots[index].classList.add('active');
-  currentHero = index;
-}
-
-// Automatic sliding
-setInterval(()=>{
-  let nextSlide = (currentHero+1)%heroSlides.length;
-  showHeroSlide(nextSlide);
-},4000);
-
-// Arrow controls
-document.getElementById('prev').addEventListener('click',()=>showHeroSlide((currentHero-1+heroSlides.length)%heroSlides.length));
-document.getElementById('next').addEventListener('click',()=>showHeroSlide((currentHero+1)%heroSlides.length));
-
-// Dot controls
-dots.forEach((dot,i)=>dot.addEventListener('click',()=>showHeroSlide(i)));
 </script>
 
 </body>
 </html>
-
-
