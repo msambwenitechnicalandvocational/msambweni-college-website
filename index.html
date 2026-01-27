@@ -694,8 +694,238 @@ function downloadFeePDF(){
   doc.save("Fee_Statement.pdf");
 }
 </script>
+
+  <!-- EXAM PORTAL -->
+<div class="card" id="examPortal">
+  <h3>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE - Exam Portal</h3>
+
+  <!-- AUTHENTICATION -->
+  <div id="examAuth">
+    <input id="examUser" placeholder="Username">
+    <input id="examPass" type="password" placeholder="Password">
+    <button class="loginBtn" onclick="examLogin()">Login</button>
+    <button class="createBtn" onclick="showExamCreate()">Create Account</button>
+    <button class="forgotBtn" onclick="showExamForgot()">Forgot Password</button>
+    <p id="examMsg" style="color:red"></p>
+  </div>
+
+  <!-- CREATE ACCOUNT -->
+  <div id="examCreate" class="hidden">
+    <input id="examNewUser" placeholder="New Username">
+    <input id="examNewPass" type="password" placeholder="New Password">
+    <button class="createBtn" onclick="examCreateAccount()">Create Account</button>
+    <button class="backBtn" onclick="backExamAuth()">Back to Login</button>
+  </div>
+
+  <!-- FORGOT PASSWORD -->
+  <div id="examForgot" class="hidden">
+    <input id="examRecoverUser" placeholder="Enter Username">
+    <button class="forgotBtn" onclick="examRecover()">Recover Password</button>
+    <button class="backBtn" onclick="backExamAuth()">Back to Login</button>
+    <p id="examRecoverMsg" style="color:green"></p>
+  </div>
+
+  <!-- EXAM FORM -->
+  <div id="examForm" class="hidden">
+    <!-- Student Info -->
+    <input id="examFullName" placeholder="Full Name">
+    <input id="examRegNo" placeholder="Registration Number">
+    <input id="examCourse" placeholder="Course Name">
+
+    <!-- Units Entry -->
+    <h4>Enter Marks for 4 Units</h4>
+    <div class="unit">
+      <input type="text" placeholder="Unit 1 Name" id="unit1Name">
+      <input type="number" placeholder="CAT 1 (0-30)" id="unit1Cat1">
+      <input type="number" placeholder="CAT 2 (0-30)" id="unit1Cat2">
+      <input type="number" placeholder="Exam Marks (0-40)" id="unit1Exam">
+    </div>
+    <div class="unit">
+      <input type="text" placeholder="Unit 2 Name" id="unit2Name">
+      <input type="number" placeholder="CAT 1 (0-30)" id="unit2Cat1">
+      <input type="number" placeholder="CAT 2 (0-30)" id="unit2Cat2">
+      <input type="number" placeholder="Exam Marks (0-40)" id="unit2Exam">
+    </div>
+    <div class="unit">
+      <input type="text" placeholder="Unit 3 Name" id="unit3Name">
+      <input type="number" placeholder="CAT 1 (0-30)" id="unit3Cat1">
+      <input type="number" placeholder="CAT 2 (0-30)" id="unit3Cat2">
+      <input type="number" placeholder="Exam Marks (0-40)" id="unit3Exam">
+    </div>
+    <div class="unit">
+      <input type="text" placeholder="Unit 4 Name" id="unit4Name">
+      <input type="number" placeholder="CAT 1 (0-30)" id="unit4Cat1">
+      <input type="number" placeholder="CAT 2 (0-30)" id="unit4Cat2">
+      <input type="number" placeholder="Exam Marks (0-40)" id="unit4Exam">
+    </div>
+
+    <button class="calculateBtn" onclick="calculateAllGrades()">Calculate Grades</button>
+
+    <!-- Result Table -->
+    <h4>Result Transcript</h4>
+    <table id="examTable">
+      <thead>
+        <tr>
+          <th>Unit</th>
+          <th>CAT 1</th>
+          <th>CAT 2</th>
+          <th>Exam</th>
+          <th>Total</th>
+          <th>Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td id="resUnit1">-</td><td id="resCat11">-</td><td id="resCat12">-</td><td id="resExam1">-</td><td id="resTotal1">-</td><td id="resGrade1">-</td></tr>
+        <tr><td id="resUnit2">-</td><td id="resCat21">-</td><td id="resCat22">-</td><td id="resExam2">-</td><td id="resTotal2">-</td><td id="resGrade2">-</td></tr>
+        <tr><td id="resUnit3">-</td><td id="resCat31">-</td><td id="resCat32">-</td><td id="resExam3">-</td><td id="resTotal3">-</td><td id="resGrade3">-</td></tr>
+        <tr><td id="resUnit4">-</td><td id="resCat41">-</td><td id="resCat42">-</td><td id="resExam4">-</td><td id="resTotal4">-</td><td id="resGrade4">-</td></tr>
+      </tbody>
+    </table>
+
+    <button class="downloadBtn" onclick="downloadExamPDF()">Download PDF</button>
+    <button class="logoutBtn" onclick="examLogout()">Logout</button>
+  </div>
+</div>
+
+<style>
+#examPortal input {width:100%;padding:10px;margin:6px 0;border-radius:6px;border:1px solid #ccc;}
+#examPortal h4 {margin-top:15px;color:#0d47a1;}
+#examPortal table {width:100%;border-collapse:collapse;margin-top:15px;}
+#examPortal th, #examPortal td {border:1px solid #ccc;padding:8px;text-align:center;}
+#examPortal th {background:#1976d2;color:white;}
+button {padding:10px 15px;border:none;border-radius:6px;color:white;cursor:pointer;margin-top:8px;margin-right:5px;}
+.loginBtn {background:#1976d2;}
+.createBtn {background:#2e7d32;}
+.forgotBtn {background:#fbc02d;color:#333;}
+.backBtn {background:#9e9e9e;}
+.calculateBtn {background:#1565c0;}
+.downloadBtn {background:#2e7d32;}
+.logoutBtn {background:#c62828;}
+.hidden {display:none;}
+.unit {border:1px solid #ccc;padding:10px;border-radius:10px;margin-bottom:10px;background:#f9f9f9;}
+</style>
+
+<script>
+const { jsPDF } = window.jspdf;
+let examUsers = JSON.parse(localStorage.getItem('examUsers') || '{}');
+
+function showExamCreate() { document.getElementById('examAuth').classList.add('hidden'); document.getElementById('examCreate').classList.remove('hidden'); }
+function showExamForgot() { document.getElementById('examAuth').classList.add('hidden'); document.getElementById('examForgot').classList.remove('hidden'); }
+function backExamAuth() { document.getElementById('examAuth').classList.remove('hidden'); document.getElementById('examCreate').classList.add('hidden'); document.getElementById('examForgot').classList.add('hidden'); document.getElementById('examRecoverMsg').innerText=''; }
+
+function examLogin() {
+  const user = document.getElementById('examUser').value;
+  const pass = document.getElementById('examPass').value;
+  if(examUsers[user] && examUsers[user].pass === pass){
+    document.getElementById('examAuth').classList.add('hidden');
+    document.getElementById('examForm').classList.remove('hidden');
+    document.getElementById('examMsg').innerText='';
+  } else {
+    document.getElementById('examMsg').innerText='Invalid username or password';
+  }
+}
+
+function examCreateAccount() {
+  const user = document.getElementById('examNewUser').value;
+  const pass = document.getElementById('examNewPass').value;
+  if(user && pass){
+    examUsers[user] = {pass:pass};
+    localStorage.setItem('examUsers',JSON.stringify(examUsers));
+    alert("Account created successfully!");
+    backExamAuth();
+  } else alert("Enter username and password");
+}
+
+function examRecover() {
+  const user = document.getElementById('examRecoverUser').value;
+  if(examUsers[user]){
+    document.getElementById('examRecoverMsg').innerText = "Password: "+examUsers[user].pass;
+  } else document.getElementById('examRecoverMsg').innerText = "User not found";
+}
+
+function examLogout() {
+  document.getElementById('examForm').classList.add('hidden');
+  document.getElementById('examAuth').classList.remove('hidden');
+  document.getElementById('examUser').value=''; document.getElementById('examPass').value='';
+}
+
+// Grade calculation
+function getGrade(total){
+  if(total>=80) return "Mastery";
+  if(total>=65) return "Proficient";
+  if(total>=50) return "Competent";
+  return "Not Competent";
+}
+
+function calculateAllGrades(){
+  for(let i=1;i<=4;i++){
+    const cat1 = Number(document.getElementById(`unit${i}Cat1`).value)||0;
+    const cat2 = Number(document.getElementById(`unit${i}Cat2`).value)||0;
+    const exam = Number(document.getElementById(`unit${i}Exam`).value)||0;
+    const total = cat1+cat2+exam;
+    document.getElementById(`resUnit${i}`).innerText = document.getElementById(`unit${i}Name`).value || "-";
+    document.getElementById(`resCat${i}1`).innerText = cat1;
+    document.getElementById(`resCat${i}2`).innerText = cat2;
+    document.getElementById(`resExam${i}`).innerText = exam;
+    document.getElementById(`resTotal${i}`).innerText = total;
+    document.getElementById(`resGrade${i}`).innerText = getGrade(total);
+  }
+}
+
+// PDF generation
+function downloadExamPDF(){
+  const doc = new jsPDF();
+  let y = 20;
+  doc.setFontSize(14);
+  doc.setTextColor(13,71,161);
+  doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",105,y,{align:"center"});
+  y+=10;
+  doc.setFontSize(12);
+  doc.text("STUDENT SET FOR EXAM",105,y,{align:"center"});
+  y+=8;
+  doc.text("THE FOLLOWING ARE THE RESULTS",105,y,{align:"center"});
+  y+=10;
+  doc.setFontSize(10);
+  doc.text(`Prepared by: Examination Officer, Examination Department`,20,y);
+  y+=8;
+  doc.text(`Date: ${new Date().toLocaleDateString()}  Time: ${new Date().toLocaleTimeString()}`,20,y);
+  y+=8;
+  doc.text(`Full Name: ${document.getElementById('examFullName').value}`,20,y);
+  y+=8;
+  doc.text(`Registration No: ${document.getElementById('examRegNo').value}`,20,y);
+  y+=8;
+  doc.text(`Course: ${document.getElementById('examCourse').value}`,20,y);
+
+  // Prepare table
+  let body=[];
+  for(let i=1;i<=4;i++){
+    body.push([
+      document.getElementById(`resUnit${i}`).innerText,
+      document.getElementById(`resCat${i}1`).innerText,
+      document.getElementById(`resCat${i}2`).innerText,
+      document.getElementById(`resExam${i}`).innerText,
+      document.getElementById(`resTotal${i}`).innerText,
+      document.getElementById(`resGrade${i}`).innerText
+    ]);
+  }
+
+  doc.autoTable({
+    startY: y+10,
+    head:[["Unit","CAT 1","CAT 2","Exam","Total","Grade"]],
+    body: body,
+    theme:'grid',
+    headStyles:{fillColor:[13,71,161],textColor:255},
+    styles:{cellPadding:4,fontSize:10},
+    alternateRowStyles:{fillColor:[245,245,255]}
+  });
+
+  doc.save("Exam_Transcript.pdf");
+}
+</script>
+
 </body>
 </html>
+
 
 
 
