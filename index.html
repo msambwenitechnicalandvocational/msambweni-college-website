@@ -4,42 +4,175 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Msambweni TVC Portal</title>
+
 <style>
-:root{--blue:#0d47a1;--yellow:#fbc02d}
-body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f4f7fb}
-header{background:linear-gradient(90deg,var(--blue),var(--yellow));color:#fff;padding:25px;text-align:center;position:relative}
+:root{
+  --blue:#0d47a1;
+  --yellow:#fbc02d;
+}
+
+body{
+  margin:0;
+  font-family:Segoe UI,Arial,sans-serif;
+  background:#f4f7fb;
+}
+
+/* ===== HEADER ===== */
+header{
+  background:linear-gradient(90deg,var(--blue),var(--yellow));
+  color:#fff;
+  padding:25px;
+  text-align:center;
+}
 header img{height:70px}
-.container{max-width:1100px;margin:40px auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:25px}
-.portal{background:#fff;border-radius:18px;padding:25px;text-align:center;box-shadow:0 14px 30px rgba(0,0,0,.25)}
+
+/* ===== PORTALS ===== */
+.container{
+  max-width:1100px;
+  margin:40px auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:25px;
+}
+.portal{
+  background:#fff;
+  border-radius:18px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 14px 30px rgba(0,0,0,.25);
+}
 .portal h2{color:var(--blue)}
-.portal button{margin-top:15px;padding:10px 25px;border:none;border-radius:30px;color:#fff;font-weight:600;cursor:pointer}
+.portal button{
+  margin-top:15px;
+  padding:10px 25px;
+  border:none;
+  border-radius:30px;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+}
 .portal:nth-child(1) button{background:#fbc02d;color:#333}
 .portal:nth-child(2) button{background:#1976d2}
 .portal:nth-child(3) button{background:#2e7d32}
 .portal:nth-child(4) button{background:#6a1b9a}
 .portal:nth-child(5) button{background:#c62828}
 
-.modal{display:none;position:fixed;inset:0;background:rgba(13,71,161,.85);display:flex;justify-content:center;align-items:center;z-index:10}
-.box{background:#fff;padding:25px;border-radius:18px;width:90%;max-width:400px;text-align:center;}
-input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px solid #ccc}
-.full{width:100%;padding:12px;background:linear-gradient(90deg,var(--blue),var(--yellow));border:none;color:#fff;border-radius:25px;font-weight:600;cursor:pointer;margin-top:10px}
-.link{text-align:center;color:var(--blue);cursor:pointer;font-size:13px;margin-top:8px;display:block}
-.msg{font-size:13px;text-align:center;color:red;margin-top:5px}
-.portal-content{display:none;max-width:900px;margin:20px auto;padding:20px;background:#fff;border-radius:15px;box-shadow:0 10px 20px rgba(0,0,0,.2)}
-.logout{background:#9e9e9e;color:#fff;border:none;border-radius:10px;padding:10px 15px;cursor:pointer;margin-top:10px}
-.portal-content h3{color:var(--blue)}
-.portal-content table{width:100%;border-collapse:collapse;margin-top:10px}
-.portal-content th, .portal-content td{border:1px solid #ccc;padding:8px;text-align:left}
-.portal-content th{background:#1976d2;color:#fff}
-.download-btn{background:var(--yellow);color:#333;padding:6px 12px;border:none;border-radius:8px;cursor:pointer;margin-top:5px}
+/* ===== MODAL (FIXED) ===== */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(13,71,161,.85);
+  justify-content:center;
+  align-items:center;
+  z-index:10;
+}
+
+.box{
+  background:#fff;
+  padding:25px;
+  border-radius:18px;
+  width:90%;
+  max-width:400px;
+  text-align:center;
+}
+
+input,select{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+
+.full{
+  width:100%;
+  padding:12px;
+  background:linear-gradient(90deg,var(--blue),var(--yellow));
+  border:none;
+  color:#fff;
+  border-radius:25px;
+  font-weight:600;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.link{
+  color:var(--blue);
+  cursor:pointer;
+  font-size:13px;
+  margin-top:8px;
+  display:block;
+}
+
+.msg{
+  font-size:13px;
+  color:red;
+  margin-top:6px;
+}
+
+/* ===== PORTAL CONTENT ===== */
+.portal-content{
+  display:none;
+  max-width:900px;
+  margin:20px auto;
+  padding:20px;
+  background:#fff;
+  border-radius:15px;
+  box-shadow:0 10px 20px rgba(0,0,0,.2);
+}
+
+.logout{
+  background:#9e9e9e;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  padding:10px 15px;
+  cursor:pointer;
+  margin-top:10px;
+}
+
+.download-btn{
+  background:var(--yellow);
+  color:#333;
+  padding:6px 12px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+/* ===== FOOTER ===== */
+.gov-footer{
+  margin-top:40px;
+  background:linear-gradient(90deg,var(--blue),var(--yellow));
+  color:#fff;
+  padding:25px 15px;
+}
+.footer-inner{
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.gov-footer img{
+  height:65px;
+  background:#fff;
+  padding:6px;
+  border-radius:8px;
+}
+.gov-footer h4{margin:0;font-size:18px}
+.gov-footer p{margin:3px 0;font-size:14px}
 </style>
 </head>
+
 <body>
 
 <header>
-<img src="files/msambweni-logo.png" alt="Logo">
-<h1>Msambweni Technical & Vocational College</h1>
-<p>Complete College Portal</p>
+  <img src="files/msambweni-logo.png" alt="College Logo">
+  <h1>Msambweni Technical & Vocational College</h1>
+  <p>Complete College Portal</p>
 </header>
 
 <div class="container" id="portalHome">
@@ -50,15 +183,16 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px s
   <div class="portal"><h2>🧑‍💼 Staff / Admin Portal</h2><button onclick="showPortalLogin('admin')">Enter</button></div>
 </div>
 
-<!-- Authentication Modal -->
+<!-- ===== LOGIN MODAL ===== -->
 <div class="modal" id="authModal">
+
   <div class="box" id="loginBox">
-    <h3 id="portalLoginTitle">Portal Login</h3>
+    <h3>Portal Login</h3>
     <input id="portalUser" placeholder="Username">
     <input id="portalPass" type="password" placeholder="Password">
     <button class="full" id="loginBtn">Login</button>
-    <div class="link" id="createAccountLink">Create Account</div>
-    <div class="link" id="forgotPassLink">Forgot Password?</div>
+    <span class="link" onclick="showRegister()">Create Account</span>
+    <span class="link" onclick="showForgot()">Forgot Password?</span>
     <p class="msg" id="portalLoginMsg"></p>
   </div>
 
@@ -74,7 +208,7 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px s
       <option value="admin">Admin</option>
     </select>
     <button class="full" id="registerBtn">Register</button>
-    <div class="link" id="backToLoginReg">Back to Login</div>
+    <span class="link" onclick="showLogin()">Back to Login</span>
     <p class="msg" id="regMsg"></p>
   </div>
 
@@ -82,154 +216,135 @@ input,select{width:100%;padding:10px;margin:8px 0;border-radius:8px;border:1px s
     <h3>Forgot Password</h3>
     <input id="fpUser" placeholder="Username">
     <button class="full" id="recoverBtn">Recover</button>
-    <div class="link" id="backToLoginFP">Back to Login</div>
+    <span class="link" onclick="showLogin()">Back to Login</span>
     <p class="msg" id="fpMsg"></p>
   </div>
+
 </div>
 
-<!-- Portal Content -->
+<!-- ===== PORTAL CONTENT ===== -->
 <div id="portalContent" class="portal-content">
   <h2 id="portalTitle"></h2>
   <div id="portalData"></div>
   <button class="logout" onclick="backHome()">Logout</button>
 </div>
 
+<!-- ===== FOOTER ===== -->
+<footer class="gov-footer">
+  <div class="footer-inner">
+    <img src="files/kenya-government-logo.png" alt="Government of Kenya">
+    <div>
+      <h4>Msambweni Technical & Vocational College</h4>
+      <p>Ministry of Education – State Department for TVET</p>
+      <p>© 2026 Government of Kenya. All Rights Reserved.</p>
+    </div>
+  </div>
+</footer>
+
 <script>
-// Users storage
-let users = JSON.parse(localStorage.getItem('users')||'[]');
-if(users.length===0){
-  users.push({name:'Admin',user:'admin',pass:'admin123',role:'admin'});
-  users.push({name:'Lecturer',user:'lecturer1',pass:'lec123',role:'lecturer'});
-  users.push({name:'Student',user:'student1',pass:'pass123',role:'student'});
-  users.push({name:'Finance',user:'finance1',pass:'finance123',role:'finance'});
+/* ===== USERS ===== */
+let users = JSON.parse(localStorage.getItem('users') || '[]');
+if(users.length === 0){
+  users = [
+    {name:'Admin',user:'admin',pass:'admin123',role:'admin'},
+    {name:'Lecturer',user:'lecturer1',pass:'lec123',role:'lecturer'},
+    {name:'Student',user:'student1',pass:'pass123',role:'student'},
+    {name:'Finance',user:'finance1',pass:'finance123',role:'finance'}
+  ];
   localStorage.setItem('users',JSON.stringify(users));
 }
 
-// Portal roles
 const portalRoles = {
-  'library':['student','lecturer','finance','admin'],
-  'masomo':['student','lecturer'],
-  'finance':['finance'],
-  'student':['student'],
-  'admin':['admin']
+  library:['student','lecturer','finance','admin'],
+  masomo:['student','lecturer'],
+  finance:['finance'],
+  student:['student'],
+  admin:['admin']
 };
-
-// Files per portal
-let libraryFiles = JSON.parse(localStorage.getItem('libraryFiles')||'[{"title":"Networking Basics","file":"files/networking.pdf"}]');
-let masomoFiles = JSON.parse(localStorage.getItem('masomoFiles')||'[{"title":"Math Assignment","file":"files/math.pdf"}]');
-const financeData = [{student:'Student One',feeStatus:'Paid',receipt:'files/receipt1.pdf'}];
-const studentResults = [{course:'ICT',score:'85'}];
 
 let currentPortal = '';
 let currentUser = null;
 
-// Elements
-const authModal = document.getElementById('authModal');
-const loginBox = document.getElementById('loginBox');
-const registerBox = document.getElementById('registerBox');
-const forgotBox = document.getElementById('forgotBox');
-const portalLoginMsg = document.getElementById('portalLoginMsg');
-const regMsg = document.getElementById('regMsg');
-const fpMsg = document.getElementById('fpMsg');
-
-// Show login modal
-function showPortalLogin(portal){
-  currentPortal = portal;
-  authModal.style.display='flex';
+/* ===== MODAL CONTROL ===== */
+function showPortalLogin(p){
+  currentPortal = p;
+  document.getElementById('authModal').style.display = 'flex';
   showLogin();
 }
+function showLogin(){
+  loginBox.style.display='block';
+  registerBox.style.display='none';
+  forgotBox.style.display='none';
+}
+function showRegister(){
+  loginBox.style.display='none';
+  registerBox.style.display='block';
+  forgotBox.style.display='none';
+}
+function showForgot(){
+  loginBox.style.display='none';
+  registerBox.style.display='none';
+  forgotBox.style.display='block';
+}
 
-// Show different modal views
-function showLogin(){ loginBox.style.display='block'; registerBox.style.display='none'; forgotBox.style.display='none'; portalLoginMsg.innerText=''; }
-function showRegister(){ loginBox.style.display='none'; registerBox.style.display='block'; forgotBox.style.display='none'; regMsg.innerText=''; }
-function showForgot(){ loginBox.style.display='none'; registerBox.style.display='none'; forgotBox.style.display='block'; fpMsg.innerText=''; }
-
-// Login function
-document.getElementById('loginBtn').onclick = function(){
-  const user = document.getElementById('portalUser').value;
-  const pass = document.getElementById('portalPass').value;
-  const u = users.find(x=>x.user===user && x.pass===pass);
-  if(!u){ portalLoginMsg.innerText='Invalid username or password'; return;}
+/* ===== LOGIN ===== */
+loginBtn.onclick = function(){
+  if(!currentPortal){
+    portalLoginMsg.innerText='Select a portal first';
+    return;
+  }
+  const u = users.find(x =>
+    x.user === portalUser.value.trim() &&
+    x.pass === portalPass.value.trim()
+  );
+  if(!u){
+    portalLoginMsg.innerText='Invalid username or password';
+    return;
+  }
   if(!portalRoles[currentPortal].includes(u.role)){
-    portalLoginMsg.innerText = `Access denied: ${u.role} cannot access ${currentPortal} portal`;
+    portalLoginMsg.innerText='Access denied';
     return;
   }
   currentUser = u;
   authModal.style.display='none';
-  openPortalContent(currentPortal);
+  openPortal(currentPortal);
 };
 
-// Register function
-document.getElementById('registerBtn').onclick = function(){
-  const name = document.getElementById('regName').value;
-  const user = document.getElementById('regUser').value;
-  const pass = document.getElementById('regPass').value;
-  const role = document.getElementById('regRole').value;
-  if(users.find(u=>u.user===user)){ regMsg.innerText='Username exists'; return;}
-  users.push({name,user,pass,role});
+/* ===== REGISTER ===== */
+registerBtn.onclick = function(){
+  if(users.find(u=>u.user===regUser.value)){
+    regMsg.innerText='Username already exists';
+    return;
+  }
+  users.push({
+    name:regName.value,
+    user:regUser.value,
+    pass:regPass.value,
+    role:regRole.value
+  });
   localStorage.setItem('users',JSON.stringify(users));
   regMsg.style.color='green';
   regMsg.innerText='Account created successfully';
 };
 
-// Forgot password function
-document.getElementById('recoverBtn').onclick = function(){
-  const user = document.getElementById('fpUser').value;
-  const u = users.find(x=>x.user===user);
-  if(!u){ fpMsg.innerText='User not found'; return;}
-  fpMsg.style.color='green';
-  fpMsg.innerText='Password: '+u.pass;
+/* ===== FORGOT ===== */
+recoverBtn.onclick = function(){
+  const u = users.find(x=>x.user===fpUser.value);
+  fpMsg.innerText = u ? 'Password: '+u.pass : 'User not found';
 };
 
-// Links
-document.getElementById('createAccountLink').onclick = showRegister;
-document.getElementById('forgotPassLink').onclick = showForgot;
-document.getElementById('backToLoginReg').onclick = showLogin;
-document.getElementById('backToLoginFP').onclick = showLogin;
-
-// Open portal content
-function openPortalContent(name){
-  document.getElementById('portalHome').style.display='none';
-  document.getElementById('portalContent').style.display='block';
-  document.getElementById('portalTitle').innerText = name.toUpperCase()+' PORTAL';
-  let data = `<p>Welcome <strong>${currentUser.name}</strong> (${currentUser.role})</p>`;
-  if(name==='library'){
-    data += '<h3>Library Files:</h3><ul>';
-    libraryFiles.forEach(f=>data+=`<li>${f.title} <button class="download-btn" onclick="downloadFile('${f.file}')">Download PDF</button></li>`);
-    data+='</ul>';
-  } else if(name==='masomo'){
-    data += '<h3>Masomo Files:</h3><ul>';
-    masomoFiles.forEach(f=>data+=`<li>${f.title} <button class="download-btn" onclick="downloadFile('${f.file}')">Download PDF</button></li>`);
-    data+='</ul>';
-  } else if(name==='finance'){
-    data += '<h3>Finance Records:</h3><ul>';
-    financeData.forEach(f=>data+=`<li>${f.student} - ${f.feeStatus} <button class="download-btn" onclick="downloadFile('${f.receipt}')">Download Receipt</button></li>`);
-    data+='</ul>';
-  } else if(name==='student'){
-    data += '<h3>Results:</h3><ul>';
-    studentResults.forEach(r=>data+=`<li>${r.course}: ${r.score}</li>`);
-    data+='</ul>';
-  } else if(name==='admin'){
-    data += '<h3>All Users:</h3><ul>';
-    users.forEach(u=>data+=`<li>${u.name} (${u.user}) - ${u.role}</li>`);
-    data+='</ul>';
-  }
-  document.getElementById('portalData').innerHTML = data;
+/* ===== PORTAL CONTENT ===== */
+function openPortal(p){
+  portalHome.style.display='none';
+  portalContent.style.display='block';
+  portalTitle.innerText=p.toUpperCase()+' PORTAL';
+  portalData.innerHTML=
+    `<p>Welcome <b>${currentUser.name}</b> (${currentUser.role})</p>`;
 }
 
 function backHome(){
-  currentUser = null;
-  document.getElementById('portalContent').style.display='none';
-  document.getElementById('portalHome').style.display='grid';
-}
-
-function downloadFile(file){
-  const a=document.createElement('a');
-  a.href=file;
-  a.download=file.split('/').pop();
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  portalContent.style.display='none';
+  portalHome.style.display='grid';
 }
 </script>
 
