@@ -12,11 +12,10 @@
   --light:#1976d2;
   --green:#2e7d32;
   --red:#c62828;
-  --yellow:#fbc02d;
 }
 body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f4f7fb;}
 header{background:linear-gradient(90deg,var(--blue),var(--light));color:white;padding:15px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;}
-header h1{margin:0;font-size:20px;text-align:center;}
+header h1{margin:0;font-size:18px;text-align:center;}
 .container{max-width:1100px;margin:auto;padding:20px;}
 .card{background:white;border-radius:14px;padding:25px;box-shadow:0 15px 35px rgba(0,0,0,.15);margin-bottom:30px;}
 h2,h3,h4{text-align:center;color:var(--blue);}
@@ -26,17 +25,15 @@ button.login{background:var(--light);}
 button.create{background:var(--green);}
 button.download{background:var(--green);}
 button.logout{background:var(--red);}
-.link{text-align:center;color:var(--light);cursor:pointer;margin-top:8px;font-size:14px;}
+.link{text-align:center;color:var(--light);cursor:pointer;margin-top:8px;font-size:14px;display:block;}
 .hidden{display:none;}
 table{width:100%;border-collapse:collapse;margin-top:15px;font-size:14px;}
 th,td{border:1px solid #ccc;padding:10px;text-align:center;}
 th{background:var(--light);color:white;}
 tbody tr:nth-child(even){background:#f0f4f8;}
 tbody tr:hover{background:#dbe9fc;}
-footer{background:var(--blue);color:white;padding:20px;text-align:center;margin-top:40px;}
 .unit{border:1px solid #ccc;padding:10px;border-radius:10px;margin-bottom:10px;background:#f9f9f9;}
 @media(max-width:768px){
-  header{flex-direction:column;text-align:center;}
   header h1{margin:10px 0;}
   .card{padding:15px;}
   input, select, button{font-size:14px;}
@@ -46,112 +43,101 @@ footer{background:var(--blue);color:white;padding:20px;text-align:center;margin-
 </style>
 </head>
 <body>
-
 <header>
 <h1>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h1>
 </header>
 
 <div class="container">
-
-<!-- PORTAL SELECTION -->
-<div class="card" id="portalSelect">
-  <h2>Select Portal</h2>
-  <button class="login" onclick="openAuth('ict')">ICT Portal</button>
-  <button class="login" onclick="openAuth('library')">Library Portal</button>
-  <button class="login" onclick="openAuth('finance')">Finance Portal</button>
-  <button class="login" onclick="openAuth('exam')">Exam Portal</button>
-</div>
-
-<!-- AUTH MODAL -->
-<div class="card hidden" id="auth">
-  <h3 id="authTitle"></h3>
-  <input id="aUser" placeholder="Username">
-  <input id="aPass" type="password" placeholder="Password">
-  <button class="login" onclick="login()">Login</button>
-  <div class="link" onclick="showCreate()">Create Account</div>
-  <p id="authMsg" style="color:red;"></p>
-</div>
-
-<div class="card hidden" id="create">
-  <h3>Create Account</h3>
-  <input id="cUser" placeholder="Username">
-  <input id="cPass" type="password" placeholder="Password">
-  <button class="create" onclick="createAccount()">Create Account</button>
-  <div class="link" onclick="backAuth()">Back to Login</div>
-</div>
-
-<!-- ICT PORTAL -->
-<div class="card hidden" id="ict">
-  <h3>ICT Support Portal</h3>
-  <table id="ictTable"><thead><tr><th>ID</th><th>Name</th><th>Issue</th><th>Device</th><th>Date</th></tr></thead><tbody></tbody></table>
-  <input id="ictName" placeholder="Name"><input id="ictIssue" placeholder="Issue"><input type="date" id="ictStartDate"><input id="ictDevice" placeholder="Device">
-  <button class="download" onclick="saveICTTicket()">Submit Ticket</button>
-  <button class="logout" onclick="logoutPortal()">Logout</button>
-</div>
-
-<!-- LIBRARY PORTAL -->
-<div class="card hidden" id="library">
-  <h3>Library Portal</h3>
-  <table id="libTable"><thead><tr><th>Book</th><th>Author</th><th>Action</th><th>Date</th></tr></thead><tbody></tbody></table>
-  <input id="libStudentName" placeholder="Student Name">
-  <input id="libCourse" placeholder="Course">
-  <input id="libRegNo" placeholder="Reg Number">
-  <input id="libTitle" placeholder="Book Title">
-  <input id="libAuthor" placeholder="Author">
-  <select id="libAction"><option>Borrow</option><option>Return</option></select>
-  <button class="download" onclick="saveLibraryEntry()">Save Entry</button>
-  <button class="logout" onclick="logoutPortal()">Logout</button>
-</div>
-
-<!-- FINANCE PORTAL -->
-<div class="card hidden" id="finance">
-  <h3>Finance Portal</h3>
-  <input id="fName" placeholder="Student Name">
-  <input id="fReg" placeholder="Registration Number">
-  <input id="fTotal" placeholder="Total Fees" value="50000">
-  <input id="fPaid" placeholder="Amount Paid" value="20000">
-  <p>Balance: <span id="fBalance">30000</span></p>
-  <button class="download" onclick="calcBalance()">Calculate Balance</button>
-  <button class="download" onclick="saveFinanceData()">Save Payment</button>
-  <table id="fHistory"><thead><tr><th>Date</th><th>Receipt</th><th>Amount</th></tr></thead><tbody></tbody></table>
-  <button class="download" onclick="downloadFeePDF()">Download Fee Statement PDF</button>
-  <button class="logout" onclick="logoutPortal()">Logout</button>
-</div>
-
-<!-- EXAM PORTAL -->
-<div class="card hidden" id="exam">
-  <h3>Exam Portal</h3>
-  <input id="examFullName" placeholder="Full Name">
-  <input id="examRegNo" placeholder="Reg Number">
-  <input id="examCourse" placeholder="Course">
-  <div class="unit">
-    <input type="text" placeholder="Unit 1" id="unit1Name">
-    <input type="number" placeholder="CAT1" id="unit1Cat1">
-    <input type="number" placeholder="CAT2" id="unit1Cat2">
-    <input type="number" placeholder="Exam" id="unit1Exam">
+  <!-- PORTAL SELECTION -->
+  <div class="card" id="portalSelect">
+    <h2>Select Portal</h2>
+    <button class="login" onclick="openAuth('ict')">ICT Portal</button>
+    <button class="login" onclick="openAuth('library')">Library Portal</button>
+    <button class="login" onclick="openAuth('finance')">Finance Portal</button>
+    <button class="login" onclick="openAuth('exam')">Exam Portal</button>
   </div>
-  <div class="unit">
-    <input type="text" placeholder="Unit 2" id="unit2Name">
-    <input type="number" placeholder="CAT1" id="unit2Cat1">
-    <input type="number" placeholder="CAT2" id="unit2Cat2">
-    <input type="number" placeholder="Exam" id="unit2Exam">
+
+  <!-- LOGIN / CREATE / FORGOT MODAL -->
+  <div class="card hidden" id="authModal">
+    <h3 id="authTitle"></h3>
+    <input id="aUser" placeholder="Username">
+    <input id="aPass" type="password" placeholder="Password">
+    <button class="login" onclick="login()">Login</button>
+    <div class="link" onclick="showCreate()">Create Account</div>
+    <div class="link" onclick="showForgot()">Forgot Password?</div>
+    <p id="authMsg" style="color:red"></p>
   </div>
-  <div class="unit">
-    <input type="text" placeholder="Unit 3" id="unit3Name">
-    <input type="number" placeholder="CAT1" id="unit3Cat1">
-    <input type="number" placeholder="CAT2" id="unit3Cat2">
-    <input type="number" placeholder="Exam" id="unit3Exam">
+
+  <div class="card hidden" id="createModal">
+    <h3>Create Account</h3>
+    <input id="cUser" placeholder="Username">
+    <input id="cPass" type="password" placeholder="Password">
+    <button class="create" onclick="createAccount()">Create Account</button>
+    <div class="link" onclick="backAuth()">Back to Login</div>
   </div>
-  <div class="unit">
-    <input type="text" placeholder="Unit 4" id="unit4Name">
-    <input type="number" placeholder="CAT1" id="unit4Cat1">
-    <input type="number" placeholder="CAT2" id="unit4Cat2">
-    <input type="number" placeholder="Exam" id="unit4Exam">
+
+  <div class="card hidden" id="forgotModal">
+    <h3>Recover Password</h3>
+    <input id="fUser" placeholder="Username">
+    <button class="login" onclick="recoverPassword()">Recover</button>
+    <div class="link" onclick="backAuth()">Back to Login</div>
+    <p id="fMsg" style="color:red"></p>
   </div>
-  <button class="download" onclick="calculateAllGrades()">Calculate Grades</button>
-  <table id="examTable"><thead><tr><th>Unit</th><th>CAT1</th><th>CAT2</th><th>Exam</th><th>Total</th><th>Grade</th></tr></thead><tbody></tbody></table>
-  <button class="download" onclick="downloadExamPDF()">Download PDF</button>
-  <button class="logout" onclick="logoutPortal()">Logout</button>
+
+  <!-- ICT PORTAL -->
+  <div class="card hidden" id="ict">
+    <h3>ICT Support Portal</h3>
+    <input id="ictName" placeholder="Name"><input id="ictIssue" placeholder="Issue"><input type="date" id="ictStartDate"><input id="ictDevice" placeholder="Device">
+    <button class="download" onclick="saveICTTicket()">Submit Ticket</button>
+    <table id="ictTable"><thead><tr><th>ID</th><th>Name</th><th>Issue</th><th>Device</th><th>Date</th></tr></thead><tbody></tbody></table>
+    <button class="download" onclick="downloadICTPDF()">Download PDF</button>
+    <button class="logout" onclick="logoutPortal()">Logout</button>
+  </div>
+
+  <!-- LIBRARY PORTAL -->
+  <div class="card hidden" id="library">
+    <h3>Library Portal</h3>
+    <input id="libStudentName" placeholder="Student Name">
+    <input id="libCourse" placeholder="Course">
+    <input id="libRegNo" placeholder="Reg Number">
+    <input id="libBook" placeholder="Book Title">
+    <input id="libAuthor" placeholder="Author">
+    <select id="libAction"><option>Borrow</option><option>Return</option></select>
+    <button class="download" onclick="saveLibraryEntry()">Save Entry</button>
+    <table id="libTable"><thead><tr><th>Book</th><th>Author</th><th>Action</th><th>Date</th></tr></thead><tbody></tbody></table>
+    <button class="download" onclick="downloadLibraryPDF()">Download PDF</button>
+    <button class="logout" onclick="logoutPortal()">Logout</button>
+  </div>
+
+  <!-- FINANCE PORTAL -->
+  <div class="card hidden" id="finance">
+    <h3>Finance Portal</h3>
+    <input id="fName" placeholder="Student Name">
+    <input id="fReg" placeholder="Reg Number">
+    <input id="fTotal" placeholder="Total Fees">
+    <input id="fPaid" placeholder="Amount Paid">
+    <p>Balance: <span id="fBalance">0</span></p>
+    <button class="download" onclick="calcBalance()">Calculate Balance</button>
+    <button class="download" onclick="saveFinanceData()">Save Payment</button>
+    <table id="fHistory"><thead><tr><th>Date</th><th>Receipt</th><th>Amount</th></tr></thead><tbody></tbody></table>
+    <button class="download" onclick="downloadFeePDF()">Download PDF</button>
+    <button class="logout" onclick="logoutPortal()">Logout</button>
+  </div>
+
+  <!-- EXAM PORTAL -->
+  <div class="card hidden" id="exam">
+    <h3>Exam Portal</h3>
+    <input id="examFullName" placeholder="Full Name">
+    <input id="examRegNo" placeholder="Reg Number">
+    <input id="examCourse" placeholder="Course">
+    <div class="unit"><input type="text" placeholder="Unit 1" id="unit1Name"><input type="number" placeholder="CAT1" id="unit1Cat1"><input type="number" placeholder="CAT2" id="unit1Cat2"><input type="number" placeholder="Exam" id="unit1Exam"></div>
+    <div class="unit"><input type="text" placeholder="Unit 2" id="unit2Name"><input type="number" placeholder="CAT1" id="unit2Cat1"><input type="number" placeholder="CAT2" id="unit2Cat2"><input type="number" placeholder="Exam" id="unit2Exam"></div>
+    <button onclick="calculateAllGrades()">Calculate Grades</button>
+    <table id="examTable"><thead><tr><th>Unit</th><th>CAT1</th><th>CAT2</th><th>Exam</th><th>Total</th><th>Grade</th></tr></thead><tbody></tbody></table>
+    <button onclick="downloadExamPDF()">Download PDF</button>
+    <button class="logout" onclick="logoutPortal()">Logout</button>
+  </div>
+
 </div>
 
 <footer>Prepared by ICT Dept © 2026</footer>
@@ -164,66 +150,137 @@ let users = JSON.parse(localStorage.getItem('portalUsers')||'{}');
 ['ict','library','finance','exam'].forEach(p=>{if(!users[p]) users[p]=[]});
 localStorage.setItem('portalUsers',JSON.stringify(users));
 
-// PORTAL LOGIN
+// CURRENT PORTAL
 let currentPortal='';
-function openAuth(p){
-  currentPortal=p;
+
+// AUTH FUNCTIONS
+function openAuth(portal){
+  currentPortal=portal;
   portalSelect.classList.add('hidden');
-  auth.classList.remove('hidden');
-  authTitle.innerText=p.toUpperCase()+' LOGIN';
+  authModal.classList.remove('hidden');
+  authTitle.innerText=portal.toUpperCase()+' LOGIN';
   aUser.value=''; aPass.value=''; authMsg.innerText='';
 }
-function login(){
-  const portalUsers=JSON.parse(localStorage.getItem('portalUsers'));
-  const user=aUser.value, pass=aPass.value;
-  if(portalUsers[currentPortal].find(x=>x.user===user && x.pass===pass)){
-    auth.classList.add('hidden');
-    showPortal(currentPortal);
-  } else authMsg.innerText='Invalid login';
-}
-function showCreate(){auth.classList.add('hidden'); create.classList.remove('hidden');}
-function backAuth(){create.classList.add('hidden'); auth.classList.remove('hidden');}
-function createAccount(){
-  const portalUsers=JSON.parse(localStorage.getItem('portalUsers'));
-  portalUsers[currentPortal].push({user:cUser.value, pass:cPass.value});
-  localStorage.setItem('portalUsers',JSON.stringify(portalUsers));
-  alert('Account created for '+currentPortal+' portal!');
-  backAuth();
-}
 function logoutPortal(){
-  document.querySelectorAll('#ict,#library,#finance,#exam').forEach(e=>e.classList.add('hidden'));
+  ['ict','library','finance','exam'].forEach(p=>document.getElementById(p).classList.add('hidden'));
+  authModal.classList.add('hidden'); createModal.classList.add('hidden'); forgotModal.classList.add('hidden');
   portalSelect.classList.remove('hidden');
 }
 
+// LOGIN
+function login(){
+  const user=aUser.value, pass=aPass.value;
+  const portalUsers=JSON.parse(localStorage.getItem('portalUsers'));
+  const portalData=portalUsers[currentPortal];
+  if(portalData.find(x=>x.user===user && x.pass===pass)){
+    authModal.classList.add('hidden');
+    showPortal(currentPortal);
+  } else authMsg.innerText='Invalid login';
+}
+
+// CREATE / FORGOT
+function showCreate(){authModal.classList.add('hidden'); createModal.classList.remove('hidden');}
+function showForgot(){authModal.classList.add('hidden'); forgotModal.classList.remove('hidden');}
+function backAuth(){createModal.classList.add('hidden'); forgotModal.classList.add('hidden'); authModal.classList.remove('hidden');}
+function createAccount(){
+  const user=cUser.value, pass=cPass.value;
+  let portalUsers=JSON.parse(localStorage.getItem('portalUsers'));
+  portalUsers[currentPortal].push({user,pass});
+  localStorage.setItem('portalUsers',JSON.stringify(portalUsers));
+  alert('Account created!');
+  backAuth();
+}
+function recoverPassword(){
+  const user=fUser.value;
+  let portalUsers=JSON.parse(localStorage.getItem('portalUsers'));
+  let u=portalUsers[currentPortal].find(x=>x.user===user);
+  fMsg.innerText = u ? 'Password: '+u.pass : 'User not found';
+}
+
+// SHOW PORTAL AFTER LOGIN
+function showPortal(p){
+  document.getElementById(p).classList.remove('hidden');
+}
+
 // ICT PORTAL
-if(!localStorage.getItem('ictTickets')) localStorage.setItem('ictTickets',JSON.stringify([]));
+if(!localStorage.getItem('ictTickets')) localStorage.setItem('ictTickets','[]');
 function saveICTTicket(){
   let t=JSON.parse(localStorage.getItem('ictTickets'));
-  t.push({id:t.length+1,name:ictName.value,issue:ictIssue.value,device:ictDevice.value,date:ictStartDate.value});
+  t.push({id:t.length+1,name:ictName.value,issue:ictIssue.value,device:ictDevice.value,date:new Date().toLocaleDateString()});
   localStorage.setItem('ictTickets',JSON.stringify(t));
   loadICTTickets();
 }
-function loadICTTickets(){let t=JSON.parse(localStorage.getItem('ictTickets')); let tbody=document.querySelector('#ictTable tbody'); tbody.innerHTML=''; t.forEach(x=>{tbody.innerHTML+=`<tr><td>${x.id}</td><td>${x.name}</td><td>${x.issue}</td><td>${x.device}</td><td>${x.date}</td></tr>`});}
+function loadICTTickets(){
+  let t=JSON.parse(localStorage.getItem('ictTickets'));
+  let tbody=document.querySelector('#ictTable tbody'); tbody.innerHTML='';
+  t.forEach(x=>{tbody.innerHTML+=`<tr><td>${x.id}</td><td>${x.name}</td><td>${x.issue}</td><td>${x.device}</td><td>${x.date}</td></tr>`});
+}
+function downloadICTPDF(){
+  let t=JSON.parse(localStorage.getItem('ictTickets')); const doc=new jsPDF();
+  doc.text('ICT Tickets',14,20);
+  doc.autoTable({head:[['ID','Name','Issue','Device','Date']],body:t.map(x=>[x.id,x.name,x.issue,x.device,x.date])});
+  doc.save('ICT_Tickets.pdf');
+}
 
-// LIBRARY
-if(!localStorage.getItem('libEntries')) localStorage.setItem('libEntries',JSON.stringify([]));
-function saveLibraryEntry(){let e=JSON.parse(localStorage.getItem('libEntries')); e.push({student:libStudentName.value,course:libCourse.value,reg:libRegNo.value,book:libTitle.value,author:libAuthor.value,action:libAction.value,date:new Date().toLocaleDateString()}); localStorage.setItem('libEntries',JSON.stringify(e)); loadLibraryTable();}
-function loadLibraryTable(){let e=JSON.parse(localStorage.getItem('libEntries')); let tbody=document.querySelector('#libTable tbody'); tbody.innerHTML=''; e.forEach(x=>{tbody.innerHTML+=`<tr><td>${x.book}</td><td>${x.author}</td><td>${x.action}</td><td>${x.date}</td></tr>`});}
+// LIBRARY PORTAL
+if(!localStorage.getItem('libEntries')) localStorage.setItem('libEntries','[]');
+function saveLibraryEntry(){
+  let e=JSON.parse(localStorage.getItem('libEntries'));
+  e.push({student:libStudentName.value,course:libCourse.value,reg:libRegNo.value,book:libBook.value,author:libAuthor.value,action:libAction.value,date:new Date().toLocaleDateString()});
+  localStorage.setItem('libEntries',JSON.stringify(e));
+  loadLibraryTable();
+}
+function loadLibraryTable(){
+  let e=JSON.parse(localStorage.getItem('libEntries')); let tbody=document.querySelector('#libTable tbody'); tbody.innerHTML='';
+  e.forEach(x=>{tbody.innerHTML+=`<tr><td>${x.book}</td><td>${x.author}</td><td>${x.action}</td><td>${x.date}</td></tr>`});
+}
+function downloadLibraryPDF(){
+  let e=JSON.parse(localStorage.getItem('libEntries')); const doc=new jsPDF();
+  doc.text('Library Records',14,20);
+  doc.autoTable({head:[['Book','Author','Action','Date']],body:e.map(x=>[x.book,x.author,x.action,x.date])});
+  doc.save('Library_Records.pdf');
+}
 
-// FINANCE
-if(!localStorage.getItem('financeRecords')) localStorage.setItem('financeRecords',JSON.stringify([]));
+// FINANCE PORTAL
+if(!localStorage.getItem('financeRecords')) localStorage.setItem('financeRecords','[]');
 function calcBalance(){fBalance.innerText=Number(fTotal.value)-Number(fPaid.value);}
-function saveFinanceData(){let r=JSON.parse(localStorage.getItem('financeRecords')); r.push({date:new Date().toLocaleDateString(),receipt:'R-'+(r.length+1),amount:fPaid.value}); localStorage.setItem('financeRecords',JSON.stringify(r)); loadFinanceTable();}
-function loadFinanceTable(){let r=JSON.parse(localStorage.getItem('financeRecords')); let tbody=document.querySelector('#fHistory tbody'); tbody.innerHTML=''; r.forEach(x=>{tbody.innerHTML+=`<tr><td>${x.date}</td><td>${x.receipt}</td><td>${x.amount}</td></tr>`});}
-function downloadFeePDF(){let r=JSON.parse(localStorage.getItem('financeRecords')); const doc=new jsPDF(); doc.text('Fee Statement',14,20); doc.autoTable({head:[['Date','Receipt','Amount']],body:r.map(x=>[x.date,x.receipt,x.amount])}); doc.save('Fee_Statement.pdf');}
+function saveFinanceData(){
+  let r=JSON.parse(localStorage.getItem('financeRecords'));
+  r.push({date:new Date().toLocaleDateString(),receipt:'R-'+(r.length+1),amount:fPaid.value});
+  localStorage.setItem('financeRecords',JSON.stringify(r));
+  loadFinanceTable();
+}
+function loadFinanceTable(){
+  let r=JSON.parse(localStorage.getItem('financeRecords')); let tbody=document.querySelector('#fHistory tbody'); tbody.innerHTML='';
+  r.forEach(x=>{tbody.innerHTML+=`<tr><td>${x.date}</td><td>${x.receipt}</td><td>${x.amount}</td></tr>`});
+}
+function downloadFeePDF(){
+  let r=JSON.parse(localStorage.getItem('financeRecords')); const doc=new jsPDF();
+  doc.text('Fee Statement',14,20);
+  doc.autoTable({head:[['Date','Receipt','Amount']],body:r.map(x=>[x.date,x.receipt,x.amount])});
+  doc.save('Fee_Statement.pdf');
+}
 
-// EXAM
-function calculateAllGrades(){let tbody=document.querySelector('#examTable tbody'); tbody.innerHTML=''; for(let i=1;i<=4;i++){let u=document.getElementById('unit'+i+'Name').value||'-'; let c1=Number(document.getElementById('unit'+i+'Cat1').value||0); let c2=Number(document.getElementById('unit'+i+'Cat2').value||0); let ex=Number(document.getElementById('unit'+i+'Exam').value||0); let total=c1+c2+ex; let grade=total>=70?'A':total>=60?'B':total>=50?'C':total>=40?'D':'F'; tbody.innerHTML+=`<tr><td>${u}</td><td>${c1}</td><td>${c2}</td><td>${ex}</td><td>${total}</td><td>${grade}</td></tr>`;}}
-function downloadExamPDF(){let tbody=document.querySelector('#examTable tbody'); const doc=new jsPDF(); doc.text('Exam Results',14,20); let body=[]; tbody.querySelectorAll('tr').forEach(r=>{let row=[]; r.querySelectorAll('td').forEach(c=>row.push(c.innerText)); body.push(row);}); doc.autoTable({head:[['Unit','CAT1','CAT2','Exam','Total','Grade']],body}); doc.save('Exam_Results.pdf');}
-
-// SHOW PORTAL
-function showPortal(u){document.getElementById(u).classList.remove('hidden'); if(u==='ict') loadICTTickets(); if(u==='library') loadLibraryTable(); if(u==='finance') loadFinanceTable();}
+// EXAM PORTAL
+function calculateAllGrades(){
+  let tbody=document.querySelector('#examTable tbody'); tbody.innerHTML='';
+  for(let i=1;i<=2;i++){
+    let u=document.getElementById('unit'+i+'Name').value||'-';
+    let c1=Number(document.getElementById('unit'+i+'Cat1').value||0);
+    let c2=Number(document.getElementById('unit'+i+'Cat2').value||0);
+    let ex=Number(document.getElementById('unit'+i+'Exam').value||0);
+    let total=c1+c2+ex;
+    let grade=total>=70?'A':total>=60?'B':total>=50?'C':total>=40?'D':'F';
+    tbody.innerHTML+=`<tr><td>${u}</td><td>${c1}</td><td>${c2}</td><td>${ex}</td><td>${total}</td><td>${grade}</td></tr>`;
+  }
+}
+function downloadExamPDF(){
+  let tbody=document.querySelector('#examTable tbody'); const doc=new jsPDF();
+  doc.text('Exam Results',14,20); let body=[];
+  tbody.querySelectorAll('tr').forEach(r=>{let row=[]; r.querySelectorAll('td').forEach(c=>row.push(c.innerText)); body.push(row);});
+  doc.autoTable({head:[['Unit','CAT1','CAT2','Exam','Total','Grade']],body});
+  doc.save('Exam_Results.pdf');
+}
 </script>
-
 </body>
 </html>
