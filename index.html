@@ -11,164 +11,140 @@ body{margin:0;background:#f2f5f9;}
 
 /* HEADER */
 header{
-background:linear-gradient(90deg,#0d47a1,#1976d2);
-color:white;
-padding:15px 20px;
-text-align:center;
-position:fixed;
-width:100%;
-top:0;
-z-index:100;
-display:flex;
-align-items:center;
-justify-content:space-between;
+  background:linear-gradient(90deg,#0d47a1,#1976d2);
+  color:white;
+  padding:15px 20px;
+  text-align:center;
+  position:fixed;
+  width:100%;
+  top:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
-header img{
-height:50px;
-margin-right:10px;
-}
+header img{height:50px;margin-right:15px;}
 nav a{
-color:white;
-margin:0 10px;
-font-weight:bold;
-text-decoration:none;
+  color:white;
+  margin:0 10px;
+  font-weight:bold;
+  text-decoration:none;
 }
 nav a:hover{text-decoration:underline;}
 
 /* HERO SLIDER */
 .hero{
-height:50vh;
-position:relative;
-overflow:hidden;
-margin-top:80px;
+  height:50vh;
+  position:relative;
+  overflow:hidden;
+  margin-top:80px;
 }
 .hero-slide{
-position:absolute;
-top:0;
-left:100%;
-width:100%;
-height:100%;
-background-size:cover;
-background-position:center;
-transition:1s;
+  position:absolute;
+  top:0;
+  left:100%;
+  width:100%;
+  height:100%;
+  background-size:cover;
+  background-position:center;
+  transition:1s;
 }
-.hero-slide.active{
-left:0;
-}
+.hero-slide.active{left:0;}
 .hero-text{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-color:white;
-text-align:center;
-text-shadow:2px 2px 5px rgba(0,0,0,0.6);
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  color:white;
+  text-align:center;
+  text-shadow:2px 2px 5px rgba(0,0,0,0.6);
 }
 
 /* CONTAINER */
 .container{
-max-width:1100px;
-margin:auto;
-padding:20px;
-display:flex;
-flex-wrap:wrap;
-justify-content:space-between;
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
 }
 
 /* DEPARTMENT CARD */
 .card{
-background:white;
-padding:20px;
-border-radius:12px;
-box-shadow:0 10px 30px rgba(0,0,0,.12);
-margin-bottom:30px;
-flex:1 1 45%;
-text-align:center;
-position:relative;
-overflow:hidden;
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.12);
+  margin-bottom:30px;
+  flex:1 1 45%;
+  text-align:center;
 }
 
 /* DEPARTMENT SLIDER */
 .slider{
-position:relative;
-width:100%;
-height:200px;
-overflow:hidden;
-border-radius:10px;
-margin-bottom:10px;
+  position:relative;
+  width:100%;
+  height:200px;
+  overflow:hidden;
+  border-radius:10px;
+  margin-bottom:10px;
 }
 .slide{
-position:absolute;
-top:0;
-left:100%;
-width:100%;
-height:100%;
-object-fit:cover;
-transition:1s;
+  position:absolute;
+  top:0;
+  left:100%;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:1s;
 }
-.slide.active{
-left:0;
-}
+.slide.active{left:0;}
 .slide-caption{
-position:absolute;
-bottom:8px;
-left:0;
-width:100%;
-background:rgba(0,0,0,0.5);
-color:white;
-padding:5px;
-font-size:14px;
-}
-
-/* DEPARTMENT NAME */
-.card h3{
-color:#0d47a1;
-margin-bottom:10px;
+  position:absolute;
+  bottom:8px;
+  left:0;
+  width:100%;
+  background:rgba(0,0,0,0.5);
+  color:white;
+  padding:5px;
+  font-size:14px;
 }
 
 /* DOWNLOAD BUTTONS */
 .download-btn{
-display:inline-block;
-padding:8px 16px;
-background:#2e7d32;
-color:white;
-border-radius:6px;
-text-decoration:none;
-font-weight:bold;
-margin:5px;
+  display:inline-block;
+  padding:8px 16px;
+  background:#2e7d32;
+  color:white;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:bold;
+  margin:5px;
 }
-.download-btn:hover{
-background:#1b5e20;
-}
+.download-btn:hover{background:#1b5e20;}
 
 /* FOOTER */
 footer{
-background:#0d47a1;
-color:white;
-text-align:center;
-padding:20px;
-margin-top:30px;
+  background:#0d47a1;
+  color:white;
+  text-align:center;
+  padding:20px;
+  margin-top:30px;
 }
 footer a{
-color:#bbdefb;
-margin:0 6px;
-text-decoration:none;
+  color:#bbdefb;
+  margin:0 6px;
+  text-decoration:none;
 }
-footer a:hover{text-decoration:underline}
+footer a:hover{text-decoration:underline;}
 
 /* RESPONSIVE */
 @media(max-width:768px){
-.container{
-flex-direction:column;
-}
-.card{
-flex:1 1 100%;
-}
-header{
-flex-direction:column;
-align-items:flex-start;
-}
-header img{margin-bottom:10px;}
+  .container{flex-direction:column;}
+  .card{flex:1 1 100%;}
+  header{flex-direction:column;align-items:flex-start;}
+  header img{margin-bottom:10px;}
 }
 </style>
 </head>
@@ -177,85 +153,85 @@ header img{margin-bottom:10px;}
 
 <header>
 <div style="display:flex;align-items:center;">
-<img src="https://picsum.photos/80/80?1" alt="College Logo">
-<h2>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h2>
+  <img src="https://images.pexels.com/photos/4144172/pexels-photo-4144172.jpeg?auto=compress&cs=tinysrgb&w=80" alt="College Logo">
+  <h2>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h2>
 </div>
 <nav>
-<a href="#home">Home</a>
-<a href="#departments">Departments</a>
-<a href="#contact">Contact</a>
+  <a href="#home">Home</a>
+  <a href="#departments">Departments</a>
+  <a href="#contact">Contact</a>
 </nav>
 </header>
 
 <!-- HERO SLIDER -->
 <section class="hero" id="home">
-<div class="hero-slide active" style="background-image:url('https://picsum.photos/id/1011/1200/600');"></div>
-<div class="hero-slide" style="background-image:url('https://picsum.photos/id/1012/1200/600');"></div>
-<div class="hero-slide" style="background-image:url('https://picsum.photos/id/1013/1200/600');"></div>
-<div class="hero-text">
-<h1>Welcome to Msambweni TVC</h1>
-<p>Empowering Students with Knowledge & Technology</p>
-</div>
+  <div class="hero-slide active" style="background-image:url('https://images.pexels.com/photos/4144175/pexels-photo-4144175.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
+  <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/256775/pexels-photo-256775.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
+  <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1200');"></div>
+  <div class="hero-text">
+    <h1>Welcome to Msambweni TVC</h1>
+    <p>Modern Campus | Student Growth | Future‑Ready Skills</p>
+  </div>
 </section>
 
-<!-- DEPARTMENTS -->
+<!-- DEPARTMENTS SECTION -->
 <section class="container" id="departments">
 
-<!-- ICT Department -->
-<div class="card">
-<div class="slider" id="ictSlider">
-<img class="slide active" src="https://picsum.photos/id/180/400/200" alt="ICT Photo 1">
-<img class="slide" src="https://picsum.photos/id/181/400/200" alt="ICT Photo 2">
-<img class="slide" src="https://picsum.photos/id/182/400/200" alt="ICT Photo 3">
-<div class="slide-caption">ICT Lab</div>
-</div>
-<h3>ICT Department</h3>
-<a class="download-btn" href="documents/ict_course_outline.pdf" download>Course Outline</a>
-<a class="download-btn" href="documents/ict_notes.pdf" download>Notes</a>
-<a class="download-btn" href="documents/ict_timetable.pdf" download>Timetable</a>
-</div>
+  <!-- ICT Department -->
+  <div class="card">
+    <div class="slider" id="ictSlider">
+      <img class="slide active" src="https://images.pexels.com/photos/3861959/pexels-photo-3861959.jpeg?auto=compress&cs=tinysrgb&w=400" alt="ICT Photo 1">
+      <img class="slide" src="https://images.pexels.com/photos/5740708/pexels-photo-5740708.jpeg?auto=compress&cs=tinysrgb&w=400" alt="ICT Photo 2">
+      <img class="slide" src="https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=400" alt="ICT Photo 3">
+      <div class="slide-caption">ICT Department Labs</div>
+    </div>
+    <h3>ICT Department</h3>
+    <a class="download-btn" href="documents/ict_course_outline.pdf" download>Course Outline</a>
+    <a class="download-btn" href="documents/ict_notes.pdf" download>Notes</a>
+    <a class="download-btn" href="documents/ict_timetable.pdf" download>Timetable</a>
+  </div>
 
-<!-- Business Department -->
-<div class="card">
-<div class="slider" id="businessSlider">
-<img class="slide active" src="https://picsum.photos/id/200/400/200" alt="Business Photo 1">
-<img class="slide" src="https://picsum.photos/id/201/400/200" alt="Business Photo 2">
-<img class="slide" src="https://picsum.photos/id/202/400/200" alt="Business Photo 3">
-<div class="slide-caption">Business Classroom</div>
-</div>
-<h3>Business Department</h3>
-<a class="download-btn" href="documents/business_course_outline.pdf" download>Course Outline</a>
-<a class="download-btn" href="documents/business_notes.pdf" download>Notes</a>
-<a class="download-btn" href="documents/business_timetable.pdf" download>Timetable</a>
-</div>
+  <!-- Business Department -->
+  <div class="card">
+    <div class="slider" id="businessSlider">
+      <img class="slide active" src="https://images.pexels.com/photos/3182788/pexels-photo-3182788.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Business Photo 1">
+      <img class="slide" src="https://images.pexels.com/photos/3184290/pexels-photo-3184290.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Business Photo 2">
+      <img class="slide" src="https://images.pexels.com/photos/3182782/pexels-photo-3182782.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Business Photo 3">
+      <div class="slide-caption">Business Studies Block</div>
+    </div>
+    <h3>Business Department</h3>
+    <a class="download-btn" href="documents/business_course_outline.pdf" download>Course Outline</a>
+    <a class="download-btn" href="documents/business_notes.pdf" download>Notes</a>
+    <a class="download-btn" href="documents/business_timetable.pdf" download>Timetable</a>
+  </div>
 
-<!-- Hospitality Department -->
-<div class="card">
-<div class="slider" id="hospitalitySlider">
-<img class="slide active" src="https://picsum.photos/id/220/400/200" alt="Hospitality Photo 1">
-<img class="slide" src="https://picsum.photos/id/221/400/200" alt="Hospitality Photo 2">
-<img class="slide" src="https://picsum.photos/id/222/400/200" alt="Hospitality Photo 3">
-<div class="slide-caption">Hospitality Kitchen</div>
-</div>
-<h3>Hospitality Department</h3>
-<a class="download-btn" href="documents/hospitality_course_outline.pdf" download>Course Outline</a>
-<a class="download-btn" href="documents/hospitality_notes.pdf" download>Notes</a>
-<a class="download-btn" href="documents/hospitality_timetable.pdf" download>Timetable</a>
-</div>
+  <!-- Hospitality Department -->
+  <div class="card">
+    <div class="slider" id="hospitalitySlider">
+      <img class="slide active" src="https://images.pexels.com/photos/323682/pexels-photo-323682.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Hospitality Photo 1">
+      <img class="slide" src="https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Hospitality Photo 2">
+      <img class="slide" src="https://images.pexels.com/photos/769289/pexels-photo-769289.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Hospitality Photo 3">
+      <div class="slide-caption">Hospitality Training Area</div>
+    </div>
+    <h3>Hospitality Department</h3>
+    <a class="download-btn" href="documents/hospitality_course_outline.pdf" download>Course Outline</a>
+    <a class="download-btn" href="documents/hospitality_notes.pdf" download>Notes</a>
+    <a class="download-btn" href="documents/hospitality_timetable.pdf" download>Timetable</a>
+  </div>
 
-<!-- Engineering Department -->
-<div class="card">
-<div class="slider" id="engineeringSlider">
-<img class="slide active" src="https://picsum.photos/id/240/400/200" alt="Engineering Photo 1">
-<img class="slide" src="https://picsum.photos/id/241/400/200" alt="Engineering Photo 2">
-<img class="slide" src="https://picsum.photos/id/242/400/200" alt="Engineering Photo 3">
-<div class="slide-caption">Engineering Workshop</div>
-</div>
-<h3>Engineering Department</h3>
-<a class="download-btn" href="documents/engineering_course_outline.pdf" download>Course Outline</a>
-<a class="download-btn" href="documents/engineering_notes.pdf" download>Notes</a>
-<a class="download-btn" href="documents/engineering_timetable.pdf" download>Timetable</a>
-</div>
+  <!-- Engineering Department -->
+  <div class="card">
+    <div class="slider" id="engineeringSlider">
+      <img class="slide active" src="https://images.pexels.com/photos/256657/pexels-photo-256657.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Engineering Photo 1">
+      <img class="slide" src="https://images.pexels.com/photos/3862138/pexels-photo-3862138.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Engineering Photo 2">
+      <img class="slide" src="https://images.pexels.com/photos/4145196/pexels-photo-4145196.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Engineering Photo 3">
+      <div class="slide-caption">Engineering Workshop</div>
+    </div>
+    <h3>Engineering Department</h3>
+    <a class="download-btn" href="documents/engineering_course_outline.pdf" download>Course Outline</a>
+    <a class="download-btn" href="documents/engineering_notes.pdf" download>Notes</a>
+    <a class="download-btn" href="documents/engineering_timetable.pdf" download>Timetable</a>
+  </div>
 
 </section>
 
@@ -269,25 +245,25 @@ header img{margin-bottom:10px;}
 <p>© 2026 Msambweni Technical & Vocational College</p>
 <p>Prepared by ICT Department | All Rights Reserved</p>
 <p>
-<a href="https://www.youtube.com">YouTube</a> |
-<a href="https://www.knec.ac.ke">KNEC</a> |
-<a href="https://www.kuccps.net">KUCCPS</a> |
-<a href="https://www.helb.co.ke">HELB</a> |
-<a href="https://tvetlibrary.go.ke">TVET Library</a>
+<a href="#">YouTube</a> |
+<a href="#">KNEC</a> |
+<a href="#">KUCCPS</a> |
+<a href="#">HELB</a> |
+<a href="#">TVET Library</a>
 </p>
 </footer>
 
 <script>
-// ===== HERO SLIDER =====
+// HERO SLIDER
 let currentHero = 0;
 const heroSlides = document.querySelectorAll('.hero-slide');
 setInterval(()=>{
   heroSlides[currentHero].classList.remove('active');
-  currentHero = (currentHero+1)%heroSlides.length;
+  currentHero = (currentHero + 1) % heroSlides.length;
   heroSlides[currentHero].classList.add('active');
 },4000);
 
-// ===== DEPARTMENT SLIDERS =====
+// DEPARTMENT SLIDERS
 function initSlider(sliderId){
   const slider = document.getElementById(sliderId);
   const slides = slider.querySelectorAll('.slide');
@@ -299,7 +275,7 @@ function initSlider(sliderId){
   },3000);
 }
 
-// Initialize sliders
+// Start sliders
 ['ictSlider','businessSlider','hospitalitySlider','engineeringSlider'].forEach(id=>initSlider(id));
 </script>
 
