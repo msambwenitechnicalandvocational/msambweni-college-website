@@ -2,331 +2,230 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Msambweni TVC Full Portal</title>
+<title>Msambweni TVC Integrated Portal</title>
 
-<!-- jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
 
 <style>
-:root{
-  --blue:#0d47a1;
-  --yellow:#fbc02d;
-}
 body{
   margin:0;
-  font-family:Segoe UI,Arial,sans-serif;
-  background:#f4f7fb;
+  font-family:Segoe UI,Arial;
+  background:linear-gradient(135deg,#0d47a1,#1976d2);
 }
-header{
-  background:linear-gradient(90deg,var(--blue),var(--yellow));
-  color:#fff;
-  padding:25px;
-  text-align:center;
-}
-header img{height:70px}
-
 .container{
   max-width:1100px;
-  margin:40px auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:25px;
+  margin:auto;
+  padding:20px;
 }
-.portal{
+.card{
   background:#fff;
-  border-radius:18px;
-  padding:25px;
+  border-radius:14px;
+  padding:20px;
+  box-shadow:0 15px 40px rgba(0,0,0,.3);
+  margin-bottom:20px;
+}
+h2,h3{
   text-align:center;
-  box-shadow:0 14px 30px rgba(0,0,0,.25);
-}
-.portal h2{color:var(--blue)}
-.portal button{
-  margin-top:15px;
-  padding:12px 28px;
-  border:none;
-  border-radius:30px;
-  font-weight:600;
-  cursor:pointer;
-  color:#fff;
-}
-.portal:nth-child(1) button{background:#fbc02d;color:#333}
-.portal:nth-child(2) button{background:#1976d2}
-.portal:nth-child(3) button{background:#2e7d32}
-.portal:nth-child(4) button{background:#6a1b9a}
-.portal:nth-child(5) button{background:#c62828}
-
-/* Modal */
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(13,71,161,.85);
-  justify-content:center;
-  align-items:center;
-  z-index:100;
-}
-.box{
-  background:#fff;
-  padding:25px;
-  border-radius:18px;
-  width:90%;
-  max-width:420px;
-  text-align:center;
+  color:#0d47a1;
 }
 input,select{
   width:100%;
-  padding:11px;
+  padding:10px;
   margin:8px 0;
-  border-radius:8px;
+  border-radius:6px;
   border:1px solid #ccc;
 }
-.full{
-  width:100%;
-  padding:12px;
-  background:linear-gradient(90deg,var(--blue),var(--yellow));
+button{
+  padding:10px 18px;
   border:none;
-  color:#fff;
-  border-radius:25px;
-  font-weight:600;
+  border-radius:6px;
   cursor:pointer;
+  margin:5px;
+  color:white;
 }
-.link{
-  color:var(--blue);
-  cursor:pointer;
-  font-size:13px;
-  margin-top:8px;
-}
-.msg{font-size:13px;color:red}
-
-/* Portal Content */
-.portal-content{
-  display:none;
-  max-width:1000px;
-  margin:30px auto;
-  padding:25px;
-  background:#fff;
-  border-radius:18px;
-  box-shadow:0 10px 25px rgba(0,0,0,.25);
-}
-.portal-content h2{color:var(--blue)}
-.logout{
-  background:#9e9e9e;
-  color:#fff;
-  border:none;
-  padding:10px 20px;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-/* Tables */
+.login{background:#1976d2;}
+.logout{background:#c62828;}
+.download{background:#2e7d32;}
+.nav button{background:#1565c0;}
+.hidden{display:none;}
 table{
   width:100%;
   border-collapse:collapse;
   margin-top:15px;
 }
 th,td{
-  border:1px solid #ddd;
+  border:1px solid #ccc;
   padding:10px;
+  text-align:center;
 }
 th{
-  background:var(--blue);
-  color:#fff;
-}
-.download{
-  background:var(--yellow);
-  border:none;
-  padding:8px 15px;
-  border-radius:10px;
-  cursor:pointer;
+  background:#1976d2;
+  color:white;
 }
 </style>
 </head>
 
 <body>
+<div class="container">
 
-<header>
-<img src="files/msambweni-logo.png">
-<h1>Msambweni Technical & Vocational College</h1>
-<p>Integrated College Portal</p>
-</header>
-
-<!-- HOME -->
-<div class="container" id="home">
-  <div class="portal"><h2>📚 Library</h2><button onclick="openLogin('library')">Enter</button></div>
-  <div class="portal"><h2>💻 Masomo</h2><button onclick="openLogin('masomo')">Enter</button></div>
-  <div class="portal"><h2>💰 Finance</h2><button onclick="openLogin('finance')">Enter</button></div>
-  <div class="portal"><h2>🎓 Student</h2><button onclick="openLogin('student')">Enter</button></div>
-  <div class="portal"><h2>🧑‍💼 Admin</h2><button onclick="openLogin('admin')">Enter</button></div>
+<!-- LOGIN -->
+<div id="loginCard" class="card">
+<h2>Student Portal Login</h2>
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
+<button class="login" onclick="login()">Login</button>
 </div>
 
-<!-- AUTH MODAL -->
-<div class="modal" id="auth">
-  <div class="box" id="loginBox">
-    <h3>Portal Login</h3>
-    <input id="luser" placeholder="Username">
-    <input id="lpass" type="password" placeholder="Password">
-    <button class="full" onclick="login()">Login</button>
-    <div class="link" onclick="showRegister()">Create Account</div>
-    <div class="link" onclick="showForgot()">Forgot Password?</div>
-    <p class="msg" id="lmsg"></p>
-  </div>
+<!-- DASHBOARD -->
+<div id="dashboard" class="card hidden">
+<h2>Msambweni Technical & Vocational College</h2>
 
-  <div class="box" id="regBox" style="display:none">
-    <h3>Create Account</h3>
-    <input id="rname" placeholder="Full Name">
-    <input id="ruser" placeholder="Username">
-    <input id="rpass" type="password" placeholder="Password">
-    <select id="rrole">
-      <option value="student">Student</option>
-      <option value="lecturer">Lecturer</option>
-      <option value="finance">Finance</option>
-      <option value="admin">Admin</option>
-    </select>
-    <button class="full" onclick="register()">Register</button>
-    <div class="link" onclick="showLogin()">Back</div>
-    <p class="msg" id="rmsg"></p>
-  </div>
-
-  <div class="box" id="fpBox" style="display:none">
-    <h3>Recover Password</h3>
-    <input id="fpuser" placeholder="Username">
-    <button class="full" onclick="recover()">Recover</button>
-    <div class="link" onclick="showLogin()">Back</div>
-    <p class="msg" id="fpmsg"></p>
-  </div>
+<div class="nav" style="text-align:center">
+<button onclick="openPortal('finance')">Finance</button>
+<button onclick="openPortal('ict')">ICT</button>
+<button onclick="openPortal('library')">Library</button>
+<button onclick="openPortal('exam')">Exams</button>
+<button onclick="logout()" class="logout">Logout</button>
+</div>
 </div>
 
-<!-- PORTAL CONTENT -->
-<div id="portal" class="portal-content"></div>
+<!-- FINANCE PORTAL -->
+<div id="finance" class="card hidden">
+<h3>Finance Portal</h3>
+<input id="sname" placeholder="Student Name">
+<input id="regno" placeholder="Registration Number">
+
+<h4>Fee Summary</h4>
+<table>
+<tr><th>Total Fees</th><th>Paid</th><th>Balance</th></tr>
+<tr>
+<td><input id="total" value="50000"></td>
+<td><input id="paid" value="20000"></td>
+<td id="balance">30000</td>
+</tr>
+</table>
+
+<button class="download" onclick="calc()">Calculate Balance</button>
+
+<h4>Payment History</h4>
+<table id="payTable">
+<tr><th>Date</th><th>Receipt No</th><th>Amount</th></tr>
+<tr><td>10/01/2026</td><td>RC001</td><td>10,000</td></tr>
+<tr><td>05/02/2026</td><td>RC002</td><td>10,000</td></tr>
+</table>
+
+<button class="download" onclick="feePDF()">Download Fee Statement PDF</button>
+</div>
+
+<!-- ICT PORTAL -->
+<div id="ict" class="card hidden">
+<h3>ICT Portal Form</h3>
+<input placeholder="Issue Type">
+<input placeholder="Device Serial Number">
+<select>
+<option>Pending</option>
+<option>Resolved</option>
+</select>
+<button class="download" onclick="simplePDF('ICT Support Request')">Download PDF</button>
+</div>
+
+<!-- LIBRARY PORTAL -->
+<div id="library" class="card hidden">
+<h3>Library Request Form</h3>
+<input placeholder="Book Title">
+<input placeholder="Author">
+<select>
+<option>Borrow</option>
+<option>Return</option>
+</select>
+<button class="download" onclick="simplePDF('Library Form')">Download PDF</button>
+</div>
+
+<!-- EXAM PORTAL -->
+<div id="exam" class="card hidden">
+<h3>Exam Portal Form</h3>
+<input placeholder="Unit Name">
+<select>
+<option>Special Exam</option>
+<option>Remark</option>
+</select>
+<button class="download" onclick="simplePDF('Exam Request Form')">Download PDF</button>
+</div>
+
+</div>
 
 <script>
 const { jsPDF } = window.jspdf;
 
-let users = JSON.parse(localStorage.getItem("users")||"[]");
-if(users.length===0){
-  users.push({user:"student1",pass:"123",role:"student",name:"Student One"});
-  users.push({user:"admin",pass:"admin",role:"admin",name:"Admin"});
-  localStorage.setItem("users",JSON.stringify(users));
-}
-
-let currentPortal="", currentUser=null;
-
-function openLogin(p){
-  currentPortal=p;
-  document.getElementById("auth").style.display="flex";
-  showLogin();
-}
-
-function showLogin(){
-  loginBox.style.display="block";
-  regBox.style.display="none";
-  fpBox.style.display="none";
-}
-function showRegister(){
-  loginBox.style.display="none";
-  regBox.style.display="block";
-}
-function showForgot(){
-  loginBox.style.display="none";
-  fpBox.style.display="block";
-}
-
 function login(){
-  let u=luser.value, p=lpass.value;
-  let user=users.find(x=>x.user===u && x.pass===p);
-  if(!user){lmsg.innerText="Invalid login";return;}
-  currentUser=user;
-  auth.style.display="none";
-  loadPortal();
-}
-
-function register(){
-  if(users.find(u=>u.user===ruser.value)){
-    rmsg.innerText="Username exists";return;
-  }
-  users.push({user:ruser.value,pass:rpass.value,role:rrole.value,name:rname.value});
-  localStorage.setItem("users",JSON.stringify(users));
-  rmsg.style.color="green";
-  rmsg.innerText="Account created";
-}
-
-function recover(){
-  let u=users.find(x=>x.user===fpuser.value);
-  if(!u){fpmsg.innerText="Not found";return;}
-  fpmsg.style.color="green";
-  fpmsg.innerText="Password: "+u.pass;
-}
-
-function loadPortal(){
-  home.style.display="none";
-  portal.style.display="block";
-
-  if(currentPortal==="library"){
-    portal.innerHTML=`
-    <h2>Library Portal</h2>
-    <input id="book" placeholder="Book Title">
-    <button class="download" onclick="pdf('Library Book',book.value)">Download PDF</button>
-    <br><br><button class="logout" onclick="logout()">Logout</button>`;
-  }
-
-  if(currentPortal==="masomo"){
-    portal.innerHTML=`
-    <h2>Masomo Portal</h2>
-    <input id="course" placeholder="Course Name">
-    <input id="assignment" placeholder="Assignment Title">
-    <button class="download" onclick="pdf('Masomo Assignment',course.value+' - '+assignment.value)">Download PDF</button>
-    <br><br><button class="logout" onclick="logout()">Logout</button>`;
-  }
-
-  if(currentPortal==="student"){
-    portal.innerHTML=`
-    <h2>Student Portal</h2>
-    <input id="unit" placeholder="Unit Name">
-    <input id="marks" placeholder="Marks">
-    <button class="download" onclick="pdf('Student Result',unit.value+' : '+marks.value)">Download PDF</button>
-    <br><br><button class="logout" onclick="logout()">Logout</button>`;
-  }
-
-  if(currentPortal==="finance"){
-    portal.innerHTML=`
-    <h2>Finance Portal</h2>
-    <table>
-      <tr><th>Total Fees</th><th>Paid</th><th>Balance</th></tr>
-      <tr>
-        <td><input id="total" value="50000"></td>
-        <td><input id="paid" value="20000"></td>
-        <td id="balance">30000</td>
-      </tr>
-    </table>
-    <button class="download" onclick="calc()">Calculate</button>
-    <button class="download" onclick="pdf('Fee Statement','Balance: '+balance.innerText)">Download PDF</button>
-    <br><br><button class="logout" onclick="logout()">Logout</button>`;
-  }
-
-  if(currentPortal==="admin"){
-    portal.innerHTML=`
-    <h2>Admin Portal</h2>
-    <ul>${users.map(u=>`<li>${u.name} (${u.role})</li>`).join("")}</ul>
-    <button class="logout" onclick="logout()">Logout</button>`;
-  }
-}
-
-function calc(){
-  balance.innerText=total.value-paid.value;
-}
-
-function pdf(title,text){
-  const d=new jsPDF();
-  d.text(title,20,20);
-  d.text(text,20,35);
-  d.save(title+".pdf");
+  if(username.value && password.value){
+    loginCard.classList.add("hidden");
+    dashboard.classList.remove("hidden");
+  }else alert("Enter login details");
 }
 
 function logout(){
-  currentUser=null;
-  portal.style.display="none";
-  home.style.display="grid";
+  document.querySelectorAll('.card').forEach(c=>c.classList.add("hidden"));
+  loginCard.classList.remove("hidden");
+}
+
+function openPortal(id){
+  document.querySelectorAll('.card').forEach(c=>{
+    if(c.id!=="dashboard") c.classList.add("hidden");
+  });
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function calc(){
+  let t=Number(total.value), p=Number(paid.value);
+  balance.innerText=t-p;
+}
+
+function feePDF(){
+  const doc=new jsPDF();
+  let y=20;
+
+  doc.setFontSize(14);
+  doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",105,y,{align:"center"});
+  y+=10;
+  doc.text("FEE STATEMENT",105,y,{align:"center"});
+
+  doc.setFontSize(10);
+  y+=15;
+  doc.text(`Date & Time: ${new Date().toLocaleString()}`,20,y);
+  y+=8;
+  doc.text(`Student Name: ${sname.value}`,20,y);
+  y+=8;
+  doc.text(`Registration Number: ${regno.value}`,20,y);
+
+  doc.autoTable({
+    startY:y+10,
+    head:[["Total","Paid","Balance"]],
+    body:[[total.value,paid.value,balance.innerText]]
+  });
+
+  doc.autoTable({
+    startY:doc.lastAutoTable.finalY+10,
+    head:[["Date","Receipt","Amount"]],
+    body:[
+      ["10/01/2026","RC001","10,000"],
+      ["05/02/2026","RC002","10,000"]
+    ]
+  });
+
+  let fy=doc.lastAutoTable.finalY+15;
+  doc.text("Prepared by: Accounts Office",20,fy);
+
+  doc.save("Fee_Statement.pdf");
+}
+
+function simplePDF(title){
+  const doc=new jsPDF();
+  doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",105,20,{align:"center"});
+  doc.text(title,105,35,{align:"center"});
+  doc.text("Generated on: "+new Date().toLocaleString(),20,55);
+  doc.save(title.replace(/ /g,"_")+".pdf");
 }
 </script>
 
