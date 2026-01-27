@@ -13,15 +13,19 @@ body{margin:0;background:#f2f5f9;}
 header{
 background:linear-gradient(90deg,#0d47a1,#1976d2);
 color:white;
-padding:20px;
+padding:15px 20px;
 text-align:center;
 position:fixed;
 width:100%;
 top:0;
 z-index:100;
+display:flex;
+align-items:center;
+justify-content:space-between;
 }
-nav{
-margin-top:10px;
+header img{
+height:50px;
+margin-right:10px;
 }
 nav a{
 color:white;
@@ -36,7 +40,7 @@ nav a:hover{text-decoration:underline;}
 height:50vh;
 position:relative;
 overflow:hidden;
-margin-top:100px;
+margin-top:80px;
 }
 .hero-slide{
 position:absolute;
@@ -91,7 +95,7 @@ width:100%;
 height:200px;
 overflow:hidden;
 border-radius:10px;
-margin-bottom:15px;
+margin-bottom:10px;
 }
 .slide{
 position:absolute;
@@ -105,11 +109,21 @@ transition:1s;
 .slide.active{
 left:0;
 }
+.slide-caption{
+position:absolute;
+bottom:8px;
+left:0;
+width:100%;
+background:rgba(0,0,0,0.5);
+color:white;
+padding:5px;
+font-size:14px;
+}
 
 /* DEPARTMENT NAME */
 .card h3{
 color:#0d47a1;
-margin-bottom:15px;
+margin-bottom:10px;
 }
 
 /* DOWNLOAD BUTTONS */
@@ -150,6 +164,11 @@ flex-direction:column;
 .card{
 flex:1 1 100%;
 }
+header{
+flex-direction:column;
+align-items:flex-start;
+}
+header img{margin-bottom:10px;}
 }
 </style>
 </head>
@@ -157,7 +176,10 @@ flex:1 1 100%;
 <body>
 
 <header>
+<div style="display:flex;align-items:center;">
+<img src="https://picsum.photos/80/80?1" alt="College Logo">
 <h2>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h2>
+</div>
 <nav>
 <a href="#home">Home</a>
 <a href="#departments">Departments</a>
@@ -167,9 +189,9 @@ flex:1 1 100%;
 
 <!-- HERO SLIDER -->
 <section class="hero" id="home">
-<div class="hero-slide active" style="background-image:url('images/hero1.jpg');"></div>
-<div class="hero-slide" style="background-image:url('images/hero2.jpg');"></div>
-<div class="hero-slide" style="background-image:url('images/hero3.jpg');"></div>
+<div class="hero-slide active" style="background-image:url('https://picsum.photos/id/1011/1200/600');"></div>
+<div class="hero-slide" style="background-image:url('https://picsum.photos/id/1012/1200/600');"></div>
+<div class="hero-slide" style="background-image:url('https://picsum.photos/id/1013/1200/600');"></div>
 <div class="hero-text">
 <h1>Welcome to Msambweni TVC</h1>
 <p>Empowering Students with Knowledge & Technology</p>
@@ -182,9 +204,10 @@ flex:1 1 100%;
 <!-- ICT Department -->
 <div class="card">
 <div class="slider" id="ictSlider">
-<img class="slide active" src="images/ict1.jpg" alt="ICT Photo 1">
-<img class="slide" src="images/ict2.jpg" alt="ICT Photo 2">
-<img class="slide" src="images/ict3.jpg" alt="ICT Photo 3">
+<img class="slide active" src="https://picsum.photos/id/180/400/200" alt="ICT Photo 1">
+<img class="slide" src="https://picsum.photos/id/181/400/200" alt="ICT Photo 2">
+<img class="slide" src="https://picsum.photos/id/182/400/200" alt="ICT Photo 3">
+<div class="slide-caption">ICT Lab</div>
 </div>
 <h3>ICT Department</h3>
 <a class="download-btn" href="documents/ict_course_outline.pdf" download>Course Outline</a>
@@ -195,9 +218,10 @@ flex:1 1 100%;
 <!-- Business Department -->
 <div class="card">
 <div class="slider" id="businessSlider">
-<img class="slide active" src="images/business1.jpg" alt="Business Photo 1">
-<img class="slide" src="images/business2.jpg" alt="Business Photo 2">
-<img class="slide" src="images/business3.jpg" alt="Business Photo 3">
+<img class="slide active" src="https://picsum.photos/id/200/400/200" alt="Business Photo 1">
+<img class="slide" src="https://picsum.photos/id/201/400/200" alt="Business Photo 2">
+<img class="slide" src="https://picsum.photos/id/202/400/200" alt="Business Photo 3">
+<div class="slide-caption">Business Classroom</div>
 </div>
 <h3>Business Department</h3>
 <a class="download-btn" href="documents/business_course_outline.pdf" download>Course Outline</a>
@@ -208,9 +232,10 @@ flex:1 1 100%;
 <!-- Hospitality Department -->
 <div class="card">
 <div class="slider" id="hospitalitySlider">
-<img class="slide active" src="images/hospitality1.jpg" alt="Hospitality Photo 1">
-<img class="slide" src="images/hospitality2.jpg" alt="Hospitality Photo 2">
-<img class="slide" src="images/hospitality3.jpg" alt="Hospitality Photo 3">
+<img class="slide active" src="https://picsum.photos/id/220/400/200" alt="Hospitality Photo 1">
+<img class="slide" src="https://picsum.photos/id/221/400/200" alt="Hospitality Photo 2">
+<img class="slide" src="https://picsum.photos/id/222/400/200" alt="Hospitality Photo 3">
+<div class="slide-caption">Hospitality Kitchen</div>
 </div>
 <h3>Hospitality Department</h3>
 <a class="download-btn" href="documents/hospitality_course_outline.pdf" download>Course Outline</a>
@@ -221,9 +246,10 @@ flex:1 1 100%;
 <!-- Engineering Department -->
 <div class="card">
 <div class="slider" id="engineeringSlider">
-<img class="slide active" src="images/engineering1.jpg" alt="Engineering Photo 1">
-<img class="slide" src="images/engineering2.jpg" alt="Engineering Photo 2">
-<img class="slide" src="images/engineering3.jpg" alt="Engineering Photo 3">
+<img class="slide active" src="https://picsum.photos/id/240/400/200" alt="Engineering Photo 1">
+<img class="slide" src="https://picsum.photos/id/241/400/200" alt="Engineering Photo 2">
+<img class="slide" src="https://picsum.photos/id/242/400/200" alt="Engineering Photo 3">
+<div class="slide-caption">Engineering Workshop</div>
 </div>
 <h3>Engineering Department</h3>
 <a class="download-btn" href="documents/engineering_course_outline.pdf" download>Course Outline</a>
@@ -273,7 +299,7 @@ function initSlider(sliderId){
   },3000);
 }
 
-// Initialize sliders for all departments
+// Initialize sliders
 ['ictSlider','businessSlider','hospitalitySlider','engineeringSlider'].forEach(id=>initSlider(id));
 </script>
 
