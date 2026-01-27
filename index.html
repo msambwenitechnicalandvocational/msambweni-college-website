@@ -13,6 +13,7 @@
   --light:#1976d2;
   --green:#2e7d32;
   --red:#c62828;
+  --hover:#e3f2fd;
 }
 body{margin:0;font-family:Segoe UI,Arial;background:#f4f7fb;}
 header{
@@ -20,34 +21,47 @@ header{
   color:white;
   padding:15px;
   display:flex;
+  flex-wrap:wrap;
   align-items:center;
   justify-content:space-between;
 }
-header img{height:60px}
-header h1{margin:0;font-size:20px;text-align:center;flex:1}
-.container{max-width:1100px;margin:auto;padding:20px}
+header img{height:60px; margin:5px;}
+header h1{margin:0;font-size:18px;text-align:center;flex:1;}
+.container{max-width:1100px;margin:auto;padding:20px;}
 .card{background:white;border-radius:14px;padding:25px;box-shadow:0 15px 35px rgba(0,0,0,.2);margin-bottom:30px;}
-h2,h3{text-align:center;color:var(--blue)}
-input,select{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #ccc}
+h2,h3{text-align:center;color:var(--blue);}
+input,select{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #ccc;}
 button{padding:10px 18px;border:none;border-radius:6px;color:white;cursor:pointer;margin-top:8px;}
-.login{background:var(--light)}
-.create{background:var(--green)}
-.download{background:var(--green)}
-.logout{background:var(--red)}
-.link{text-align:center;color:var(--light);cursor:pointer;margin-top:8px;font-size:14px}
-.hidden{display:none}
-table{width:100%;border-collapse:collapse;margin-top:15px}
-th,td{border:1px solid #ccc;padding:10px;text-align:center}
-th{background:var(--light);color:white}
+.login{background:var(--light);}
+.create{background:var(--green);}
+.download{background:var(--green);}
+.logout{background:var(--red);}
+.link{text-align:center;color:var(--light);cursor:pointer;margin-top:8px;font-size:14px;}
+.hidden{display:none;}
+table{width:100%;border-collapse:collapse;margin-top:15px;font-size:14px;}
+th,td{border:1px solid #ccc;padding:10px;text-align:center;}
+th{background:var(--light);color:white;}
+tbody tr:nth-child(even){background:#f0f4f8;}
+tbody tr:hover{background:#dbe9fc;}
 footer{background:#0d47a1;color:white;padding:20px;text-align:center;margin-top:40px}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  header{flex-direction:column; text-align:center;}
+  header h1{margin:10px 0;}
+  .card{padding:15px;}
+  input, select, button{font-size:14px;}
+  table th, table td{padding:6px;font-size:12px;}
+  button{padding:8px 12px;}
+}
 </style>
 </head>
 <body>
 
 <header>
-<img src="knec.png">
+<img src="images/logo-left.png">
 <h1>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h1>
-<img src="logo.jpg">
+<img src="images/logo-right.png">
 </header>
 
 <div class="container">
@@ -91,6 +105,10 @@ footer{background:#0d47a1;color:white;padding:20px;text-align:center;margin-top:
 <!-- ICT PORTAL -->
 <div class="card hidden" id="ict">
 <h3>ICT Support Form</h3>
+<table id="ictTable">
+<thead><tr><th>Issue</th><th>Device</th><th>Status</th></tr></thead>
+<tbody></tbody>
+</table>
 <input id="ictIssue" placeholder="Issue Description">
 <input id="ictDevice" placeholder="Device / Serial Number">
 <select id="ictStatus">
@@ -98,13 +116,17 @@ footer{background:#0d47a1;color:white;padding:20px;text-align:center;margin-top:
 <option>Resolved</option>
 </select>
 <button class="download" onclick="savePortalData('ict')">Save Entry</button>
-<button class="download" onclick="downloadPortalPDF('ict')">Download All Entries PDF</button>
+<button class="download" onclick="downloadPortalPDF('ict')">Download PDF</button>
 <button class="logout" onclick="logout()">Logout</button>
 </div>
 
 <!-- LIBRARY PORTAL -->
 <div class="card hidden" id="library">
 <h3>Library Request Form</h3>
+<table id="libTable">
+<thead><tr><th>Book</th><th>Author</th><th>Action</th></tr></thead>
+<tbody></tbody>
+</table>
 <input id="libTitle" placeholder="Book Title">
 <input id="libAuthor" placeholder="Author">
 <select id="libAction">
@@ -112,46 +134,53 @@ footer{background:#0d47a1;color:white;padding:20px;text-align:center;margin-top:
 <option>Return</option>
 </select>
 <button class="download" onclick="savePortalData('library')">Save Entry</button>
-<button class="download" onclick="downloadPortalPDF('library')">Download All Entries PDF</button>
+<button class="download" onclick="downloadPortalPDF('library')">Download PDF</button>
 <button class="logout" onclick="logout()">Logout</button>
 </div>
 
 <!-- EXAM PORTAL -->
 <div class="card hidden" id="exam">
 <h3>Exam Request Form</h3>
+<table id="examTable">
+<thead><tr><th>Unit</th><th>Type</th></tr></thead>
+<tbody></tbody>
+</table>
 <input id="examUnit" placeholder="Unit Name">
 <select id="examType">
 <option>Special Exam</option>
 <option>Remark</option>
 </select>
 <button class="download" onclick="savePortalData('exam')">Save Entry</button>
-<button class="download" onclick="downloadPortalPDF('exam')">Download All Entries PDF</button>
+<button class="download" onclick="downloadPortalPDF('exam')">Download PDF</button>
 <button class="logout" onclick="logout()">Logout</button>
 </div>
 
 <!-- FINANCE PORTAL -->
 <div class="card hidden" id="finance">
 <h3>Finance Portal</h3>
+<table id="fHistory">
+<thead><tr><th>Date</th><th>Receipt</th><th>Amount</th></tr></thead>
+<tbody>
+<tr><td>10/01/2026</td><td>RC001</td><td>10,000</td></tr>
+<tr><td>05/02/2026</td><td>RC002</td><td>10,000</td></tr>
+</tbody>
+</table>
 <input id="fName" placeholder="Student Name">
 <input id="fReg" placeholder="Registration Number">
 <input id="fTotal" placeholder="Total Fees" value="50000">
 <input id="fPaid" placeholder="Amount Paid" value="20000">
 <p>Balance: <span id="fBalance">30000</span></p>
 <button class="download" onclick="calcBalance()">Calculate Balance</button>
-
-<h4>Payment History</h4>
-<table id="fHistory">
-<tr><th>Date</th><th>Receipt</th><th>Amount</th></tr>
-<tr><td>10/01/2026</td><td>RC001</td><td>10,000</td></tr>
-<tr><td>05/02/2026</td><td>RC002</td><td>10,000</td></tr>
-</table>
-
 <button class="download" onclick="downloadFeePDF()">Download Fee Statement PDF</button>
 <button class="logout" onclick="logout()">Logout</button>
 </div>
 
 </div>
 
+<footer>
+<p>© 2026 Msambweni Technical & Vocational College</p>
+<p>Prepared by ICT Department | All Rights Reserved</p>
+</footer>
 
 <script>
 const { jsPDF } = window.jspdf;
@@ -169,26 +198,32 @@ function openAuth(p){
 }
 
 function login(){
-  if(users[portal]?.user===aUser.value && users[portal]?.pass===aPass.value){
+  if(!users[portal]){ authMsg.innerText="No account exists"; return; }
+  const matched = users[portal].find(u=>u.user===aUser.value && u.pass===aPass.value);
+  if(matched){
     auth.classList.add("hidden");
     document.getElementById(portal).classList.remove("hidden");
-  }else{
-    authMsg.innerText="Invalid login";
-  }
+    loadPortalTable(portal);
+  }else authMsg.innerText="Invalid login";
 }
 
-function showCreate(){ auth.classList.add("hidden"); create.classList.remove("hidden"); }
-function showForgot(){ auth.classList.add("hidden"); forgot.classList.remove("hidden"); }
-function backAuth(){ create.classList.add("hidden"); forgot.classList.add("hidden"); auth.classList.remove("hidden"); }
-
 function createAccount(){
-  users[portal]={user:cUser.value,pass:cPass.value};
+  if(!users[portal]) users[portal]=[];
+  users[portal].push({user:cUser.value, pass:cPass.value});
   localStorage.setItem('portalUsers',JSON.stringify(users));
   alert("Account created for "+portal.toUpperCase());
   backAuth();
 }
 
-function recover(){ fMsg.innerText=users[portal]?("Password: "+users[portal].pass):"No account"; }
+function recover(){
+  if(!users[portal]){ fMsg.innerText="No account"; return;}
+  const u = users[portal].find(x=>x.user===fUser.value);
+  fMsg.innerText=u?("Password: "+u.pass):"User not found";
+}
+
+function showCreate(){ auth.classList.add("hidden"); create.classList.remove("hidden"); }
+function showForgot(){ auth.classList.add("hidden"); forgot.classList.remove("hidden"); }
+function backAuth(){ create.classList.add("hidden"); forgot.classList.add("hidden"); auth.classList.remove("hidden"); }
 
 function logout(){
   document.querySelectorAll('.card').forEach(c=>c.classList.add("hidden"));
@@ -197,43 +232,78 @@ function logout(){
 
 function savePortalData(p){
   if(!submissions[p]) submissions[p]=[];
+  let rowData={};
   if(p==='ict'){
-    submissions[p].push({Issue:ictIssue.value,Device:ictDevice.value,Status:ictStatus.value});
+    rowData={Issue:ictIssue.value,Device:ictDevice.value,Status:ictStatus.value};
     ictIssue.value=''; ictDevice.value=''; ictStatus.value='Pending';
   }
   if(p==='library'){
-    submissions[p].push({Book:libTitle.value,Author:libAuthor.value,Action:libAction.value});
+    rowData={Book:libTitle.value,Author:libAuthor.value,Action:libAction.value};
     libTitle.value=''; libAuthor.value=''; libAction.value='Borrow';
   }
   if(p==='exam'){
-    submissions[p].push({Unit:examUnit.value,Type:examType.value});
+    rowData={Unit:examUnit.value,Type:examType.value};
     examUnit.value=''; examType.value='Special Exam';
   }
+  if(p==='finance'){
+    rowData={Date:new Date().toLocaleDateString(),Receipt:'RC'+(submissions[p].length+1).toString().padStart(3,'0'),Amount:Number(fPaid.value)};
+    const tbody=document.querySelector("#fHistory tbody");
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${rowData.Date}</td><td>${rowData.Receipt}</td><td>${rowData.Amount.toLocaleString()}</td>`;
+    tbody.appendChild(tr);
+    calcBalance();
+  }
+  if(p!=='finance') submissions[p].push(rowData);
   localStorage.setItem('portalSubmissions',JSON.stringify(submissions));
+  if(p!=='finance') loadPortalTable(p);
   alert("Entry saved successfully!");
 }
 
-// PDF with striped rows
+function loadPortalTable(p){
+  if(p==='ict'){
+    const tbody=document.querySelector("#ictTable tbody");
+    tbody.innerHTML='';
+    (submissions[p]||[]).forEach(d=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${d.Issue}</td><td>${d.Device}</td><td>${d.Status}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+  if(p==='library'){
+    const tbody=document.querySelector("#libTable tbody");
+    tbody.innerHTML='';
+    (submissions[p]||[]).forEach(d=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${d.Book}</td><td>${d.Author}</td><td>${d.Action}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+  if(p==='exam'){
+    const tbody=document.querySelector("#examTable tbody");
+    tbody.innerHTML='';
+    (submissions[p]||[]).forEach(d=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${d.Unit}</td><td>${d.Type}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+}
+
 function downloadPortalPDF(p){
   const doc=new jsPDF();
-  doc.setFontSize(14);
-  doc.setTextColor(13,71,161);
+  doc.setFontSize(14); doc.setTextColor(13,71,161);
   doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",105,20,{align:"center"});
   doc.setFontSize(12);
   doc.text(p.toUpperCase()+" PORTAL SUBMISSIONS",105,30,{align:"center"});
   doc.text("Generated on: "+new Date().toLocaleString(),20,45);
 
-  const data=submissions[p]||[];
-  if(data.length===0){
-    doc.text("No submissions yet.",20,60);
-  }else{
+  let data=submissions[p]||[];
+  if(data.length===0){ doc.text("No submissions yet.",20,60); }
+  else{
     const keys=Object.keys(data[0]);
-    const body=data.map((d,i)=>keys.map(k=>d[k]));
+    const body=data.map(d=>keys.map(k=>d[k]));
     doc.autoTable({
-      startY:60,
-      head:[keys],
-      body:body,
-      theme:'grid',
+      startY:60, head:[keys], body:body, theme:'grid',
       headStyles:{fillColor:[13,71,161],textColor:255},
       styles:{cellPadding:4,fontSize:10},
       alternateRowStyles:{fillColor:[230,230,250]}
@@ -242,7 +312,6 @@ function downloadPortalPDF(p){
   doc.save(p+"_submissions.pdf");
 }
 
-// Finance portal functions
 function calcBalance(){
   let total=Number(fTotal.value);
   let paid=Number(fPaid.value);
@@ -251,30 +320,24 @@ function calcBalance(){
 
 function downloadFeePDF(){
   const doc=new jsPDF();
-  doc.setFontSize(14);
-  doc.setTextColor(13,71,161);
+  doc.setFontSize(14); doc.setTextColor(13,71,161);
   doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",105,20,{align:"center"});
-  doc.setFontSize(12);
-  doc.text("FEE STATEMENT",105,30,{align:"center"});
+  doc.setFontSize(12); doc.text("FEE STATEMENT",105,30,{align:"center"});
   doc.text("Generated on: "+new Date().toLocaleString(),20,45);
   doc.text("Student Name: "+fName.value,20,55);
   doc.text("Registration No: "+fReg.value,20,63);
 
-  // Fee summary
   doc.autoTable({
     startY:75,
     head:[["Total Fees","Paid","Balance"]],
     body:[[fTotal.value,fPaid.value,fBalance.innerText]],
-    theme:'grid',
-    headStyles:{fillColor:[13,71,161],textColor:255},
-    styles:{cellPadding:4,fontSize:10},
-    alternateRowStyles:{fillColor:[230,230,250]}
+    theme:'grid', headStyles:{fillColor:[13,71,161],textColor:255},
+    styles:{cellPadding:4,fontSize:10}, alternateRowStyles:{fillColor:[230,230,250]}
   });
 
-  // Payment history
   let payData=[];
-  const rows=document.querySelectorAll("#fHistory tr");
-  for(let i=1;i<rows.length;i++){
+  const rows=document.querySelectorAll("#fHistory tbody tr");
+  for(let i=0;i<rows.length;i++){
     const cols=rows[i].querySelectorAll("td");
     payData.push([cols[0].innerText,cols[1].innerText,cols[2].innerText]);
   }
@@ -283,17 +346,13 @@ function downloadFeePDF(){
     startY:doc.lastAutoTable.finalY+10,
     head:[["Date","Receipt","Amount"]],
     body:payData,
-    theme:'grid',
-    headStyles:{fillColor:[13,71,161],textColor:255},
-    styles:{cellPadding:4,fontSize:10},
-    alternateRowStyles:{fillColor:[245,245,255]}
+    theme:'grid', headStyles:{fillColor:[13,71,161],textColor:255},
+    styles:{cellPadding:4,fontSize:10}, alternateRowStyles:{fillColor:[245,245,255]}
   });
 
   doc.text("Prepared by: Accounts Office",20,doc.lastAutoTable.finalY+15);
   doc.save("Fee_Statement.pdf");
 }
 </script>
-
 </body>
 </html>
-
