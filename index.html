@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Msambweni TVC</title>
+<title>Msambweni Technical & Vocational College</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- jsPDF -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+<!-- Font Awesome for PDF icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
 :root{
@@ -16,443 +15,268 @@
   --green:#2e7d32;
   --red:#c62828;
   --gray:#f4f7fb;
-  --white:#fff;
-  --dark:#222;
+  --white:#ffffff;
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:Segoe UI,Arial,sans-serif;background:var(--gray);}
-a{text-decoration:none;color:white;}
-header{position:fixed;top:0;width:100%;background:linear-gradient(90deg,var(--blue),var(--light));color:white;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;transition:0.3s;}
-header.scrolled{box-shadow:0 5px 15px rgba(0,0,0,0.3);}
-header h1{font-size:20px;}
-nav a{margin-left:20px;font-weight:bold;transition:0.3s;}
-nav a.active{text-decoration:underline;}
-nav a:hover{color:var(--green);}
-.hero{height:80vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;color:white;text-align:center;}
-.hero-slide{position:absolute;top:0;left:100%;width:100%;height:100%;background-size:cover;background-position:center;transition:1s;}
-.hero-slide.active{left:0;}
-.hero h2{font-size:36px;margin-bottom:10px;text-shadow:2px 2px 5px rgba(0,0,0,0.5);}
-.hero p{font-size:18px;text-shadow:1px 1px 3px rgba(0,0,0,0.5);}
-.container{max-width:1100px;margin:auto;padding:100px 20px 20px;}
-.card{background:white;border-radius:14px;padding:25px;box-shadow:0 15px 35px rgba(0,0,0,.15);margin-bottom:30px;}
-h2,h3{text-align:center;color:var(--blue);}
-input,select{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #ccc;}
-button{padding:10px 18px;border:none;border-radius:6px;color:white;cursor:pointer;margin-top:8px;}
-button.portalBtn{background:var(--light);}
-button.submit{background:var(--green);}
-button.download{background:var(--green);}
-button.logout{background:var(--red);}
-table{width:100%;border-collapse:collapse;margin-top:15px;font-size:14px;}
-th,td{border:1px solid #ccc;padding:10px;text-align:center;}
-th{background:var(--light);color:white;}
-tbody tr:nth-child(even){background:#f0f4f8;}
-tbody tr:hover{background:#dbe9fc;}
-.hidden{display:none;}
-.unit{border:1px solid #ccc;padding:10px;border-radius:10px;margin-bottom:10px;background:#f9f9f9;}
-footer{background:var(--blue);color:white;padding:20px;text-align:center;margin-top:50px;}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Segoe UI, Arial, sans-serif;
+}
+
+body{
+  background:var(--gray);
+}
+
+/* ===== HEADER ===== */
+header{
+  position:fixed;
+  top:0;
+  width:100%;
+  background:linear-gradient(90deg,var(--blue),var(--light));
+  color:white;
+  padding:15px 25px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:1000;
+}
+
+header h1{
+  font-size:20px;
+}
+
+nav a{
+  color:white;
+  margin-left:20px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+nav a:hover{
+  text-decoration:underline;
+}
+
+/* ===== HERO SLIDER ===== */
+.hero{
+  margin-top:70px;
+  height:75vh;
+  position:relative;
+  overflow:hidden;
+}
+
+.slide{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transition:opacity 1.2s ease-in-out;
+}
+
+.slide.active{
+  opacity:1;
+}
+
+.hero-text{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(0,0,0,0.5);
+  color:white;
+  padding:25px 40px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.hero-text h2{
+  font-size:36px;
+}
+
+.hero-text p{
+  font-size:18px;
+}
+
+/* ===== CONTAINER ===== */
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:40px 20px;
+}
+
+/* ===== DEPARTMENT CARDS ===== */
+.departments{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:25px;
+}
+
+.card{
+  background:white;
+  padding:25px;
+  border-radius:14px;
+  box-shadow:0 15px 35px rgba(0,0,0,.15);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+
+.card h3{
+  color:var(--blue);
+  margin-bottom:20px;
+}
+
+.download-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:10px 18px;
+  background:var(--green);
+  color:white;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:bold;
+  margin:5px 0;
+  width:80%;
+  transition:0.3s;
+}
+.download-btn i{
+  font-size:16px;
+}
+.download-btn:hover{
+  background:#1b5e20;
+}
+
+/* ===== CONTACT ===== */
+.contact-card{
+  text-align:center;
+}
+
+/* ===== FOOTER ===== */
+footer{
+  background:var(--blue);
+  color:white;
+  text-align:center;
+  padding:25px;
+}
+
+footer a{
+  color:#bbdefb;
+  margin:0 6px;
+  text-decoration:none;
+}
+
+footer a:hover{text-decoration:underline;}
+
+/* ===== RESPONSIVE ===== */
 @media(max-width:768px){
   header{flex-direction:column;align-items:flex-start;}
-  nav a{margin:5px 0;}
-  .hero h2{font-size:24px;}
-  .hero p{font-size:16px;}
-  .card{padding:15px;}
-  input, select, button{font-size:14px;}
-  table th, table td{padding:6px;font-size:12px;}
-  button{padding:8px 12px;}
+  nav a{display:block;margin:8px 0;}
+  .hero-text h2{font-size:24px;}
+  .hero-text p{font-size:16px;}
 }
 </style>
 </head>
+
 <body>
 
-<header id="header">
+<!-- ===== HEADER ===== -->
+<header>
   <h1>MSAMBWENI TVC</h1>
   <nav>
-    <a href="#home" class="nav-link active">Home</a>
-    <a href="#portals" class="nav-link">Portals</a>
-    <a href="#contact" class="nav-link">Contact</a>
+    <a href="#home">Home</a>
+    <a href="#departments">Departments</a>
+    <a href="#contact">Contact</a>
   </nav>
 </header>
 
+<!-- ===== HERO ===== -->
 <section class="hero" id="home">
-  <div class="hero-slide active" style="background-image:url('https://picsum.photos/1200/600?1');"></div>
-  <div class="hero-slide" style="background-image:url('https://picsum.photos/1200/600?2');"></div>
-  <div class="hero-slide" style="background-image:url('https://picsum.photos/1200/600?3');"></div>
-  <div style="position:relative;z-index:10;">
+  <div class="slide active" style="background-image:url('https://picsum.photos/1200/600?1')"></div>
+  <div class="slide" style="background-image:url('https://picsum.photos/1200/600?2')"></div>
+  <div class="slide" style="background-image:url('https://picsum.photos/1200/600?3')"></div>
+
+  <div class="hero-text">
     <h2>Welcome to Msambweni TVC</h2>
-    <p>Empowering Students with Knowledge & Technology</p>
+    <p>Training for Skills, Innovation & Excellence</p>
   </div>
 </section>
 
-<section class="container" id="portals">
-  <h2>Our Portals</h2>
-  <div class="card" style="text-align:center;">
-    <button class="portalBtn" onclick="showLogin('ict')">ICT Portal</button>
-    <button class="portalBtn" onclick="openPortal('library')">Library Portal</button>
+<!-- ===== DEPARTMENTS ===== -->
+<section class="container" id="departments">
+  <h2 style="text-align:center;color:var(--blue);margin-bottom:30px;">Departments & Downloadable Documents</h2>
+
+  <div class="departments">
+    <!-- ICT Department -->
+    <div class="card">
+      <h3>ICT Department</h3>
+      <a class="download-btn" href="documents/ict_course_outline.pdf" download><i class="fa-solid fa-file-pdf"></i> Course Outline</a>
+      <a class="download-btn" href="documents/ict_notes.pdf" download><i class="fa-solid fa-file-pdf"></i> Notes</a>
+      <a class="download-btn" href="documents/ict_timetable.pdf" download><i class="fa-solid fa-file-pdf"></i> Timetable</a>
+    </div>
+
+    <!-- Business Department -->
+    <div class="card">
+      <h3>Business Department</h3>
+      <a class="download-btn" href="documents/business_course_outline.pdf" download><i class="fa-solid fa-file-pdf"></i> Course Outline</a>
+      <a class="download-btn" href="documents/business_notes.pdf" download><i class="fa-solid fa-file-pdf"></i> Notes</a>
+      <a class="download-btn" href="documents/business_timetable.pdf" download><i class="fa-solid fa-file-pdf"></i> Timetable</a>
+    </div>
+
+    <!-- Hospitality Department -->
+    <div class="card">
+      <h3>Hospitality Department</h3>
+      <a class="download-btn" href="documents/hospitality_course_outline.pdf" download><i class="fa-solid fa-file-pdf"></i> Course Outline</a>
+      <a class="download-btn" href="documents/hospitality_notes.pdf" download><i class="fa-solid fa-file-pdf"></i> Notes</a>
+      <a class="download-btn" href="documents/hospitality_timetable.pdf" download><i class="fa-solid fa-file-pdf"></i> Timetable</a>
+    </div>
+
+    <!-- Engineering Department -->
+    <div class="card">
+      <h3>Engineering Department</h3>
+      <a class="download-btn" href="documents/engineering_course_outline.pdf" download><i class="fa-solid fa-file-pdf"></i> Course Outline</a>
+      <a class="download-btn" href="documents/engineering_notes.pdf" download><i class="fa-solid fa-file-pdf"></i> Notes</a>
+      <a class="download-btn" href="documents/engineering_timetable.pdf" download><i class="fa-solid fa-file-pdf"></i> Timetable</a>
+    </div>
   </div>
 </section>
 
-<!-- ICT LOGIN -->
-<div class="card hidden" id="ictLogin">
-  <h3>ICT Portal Login</h3>
-  <input id="ictUser" placeholder="Username">
-  <input id="ictPass" type="password" placeholder="Password">
-  <button class="submit" onclick="ictLogin()">Login</button>
-  <button class="submit" onclick="showCreate()">Create Account</button>
-  <button class="submit" onclick="showForgot()">Forgot Password?</button>
-  <div id="error" style="color:red;"></div>
-  <button class="logout" onclick="closePortal()">Back</button>
-</div>
-
-<!-- ICT CREATE ACCOUNT -->
-<div class="card hidden" id="ictCreate">
-  <h3>Create ICT Account</h3>
-  <input id="newUser" placeholder="New Username">
-  <input id="newPass" type="password" placeholder="New Password">
-  <button class="submit" onclick="createICTAccount()">Create Account</button>
-  <button class="logout" onclick="showLogin('ict')">Back to Login</button>
-  <div id="createMsg" style="color:green;"></div>
-</div>
-
-<!-- ICT FORGOT PASSWORD -->
-<div class="card hidden" id="ictForgot">
-  <h3>Forgot Password</h3>
-  <input id="forgotUser" placeholder="Enter your Username">
-  <button class="submit" onclick="recoverPassword()">Recover Password</button>
-  <button class="logout" onclick="showLogin('ict')">Back to Login</button>
-  <div id="forgotMsg" style="color:blue;"></div>
-</div>
-
-<!-- ICT PORTAL -->
-<div class="card hidden" id="ictPortal">
-  <h3>ICT Support Portal</h3>
-  <table id="ictTable">
-    <thead><tr><th>ID</th><th>Name</th><th>Issue</th><th>Device</th><th>Date</th></tr></thead>
-    <tbody></tbody>
-  </table>
-  <input id="ictName" placeholder="Your Name">
-  <input id="ictIssue" placeholder="Issue Description">
-  <input id="ictDevice" placeholder="Device / Serial Number">
-  <input type="date" id="ictDate">
-  <button class="submit" onclick="saveICTTicket()">Submit Ticket</button>
-  <button class="download" onclick="downloadICTPDF()">Download PDF</button>
-  <button class="logout" onclick="closePortal()">Back</button>
-</div>
-
-<!-- LIBRARY PORTAL -->
-<div class="card hidden" id="library">
-  <h3>Library Portal</h3>
-  <input id="libStudent" placeholder="Student Name">
-  <input id="libCourse" placeholder="Course">
-  <input id="libBook" placeholder="Book Title">
-  <input id="libAuthor" placeholder="Author">
-  <select id="libAction"><option>Borrow</option><option>Return</option></select>
-  <button class="submit" onclick="saveLibraryEntry()">Save Entry</button>
-  <button class="download" onclick="downloadLibraryPDF()">Download PDF</button>
-  <table id="libTable">
-    <thead><tr><th>Student</th><th>Course</th><th>Book</th><th>Author</th><th>Action</th><th>Date</th></tr></thead>
-    <tbody></tbody>
-  </table>
-  <button class="logout" onclick="closePortal()">Back</button>
-</div>
-
-<section id="contact" class="container">
-  <h2>Contact Us</h2>
-  <p>Email: info@msambwenitvc.ac.ke | Phone: +254 712 345678</p>
+<!-- ===== CONTACT ===== -->
+<section class="container" id="contact">
+  <div class="card contact-card">
+    <h2>Contact Us</h2>
+    <p>Email: info@msambwenitvc.ac.ke</p>
+    <p>Phone: +254 712 345678</p>
+  </div>
 </section>
 
-<footer>Prepared by ICT Dept © 2026</footer>
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>© 2026 Msambweni Technical & Vocational College</p>
+  <p>Prepared by ICT Department</p>
+  <p>
+    <a href="#">KNEC</a> |
+    <a href="#">KUCCPS</a> |
+    <a href="#">HELB</a> |
+    <a href="#">TVET</a>
+  </p>
+</footer>
 
+<!-- ===== HERO SLIDER SCRIPT ===== -->
 <script>
-// ===== HERO SLIDER =====
-let currentSlide = 0;
-const slides = document.querySelectorAll('.hero-slide');
-setInterval(() => {
-  slides[currentSlide].classList.remove('active');
-  currentSlide = (currentSlide+1)%slides.length;
-  slides[currentSlide].classList.add('active');
+let slides=document.querySelectorAll('.slide');
+let index=0;
+setInterval(()=>{
+  slides[index].classList.remove('active');
+  index=(index+1)%slides.length;
+  slides[index].classList.add('active');
 },4000);
-
-// ===== NAVBAR SCROLL =====
-const header = document.getElementById('header');
-const navLinks = document.querySelectorAll('.nav-link');
-window.addEventListener('scroll', ()=>{
-  if(window.scrollY>50) header.classList.add('scrolled'); else header.classList.remove('scrolled');
-  document.querySelectorAll('section').forEach(sec=>{
-    const top=sec.offsetTop-80;
-    const bottom=top+sec.offsetHeight;
-    if(window.scrollY>=top && window.scrollY<=bottom){
-      navLinks.forEach(a=>a.classList.remove('active'));
-      document.querySelector(`a[href="#${sec.id}"]`).classList.add('active');
-    }
-  });
-});
-
-// ===== STORAGE =====
-if(!localStorage.getItem('ictUsers')) localStorage.setItem('ictUsers',JSON.stringify([]));
-if(!localStorage.getItem('ictTickets')) localStorage.setItem('ictTickets',JSON.stringify([]));
-if(!localStorage.getItem('libEntries')) localStorage.setItem('libEntries',JSON.stringify([]));
-
-// ===== PORTAL FUNCTIONS =====
-function openPortal(p){
-  document.getElementById('portalSelect')?.classList.add('hidden');
-  document.getElementById(p).classList.remove('hidden');
-  if(p==='library') loadLibraryTable();
-}
-function closePortal(){
-  ['ictPortal','library','ictLogin','ictCreate','ictForgot'].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
-  document.getElementById('portalSelect')?.classList.remove('hidden');
-}
-function showLogin(){closePortal(); document.getElementById('ictLogin').classList.remove('hidden'); document.getElementById('error').innerText='';}
-function showCreate(){closePortal(); document.getElementById('ictCreate').classList.remove('hidden'); document.getElementById('createMsg').innerText='';}
-function showForgot(){closePortal(); document.getElementById('ictForgot').classList.remove('hidden'); document.getElementById('forgotMsg').innerText='';}
-
-// ===== ICT LOGIN =====
-function createICTAccount(){
-  const user=document.getElementById('newUser').value.trim();
-  const pass=document.getElementById('newPass').value.trim();
-  if(!user||!pass){document.getElementById('createMsg').innerText='Fill all fields'; return;}
-  let users=JSON.parse(localStorage.getItem('ictUsers'));
-  if(users.find(u=>u.user===user)){document.getElementById('createMsg').innerText='Username exists'; return;}
-  users.push({user,pass});
-  localStorage.setItem('ictUsers',JSON.stringify(users));
-  document.getElementById('createMsg').innerText='Account created! Login now.';
-  document.getElementById('newUser').value=''; document.getElementById('newPass').value='';
-}
-function ictLogin(){
-  const user=document.getElementById('ictUser').value.trim();
-  const pass=document.getElementById('ictPass').value.trim();
-  const users=JSON.parse(localStorage.getItem('ictUsers'));
-  if(users.find(u=>u.user===user && u.pass===pass)){
-    closePortal();
-    document.getElementById('ictPortal').classList.remove('hidden');
-    loadICTTickets();
-  } else document.getElementById('error').innerText='Invalid login';
-}
-function recoverPassword(){
-  const user=document.getElementById('forgotUser').value.trim();
-  if(!user){document.getElementById('forgotMsg').innerText='Enter username'; return;}
-  const users=JSON.parse(localStorage.getItem('ictUsers'));
-  const u=users.find(u=>u.user===user);
-  document.getElementById('forgotMsg').innerText = u ? `Password: ${u.pass}` : 'Username not found';
-}
-
-// ===== ICT PORTAL =====
-function saveICTTicket(){
-  const name=document.getElementById('ictName').value;
-  const issue=document.getElementById('ictIssue').value;
-  const device=document.getElementById('ictDevice').value;
-  const date=document.getElementById('ictDate').value;
-  if(!name||!issue||!device||!date){alert('Fill all fields'); return;}
-  let tickets=JSON.parse(localStorage.getItem('ictTickets'));
-  tickets.push({id:tickets.length+1,name,issue,device,date});
-  localStorage.setItem('ictTickets',JSON.stringify(tickets));
-  loadICTTickets();
-  document.getElementById('ictName').value='';
-  document.getElementById('ictIssue').value='';
-  document.getElementById('ictDevice').value='';
-  document.getElementById('ictDate').value='';
-}
-function loadICTTickets(){
-  let tickets=JSON.parse(localStorage.getItem('ictTickets'));
-  const tbody=document.querySelector('#ictTable tbody');
-  tbody.innerHTML='';
-  tickets.forEach(t=>{tbody.innerHTML+=`<tr><td>${t.id}</td><td>${t.name}</td><td>${t.issue}</td><td>${t.device}</td><td>${t.date}</td></tr>`;});
-}
-function downloadICTPDF(){
-  const tickets=JSON.parse(localStorage.getItem('ictTickets'));
-  const doc=new jsPDF();
-  doc.text('ICT Tickets',14,20);
-  doc.autoTable({head:[['ID','Name','Issue','Device','Date']],body:tickets.map(t=>[t.id,t.name,t.issue,t.device,t.date])});
-  doc.save('ICT_Tickets.pdf');
-}
-
-// ===== LIBRARY =====
-function saveLibraryEntry(){
-  const student=document.getElementById('libStudent').value;
-  const course=document.getElementById('libCourse').value;
-  const book=document.getElementById('libBook').value;
-  const author=document.getElementById('libAuthor').value;
-  const action=document.getElementById('libAction').value;
-  if(!student||!book){alert('Fill student and book'); return;}
-  let entries=JSON.parse(localStorage.getItem('libEntries'));
-  entries.push({student,course,book,author,action,date:new Date().toLocaleDateString()});
-  localStorage.setItem('libEntries',JSON.stringify(entries));
-  loadLibraryTable();
-  document.getElementById('libStudent').value='';
-  document.getElementById('libCourse').value='';
-  document.getElementById('libBook').value='';
-  document.getElementById('libAuthor').value='';
-}
-function loadLibraryTable(){
-  let entries=JSON.parse(localStorage.getItem('libEntries'));
-  const tbody=document.querySelector('#libTable tbody');
-  tbody.innerHTML='';
-  entries.forEach(e=>{tbody.innerHTML+=`<tr><td>${e.student}</td><td>${e.course}</td><td>${e.book}</td><td>${e.author}</td><td>${e.action}</td><td>${e.date}</td></tr>`;});
-}
-function downloadLibraryPDF(){
-  const entries=JSON.parse(localStorage.getItem('libEntries'));
-  const doc=new jsPDF();
-  doc.text('Library Records',14,20);
-  doc.autoTable({head:[['Student','Course','Book','Author','Action','Date']],body:entries.map(e=>[e.student,e.course,e.book,e.author,e.action,e.date])});
-  doc.save('Library_Records.pdf');
-}
 </script>
 
 </body>
 </html>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Msambweni TVC | Departments</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-*{box-sizing:border-box;font-family:Segoe UI,Arial}
-body{margin:0;background:#f2f5f9}
-
-/* HEADER */
-header{
-background:linear-gradient(90deg,#0d47a1,#1976d2);
-color:white;
-padding:20px;
-text-align:center;
-}
-
-/* CONTAINER */
-.container{
-max-width:1100px;
-margin:auto;
-padding:20px;
-}
-
-/* CARD */
-.card{
-background:white;
-padding:25px;
-border-radius:12px;
-box-shadow:0 10px 30px rgba(0,0,0,.12);
-margin-bottom:30px;
-}
-
-/* TABLE */
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:15px;
-}
-th,td{
-border:1px solid #ccc;
-padding:12px;
-text-align:center;
-}
-th{
-background:#1976d2;
-color:white;
-}
-
-/* DOWNLOAD BUTTON */
-.download-btn{
-display:inline-block;
-padding:10px 18px;
-background:#2e7d32;
-color:white;
-border-radius:6px;
-text-decoration:none;
-font-weight:bold;
-}
-.download-btn:hover{
-background:#1b5e20;
-}
-
-/* FOOTER */
-footer{
-background:#0d47a1;
-color:white;
-text-align:center;
-padding:20px;
-}
-footer a{
-color:#bbdefb;
-margin:0 6px;
-text-decoration:none;
-}
-footer a:hover{text-decoration:underline}
-</style>
-</head>
-
-<body>
-
-<header>
-<h2>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h2>
-<p>Departments Document Download Portal</p>
-</header>
-
-<div class="container">
-
-<div class="card">
-<h3 style="text-align:center;color:#0d47a1">College Departments</h3>
-
-<table>
-<thead>
-<tr>
-<th>Department</th>
-<th>Course Outline (PDF)</th>
-<th>Notes (PDF)</th>
-<th>Timetable (PDF)</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td>ICT Department</td>
-<td><a class="download-btn" href="documents/ict_course_outline.pdf" download>Download</a></td>
-<td><a class="download-btn" href="documents/ict_notes.pdf" download>Download</a></td>
-<td><a class="download-btn" href="documents/ict_timetable.pdf" download>Download</a></td>
-</tr>
-
-<tr>
-<td>Business Department</td>
-<td><a class="download-btn" href="documents/business_course_outline.pdf" download>Download</a></td>
-<td><a class="download-btn" href="documents/business_notes.pdf" download>Download</a></td>
-<td><a class="download-btn" href="documents/business_timetable.pdf" download>Download</a></td>
-</tr>
-
-<tr>
-<td>Hospitality Department</td>
-<td><a class="download-btn" href="documents/hospitality_course_outline.pdf" download>Download</a></td>
-<td><a class="download-btn" href="documents/hospitality_notes.pdf" download>Download</a></td>
-<td><a class="download-btn" href="documents/hospitality_timetable.pdf" download>Download</a></td>
-</tr>
-
-<tr>
-<td>Engineering Department</td>
-<td><a class="download-btn" href="documents/engineering_course_outline.pdf" download>Download</a></td>
-<td><a class="download-btn" href="documents/engineering_notes.pdf" download>Download</a></td>
-<td><a class="download-btn" href="documents/engineering_timetable.pdf" download>Download</a></td>
-</tr>
-</tbody>
-</table>
-
-</div>
-
-</div>
-
-<footer>
-<p>© 2026 Msambweni Technical & Vocational College</p>
-<p>Prepared by ICT Department | All Rights Reserved</p>
-<p>
-<a href="https://www.youtube.com">YouTube</a> |
-<a href="https://www.knec.ac.ke">KNEC</a> |
-<a href="https://www.kuccps.net">KUCCPS</a> |
-<a href="https://www.helb.co.ke">HELB</a> |
-<a href="https://tvetlibrary.go.ke">TVET Library</a>
-</p>
-</footer>
-
-</body>
-</html>
-
-
