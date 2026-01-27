@@ -457,41 +457,70 @@ document.getElementById('library').addEventListener('click',loadLibraryTable);
 
   
 
+<!-- FINANCE PORTAL ONLY -->
+<div class="container">
 
-  
+<!-- PORTAL SELECTION -->
+<div class="card" id="portalSelect">
+  <h2>Select Portal</h2>
+  <button class="login" onclick="openAuth('finance')">Finance Portal</button>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="card hidden" id="auth">
+  <h3 id="authTitle"></h3>
+  <input id="aUser" placeholder="Username">
+  <input id="aPass" type="password" placeholder="Password">
+  <button class="login" onclick="login()">Login</button>
+  <div class="link" onclick="showCreate()">Create Account</div>
+  <div class="link" onclick="showForgot()">Forgot Password?</div>
+  <p id="authMsg" style="color:red;"></p>
+</div>
+
+<div class="card hidden" id="create">
+  <h3>Create Account</h3>
+  <input id="cUser" placeholder="Username">
+  <input id="cPass" type="password" placeholder="Password">
+  <button class="create" onclick="createAccount()">Create Account</button>
+  <div class="link" onclick="backAuth()">Back to Login</div>
+</div>
+
+<div class="card hidden" id="forgot">
+  <h3>Recover Password</h3>
+  <input id="fUser" placeholder="Username">
+  <button class="login" onclick="recover()">Recover</button>
+  <div class="link" onclick="backAuth()">Back to Login</div>
+  <p id="fMsg" style="color:red;"></p>
+</div>
 
 <!-- FINANCE PORTAL -->
 <div class="card hidden" id="finance">
-<h3>Finance Portal</h3>
-<table id="fHistory">
-<thead><tr><th>Date</th><th>Receipt</th><th>Amount</th></tr></thead>
-<tbody>
-<tr><td>10/01/2026</td><td>RC001</td><td>10,000</td></tr>
-<tr><td>05/02/2026</td><td>RC002</td><td>10,000</td></tr>
-</tbody>
-</table>
-<input id="fName" placeholder="Student Name">
-<input id="fReg" placeholder="Registration Number">
-<input id="fTotal" placeholder="Total Fees" value="50000">
-<input id="fPaid" placeholder="Amount Paid" value="20000">
-<p>Balance: <span id="fBalance">30000</span></p>
-<button class="download" onclick="calcBalance()">Calculate Balance</button>
-<button class="download" onclick="downloadFeePDF()">Download Fee Statement PDF</button>
-<button class="logout" onclick="logout()">Logout</button>
+  <h3>Finance Portal</h3>
+
+  <table id="fHistory">
+    <thead><tr><th>Date</th><th>Receipt</th><th>Amount</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <input id="fName" placeholder="Student Name">
+  <input id="fReg" placeholder="Registration Number">
+  <input id="fTotal" placeholder="Total Fees" value="50000">
+  <input id="fPaid" placeholder="Amount Paid" value="20000">
+  <p>Balance: <span id="fBalance">30000</span></p>
+
+  <button class="download" onclick="calcBalance()">Calculate Balance</button>
+  <button class="download" onclick="downloadFeePDF()">Download Fee Statement PDF</button>
+  <button class="logout" onclick="logout()">Logout</button>
 </div>
 
 </div>
 
 <footer style="background:#0d47a1; color:white; padding:30px 20px; font-family:Segoe UI, Arial, sans-serif;">
   <div style="max-width:1100px; margin:auto; display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center;">
-
-    <!-- College Info -->
     <div style="flex:1; min-width:220px; margin-bottom:15px;">
       <h3 style="margin:0 0 5px 0; font-size:18px;">Msambweni Technical & Vocational College</h3>
       <p style="margin:0; font-size:14px;">Prepared by ICT Department | All Rights Reserved © 2026</p>
     </div>
-
-    <!-- Quick Links -->
     <div style="flex:1; min-width:220px; text-align:center; margin-bottom:15px;">
       <h4 style="margin-bottom:8px;">Quick Links</h4>
       <a href="https://www.youtube.com" target="_blank" style="margin:0 5px; color:white; text-decoration:none; font-size:14px;">YouTube</a> |
@@ -500,8 +529,6 @@ document.getElementById('library').addEventListener('click',loadLibraryTable);
       <a href="https://www.helb.co.ke" target="_blank" style="margin:0 5px; color:white; text-decoration:none; font-size:14px;">HELB</a> |
       <a href="https://kstvettlibrary.ac.ke" target="_blank" style="margin:0 5px; color:white; text-decoration:none; font-size:14px;">KSTVET Library</a>
     </div>
-
-    <!-- Social Icons -->
     <div style="flex:1; min-width:220px; text-align:right; margin-bottom:15px;">
       <p style="margin-bottom:8px;">Follow Us:</p>
       <a href="https://facebook.com" target="_blank" style="margin:0 6px; color:white; font-size:20px; text-decoration:none;">
@@ -514,51 +541,49 @@ document.getElementById('library').addEventListener('click',loadLibraryTable);
         <i class="fab fa-linkedin"></i>
       </a>
     </div>
-
   </div>
 </footer>
 
-<!-- Font Awesome for icons -->
+<!-- Font Awesome -->
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
 
 <script>
 const { jsPDF } = window.jspdf;
 
-let portal='';
-let users=JSON.parse(localStorage.getItem('portalUsers')||'{}');
-let submissions=JSON.parse(localStorage.getItem('portalSubmissions')||'{}');
+let portal = 'finance';
+let users = JSON.parse(localStorage.getItem('financeUsers')||'[]');
+let submissions = JSON.parse(localStorage.getItem('financeSubmissions')||'[]');
 
+// AUTH FUNCTIONS
 function openAuth(p){
-  portal=p;
+  portal = p;
   portalSelect.classList.add("hidden");
   auth.classList.remove("hidden");
-  authTitle.innerText=p.toUpperCase()+" PORTAL LOGIN";
+  authTitle.innerText = p.toUpperCase()+" PORTAL LOGIN";
   aUser.value=''; aPass.value=''; authMsg.innerText='';
 }
 
 function login(){
-  if(!users[portal]){ authMsg.innerText="No account exists"; return; }
-  const matched = users[portal].find(u=>u.user===aUser.value && u.pass===aPass.value);
+  const matched = users.find(u=>u.user===aUser.value && u.pass===aPass.value);
   if(matched){
     auth.classList.add("hidden");
-    document.getElementById(portal).classList.remove("hidden");
-    loadPortalTable(portal);
-  }else authMsg.innerText="Invalid login";
+    document.getElementById('finance').classList.remove("hidden");
+    loadFinanceTable();
+  } else authMsg.innerText="Invalid login";
 }
 
 function createAccount(){
-  if(!users[portal]) users[portal]=[];
-  users[portal].push({user:cUser.value, pass:cPass.value});
-  localStorage.setItem('portalUsers',JSON.stringify(users));
-  alert("Account created for "+portal.toUpperCase());
+  users.push({user:cUser.value, pass:cPass.value});
+  localStorage.setItem('financeUsers',JSON.stringify(users));
+  alert("Account created successfully!");
   backAuth();
 }
 
 function recover(){
-  if(!users[portal]){ fMsg.innerText="No account"; return;}
-  const u = users[portal].find(x=>x.user===fUser.value);
-  fMsg.innerText=u?("Password: "+u.pass):"User not found";
+  const u = users.find(x=>x.user===fUser.value);
+  fMsg.innerText = u ? "Password: "+u.pass : "User not found";
 }
 
 function showCreate(){ auth.classList.add("hidden"); create.classList.remove("hidden"); }
@@ -566,103 +591,50 @@ function showForgot(){ auth.classList.add("hidden"); forgot.classList.remove("hi
 function backAuth(){ create.classList.add("hidden"); forgot.classList.add("hidden"); auth.classList.remove("hidden"); }
 
 function logout(){
-  document.querySelectorAll('.card').forEach(c=>c.classList.add("hidden"));
+  document.getElementById('finance').classList.add("hidden");
   portalSelect.classList.remove("hidden");
 }
 
-function savePortalData(p){
-  if(!submissions[p]) submissions[p]=[];
-  let rowData={};
-  if(p==='ict'){
-    rowData={Issue:ictIssue.value,Device:ictDevice.value,Status:ictStatus.value};
-    ictIssue.value=''; ictDevice.value=''; ictStatus.value='Pending';
-  }
-  if(p==='library'){
-    rowData={Book:libTitle.value,Author:libAuthor.value,Action:libAction.value};
-    libTitle.value=''; libAuthor.value=''; libAction.value='Borrow';
-  }
-  if(p==='exam'){
-    rowData={Unit:examUnit.value,Type:examType.value};
-    examUnit.value=''; examType.value='Special Exam';
-  }
-  if(p==='finance'){
-    rowData={Date:new Date().toLocaleDateString(),Receipt:'RC'+(submissions[p].length+1).toString().padStart(3,'0'),Amount:Number(fPaid.value)};
-    const tbody=document.querySelector("#fHistory tbody");
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${rowData.Date}</td><td>${rowData.Receipt}</td><td>${rowData.Amount.toLocaleString()}</td>`;
+// FINANCE FUNCTIONS
+function calcBalance(){
+  let total = Number(fTotal.value);
+  let paid = Number(fPaid.value);
+  fBalance.innerText = (total - paid).toLocaleString();
+}
+
+function saveFinanceData(){
+  let date = new Date().toLocaleDateString();
+  let receipt = 'RC' + (submissions.length+1).toString().padStart(3,'0');
+  let amount = Number(fPaid.value);
+  submissions.push({Date: date, Receipt: receipt, Amount: amount});
+  localStorage.setItem('financeSubmissions', JSON.stringify(submissions));
+
+  // Add row
+  const tbody = document.querySelector("#fHistory tbody");
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${date}</td><td>${receipt}</td><td>${amount.toLocaleString()}</td>`;
+  tbody.appendChild(tr);
+  calcBalance();
+}
+
+// Load table
+function loadFinanceTable(){
+  const tbody = document.querySelector("#fHistory tbody");
+  tbody.innerHTML='';
+  submissions.forEach(d=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML=`<td>${d.Date}</td><td>${d.Receipt}</td><td>${d.Amount.toLocaleString()}</td>`;
     tbody.appendChild(tr);
-    calcBalance();
-  }
-  if(p!=='finance') submissions[p].push(rowData);
-  localStorage.setItem('portalSubmissions',JSON.stringify(submissions));
-  if(p!=='finance') loadPortalTable(p);
-  alert("Entry saved successfully!");
+  });
 }
 
-function loadPortalTable(p){
-  if(p==='ict'){
-    const tbody=document.querySelector("#ictTable tbody");
-    tbody.innerHTML='';
-    (submissions[p]||[]).forEach(d=>{
-      const tr=document.createElement('tr');
-      tr.innerHTML=`<td>${d.Issue}</td><td>${d.Device}</td><td>${d.Status}</td>`;
-      tbody.appendChild(tr);
-    });
-  }
-  if(p==='library'){
-    const tbody=document.querySelector("#libTable tbody");
-    tbody.innerHTML='';
-    (submissions[p]||[]).forEach(d=>{
-      const tr=document.createElement('tr');
-      tr.innerHTML=`<td>${d.Book}</td><td>${d.Author}</td><td>${d.Action}</td>`;
-      tbody.appendChild(tr);
-    });
-  }
-  if(p==='exam'){
-    const tbody=document.querySelector("#examTable tbody");
-    tbody.innerHTML='';
-    (submissions[p]||[]).forEach(d=>{
-      const tr=document.createElement('tr');
-      tr.innerHTML=`<td>${d.Unit}</td><td>${d.Type}</td>`;
-      tbody.appendChild(tr);
-    });
-  }
-}
-
-function downloadPortalPDF(p){
-  const doc=new jsPDF();
+// PDF
+function downloadFeePDF(){
+  const doc = new jsPDF();
   doc.setFontSize(14); doc.setTextColor(13,71,161);
   doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",105,20,{align:"center"});
   doc.setFontSize(12);
-  doc.text(p.toUpperCase()+" PORTAL SUBMISSIONS",105,30,{align:"center"});
-  doc.text("Generated on: "+new Date().toLocaleString(),20,45);
-
-  let data=submissions[p]||[];
-  if(data.length===0){ doc.text("No submissions yet.",20,60); }
-  else{
-    const keys=Object.keys(data[0]);
-    const body=data.map(d=>keys.map(k=>d[k]));
-    doc.autoTable({
-      startY:60, head:[keys], body:body, theme:'grid',
-      headStyles:{fillColor:[13,71,161],textColor:255},
-      styles:{cellPadding:4,fontSize:10},
-      alternateRowStyles:{fillColor:[230,230,250]}
-    });
-  }
-  doc.save(p+"_submissions.pdf");
-}
-
-function calcBalance(){
-  let total=Number(fTotal.value);
-  let paid=Number(fPaid.value);
-  fBalance.innerText=(total-paid).toLocaleString();
-}
-
-function downloadFeePDF(){
-  const doc=new jsPDF();
-  doc.setFontSize(14); doc.setTextColor(13,71,161);
-  doc.text("MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE",105,20,{align:"center"});
-  doc.setFontSize(12); doc.text("FEE STATEMENT",105,30,{align:"center"});
+  doc.text("FEE STATEMENT",105,30,{align:"center"});
   doc.text("Generated on: "+new Date().toLocaleString(),20,45);
   doc.text("Student Name: "+fName.value,20,55);
   doc.text("Registration No: "+fReg.value,20,63);
@@ -671,29 +643,78 @@ function downloadFeePDF(){
     startY:75,
     head:[["Total Fees","Paid","Balance"]],
     body:[[fTotal.value,fPaid.value,fBalance.innerText]],
-    theme:'grid', headStyles:{fillColor:[13,71,161],textColor:255},
-    styles:{cellPadding:4,fontSize:10}, alternateRowStyles:{fillColor:[230,230,250]}
+    theme:'grid',
+    headStyles:{fillColor:[13,71,161],textColor:255},
+    styles:{cellPadding:4,fontSize:10},
+    alternateRowStyles:{fillColor:[230,230,250]}
   });
 
-  let payData=[];
-  const rows=document.querySelectorAll("#fHistory tbody tr");
-  for(let i=0;i<rows.length;i++){
-    const cols=rows[i].querySelectorAll("td");
+  let payData = [];
+  const rows = document.querySelectorAll("#fHistory tbody tr");
+  rows.forEach(r=>{
+    const cols = r.querySelectorAll("td");
     payData.push([cols[0].innerText,cols[1].innerText,cols[2].innerText]);
-  }
+  });
 
   doc.autoTable({
     startY:doc.lastAutoTable.finalY+10,
     head:[["Date","Receipt","Amount"]],
     body:payData,
-    theme:'grid', headStyles:{fillColor:[13,71,161],textColor:255},
-    styles:{cellPadding:4,fontSize:10}, alternateRowStyles:{fillColor:[245,245,255]}
+    theme:'grid',
+    headStyles:{fillColor:[13,71,161],textColor:255},
+    styles:{cellPadding:4,fontSize:10},
+    alternateRowStyles:{fillColor:[245,245,255]}
   });
 
-  doc.text("Prepared by: Accounts Office",20,doc.lastAutoTable.finalY+15);
+  // Progress Bar
+  const total = Number(fTotal.value);
+  const paid = Number(fPaid.value);
+  const percent = Math.min((paid/total)*100,100);
+  const startY = doc.lastAutoTable.finalY + 20;
+
+  doc.setFillColor(220,220,220);
+  doc.rect(20,startY,170,10,'F'); // background
+
+  let fillColor = [255,0,0];
+  if(percent>=80) fillColor = [0,128,0];
+  else if(percent>=40) fillColor = [255,165,0];
+
+  doc.setFillColor(...fillColor);
+  doc.rect(20,startY,170*(percent/100),10,'F'); // filled
+
+  doc.setTextColor(0);
+  doc.setFontSize(10);
+  doc.text(`Payment Progress: ${percent.toFixed(1)}%`, 105, startY+7,{align:"center"});
+
+  doc.text("Prepared by: Accounts Office | ICT Manager Samson",20,startY+25);
+
   doc.save("Fee_Statement.pdf");
 }
 </script>
+
+<style>
+body{font-family:Segoe UI, Arial, sans-serif; background:#f4f7fb; margin:0;}
+.container{max-width:1100px;margin:auto;padding:20px;}
+.card{background:white;border-radius:12px;padding:25px;box-shadow:0 8px 25px rgba(0,0,0,0.15);margin-bottom:30px;}
+h2,h3{text-align:center;color:#0d47a1;}
+input{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #ccc;}
+button{padding:10px 18px;border:none;border-radius:6px;color:white;cursor:pointer;margin-top:8px;}
+button.login{background:#1976d2;}
+button.create{background:#2e7d32;}
+button.download{background:#0d47a1;}
+button.logout{background:#c62828;}
+.link{text-align:center;color:#1976d2;cursor:pointer;margin-top:8px;font-size:14px;}
+.hidden{display:none;}
+table{width:100%;border-collapse:collapse;margin-top:15px;}
+th,td{border:1px solid #ccc;padding:10px;text-align:center;}
+th{background:#1976d2;color:white;}
+</style>
+
+  
+
+
+
+  
 
   <!-- EXAM PORTAL -->
 <div class="card" id="examPortal">
@@ -925,6 +946,7 @@ function downloadExamPDF(){
 
 </body>
 </html>
+
 
 
 
