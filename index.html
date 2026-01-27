@@ -457,25 +457,35 @@ document.getElementById('library').addEventListener('click',loadLibraryTable);
 
   
 
+// Prepare table data
+let body=[];
+for(let i=1;i<=4;i++){
+  body.push([
+    document.getElementById(`resUnit${i}`).innerText,
+    document.getElementById(`resCat${i}1`).innerText,
+    document.getElementById(`resCat${i}2`).innerText,
+    document.getElementById(`resExam${i}`).innerText,
+    document.getElementById(`resTotal${i}`).innerText,
+    document.getElementById(`resGrade${i}`).innerText
+  ]);
+}
+
+// Generate table in PDF
+doc.autoTable({
+  startY: y+10,               // Start position after student info
+  head:[["Unit","CAT 1","CAT 2","Exam","Total","Grade"]],
+  body: body,
+  theme:'grid',                // Modern grid style
+  headStyles:{fillColor:[13,71,161],textColor:255},
+  styles:{cellPadding:4,fontSize:10},
+  alternateRowStyles:{fillColor:[245,245,255]} // Stripe effect
+});
 
 
   
-<!-- EXAM PORTAL -->
-<div class="card hidden" id="exam">
-<h3>Exam Request Form</h3>
-<table id="examTable">
-<thead><tr><th>Unit</th><th>Type</th></tr></thead>
-<tbody></tbody>
-</table>
-<input id="examUnit" placeholder="Unit Name">
-<select id="examType">
-<option>Special Exam</option>
-<option>Remark</option>
-</select>
-<button class="download" onclick="savePortalData('exam')">Save Entry</button>
-<button class="download" onclick="downloadPortalPDF('exam')">Download PDF</button>
-<button class="logout" onclick="logout()">Logout</button>
-</div>
+
+
+  
 
 <!-- FINANCE PORTAL -->
 <div class="card hidden" id="finance">
@@ -713,5 +723,6 @@ function downloadFeePDF(){
 </script>
 </body>
 </html>
+
 
 
