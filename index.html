@@ -14,7 +14,6 @@ header{
   background:linear-gradient(90deg,#0d47a1,#1976d2);
   color:white;
   padding:15px 20px;
-  text-align:center;
   position:fixed;
   width:100%;
   top:0;
@@ -24,17 +23,12 @@ header{
   justify-content:space-between;
 }
 header img{height:50px;margin-right:15px;}
-nav a{
-  color:white;
-  margin:0 10px;
-  font-weight:bold;
-  text-decoration:none;
-}
+nav a{color:white;margin:0 10px;font-weight:bold;text-decoration:none;}
 nav a:hover{text-decoration:underline;}
 
 /* HERO SLIDER */
 .hero{
-  height:90vh; /* bigger banner */
+  height:90vh;
   position:relative;
   overflow:hidden;
   margin-top:80px;
@@ -45,17 +39,13 @@ nav a:hover{text-decoration:underline;}
   left:100%;
   width:100%;
   height:100%;
-  background-size:cover;
-  background-position:center;
+  object-fit:cover;
   transition:1s;
 }
 .hero-slide.active{left:0;}
 .hero-overlay{
   position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  inset:0;
   background:rgba(0,0,0,0.35);
 }
 .hero-text{
@@ -65,26 +55,10 @@ nav a:hover{text-decoration:underline;}
   transform:translate(-50%,-50%);
   color:white;
   text-align:center;
-  text-shadow:2px 2px 8px rgba(0,0,0,0.7);
-  font-size:2em;
-  width:80%;
-  max-width:900px;
-  animation:fadeText 1s ease-in-out;
+  text-shadow:2px 2px 8px rgba(0,0,0,.7);
 }
-.hero-text h1{
-  font-size:3em;
-  margin-bottom:10px;
-}
-.hero-text p{
-  font-size:1.2em;
-}
-
-/* text animation */
-@keyframes fadeText {
-  0%{opacity:0; transform:translate(-50%,-60%);}
-  50%{opacity:1; transform:translate(-50%,-50%);}
-  100%{opacity:0; transform:translate(-50%,-40%);}
-}
+.hero-text h1{font-size:3em;}
+.hero-text p{font-size:1.3em;}
 
 /* CONTAINER */
 .container{
@@ -93,16 +67,15 @@ nav a:hover{text-decoration:underline;}
   padding:20px;
   display:flex;
   flex-wrap:wrap;
-  justify-content:space-between;
+  gap:30px;
 }
 
-/* DEPARTMENT CARD */
+/* CARD */
 .card{
   background:white;
   padding:20px;
   border-radius:12px;
   box-shadow:0 10px 30px rgba(0,0,0,.12);
-  margin-bottom:30px;
   flex:1 1 45%;
   text-align:center;
 }
@@ -114,7 +87,6 @@ nav a:hover{text-decoration:underline;}
   height:250px;
   overflow:hidden;
   border-radius:10px;
-  margin-bottom:10px;
 }
 .slide{
   position:absolute;
@@ -126,18 +98,8 @@ nav a:hover{text-decoration:underline;}
   transition:1s;
 }
 .slide.active{left:0;}
-.slide-caption{
-  position:absolute;
-  bottom:8px;
-  left:0;
-  width:100%;
-  background:rgba(0,0,0,0.5);
-  color:white;
-  padding:5px;
-  font-size:14px;
-}
 
-/* DOWNLOAD BUTTONS */
+/* BUTTONS */
 .download-btn{
   display:inline-block;
   padding:8px 16px;
@@ -148,32 +110,19 @@ nav a:hover{text-decoration:underline;}
   font-weight:bold;
   margin:5px;
 }
-.download-btn:hover{background:#1b5e20;}
 
 /* FOOTER */
 footer{
   background:#0d47a1;
   color:white;
   text-align:center;
-  padding:20px;
-  margin-top:30px;
+  padding:25px;
 }
-footer a{
-  color:#bbdefb;
-  margin:0 6px;
-  text-decoration:none;
-}
-footer a:hover{text-decoration:underline;}
 
 /* RESPONSIVE */
 @media(max-width:768px){
   .container{flex-direction:column;}
-  .card{flex:1 1 100%;}
-  header{flex-direction:column;align-items:flex-start;}
-  header img{margin-bottom:10px;}
   .hero-text h1{font-size:2em;}
-  .hero-text p{font-size:1em;}
-  .hero{height:60vh;}
 }
 </style>
 </head>
@@ -181,136 +130,89 @@ footer a:hover{text-decoration:underline;}
 <body>
 
 <header>
-<div style="display:flex;align-items:center;">
-  <img src="logo.jpg" alt="College Logo">
-  <h2>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h2>
-</div>
-<nav>
-  <a href="#home">Home</a>
-  <a href="#departments">Departments</a>
-  <a href="#contact">Contact</a>
-</nav>
+  <div style="display:flex;align-items:center;">
+    <img src="logo.jpg">
+    <h2>MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE</h2>
+  </div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#departments">Departments</a>
+    <a href="#contact">Contact</a>
+  </nav>
 </header>
 
-<!-- HERO SLIDER -->
+<!-- ✅ BANNER SLIDER (WORKING) -->
 <section class="hero" id="home">
-  <img class="slide" src="po1.jpg" alt="ICT Photo 2">
-<img class="slide" src="po1.jpg" alt="ICT Photo 2">
-<img class="slide" src="po1.jpg" alt="ICT Photo 2">
-<img class="slide" src="po1.jpg" alt="ICT Photo 2">
+  <img class="hero-slide active" src="po1.jpg">
+  <img class="hero-slide" src="po2.jpg">
+  <img class="hero-slide" src="po3.jpg">
+  <img class="hero-slide" src="po4.jpg">
 
   <div class="hero-overlay"></div>
-  <div class="hero-text" id="heroText">
+  <div class="hero-text">
     <h1>Welcome to Msambweni TVC</h1>
-    <p>Modern Campus | Student Growth | Future‑Ready Skills</p>
+    <p>Modern Campus | Skills for the Future</p>
   </div>
 </section>
 
-<!-- DEPARTMENTS SECTION -->
+<!-- DEPARTMENTS -->
 <section class="container" id="departments">
 
-  <!-- ICT Department -->
-  <div class="card">
-    <div class="slider" id="ictSlider">
-      <img class="slide active" src="po1.jpg" alt="ICT Photo 1">
-      <img class="slide" src="po2.jpg" alt="ICT Photo 2">
-      <img class="slide" src="po3.jpg" alt="ICT Photo 3">
-      <div class="slide-caption">ICT Department Labs</div>
-    </div>
-    <h3>ICT Department</h3>
-    <a class="download-btn" href="documents/ict_course_outline.pdf" download>Course Outline</a>
-    <a class="download-btn" href="documents/ict_notes.pdf" download>Notes</a>
-    <a class="download-btn" href="documents/ict_timetable.pdf" download>Timetable</a>
+<div class="card">
+  <div class="slider" id="ictSlider">
+    <img class="slide active" src="po1.jpg">
+    <img class="slide" src="po2.jpg">
+    <img class="slide" src="po3.jpg">
   </div>
+  <h3>ICT Department</h3>
+  <a class="download-btn" href="documents/ict_notes.pdf" download>Notes</a>
+</div>
 
-  <!-- Business Department -->
-  <div class="card">
-    <div class="slider" id="businessSlider">
-      <img class="slide active" src="business1.jpg" alt="Business Photo 1">
-      <img class="slide" src="business2.jpg" alt="Business Photo 2">
-      <img class="slide" src="business3.jpg" alt="Business Photo 3">
-      <div class="slide-caption">Business Studies Block</div>
-    </div>
-    <h3>Business Department</h3>
-    <a class="download-btn" href="documents/business_course_outline.pdf" download>Course Outline</a>
-    <a class="download-btn" href="documents/business_notes.pdf" download>Notes</a>
-    <a class="download-btn" href="documents/business_timetable.pdf" download>Timetable</a>
+<div class="card">
+  <div class="slider" id="businessSlider">
+    <img class="slide active" src="business1.jpg">
+    <img class="slide" src="business2.jpg">
+    <img class="slide" src="business3.jpg">
   </div>
-
-  <!-- Hospitality Department -->
-  <div class="card">
-    <div class="slider" id="hospitalitySlider">
-      <img class="slide active" src="hospitality1.jpg" alt="Hospitality Photo 1">
-      <img class="slide" src="hospitality2.jpg" alt="Hospitality Photo 2">
-      <img class="slide" src="hospitality3.jpg" alt="Hospitality Photo 3">
-      <div class="slide-caption">Hospitality Training Area</div>
-    </div>
-    <h3>Hospitality Department</h3>
-    <a class="download-btn" href="documents/hospitality_course_outline.pdf" download>Course Outline</a>
-    <a class="download-btn" href="documents/hospitality_notes.pdf" download>Notes</a>
-    <a class="download-btn" href="documents/hospitality_timetable.pdf" download>Timetable</a>
-  </div>
-
-  <!-- Engineering Department -->
-  <div class="card">
-    <div class="slider" id="engineeringSlider">
-      <img class="slide active" src="engineering1.jpg" alt="Engineering Photo 1">
-      <img class="slide" src="engineering2.jpg" alt="Engineering Photo 2">
-      <img class="slide" src="engineering3.jpg" alt="Engineering Photo 3">
-      <div class="slide-caption">Engineering Workshop</div>
-    </div>
-    <h3>Engineering Department</h3>
-    <a class="download-btn" href="documents/engineering_course_outline.pdf" download>Course Outline</a>
-    <a class="download-btn" href="documents/engineering_notes.pdf" download>Notes</a>
-    <a class="download-btn" href="documents/engineering_timetable.pdf" download>Timetable</a>
-  </div>
+  <h3>Business Department</h3>
+  <a class="download-btn" href="documents/business_notes.pdf" download>Notes</a>
+</div>
 
 </section>
 
-<!-- CONTACT -->
 <section class="container" id="contact">
 <h2>Contact Us</h2>
-<p>Email: info@msambwenitvc.ac.ke | Phone: +254 712 345678</p>
+<p>Email: info@msambwenitvc.ac.ke</p>
 </section>
 
 <footer>
 <p>© 2026 Msambweni Technical & Vocational College</p>
-<p>Prepared by ICT Department | All Rights Reserved</p>
-<p>
-<a href="#">YouTube</a> |
-<a href="#">KNEC</a> |
-<a href="#">KUCCPS</a> |
-<a href="#">HELB</a> |
-<a href="#">TVET Library</a>
-</p>
+<p>Prepared by ICT Department</p>
 </footer>
 
 <script>
-// HERO SLIDER
-let currentHero = 0;
-const heroSlides = document.querySelectorAll('.hero-slide');
+/* HERO SLIDER */
+let h=0;
+const hero=document.querySelectorAll('.hero-slide');
 setInterval(()=>{
-  heroSlides[currentHero].classList.remove('active');
-  currentHero = (currentHero + 1) % heroSlides.length;
-  heroSlides[currentHero].classList.add('active');
+  hero[h].classList.remove('active');
+  h=(h+1)%hero.length;
+  hero[h].classList.add('active');
 },4000);
 
-// DEPARTMENT SLIDERS
-function initSlider(sliderId){
-  const slider = document.getElementById(sliderId);
-  const slides = slider.querySelectorAll('.slide');
-  let current = 0;
+/* DEPARTMENT SLIDERS */
+function startSlider(id){
+  const slides=document.querySelectorAll(`#${id} .slide`);
+  let i=0;
   setInterval(()=>{
-    slides[current].classList.remove('active');
-    current = (current + 1) % slides.length;
-    slides[current].classList.add('active');
+    slides[i].classList.remove('active');
+    i=(i+1)%slides.length;
+    slides[i].classList.add('active');
   },3000);
 }
-
-// Start department sliders
-['ictSlider','businessSlider','hospitalitySlider','engineeringSlider'].forEach(id=>initSlider(id));
+startSlider('ictSlider');
+startSlider('businessSlider');
 </script>
 
 </body>
 </html>
-
