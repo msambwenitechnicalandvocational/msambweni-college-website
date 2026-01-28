@@ -359,7 +359,697 @@ backToTop.onclick=()=>scrollTo({top:0,behavior:'smooth'});
 </script>
 
 </body>
+</html><br><br>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>www.msambweni.com</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('SAM.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.95);
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo img {
+      max-width: 150px;
+    }
+
+    .popup-btn {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .popup-btn button {
+      padding: 10px 20px;
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    h2, h3 {
+      text-align: center;
+      color: #333;
+    }
+
+    .form-group {
+      margin: 15px 0;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #444;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .chat-interface, .library-portal, .programs {
+      margin-top: 40px;
+      border-top: 1px solid #ccc;
+      padding-top: 20px;
+    }
+
+    .chat-box {
+      height: 200px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background: #f9f9f9;
+      border-radius: 5px;
+    }
+
+    .chat-input {
+      margin-top: 10px;
+      display: flex;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #aaa;
+      border-radius: 5px 0 0 5px;
+    }
+
+    .chat-input button {
+      border-radius: 0 5px 5px 0;
+      background-color: #007BFF;
+    }
+
+    .library-portal ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .library-portal li {
+      margin: 10px 0;
+    }
+
+    .library-portal a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+
+    .library-portal a:hover {
+      text-decoration: underline;
+    }
+
+    .program-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .program {
+      background-color: #f5f5f5;
+      padding: 15px;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    .program img {
+      max-width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .program p {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    /* Popup Modal Styling */
+    #popupModal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 999;
+    }
+
+    #popupContent {
+      background: white;
+      max-width: 500px;
+      margin: 100px auto;
+      padding: 20px;
+      border-radius: 10px;
+      position: relative;
+      text-align: center;
+    }
+
+    #popupContent h3 {
+      margin-top: 0;
+    }
+
+    #popupContent button {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+<p style="text-align: center; color: blue;">MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE.</p>
+  <div class="container">
+    <!-- Logo -->
+    <div class="logo">
+      <img src="logo.jpg" alt="College Logo" />
+    </div>
+
+    <!-- Popup Button -->
+    <div class="popup-btn">
+      <button onclick="openPopup()">📢 View Announcement</button>
+    </div>
+
+    <!-- Login Section -->
+    <h2>Student Login Portal</h2>
+    <form>
+      <div class="form-group">
+        <label for="studentId">Student ID</label>
+        <input type="text" id="studentId" placeholder="Enter your ID" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" />
+      </div>
+      <button type="submit">Login</button>
+    </form><br>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Masomo Portals - Kirinyaga University</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+    }
+
+    .top-bar {
+      background-color: #008000;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .top-bar a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background-color: #f5f5f5;
+    }
+
+    .logo img {
+      height: 80px;
+    }
+
+    .nav {
+      display: flex;
+      gap: 20px;
+      font-weight: bold;
+      position: relative;
+      flex-wrap: wrap;
+    }
+
+    .nav-item {
+      position: relative;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: #333;
+      padding: 10px;
+      display: block;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      left: 0;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      z-index: 1000;
+      min-width: 180px;
+    }
+
+    .dropdown a {
+      padding: 10px;
+      color: #333;
+      border-bottom: 1px solid #eee;
+    }
+
+    .nav-item:hover .dropdown {
+      display: block;
+    }
+
+    .breadcrumb {
+      background-color: #c89c2c;
+      color: white;
+      padding: 15px 20px;
+    }
+
+    .breadcrumb small {
+      font-size: 14px;
+    }
+
+    .container {
+      padding: 30px 20px;
+    }
+
+    .portal-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .portal-buttons a {
+      padding: 10px 20px;
+      border: 1px solid #008000;
+      color: #008000;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .portal-buttons a:hover {
+      background-color: #008000;
+      color: white;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    p {
+      color: #444;
+      line-height: 1.6;
+    }
+
+    .lost-password {
+      font-weight: bold;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div>
+      <a href="#">Facebook</a>
+      <a href="#">Twitter</a>
+      <a href="#">YouTube</a>
+      <a href="#">WhatsApp</a>
+      <a href="#">LinkedIn</a>
+    </div>
+    <div>
+      <a href="#">KUCCPS Portal</a>
+      <a href="#">Downloads</a>
+      <a href="#">Students Portal</a>
+      <a href="#">Masomo</a>
+      <a href="#">Staff Portal</a>
+      <a href="#">HEF Portal</a>
+    </div>
+  </div>
+
+  <!-- Logo and nav -->
+  <div class="header">
+    <div class="logo">
+      <img src="logo.jpg" alt="MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE" />
+    </div>
+    <div class="nav">
+      <div class="nav-item">
+        <a href="#">Home</a>
+      </div>
+
+      <div class="nav-item">
+        <a href="#">About MTVC</a>
+        <div class="dropdown">
+          <a href="#">Overview</a>
+          <a href="#">Administration</a>
+          <a href="#">Mission & Vision</a>
+          <a href="#">College History</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a href="#">Academics</a>
+        <div class="dropdown">
+          <a href="#">Schools</a>
+          <a href="#">Departments</a>
+          <a href="#">eLearning</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a href="#">Admissions</a>
+        <div class="dropdown">
+          <a href="#">ARTISAN</a>
+          <a href="#">CERTIFICATE</a>
+           <a href="#">DIMPLOMA</a>
+          <a href="#">Online Application</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a href="#">Resources</a>
+        <div class="dropdown">
+          <a href="#">Library</a>
+          
+          <a href="#">ICT</a>
+          <a href="#">ELECTRICAL ENGINEERING</a> 
+          <a href="#">MECHANICAL ENGINEERING</a>
+          <a href="#">FOOD AND BEVERAGE</a>
+          <a href="#">FASION AND DESIGN</a>
+          <a href="#">BEUTY AND THERAPY</a>
+          <a href="#">HAIR DRESSING</a>
+          <a href="#">SOCIAL WORK AND COMMUNITY DEVELOPMENT</a>
+          <a href="#">PROCUREMENT</a>
+          <a href="#">TOUR AND TRAVEL MANAGEMENT</a>
+          <a href="#">Student Services</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a href="#">Sports</a>
+        <div class="dropdown">
+          <a href="#">Football</a>
+          <a href="#">Volleyball</a>
+          <a href="#">Athletics</a>
+          <a href="#">Rugby</a>
+          <a href="#">Indoor Games</a>
+        </div>
+      </div>
+
+      <div class="nav-item">
+        <a href="#">Students</a>
+      </div>
+
+      <div class="nav-item">
+        <a href="#">Contacts</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <small>Home &gt; Academics &gt; Masomo</small>
+  </div>
+
+  <!-- Main Section -->
+  <div class="container">
+    <h2>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE MASOMO PORTAL</h2>
+
+    <div class="portal-buttons">
+      <a href="#">MASOMO ARTISANS </a>
+      <a href="#">MASOMO CERTIFICATE</a>
+      <a href="#">MASOMO DIMPLOMA</a>
+    </div>
+
+    <div class="lost-password">Lost Password</div>
+    <p>
+      All students are advised to log in to Masomo portal using their Registration Number as the username and national ID number/birth certificate number as the password. However, if you have changed your log-in password to the student’s portal from ID number to any other password, kindly...
+    </p>
+  </div>
+
+</body>
 </html>
+
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Msambweni Technical & Vocational College</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('SAM.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.95);
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    nav button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    h3, h4 {
+      color: #333;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    ul li {
+      margin: 8px 0;
+    }
+
+    a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <button onclick="showSection('home')">Home</button>
+      <button onclick="showSection('library')">Library</button>
+    </nav>
+
+    <!-- Home Section -->
+    <div id="home" class="section active">
+      <h3>🏫 Welcome to Msambweni Technical & Vocational College</h3>
+      <p style="text-align:center; color:green;">
+        Admissions are open for the upcoming intake. Apply now and join one of the best hands-on training institutions in Kenya!
+      </p>
+    </div>
+
+    <!-- Library Section -->
+    <div id="library" class="section">
+      <h3>📚 Library Page</h3>
+
+      <h4>✅ Vision and Mission</h4>
+      <p><strong>Vision:</strong> To be a leading academic library supporting excellence in teaching, learning, and research.</p>
+      <p><strong>Mission:</strong> To provide timely access to quality resources and services for holistic academic development.</p>
+
+      <h4>❓ Frequently Asked Questions (FAQs)</h4>
+      <ul>
+        <li><strong>Who can access the library?</strong> All registered students and staff.</li>
+        <li><strong>Library hours?</strong> Mon-Fri, 8:00am - 5:00pm.</li>
+        <li><strong>How many books can I borrow?</strong> Up to 3 books for 2 weeks.</li>
+      </ul>
+
+      <h4>🏷️ Library Sections</h4>
+      <ul>
+        <li>General Reading</li>
+        <li>ICT Access</li>
+        <li>Reference Section</li>
+        <li>Newspapers & Journals</li>
+        <li>Research Area</li>
+      </ul>
+
+      <h4>📏 Rules and Regulations</h4>
+      <ul>
+        <li>Maintain silence.</li>
+        <li>No eating or drinking.</li>
+        <li>Return books on time.</li>
+      </ul>
+
+      <h4>🪪 Membership</h4>
+      <p>All students are automatically registered. External members may apply through the librarian.</p>
+
+      <h4>📁 Downloadable Learning Materials</h4>
+      <ul>
+        <li><a href="ict4.pdf" download>📄 ICT Notes</a></li>
+        <li><a href="scm.pdf" download>📄 Business Management</a></li>
+        <li><a href="fb.pdf" download>📄 Hospitality Guide</a></li>
+        <li><a href="et.pdf" download>📄 Electrical Engineering Principles</a></li>
+        <li><a href="2024j.pdf" download>📄 Civil Engineering Fundamentals</a></li>
+        <li><a href="bt.pdf" download>📄 Mechanical Engineering Book</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(id).classList.add('active');
+    }
+  </script>
+</body>
+</html>
+
+
+    <!-- Programs Offered -->
+    <div class="programs">
+      <h3>🎓 PROGRAMS OFFERED AT MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE</h3>
+      <div class="program-list">
+        <div class="program">
+          <img src="computer.jpg" alt="ICT">
+          <p>Diploma in Information and Communication Technology</p>
+        </div>
+        <div class="program">
+          <img src="electrical.jpg" alt="Electrical Engineering">
+          <p>Diploma in Electrical and Electronic Engineering</p>
+        </div>
+        <div class="program">
+          <img src="build.jpg" alt="Civil Engineering">
+          <p>Diploma in Building and Civil Engineering</p>
+        </div>
+        <div class="program">
+          <img src="mec.jpg" alt="Motor Vehicle Mechanics">
+          <p>Certificate in Motor Vehicle Mechanics</p>
+        </div>
+        <div class="program">
+          <img src="bus.jpg" alt="Business Management">
+          <p>Diploma in Business Management</p>
+        </div>
+        <div class="program">
+          <img src="beut.jpg" alt="Beauty Therapy">
+          <p>Certificate in Hairdressing & Beauty Therapy</p>
+        </div>
+        <div class="program">
+          <img src="adm.jpg" alt="Agriculture">
+<p style=" color: blue;">vision statement.</p>
+          
+To be a center of excellence in technical and vocational education, producing competent graduates who contribute to national and global development.
+
+<p> <p style=" color: blue;">Mission Statement.</p>
+To provide accessible, practical, and industry-driven training that empowers learners with the skills, knowledge, and attitudes needed for employment, innovation, and entrepreneurship.
+
+<p style=" color: blue;">Core Values.</p>
+<p style="margin-bottom: 30px;">1. Integrity – Upholding honesty and accountability in all operations..</p>
+<p style="margin-bottom: 30px;">2. Innovation – Encouraging creativity and practical problem-solving...</p>
+<p style="margin-bottom: 30px;">3. Excellence – Committing to high standards in training and service delivery...</p>
+<p style="margin-bottom: 30px;">4. Teamwork – Fostering collaboration among students, staff, and stakeholders....</p>
+<p style="margin-bottom: 30px;">4. Inclusivity – Promoting equal opportunity and diversity in learning.....</p>
+
+
+
+
+<br>
+
+Inclusivity – Promoting equal opportunity and diversity in learning.<br>
+
+<p style=" color: blue;">4. Principal’s Statement.</p>
+At Msambweni Technical and Vocational College, we are committed to nurturing a new generation of skilled professionals who are not only employable but also entrepreneurial. Through qualified trainers, modern facilities, and strong industry partnerships, we ensure that our graduates are ready to meet the demands of the 21st-century workforce.</p>
+        </div>
+        <div class="program">
+          <img src="foo.jpg" alt="Hospitality">
+          <p>🍽️ Food and Beverage Course – Msambweni Technical and Vocational College
+The Food and Beverage course at Msambweni Technical and Vocational College equips students with practical skills in food production, service, and hospitality management. Through hands-on training in modern kitchens and simulated restaurant environments, learners gain expertise in menu planning, customer service, hygiene, and nutrition. This course prepares graduates for careers in hotels, restaurants, catering services, and the hospitality industry at large. With a strong focus on professionalism and creativity, students are empowered to excel as skilled service providers or start their own food businesses.
+
+
+    
+
+    </body>
+</html>
+
+
 
 
 
