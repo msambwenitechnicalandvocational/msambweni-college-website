@@ -349,7 +349,7 @@
             transform: scale(1.2);
         }
 
-        /* ===== PORTAL FORMS ===== */
+        /* ===== STUDENT PORTAL ===== */
         .portal-section {
             background-color: var(--white);
             padding: 60px 0;
@@ -492,7 +492,7 @@
             border: 1px solid rgba(255, 87, 34, 0.3);
         }
 
-        /* ===== DASHBOARD ===== */
+        /* ===== STUDENT DASHBOARD ===== */
         .dashboard {
             display: none;
             padding: 40px 0;
@@ -526,7 +526,7 @@
 
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 25px;
             margin-bottom: 40px;
         }
@@ -556,6 +556,12 @@
             align-items: center;
             gap: 10px;
             font-size: 1.3rem;
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 10px;
+        }
+
+        body.dark-mode .dashboard-card h3 {
+            border-bottom-color: #333;
         }
 
         .dashboard-card h3 i {
@@ -634,11 +640,67 @@
             color: white;
         }
 
-        .quick-actions {
+        /* ===== ACADEMIC INFO ===== */
+        .academic-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
-            margin-top: 30px;
+            margin-bottom: 25px;
+        }
+
+        .info-item {
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: var(--radius);
+            border-left: 4px solid var(--primary);
+        }
+
+        body.dark-mode .info-item {
+            background-color: #2a2a2a;
+        }
+
+        .info-item h4 {
+            color: var(--text-light);
+            font-size: 12px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .info-item p {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* ===== TIMETABLE ===== */
+        .timetable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .timetable th {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .timetable td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        body.dark-mode .timetable td {
+            border-bottom-color: #333;
+        }
+
+        .timetable tr:hover {
+            background-color: var(--light);
+        }
+
+        body.dark-mode .timetable tr:hover {
+            background-color: #2a2a2a;
         }
 
         /* ===== DEPARTMENTS SECTION ===== */
@@ -664,7 +726,7 @@
 
         .dept-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 30px;
         }
 
@@ -683,6 +745,23 @@
         .dept-card:hover {
             transform: translateY(-10px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .dept-image {
+            height: 200px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .dept-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .dept-card:hover .dept-image img {
+            transform: scale(1.05);
         }
 
         .dept-header {
@@ -901,6 +980,10 @@
             .logo-right {
                 display: none;
             }
+
+            .dept-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
@@ -931,7 +1014,7 @@
                 padding: 30px 20px;
             }
 
-            .dept-grid {
+            .academic-info {
                 grid-template-columns: 1fr;
             }
         }
@@ -942,6 +1025,8 @@
     <div class="top-bar">
         <div class="container">
             <div class="top-bar-contact">
+                <span><i class="fas fa-clock"></i> Mon-Fri: 8:00 AM - 5:00 PM</span>
+                <span><i class="fas fa-phone"></i> +254 712 345 678</span>
             </div>
             <div class="top-bar-social">
                 <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -967,16 +1052,14 @@
             <!-- Center Navigation -->
             <nav class="nav-menu" id="navMenu">
                 <a href="#home"><i class="fas fa-home"></i> Home</a>
-                <a href="#about"><i class="fas fa-info-circle"></i> About</a>
                 <a href="#departments"><i class="fas fa-building"></i> Departments</a>
-                <a href="#programs"><i class="fas fa-graduation-cap"></i> Programs</a>
                 <a href="#portal"><i class="fas fa-user-graduate"></i> Student Portal</a>
                 <a href="#contact"><i class="fas fa-phone"></i> Contact</a>
             </nav>
             
             <!-- Right Logo -->
             <div class="logo-right">
-                <img src="knec.png" alt="Government Logo" class="logo-img">
+                <img src="knec.png" alt="Government Logo" class="logo-img" onerror="this.src='https://via.placeholder.com/70x70/2e7d32/ffffff?text=TVET'">
                 <div class="right-logo-text">
                     <div>TVET Authority</div>
                     <div>Government of Kenya</div>
@@ -995,21 +1078,21 @@
             <div class="hero-overlay">
                 <h2>Empowering Futures Through Technical Education</h2>
                 <p>Msambweni TVC provides industry-relevant skills training to prepare students for employment, entrepreneurship, and innovation in today's competitive world.</p>
-                <a href="#portal" class="btn btn-primary">Join Our Community</a>
+                <a href="#portal" class="btn btn-primary">Access Student Portal</a>
             </div>
         </div>
         <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80');">
             <div class="hero-overlay">
                 <h2>State-of-the-Art Training Facilities</h2>
                 <p>Modern workshops, computer labs, and specialized equipment to enhance practical learning experience.</p>
-                <a href="#departments" class="btn btn-primary">Explore Facilities</a>
+                <a href="#departments" class="btn btn-primary">Explore Departments</a>
             </div>
         </div>
         <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1523580494863-6f3031224c94?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80');">
             <div class="hero-overlay">
                 <h2>Industry Partnerships & Job Placement</h2>
                 <p>Strong collaborations with industry leaders ensuring relevant curriculum and employment opportunities for graduates.</p>
-                <a href="#programs" class="btn btn-primary">View Programs</a>
+                <a href="#portal" class="btn btn-primary">Student Login</a>
             </div>
         </div>
         
@@ -1144,10 +1227,34 @@
             <div class="dashboard-welcome">
                 <h2>Welcome, <span id="studentName">Student</span></h2>
                 <p><i class="fas fa-id-card"></i> Student ID: <span id="dashboardStudentId">MTVC/2024/001</span> | 
-                   <i class="fas fa-building"></i> Department: <span id="dashboardDept">ICT</span></p>
+                   <i class="fas fa-building"></i> Department: <span id="dashboardDept">ICT</span> | 
+                   <i class="fas fa-calendar"></i> Semester: <span id="dashboardSemester">2, 2024</span></p>
             </div>
             <div>
                 <button class="btn btn-outline" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </div>
+        </div>
+        
+        <!-- Academic Information -->
+        <div class="dashboard-card">
+            <h3><i class="fas fa-info-circle"></i> Academic Information</h3>
+            <div class="academic-info">
+                <div class="info-item">
+                    <h4>Student Status</h4>
+                    <p id="studentStatus">Active</p>
+                </div>
+                <div class="info-item">
+                    <h4>Current GPA</h4>
+                    <p id="studentGPA">3.75</p>
+                </div>
+                <div class="info-item">
+                    <h4>Credits Completed</h4>
+                    <p id="creditsCompleted">45/120</p>
+                </div>
+                <div class="info-item">
+                    <h4>Next Exam Date</h4>
+                    <p id="nextExam">May 15, 2024</p>
+                </div>
             </div>
         </div>
         
@@ -1167,7 +1274,7 @@
                             </div>
                         </div>
                         <div class="file-actions">
-                            <a href="pdfs/transcript.pdf" download><i class="fas fa-download"></i> Download</a>
+                            <a href="#" class="download-btn" data-file="transcript.pdf"><i class="fas fa-download"></i> Download</a>
                         </div>
                     </li>
                     <li>
@@ -1181,7 +1288,7 @@
                             </div>
                         </div>
                         <div class="file-actions">
-                            <a href="pdfs/fee-statement.pdf" download><i class="fas fa-download"></i> Download</a>
+                            <a href="#" class="download-btn" data-file="fee-statement.pdf"><i class="fas fa-download"></i> Download</a>
                         </div>
                     </li>
                     <li>
@@ -1195,7 +1302,7 @@
                             </div>
                         </div>
                         <div class="file-actions">
-                            <a href="pdfs/course-registration.pdf" download><i class="fas fa-download"></i> Download</a>
+                            <a href="#" class="download-btn" data-file="course-registration.pdf"><i class="fas fa-download"></i> Download</a>
                         </div>
                     </li>
                     <li>
@@ -1209,133 +1316,117 @@
                             </div>
                         </div>
                         <div class="file-actions">
-                            <a href="pdfs/exam-card.pdf" download><i class="fas fa-download"></i> Download</a>
+                            <a href="#" class="download-btn" data-file="exam-card.pdf"><i class="fas fa-download"></i> Download</a>
                         </div>
                     </li>
                 </ul>
             </div>
             
-            <!-- Learning Resources -->
+            <!-- Class Timetable -->
             <div class="dashboard-card">
-                <h3><i class="fas fa-book-open"></i> Learning Resources</h3>
+                <h3><i class="fas fa-calendar-alt"></i> Weekly Timetable</h3>
+                <table class="timetable">
+                    <thead>
+                        <tr>
+                            <th>Day</th>
+                            <th>Time</th>
+                            <th>Course</th>
+                            <th>Venue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Monday</td>
+                            <td>8:00 - 10:00</td>
+                            <td>Software Engineering</td>
+                            <td>Lab 3</td>
+                        </tr>
+                        <tr>
+                            <td>Tuesday</td>
+                            <td>10:00 - 12:00</td>
+                            <td>Database Systems</td>
+                            <td>Room 205</td>
+                        </tr>
+                        <tr>
+                            <td>Wednesday</td>
+                            <td>8:00 - 10:00</td>
+                            <td>Web Development</td>
+                            <td>Lab 1</td>
+                        </tr>
+                        <tr>
+                            <td>Thursday</td>
+                            <td>2:00 - 4:00</td>
+                            <td>Networking</td>
+                            <td>Lab 2</td>
+                        </tr>
+                        <tr>
+                            <td>Friday</td>
+                            <td>10:00 - 12:00</td>
+                            <td>Project Management</td>
+                            <td>Room 210</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Results & Grades -->
+            <div class="dashboard-card">
+                <h3><i class="fas fa-chart-line"></i> Recent Results</h3>
                 <ul class="file-list">
+                    <li>
+                        <div class="file-info">
+                            <div class="file-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div class="file-details">
+                                <h4>Semester 1, 2024 Results</h4>
+                                <p>GPA: 3.75 • Released: Feb 15, 2024</p>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <a href="#" class="download-btn" data-file="results-sem1.pdf"><i class="fas fa-eye"></i> View</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="file-info">
+                            <div class="file-icon">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <div class="file-details">
+                                <h4>Assignment Scores</h4>
+                                <p>All subjects • Updated Weekly</p>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <a href="#" class="download-btn" data-file="assignments.pdf"><i class="fas fa-download"></i> View</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="file-info">
+                            <div class="file-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="file-details">
+                                <h4>Attendance Report</h4>
+                                <p>95% Attendance • Semester 2</p>
+                            </div>
+                        </div>
+                        <div class="file-actions">
+                            <a href="#" class="download-btn" data-file="attendance.pdf"><i class="fas fa-download"></i> Download</a>
+                        </div>
+                    </li>
                     <li>
                         <div class="file-info">
                             <div class="file-icon">
                                 <i class="fas fa-book"></i>
                             </div>
                             <div class="file-details">
-                                <h4>All Lecture Notes</h4>
-                                <p>ZIP • 45.2 MB • Complete Set</p>
+                                <h4>Course Materials</h4>
+                                <p>All subjects • Complete Set</p>
                             </div>
                         </div>
                         <div class="file-actions">
-                            <a href="pdfs/lecture-notes.zip" download><i class="fas fa-download"></i> Download</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="file-info">
-                            <div class="file-icon">
-                                <i class="fas fa-file-archive"></i>
-                            </div>
-                            <div class="file-details">
-                                <h4>Past Papers (5 Years)</h4>
-                                <p>ZIP • 32.7 MB • 2019-2023</p>
-                            </div>
-                        </div>
-                        <div class="file-actions">
-                            <a href="pdfs/past-papers.zip" download><i class="fas fa-download"></i> Download</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="file-info">
-                            <div class="file-icon">
-                                <i class="fas fa-flask"></i>
-                            </div>
-                            <div class="file-details">
-                                <h4>Lab Manuals</h4>
-                                <p>PDF • 15.3 MB • Practical Guides</p>
-                            </div>
-                        </div>
-                        <div class="file-actions">
-                            <a href="pdfs/lab-manuals.pdf" download><i class="fas fa-download"></i> Download</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="file-info">
-                            <div class="file-icon">
-                                <i class="fas fa-book-medical"></i>
-                            </div>
-                            <div class="file-details">
-                                <h4>Reference Books</h4>
-                                <p>PDF • 28.9 MB • Recommended Texts</p>
-                            </div>
-                        </div>
-                        <div class="file-actions">
-                            <a href="pdfs/reference-books.pdf" download><i class="fas fa-download"></i> Download</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            
-            <!-- Department Files -->
-            <div class="dashboard-card">
-                <h3><i class="fas fa-university"></i> Department Files</h3>
-                <ul class="file-list">
-                    <li>
-                        <div class="file-info">
-                            <div class="file-icon">
-                                <i class="fas fa-bullhorn"></i>
-                            </div>
-                            <div class="file-details">
-                                <h4>Department Notices</h4>
-                                <p>PDF • 3.2 MB • Latest Updates</p>
-                            </div>
-                        </div>
-                        <div class="file-actions">
-                            <a href="pdfs/department-notices.pdf" download><i class="fas fa-download"></i> Download</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="file-info">
-                            <div class="file-icon">
-                                <i class="fas fa-tasks"></i>
-                            </div>
-                            <div class="file-details">
-                                <h4>Assignment Guidelines</h4>
-                                <p>PDF • 1.8 MB • Format & Rules</p>
-                            </div>
-                        </div>
-                        <div class="file-actions">
-                            <a href="pdfs/assignment-guidelines.pdf" download><i class="fas fa-download"></i> Download</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="file-info">
-                            <div class="file-icon">
-                                <i class="fas fa-project-diagram"></i>
-                            </div>
-                            <div class="file-details">
-                                <h4>Project Templates</h4>
-                                <p>ZIP • 8.7 MB • Report Formats</p>
-                            </div>
-                        </div>
-                        <div class="file-actions">
-                            <a href="pdfs/project-templates.zip" download><i class="fas fa-download"></i> Download</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="file-info">
-                            <div class="file-icon">
-                                <i class="fas fa-briefcase"></i>
-                            </div>
-                            <div class="file-details">
-                                <h4>Internship Forms</h4>
-                                <p>PDF • 2.1 MB • Attachment Docs</p>
-                            </div>
-                        </div>
-                        <div class="file-actions">
-                            <a href="pdfs/internship-forms.pdf" download><i class="fas fa-download"></i> Download</a>
+                            <a href="#" class="download-btn" data-file="materials.zip"><i class="fas fa-download"></i> Download</a>
                         </div>
                     </li>
                 </ul>
@@ -1345,13 +1436,13 @@
         <!-- Quick Actions -->
         <div class="dashboard-card">
             <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
-            <div class="quick-actions">
-                <a href="#" class="btn"><i class="fas fa-edit"></i> Update Profile</a>
-                <a href="#" class="btn"><i class="fas fa-print"></i> Print Documents</a>
-                <a href="#" class="btn"><i class="fas fa-envelope"></i> Contact Lecturer</a>
-                <a href="#" class="btn"><i class="fas fa-calendar-check"></i> View Timetable</a>
-                <a href="#" class="btn"><i class="fas fa-question-circle"></i> Help Desk</a>
-                <a href="#" class="btn"><i class="fas fa-cog"></i> Settings</a>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-top: 20px;">
+                <a href="#" class="btn btn-outline btn-small"><i class="fas fa-edit"></i> Update Profile</a>
+                <a href="#" class="btn btn-outline btn-small"><i class="fas fa-print"></i> Print Documents</a>
+                <a href="#" class="btn btn-outline btn-small"><i class="fas fa-envelope"></i> Contact Lecturer</a>
+                <a href="#" class="btn btn-outline btn-small"><i class="fas fa-question-circle"></i> Help Desk</a>
+                <a href="#" class="btn btn-outline btn-small"><i class="fas fa-book"></i> Library Access</a>
+                <a href="#" class="btn btn-outline btn-small"><i class="fas fa-calendar-plus"></i> Events</a>
             </div>
         </div>
     </section>
@@ -1362,6 +1453,9 @@
         <div class="dept-grid">
             <!-- ICT Department -->
             <div class="dept-card">
+                <div class="dept-image">
+                    <img src="https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="ICT Department">
+                </div>
                 <div class="dept-header">
                     <h3><i class="fas fa-laptop-code"></i> Information & Communication Technology</h3>
                     <p>Offering courses in Software Development, Networking, Cybersecurity, and Digital Literacy</p>
@@ -1370,13 +1464,13 @@
                     <div class="file-category">
                         <h4><i class="fas fa-file-pdf"></i> Course Materials</h4>
                         <div class="category-files">
-                            <a href="pdfs/ict-course-outline.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="ict-course-outline.pdf">
                                 <i class="fas fa-file-alt file-icon-small"></i> Course Outline
                             </a>
-                            <a href="pdfs/ict-syllabus.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="ict-syllabus.pdf">
                                 <i class="fas fa-book file-icon-small"></i> Syllabus
                             </a>
-                            <a href="pdfs/ict-module-guide.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="ict-module-guide.pdf">
                                 <i class="fas fa-map file-icon-small"></i> Module Guide
                             </a>
                         </div>
@@ -1385,44 +1479,14 @@
                     <div class="file-category">
                         <h4><i class="fas fa-book-open"></i> Learning Resources</h4>
                         <div class="category-files">
-                            <a href="pdfs/ict-lecture-notes.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="ict-lecture-notes.pdf">
                                 <i class="fas fa-book file-icon-small"></i> Lecture Notes
                             </a>
-                            <a href="pdfs/ict-practical-manual.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="ict-practical-manual.pdf">
                                 <i class="fas fa-flask file-icon-small"></i> Practical Manual
                             </a>
-                            <a href="pdfs/ict-reference-books.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="ict-reference-books.pdf">
                                 <i class="fas fa-book-medical file-icon-small"></i> Reference Books
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="file-category">
-                        <h4><i class="fas fa-calendar-alt"></i> Academic Planning</h4>
-                        <div class="category-files">
-                            <a href="pdfs/ict-timetable.pdf" class="file-link" download>
-                                <i class="fas fa-calendar file-icon-small"></i> Timetable
-                            </a>
-                            <a href="pdfs/ict-assessment-schedule.pdf" class="file-link" download>
-                                <i class="fas fa-clipboard-list file-icon-small"></i> Assessment Schedule
-                            </a>
-                            <a href="pdfs/ict-project-guidelines.pdf" class="file-link" download>
-                                <i class="fas fa-project-diagram file-icon-small"></i> Project Guidelines
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="file-category">
-                        <h4><i class="fas fa-graduation-cap"></i> Examinations</h4>
-                        <div class="category-files">
-                            <a href="pdfs/ict-past-papers.pdf" class="file-link" download>
-                                <i class="fas fa-file-archive file-icon-small"></i> Past Papers
-                            </a>
-                            <a href="pdfs/ict-exam-preparation.pdf" class="file-link" download>
-                                <i class="fas fa-brain file-icon-small"></i> Exam Preparation
-                            </a>
-                            <a href="pdfs/ict-revision-questions.pdf" class="file-link" download>
-                                <i class="fas fa-question-circle file-icon-small"></i> Revision Questions
                             </a>
                         </div>
                     </div>
@@ -1431,6 +1495,9 @@
 
             <!-- Engineering Department -->
             <div class="dept-card">
+                <div class="dept-image">
+                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Engineering Department">
+                </div>
                 <div class="dept-header">
                     <h3><i class="fas fa-cogs"></i> Engineering Department</h3>
                     <p>Electrical, Mechanical, and Civil Engineering programs with hands-on workshop training</p>
@@ -1439,13 +1506,13 @@
                     <div class="file-category">
                         <h4><i class="fas fa-file-pdf"></i> Course Materials</h4>
                         <div class="category-files">
-                            <a href="pdfs/engineering-course-outline.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="engineering-course-outline.pdf">
                                 <i class="fas fa-file-alt file-icon-small"></i> Course Outline
                             </a>
-                            <a href="pdfs/engineering-syllabus.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="engineering-syllabus.pdf">
                                 <i class="fas fa-book file-icon-small"></i> Syllabus
                             </a>
-                            <a href="pdfs/engineering-module-guide.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="engineering-module-guide.pdf">
                                 <i class="fas fa-map file-icon-small"></i> Module Guide
                             </a>
                         </div>
@@ -1454,44 +1521,14 @@
                     <div class="file-category">
                         <h4><i class="fas fa-tools"></i> Workshop Manuals</h4>
                         <div class="category-files">
-                            <a href="pdfs/engineering-workshop-manual.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="engineering-workshop-manual.pdf">
                                 <i class="fas fa-wrench file-icon-small"></i> Workshop Manual
                             </a>
-                            <a href="pdfs/engineering-safety-guide.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="engineering-safety-guide.pdf">
                                 <i class="fas fa-shield-alt file-icon-small"></i> Safety Guide
                             </a>
-                            <a href="pdfs/engineering-equipment-guide.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="engineering-equipment-guide.pdf">
                                 <i class="fas fa-toolbox file-icon-small"></i> Equipment Guide
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="file-category">
-                        <h4><i class="fas fa-drafting-compass"></i> Technical Drawings</h4>
-                        <div class="category-files">
-                            <a href="pdfs/engineering-drawings.pdf" class="file-link" download>
-                                <i class="fas fa-drafting-compass file-icon-small"></i> Technical Drawings
-                            </a>
-                            <a href="pdfs/engineering-blueprints.pdf" class="file-link" download>
-                                <i class="fas fa-file-contract file-icon-small"></i> Blueprints
-                            </a>
-                            <a href="pdfs/engineering-cad-files.zip" class="file-link" download>
-                                <i class="fas fa-file-archive file-icon-small"></i> CAD Files
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="file-category">
-                        <h4><i class="fas fa-clipboard-check"></i> Assessments</h4>
-                        <div class="category-files">
-                            <a href="pdfs/engineering-past-papers.pdf" class="file-link" download>
-                                <i class="fas fa-file-archive file-icon-small"></i> Past Papers
-                            </a>
-                            <a href="pdfs/engineering-practical-tests.pdf" class="file-link" download>
-                                <i class="fas fa-vial file-icon-small"></i> Practical Tests
-                            </a>
-                            <a href="pdfs/engineering-project-guidelines.pdf" class="file-link" download>
-                                <i class="fas fa-project-diagram file-icon-small"></i> Project Guidelines
                             </a>
                         </div>
                     </div>
@@ -1500,6 +1537,9 @@
 
             <!-- Business Department -->
             <div class="dept-card">
+                <div class="dept-image">
+                    <img src="https://images.unsplash.com/photo-1551836026-d5c2c5af78e4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Business Department">
+                </div>
                 <div class="dept-header">
                     <h3><i class="fas fa-chart-line"></i> Business Studies</h3>
                     <p>Business Management, Accounting, Procurement, and Entrepreneurship programs</p>
@@ -1508,13 +1548,13 @@
                     <div class="file-category">
                         <h4><i class="fas fa-file-pdf"></i> Course Materials</h4>
                         <div class="category-files">
-                            <a href="pdfs/business-course-outline.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="business-course-outline.pdf">
                                 <i class="fas fa-file-alt file-icon-small"></i> Course Outline
                             </a>
-                            <a href="pdfs/business-syllabus.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="business-syllabus.pdf">
                                 <i class="fas fa-book file-icon-small"></i> Syllabus
                             </a>
-                            <a href="pdfs/business-module-guide.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="business-module-guide.pdf">
                                 <i class="fas fa-map file-icon-small"></i> Module Guide
                             </a>
                         </div>
@@ -1523,44 +1563,14 @@
                     <div class="file-category">
                         <h4><i class="fas fa-book-open"></i> Learning Resources</h4>
                         <div class="category-files">
-                            <a href="pdfs/business-lecture-notes.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="business-lecture-notes.pdf">
                                 <i class="fas fa-book file-icon-small"></i> Lecture Notes
                             </a>
-                            <a href="pdfs/business-case-studies.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="business-case-studies.pdf">
                                 <i class="fas fa-briefcase file-icon-small"></i> Case Studies
                             </a>
-                            <a href="pdfs/business-reference-books.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="business-reference-books.pdf">
                                 <i class="fas fa-book-medical file-icon-small"></i> Reference Books
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="file-category">
-                        <h4><i class="fas fa-calculator"></i> Accounting Tools</h4>
-                        <div class="category-files">
-                            <a href="pdfs/business-accounting-templates.xlsx" class="file-link" download>
-                                <i class="fas fa-file-excel file-icon-small"></i> Accounting Templates
-                            </a>
-                            <a href="pdfs/business-financial-calculations.pdf" class="file-link" download>
-                                <i class="fas fa-calculator file-icon-small"></i> Financial Calculations
-                            </a>
-                            <a href="pdfs/business-tax-guide.pdf" class="file-link" download>
-                                <i class="fas fa-receipt file-icon-small"></i> Tax Guide
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="file-category">
-                        <h4><i class="fas fa-graduation-cap"></i> Examinations</h4>
-                        <div class="category-files">
-                            <a href="pdfs/business-past-papers.pdf" class="file-link" download>
-                                <i class="fas fa-file-archive file-icon-small"></i> Past Papers
-                            </a>
-                            <a href="pdfs/business-exam-preparation.pdf" class="file-link" download>
-                                <i class="fas fa-brain file-icon-small"></i> Exam Preparation
-                            </a>
-                            <a href="pdfs/business-revision-questions.pdf" class="file-link" download>
-                                <i class="fas fa-question-circle file-icon-small"></i> Revision Questions
                             </a>
                         </div>
                     </div>
@@ -1569,6 +1579,9 @@
 
             <!-- Hospitality Department -->
             <div class="dept-card">
+                <div class="dept-image">
+                    <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Hospitality Department">
+                </div>
                 <div class="dept-header">
                     <h3><i class="fas fa-utensils"></i> Hospitality & Tourism</h3>
                     <p>Food Production, Housekeeping, Front Office Operations, and Tour Guiding courses</p>
@@ -1577,13 +1590,13 @@
                     <div class="file-category">
                         <h4><i class="fas fa-file-pdf"></i> Course Materials</h4>
                         <div class="category-files">
-                            <a href="pdfs/hospitality-course-outline.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="hospitality-course-outline.pdf">
                                 <i class="fas fa-file-alt file-icon-small"></i> Course Outline
                             </a>
-                            <a href="pdfs/hospitality-syllabus.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="hospitality-syllabus.pdf">
                                 <i class="fas fa-book file-icon-small"></i> Syllabus
                             </a>
-                            <a href="pdfs/hospitality-module-guide.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="hospitality-module-guide.pdf">
                                 <i class="fas fa-map file-icon-small"></i> Module Guide
                             </a>
                         </div>
@@ -1592,44 +1605,14 @@
                     <div class="file-category">
                         <h4><i class="fas fa-utensil-spoon"></i> Food & Beverage</h4>
                         <div class="category-files">
-                            <a href="pdfs/hospitality-recipes.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="hospitality-recipes.pdf">
                                 <i class="fas fa-utensils file-icon-small"></i> Recipe Book
                             </a>
-                            <a href="pdfs/hospitality-menu-planning.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="hospitality-menu-planning.pdf">
                                 <i class="fas fa-clipboard-list file-icon-small"></i> Menu Planning
                             </a>
-                            <a href="pdfs/hospitality-food-safety.pdf" class="file-link" download>
+                            <a href="#" class="file-link download-btn" data-file="hospitality-food-safety.pdf">
                                 <i class="fas fa-shield-alt file-icon-small"></i> Food Safety
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="file-category">
-                        <h4><i class="fas fa-concierge-bell"></i> Service Operations</h4>
-                        <div class="category-files">
-                            <a href="pdfs/hospitality-service-manual.pdf" class="file-link" download>
-                                <i class="fas fa-concierge-bell file-icon-small"></i> Service Manual
-                            </a>
-                            <a href="pdfs/hospitality-housekeeping.pdf" class="file-link" download>
-                                <i class="fas fa-broom file-icon-small"></i> Housekeeping Guide
-                            </a>
-                            <a href="pdfs/hospitality-front-office.pdf" class="file-link" download>
-                                <i class="fas fa-door-open file-icon-small"></i> Front Office Ops
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="file-category">
-                        <h4><i class="fas fa-graduation-cap"></i> Examinations</h4>
-                        <div class="category-files">
-                            <a href="pdfs/hospitality-past-papers.pdf" class="file-link" download>
-                                <i class="fas fa-file-archive file-icon-small"></i> Past Papers
-                            </a>
-                            <a href="pdfs/hospitality-practical-tests.pdf" class="file-link" download>
-                                <i class="fas fa-vial file-icon-small"></i> Practical Tests
-                            </a>
-                            <a href="pdfs/hospitality-revision-questions.pdf" class="file-link" download>
-                                <i class="fas fa-question-circle file-icon-small"></i> Revision Questions
                             </a>
                         </div>
                     </div>
@@ -1658,10 +1641,10 @@
                     <ul class="footer-links">
                         <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
                         <li><a href="#departments"><i class="fas fa-building"></i> Departments</a></li>
-                        <li><a href="#programs"><i class="fas fa-graduation-cap"></i> Programs</a></li>
                         <li><a href="#portal"><i class="fas fa-user-graduate"></i> Student Portal</a></li>
                         <li><a href="#"><i class="fas fa-file-alt"></i> Admissions</a></li>
                         <li><a href="#"><i class="fas fa-download"></i> Downloads</a></li>
+                        <li><a href="#"><i class="fas fa-newspaper"></i> News & Events</a></li>
                     </ul>
                 </div>
                 
@@ -1824,7 +1807,7 @@
                 return;
             }
             
-            // Save user to localStorage (simulating database)
+            // Save user to localStorage
             const users = JSON.parse(localStorage.getItem('mtvc_users')) || [];
             
             // Check if user already exists
@@ -1834,15 +1817,22 @@
             }
             
             // Add new user
-            users.push({
+            const newUser = {
+                id: Date.now(),
                 fullName,
                 email,
                 studentId,
                 department,
-                password, // In real app, this should be hashed!
+                password, // Note: In production, this should be hashed
+                status: 'Active',
+                gpa: '3.75',
+                credits: '45/120',
+                semester: '2, 2024',
+                nextExam: 'May 15, 2024',
                 registeredAt: new Date().toISOString()
-            });
+            };
             
+            users.push(newUser);
             localStorage.setItem('mtvc_users', JSON.stringify(users));
             
             // Show success message and switch to login
@@ -1889,11 +1879,15 @@
                     localStorage.setItem('mtvc_remember_me', 'true');
                 }
                 
-                // Update dashboard and show it
+                // Update dashboard with user data
                 document.getElementById('studentName').textContent = user.fullName;
                 document.getElementById('dashboardStudentId').textContent = user.studentId;
-                document.getElementById('dashboardDept').textContent = 
-                    user.department.charAt(0).toUpperCase() + user.department.slice(1);
+                document.getElementById('dashboardDept').textContent = getDepartmentName(user.department);
+                document.getElementById('dashboardSemester').textContent = user.semester || '2, 2024';
+                document.getElementById('studentStatus').textContent = user.status || 'Active';
+                document.getElementById('studentGPA').textContent = user.gpa || '3.75';
+                document.getElementById('creditsCompleted').textContent = user.credits || '45/120';
+                document.getElementById('nextExam').textContent = user.nextExam || 'May 15, 2024';
                 
                 // Hide portal, show dashboard
                 portalSection.style.display = 'none';
@@ -1906,6 +1900,19 @@
                 showMessage(messageDiv, 'Invalid email/student ID or password!', 'error');
             }
         });
+
+        // Helper function to get department name
+        function getDepartmentName(deptCode) {
+            const deptMap = {
+                'ict': 'Information & Communication Technology',
+                'engineering': 'Engineering Department',
+                'business': 'Business Studies',
+                'hospitality': 'Hospitality & Tourism',
+                'beauty': 'Beauty & Therapy',
+                'fashion': 'Fashion & Design'
+            };
+            return deptMap[deptCode] || deptCode;
+        }
 
         // ===== Forgot Password =====
         forgotForm.addEventListener('submit', (e) => {
@@ -1970,11 +1977,15 @@
             if (currentUser) {
                 const user = JSON.parse(currentUser);
                 
-                // Update dashboard and show it
+                // Update dashboard with user data
                 document.getElementById('studentName').textContent = user.fullName;
                 document.getElementById('dashboardStudentId').textContent = user.studentId;
-                document.getElementById('dashboardDept').textContent = 
-                    user.department.charAt(0).toUpperCase() + user.department.slice(1);
+                document.getElementById('dashboardDept').textContent = getDepartmentName(user.department);
+                document.getElementById('dashboardSemester').textContent = user.semester || '2, 2024';
+                document.getElementById('studentStatus').textContent = user.status || 'Active';
+                document.getElementById('studentGPA').textContent = user.gpa || '3.75';
+                document.getElementById('creditsCompleted').textContent = user.credits || '45/120';
+                document.getElementById('nextExam').textContent = user.nextExam || 'May 15, 2024';
                 
                 // Hide portal, show dashboard
                 portalSection.style.display = 'none';
@@ -2036,6 +2047,31 @@
             });
         });
 
+        // ===== File Download Simulation =====
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const filename = this.getAttribute('data-file');
+                const fileType = filename.split('.').pop().toUpperCase();
+                
+                // Create a simulated download
+                const blob = new Blob(['This is a simulated ' + fileType + ' file for ' + filename], 
+                                      { type: 'application/octet-stream' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+                
+                // Show download notification
+                showNotification('Downloading ' + filename + '...', 'success');
+            });
+        });
+
         // ===== Helper Functions =====
         function showMessage(element, message, type) {
             element.textContent = message;
@@ -2048,58 +2084,76 @@
             }, 5000);
         }
 
-        // ===== File Download Simulation =====
-        document.querySelectorAll('.file-link, .file-actions a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (this.href.includes('pdfs/')) {
-                    e.preventDefault();
-                    const filename = this.getAttribute('href').split('/').pop();
-                    const fileType = filename.split('.').pop().toUpperCase();
-                    
-                    // Create a simulated download
-                    const blob = new Blob(['This is a simulated ' + fileType + ' file for ' + filename], 
-                                          { type: 'application/octet-stream' });
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    
-                    a.href = url;
-                    a.download = filename;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    window.URL.revokeObjectURL(url);
-                    
-                    // Show download notification
-                    const notification = document.createElement('div');
-                    notification.style.cssText = `
-                        position: fixed;
-                        top: 20px;
-                        right: 20px;
-                        background-color: var(--secondary);
-                        color: white;
-                        padding: 15px 20px;
-                        border-radius: 5px;
-                        z-index: 10000;
-                        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-                        display: flex;
-                        align-items: center;
-                        gap: 10px;
-                    `;
-                    notification.innerHTML = `
-                        <i class="fas fa-check-circle"></i>
-                        <span>Downloading ${filename}...</span>
-                    `;
-                    document.body.appendChild(notification);
-                    
-                    setTimeout(() => {
-                        notification.remove();
-                    }, 3000);
-                }
-            });
-        });
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: ${type === 'success' ? 'var(--secondary)' : 'var(--warning)'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 5px;
+                z-index: 10000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            `;
+            notification.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // ===== Initialize Demo Users =====
+        function initializeDemoUsers() {
+            const users = JSON.parse(localStorage.getItem('mtvc_users')) || [];
+            
+            // Add demo users if none exist
+            if (users.length === 0) {
+                const demoUsers = [
+                    {
+                        id: 1,
+                        fullName: 'John Doe',
+                        email: 'student@mtvc.ac.ke',
+                        studentId: 'MTVC/2024/001',
+                        department: 'ict',
+                        password: 'password123',
+                        status: 'Active',
+                        gpa: '3.75',
+                        credits: '45/120',
+                        semester: '2, 2024',
+                        nextExam: 'May 15, 2024',
+                        registeredAt: new Date().toISOString()
+                    },
+                    {
+                        id: 2,
+                        fullName: 'Jane Smith',
+                        email: 'jane@mtvc.ac.ke',
+                        studentId: 'MTVC/2024/002',
+                        department: 'business',
+                        password: 'password123',
+                        status: 'Active',
+                        gpa: '3.92',
+                        credits: '60/120',
+                        semester: '2, 2024',
+                        nextExam: 'May 20, 2024',
+                        registeredAt: new Date().toISOString()
+                    }
+                ];
+                
+                localStorage.setItem('mtvc_users', JSON.stringify(demoUsers));
+            }
+        }
+
+        // Initialize demo users on page load
+        window.addEventListener('load', initializeDemoUsers);
     </script>
 </body>
 </html>
-
-
-
