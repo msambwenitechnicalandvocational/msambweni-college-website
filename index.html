@@ -734,79 +734,137 @@ const COLLEGE_PHOTOS = [
     { src: 'eng7.jpg', caption: 'MTVC' },
 ];
 
+/* ════════════════════════════════════════════════════════════════
+   NETWORK DESIGN & MANAGEMENT — 20 MULTIPLE-CHOICE QUESTIONS
+   ════════════════════════════════════════════════════════════════ */
 const NETWORK_QUESTIONS = [
-    { text: "What is computer networking?", options: ["The connection of computers and devices for communication and resource sharing","A programming language for web design","A type of computer hardware","A software for editing documents"], correct: 0 },
-    { text: "Which of the following is NOT a shared resource in a computer network?", options: ["Internet connection","Printers","Files and folders","CPU cooling fan"], correct: 3 },
-    { text: "What is a 'Node' in computer networking?", options: ["A type of cable","Any device connected to a network","A network protocol","A software application"], correct: 1 },
-    { text: "What does 'Topology' refer to in networking?", options: ["The speed of data transmission","The arrangement of devices in a network","The cost of network installation","The type of internet provider"], correct: 1 },
-    { text: "A computer that provides services to other computers on a network is called a:", options: ["Client","Server","Node","Router"], correct: 1 },
-    { text: "A computer that receives services from a server is called a:", options: ["Client","Server","Host","Switch"], correct: 0 },
-    { text: "Which device is used to connect DIFFERENT networks together?", options: ["Switch","Hub","Router","Repeater"], correct: 2 },
-    { text: "Which device connects devices WITHIN a LAN?", options: ["Router","Switch","Modem","Firewall"], correct: 1 },
-    { text: "What is an IP Address?", options: ["A unique address assigned to devices on a network","A type of network cable","A wireless protocol","A network topology"], correct: 0 },
-    { text: "What does 'Bandwidth' mean in networking?", options: ["The physical length of a cable","The amount of data transmitted over a network","The number of computers in a network","The type of topology used"], correct: 1 },
-    { text: "Which network topology uses ONE backbone cable?", options: ["Star","Bus","Ring","Mesh"], correct: 1 },
-    { text: "Which network topology uses a central switch or hub?", options: ["Bus","Ring","Star","Mesh"], correct: 2 },
-    { text: "Which network topology connects devices in a circle?", options: ["Bus","Star","Ring","Mesh"], correct: 2 },
-    { text: "Which network topology interconnects devices using MANY paths for redundancy?", options: ["Bus","Star","Ring","Mesh"], correct: 3 },
-    { text: "Which network topology is a COMBINATION of two or more topologies?", options: ["Bus","Star","Hybrid","Mesh"], correct: 2 },
-    { text: "Which network covers a PERSONAL space (e.g., Bluetooth)?", options: ["PAN","LAN","MAN","WAN"], correct: 0 },
-    { text: "Which network covers an OFFICE, SCHOOL, or BUILDING?", options: ["PAN","LAN","MAN","WAN"], correct: 1 },
-    { text: "Which network covers a CITY or TOWN?", options: ["PAN","LAN","MAN","WAN"], correct: 2 },
-    { text: "Which network covers COUNTRIES or the WORLDWIDE area?", options: ["PAN","LAN","MAN","WAN"], correct: 3 },
-    { text: "The Internet is an example of which network type?", options: ["PAN","LAN","MAN","WAN"], correct: 3 },
-    { text: "Which of the following is a characteristic of a LAN?", options: ["High speed, low cost, privately managed","Covers worldwide","Uses only satellites","Requires no devices"], correct: 0 },
-    { text: "A bank branch network connecting to headquarters is an example of:", options: ["PAN","LAN only","WAN","Bluetooth PAN"], correct: 2 },
-    { text: "Which of the following is NOT an importance of computer networks?", options: ["Resource sharing","Communication","Centralized data management","Increasing hardware costs"], correct: 3 },
-    { text: "Which benefit of networking allows users to access systems from remote locations?", options: ["Cost reduction","Remote access","Congestion","Cabling"], correct: 1 },
-    { text: "Centralized backup and improved security are benefits of:", options: ["Standalone computers","Computer networks","Printers only","USB drives"], correct: 1 },
-    { text: "What type of requirement describes WHAT the network should do?", options: ["Performance requirement","Functional requirement","Security requirement","Scalability requirement"], correct: 1 },
-    { text: "Which of the following is an example of a FUNCTIONAL requirement?", options: ["High speed","Firewalls","Internet access and file sharing","Adding more users later"], correct: 2 },
-    { text: "Which of the following is an example of a PERFORMANCE requirement?", options: ["Internet access","High speed and reliable connectivity","Passwords","File sharing"], correct: 1 },
-    { text: "Which of the following is an example of a SECURITY requirement?", options: ["High speed","Firewalls and user authentication","Adding devices","Wireless access"], correct: 1 },
-    { text: "Which requirement deals with supporting FUTURE EXPANSION?", options: ["Functional","Performance","Security","Scalability"], correct: 3 },
-    { text: "Which of the following is a METHOD of collecting user requirements?", options: ["Interviews and questionnaires","Encrypting","Compiling","Routing"], correct: 0 },
-    { text: "Which of the following is a GUIDED transmission medium?", options: ["Wi-Fi","Radio waves","UTP cable","Bluetooth"], correct: 2 },
-    { text: "Which of the following is an UNGUIDED transmission medium?", options: ["UTP cable","Fiber optic cable","Coaxial cable","Wi-Fi"], correct: 3 },
-    { text: "Which component is used in physical network design?", options: ["Switches, routers, and access points","Only software","Only IP addresses","Only VLANs"], correct: 0 },
-    { text: "If a HIGH SPEED requirement is needed, which cable is best?", options: ["UTP cable","Fiber optic cable","Telephone wire","Coaxial only"], correct: 1 },
-    { text: "Logical network design includes which of the following?", options: ["Cable placement","IP addressing, VLANs, and routing","Physical device layout","Wall mounting"], correct: 1 },
-    { text: "Which layer of hierarchical network design is the HIGH-SPEED BACKBONE?", options: ["Access layer","Distribution layer","Core layer","Edge layer"], correct: 2 },
-    { text: "Which layer of hierarchical design CONTROLS departmental traffic?", options: ["Core layer","Distribution layer","Access layer","Backbone layer"], correct: 1 },
-    { text: "Which layer of hierarchical design CONNECTS END USERS?", options: ["Core layer","Distribution layer","Access layer","Backbone layer"], correct: 2 },
-    { text: "Which of the following is a DISADVANTAGE of a flat network design?", options: ["Simple","Cheap","Congestion and poor scalability","Easy to manage"], correct: 2 },
-    { text: "What does VLAN stand for?", options: ["Virtual Local Area Network","Very Large Area Network","Virtual Link Access Node","Verified Local Access Network"], correct: 0 },
-    { text: "A VLAN is best described as:", options: ["A logical grouping of users in a network","A physical cable type","A type of router","A wireless protocol"], correct: 0 },
-    { text: "Which of the following is an ADVANTAGE of VLANs?", options: ["Increased congestion","Improved security and reduced congestion","Higher cabling costs","Slower performance"], correct: 1 },
-    { text: "A subnet is used to:", options: ["Divide a large network into smaller sections","Increase cable length","Connect to the internet only","Encrypt all data"], correct: 0 },
-    { text: "Which of the following is a BENEFIT of subnetting?", options: ["Better performance and improved security","Increased broadcast traffic","Higher costs","Fewer IP addresses"], correct: 0 },
-    { text: "If Accounts uses VLAN 10, ICT uses VLAN 20, and Students use VLAN 30, this shows:", options: ["Physical cabling","Logical grouping by VLANs","A single flat network","Wireless setup"], correct: 1 },
-    { text: "A small office needs 10 computers, a shared printer, internet, and wireless. What is the correct solution?", options: ["LAN with router, switch, and access point","WAN with modem only","PAN with Bluetooth only","MAN with firewall only"], correct: 0 },
-    { text: "A college network with multiple departments, student portal, and secure server room requires:", options: ["VLANs, multiple switches, dedicated servers, and fiber backbone","A single hub","Only wireless access points","No security"], correct: 0 },
-    { text: "Which of the following is a benefit of good network design?", options: ["Improved performance and security","Increased congestion","Higher costs","Poor scalability"], correct: 0 },
-    { text: "Which benefit of good network design makes troubleshooting easier?", options: ["Easier maintenance and troubleshooting","More cables","Fewer users","Larger files"], correct: 0 },
-    { text: "Scalability in network design means:", options: ["The ability to support future expansion","Reducing network speed","Using fewer devices","Avoiding security"], correct: 0 },
-    { text: "State four network types covered in the notes:", options: ["PAN, LAN, MAN, WAN","USB, HDMI, VGA, SATA","HTTP, FTP, SMTP, DNS","Core, Distribution, Access, Edge"], correct: 0 },
-    { text: "Two examples of networking devices are:", options: ["Router and Switch","Monitor and Keyboard","Printer and Scanner","Speaker and Microphone"], correct: 0 },
-    { text: "Two examples of guided transmission media are:", options: ["Wi-Fi and Radio waves","UTP cable and Fiber optic cable","Bluetooth and Infrared","Satellite and Microwave"], correct: 1 },
-    { text: "Define 'Topology':", options: ["The arrangement of devices in a network","The speed of the network","The cost of cabling","The number of users"], correct: 0 },
-    { text: "State advantages of computer networking:", options: ["Resource sharing, communication, cost reduction, remote access","Cable cutting, slow speed, high cost","Isolation, downtime, single user","Disconnection, encryption only"], correct: 0 }
+    { text: "What is computer networking?",
+      options: ["The connection of computers and devices for communication and resource sharing","A programming language for web design","A type of computer hardware","A software for editing documents"],
+      correct: 0 },
+    { text: "Which of the following is NOT a shared resource in a computer network?",
+      options: ["Internet connection","Printers","Files and folders","CPU cooling fan"],
+      correct: 3 },
+    { text: "What is a 'Node' in computer networking?",
+      options: ["A type of cable","Any device connected to a network","A network protocol","A software application"],
+      correct: 1 },
+    { text: "What does 'Topology' refer to in networking?",
+      options: ["The speed of data transmission","The arrangement of devices in a network","The cost of network installation","The type of internet provider"],
+      correct: 1 },
+    { text: "A computer that provides services to other computers on a network is called a:",
+      options: ["Client","Server","Node","Router"],
+      correct: 1 },
+    { text: "A computer that receives services from a server is called a:",
+      options: ["Client","Server","Host","Switch"],
+      correct: 0 },
+    { text: "Which device is used to connect DIFFERENT networks together?",
+      options: ["Switch","Hub","Router","Repeater"],
+      correct: 2 },
+    { text: "Which device connects devices WITHIN a LAN?",
+      options: ["Router","Switch","Modem","Firewall"],
+      correct: 1 },
+    { text: "What is an IP Address?",
+      options: ["A unique address assigned to devices on a network","A type of network cable","A wireless protocol","A network topology"],
+      correct: 0 },
+    { text: "Which network topology uses ONE backbone cable?",
+      options: ["Star","Bus","Ring","Mesh"],
+      correct: 1 },
+    { text: "Which network topology uses a central switch or hub?",
+      options: ["Bus","Ring","Star","Mesh"],
+      correct: 2 },
+    { text: "Which network topology connects devices in a circle?",
+      options: ["Bus","Star","Ring","Mesh"],
+      correct: 2 },
+    { text: "Which network covers a PERSONAL space (e.g., Bluetooth)?",
+      options: ["PAN","LAN","MAN","WAN"],
+      correct: 0 },
+    { text: "Which network covers an OFFICE, SCHOOL, or BUILDING?",
+      options: ["PAN","LAN","MAN","WAN"],
+      correct: 1 },
+    { text: "Which network covers a CITY or TOWN?",
+      options: ["PAN","LAN","MAN","WAN"],
+      correct: 2 },
+    { text: "Which network covers COUNTRIES or the WORLDWIDE area?",
+      options: ["PAN","LAN","MAN","WAN"],
+      correct: 3 },
+    { text: "What type of requirement describes WHAT the network should do?",
+      options: ["Performance requirement","Functional requirement","Security requirement","Scalability requirement"],
+      correct: 1 },
+    { text: "Which of the following is a GUIDED transmission medium?",
+      options: ["Wi-Fi","Radio waves","UTP cable","Bluetooth"],
+      correct: 2 },
+    { text: "Which layer of hierarchical network design is the HIGH-SPEED BACKBONE?",
+      options: ["Access layer","Distribution layer","Core layer","Edge layer"],
+      correct: 2 },
+    { text: "What does VLAN stand for?",
+      options: ["Virtual Local Area Network","Very Large Area Network","Virtual Link Access Node","Verified Local Access Network"],
+      correct: 0 }
 ];
 
+/* ════════════════════════════════════════════════════════════════
+   WEBSITE APPLICATIONS — USER NEED ANALYSIS
+   20 MULTIPLE-CHOICE QUESTIONS
+   ════════════════════════════════════════════════════════════════ */
 const WEBSITE_QUESTIONS = [
-    { text:"1. What is website application user need analysis?", marks:5, expectedKeywords:["process","identify","needs","users","requirements","analysis"] },
-    { text:"2. State five reasons why user need analysis is important.", marks:5, expectedKeywords:["requirements","user satisfaction","cost","efficiency","usability","success","quality"] },
-    { text:"3. Identify five categories of website users.", marks:5, expectedKeywords:["administrator","guest","member","manager","viewer","editor","author","client"] },
-    { text:"4. Explain five methods used to collect user requirements.", marks:5, expectedKeywords:["interview","survey","observation","workshop","questionnaire","focus group","prototype"] },
-    { text:"5. Differentiate between functional and non-functional requirements.", marks:5, expectedKeywords:["functional behavior","non-functional quality","performance","security","reliability","function"] },
-    { text:"6. Give five examples of functional requirements.", marks:5, expectedKeywords:["login","register","search","add to cart","payment","upload","download","edit profile"] },
-    { text:"7. Give five examples of non-functional requirements.", marks:5, expectedKeywords:["performance","security","usability","reliability","scalability","availability","maintainability"] },
-    { text:"8. What is a user persona?", marks:5, expectedKeywords:["fictional","representative","user","archetype","characteristics","goals"] },
-    { text:"9. Explain the importance of requirement prioritization.", marks:5, expectedKeywords:["priority","limited resources","critical","essential","value","cost","time"] },
-    { text:"10. State five accessibility requirements for a website.", marks:5, expectedKeywords:["screen reader","color contrast","keyboard navigation","alt text","responsive","font size","aria"] },
-    { text:"11. State five website security requirements.", marks:5, expectedKeywords:["authentication","authorization","encryption","https","firewall","input validation","csrf","xss"] },
-    { text:"12. List the main steps followed when performing user need analysis.", marks:5, expectedKeywords:["gather","analyze","prioritize","validate","document","stakeholder","review"] },
-    { text:"13. Give an example of user requirements for a college website.", marks:5, expectedKeywords:["courses","admission","exam results","library","staff","calendar","events","contact"] }
+    { text: "What is website application user need analysis?",
+      options: ["A process of identifying and understanding the needs of users before designing a website","A method of writing HTML and CSS code","A way to test website colours","A programming language for the web"],
+      correct: 0 },
+    { text: "Which of the following is a key reason why user need analysis is important?",
+      options: ["It increases the cost of development","It ensures the final website meets user expectations and requirements","It delays the project unnecessarily","It replaces the need for testing"],
+      correct: 1 },
+    { text: "Which of the following is a category of website users?",
+      options: ["Administrator","Motherboard","Keyboard","Router"],
+      correct: 0 },
+    { text: "Which of the following is a method used to collect user requirements?",
+      options: ["Compiling","Interviews and questionnaires","Encrypting","Routing"],
+      correct: 1 },
+    { text: "What is the main difference between functional and non-functional requirements?",
+      options: ["Functional describes what the system does; non-functional describes how well it does it","Functional is for programmers; non-functional is for designers","Functional is always written in code","Non-functional requirements are optional"],
+      correct: 0 },
+    { text: "Which of the following is an example of a functional requirement?",
+      options: ["The website must support user login and registration","The website must load in under 2 seconds","The website must be available 99.9% of the time","The website must be usable by people with disabilities"],
+      correct: 0 },
+    { text: "Which of the following is an example of a non-functional requirement?",
+      options: ["Users can search for products","Users can add items to a cart","The website must be secure and performant","Users can register an account"],
+      correct: 2 },
+    { text: "What is a user persona?",
+      options: ["A fictional character representing a typical user based on research","A real customer of the website","A type of website template","A software testing tool"],
+      correct: 0 },
+    { text: "Why is requirement prioritization important in website development?",
+      options: ["It helps focus limited resources on the most critical requirements first","It makes the project more expensive","It replaces user testing","It removes the need for documentation"],
+      correct: 0 },
+    { text: "Which of the following is a website accessibility requirement?",
+      options: ["Using low-contrast colours","Providing alt text for images and keyboard navigation","Avoiding responsive design","Using only images instead of text"],
+      correct: 1 },
+    { text: "Which of the following is a website security requirement?",
+      options: ["Using HTTP instead of HTTPS","Enforcing authentication, authorization, and HTTPS encryption","Storing passwords in plain text","Disabling input validation"],
+      correct: 1 },
+    { text: "What is the FIRST step in performing user need analysis?",
+      options: ["Gathering requirements from stakeholders and users","Writing the final code","Deploying the website","Deleting the old system"],
+      correct: 0 },
+    { text: "Which of the following is an example of a user requirement for a college website?",
+      options: ["Online course catalogue, admission information, and exam results access","Only a homepage with no links","A single image with no text","A downloadable PDF only"],
+      correct: 0 },
+    { text: "Which of the following best describes a 'guest' website user?",
+      options: ["A user who can view public content without logging in","A user with full administrative rights","A user who manages the database","A user who writes backend code"],
+      correct: 0 },
+    { text: "Which type of requirement deals with system performance, reliability, and scalability?",
+      options: ["Functional requirement","Non-functional requirement","Business requirement","Legal requirement"],
+      correct: 1 },
+    { text: "What is the main purpose of a questionnaire in user need analysis?",
+      options: ["To collect structured feedback from many users efficiently","To test the website's speed","To encrypt user data","To replace the design phase"],
+      correct: 0 },
+    { text: "Which of the following is NOT a method of collecting user requirements?",
+      options: ["Interviews","Surveys","Observation","Encryption"],
+      correct: 3 },
+    { text: "Which of the following is a non-functional requirement related to reliability?",
+      options: ["The website must be available 99.9% of the time","The website must allow user login","The website must have a search bar","The website must allow file uploads"],
+      correct: 0 },
+    { text: "What does a user persona help website designers understand?",
+      options: ["The goals, behaviours, and needs of a typical user","The exact code structure of the website","The server's IP address","The cost of hosting"],
+      correct: 0 },
+    { text: "Which of the following is an example of a website security requirement?",
+      options: ["The website must protect against XSS and CSRF attacks","The website must be blue in colour","The website must use the Arial font","The website must have a logo"],
+      correct: 0 }
 ];
 
 const DEFAULT_ANNOUNCEMENTS = [
@@ -1575,13 +1633,18 @@ function submitNetworkExam(regNo){
     }
 }
 
+/* ═══════════════════════════════════════════════════════════
+   RENDER WEBSITE EXAM (Multiple Choice)
+   ═══════════════════════════════════════════════════════════ */
 function renderWebsiteExam(regNo){
     const container = document.getElementById('webExamArea');
     if(!container) return;
     let html = `<form id="webForm">`;
     WEBSITE_QUESTIONS.forEach((q, idx) => {
         const img = getQuestionImage('websiteApp', idx);
-        html += `<div class="question-block"><div class="question-text">${esc(q.text)}</div>${img ? `<img src="${img}" class="q-image" alt="Diagram">` : ''}<textarea rows="4" id="web_essay_${idx}" style="width:100%;padding:10px;border-radius:12px;border:1px solid #cde6dc;font-family:inherit;" placeholder="Write your answer in detail..."></textarea><div class="text-muted" style="font-size:.7rem;margin-top:4px;">Max marks: ${q.marks}</div></div>`;
+        html += `<div class="question-block"><div class="question-text">${idx+1}. ${esc(q.text)}</div>${img ? `<img src="${img}" class="q-image" alt="Diagram">` : ''}<div class="options">`;
+        q.options.forEach((opt, oi) => { html += `<label><input type="radio" name="web_q${idx}" value="${oi}"> ${String.fromCharCode(65+oi)}. ${esc(opt)}</label>`; });
+        html += `</div></div>`;
     });
     html += `<button type="button" id="submitWebExam" class="btn-submit-exam">✅ Submit Website Exam</button><button type="button" class="btn-submit-exam" style="background:#95a5a6;" onclick="window.clearExamAnswers('webForm')">🗑️ Clear All</button></form>`;
     container.innerHTML = html;
@@ -1593,32 +1656,25 @@ function renderWebsiteExam(regNo){
    ═══════════════════════════════════════════════════════════ */
 function submitWebsiteExam(regNo){
     if(!canAttempt(regNo,'websiteApp')){ document.getElementById('webResultArea').innerHTML = `<div class="locked-message">No attempts left.</div>`; return; }
-    let totalMarks = 0, maxMarks = 0;
+    let score = 0;
     const correctQs = [];
     const wrongQs = [];
-    WEBSITE_QUESTIONS.forEach((q, idx) => {
-        const answer = (document.getElementById(`web_essay_${idx}`)?.value || '').trim();
-        const marks = q.marks || 5; maxMarks += marks;
-        let earned = 0;
-        if(answer.length > 20){
-            const keywords = q.expectedKeywords || [];
-            let matchCount = 0;
-            keywords.forEach(kw => { if(answer.toLowerCase().includes(kw.toLowerCase())) matchCount++; });
-            const ratio = keywords.length ? matchCount / keywords.length : 0;
-            earned = Math.min(marks, Math.round(ratio * marks));
-            if(earned < 1 && answer.length > 30) earned = 1;
-        } else if(answer.length > 10){ earned = 1; }
-        totalMarks += earned;
-        /* Consider "correct" if earned at least half the marks */
-        if(earned >= (marks / 2)) correctQs.push(q.text);
-        else wrongQs.push(q.text);
-    });
-    const percent = Math.round((totalMarks / maxMarks) * 100);
+    for(let i=0;i<WEBSITE_QUESTIONS.length;i++){
+        const qText = WEBSITE_QUESTIONS[i].text;
+        const sel = document.querySelector(`input[name="web_q${i}"]:checked`);
+        if(sel && parseInt(sel.value) === WEBSITE_QUESTIONS[i].correct){
+            score++;
+            correctQs.push(qText);
+        } else {
+            wrongQs.push(qText);
+        }
+    }
+    const percent = Math.round((score / WEBSITE_QUESTIONS.length) * 100);
     const updated = updateExamRecord(regNo,'websiteApp',percent);
     document.getElementById('webAttemptsLeft').innerText = 3 - updated.attemptsUsed;
     document.getElementById('webBestScore').innerText = updated.bestScore;
     const passMsg = percent >= 50 ? `<div style="color:#065f46;background:#d1fae5;padding:.8rem;border-radius:16px;">🎉 PASSED! ${percent}%</div>` : `<div style="color:#991b1b;background:#fee2e2;padding:.8rem;border-radius:16px;">❌ FAILED: ${percent}%. Need 50%.</div>`;
-    document.getElementById('webResultArea').innerHTML = `<div class="result-card"><h3>Result</h3><p>Score: ${totalMarks}/${maxMarks} (${percent}%)</p><p>Attempts left: ${3-updated.attemptsUsed} | Best: ${updated.bestScore}%</p>${passMsg}</div>`;
+    document.getElementById('webResultArea').innerHTML = `<div class="result-card"><h3>Result</h3><p>Score: ${score}/${WEBSITE_QUESTIONS.length} (${percent}%)</p><p>Attempts left: ${3-updated.attemptsUsed} | Best: ${updated.bestScore}%</p>${passMsg}</div>`;
     if(updated.attemptsUsed >= 3) disableExamArea('webExamArea','submitWebExam');
     if(currentUser) renderProfileStrip(currentUser);
 
@@ -1628,7 +1684,7 @@ function submitWebsiteExam(regNo){
             sendExamEmailNotification(
                 currentUser,
                 'Website Applications — User Need Analysis',
-                totalMarks, maxMarks, percent,
+                score, WEBSITE_QUESTIONS.length, percent,
                 correctQs, wrongQs
             );
         }, 600);
