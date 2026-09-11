@@ -251,29 +251,6 @@ body{
 .carousel-dots .dot:hover{background:rgba(255,255,255,.9);}
 .carousel-dots .dot.active{background:#f1c40f;width:30px;border-radius:10px;}
 
-/* photo manager grid */
-.photo-grid{
-    display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1rem;
-}
-.photo-card{
-    position:relative;border-radius:16px;overflow:hidden;height:130px;
-    box-shadow:0 4px 12px rgba(0,0,0,.08);background:#eef7f3;
-}
-.photo-card img{width:100%;height:100%;object-fit:cover;display:block;}
-.photo-card .photo-cap{
-    position:absolute;left:0;right:0;bottom:0;
-    background:linear-gradient(to top,rgba(0,0,0,.8),transparent);
-    color:#fff;font-size:.7rem;font-weight:600;padding:14px 8px 6px;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.photo-card .del-btn{
-    position:absolute;top:7px;right:7px;background:rgba(231,76,60,.95);color:#fff;
-    border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;
-    font-size:.72rem;display:flex;align-items:center;justify-content:center;
-    transition:.2s;box-shadow:0 2px 8px rgba(0,0,0,.3);
-}
-.photo-card .del-btn:hover{background:#c0392b;transform:scale(1.12);}
-
 /* ═══════════ RESPONSIVE BANNER ═══════════ */
 @media (max-width:1100px){
     .banner-center h1{font-size:1.25rem;}
@@ -899,12 +876,10 @@ body{
                 <button class="nav-item active-nav" data-trainer-tab="manageQ">🖼️ Exam Media &amp; Questions</button>
                 <button class="nav-item" data-trainer-tab="studentPerf">📊 Student Performance</button>
                 <button class="nav-item" data-trainer-tab="manageAnnounce">📢 Announcements</button>
-                <button class="nav-item" data-trainer-tab="collegePhotos">📸 College Photos</button>
             </div>
             <div id="trainerManageQ" class="trainer-subpanel active-panel"></div>
             <div id="trainerStudentPerf" class="trainer-subpanel"></div>
             <div id="trainerManageAnnounce" class="trainer-subpanel"></div>
-            <div id="trainerCollegePhotos" class="trainer-subpanel"></div>
         </div>
 
         <!-- ====== EXAM OFFICE MODULE ====== -->
@@ -916,14 +891,12 @@ body{
                 <button class="nav-item" data-exam-tab="examMedia">🖼️ Exam Media</button>
                 <button class="nav-item" data-exam-tab="manageAnnounce">📢 Announcements</button>
                 <button class="nav-item" data-exam-tab="manageSports">⚽ Sports</button>
-                <button class="nav-item" data-exam-tab="collegePhotos">📸 College Photos</button>
             </div>
             <div id="examAllResults" class="exam-subpanel active-panel"></div>
             <div id="examResetAttempts" class="exam-subpanel"></div>
             <div id="examExamMedia" class="exam-subpanel"></div>
             <div id="examManageAnnounce" class="exam-subpanel"></div>
             <div id="examManageSports" class="exam-subpanel"></div>
-            <div id="examCollegePhotos" class="exam-subpanel"></div>
         </div>
 
         <!-- DESIGNER CREDIT -->
@@ -979,16 +952,38 @@ body{
 /* ════════════════════════════════════════════════════════════════
    CONSTANTS
    ════════════════════════════════════════════════════════════════ */
-const USERS_KEY          = 'tvc_users_v5';
-const EXAM_RECORDS_KEY   = 'tvc_exam_records_v5';
-const ANNOUNCE_KEY       = 'tvc_announcements_v5';
-const SPORTS_KEY         = 'tvc_sports_v5';
-const MEDIA_KEY          = 'tvc_media_v5';
-const COLLEGE_PHOTOS_KEY = 'tvc_college_photos_v5';
-const SESSION_KEY        = 'tvc_session_v5';
+const USERS_KEY        = 'tvc_users_v6';
+const EXAM_RECORDS_KEY = 'tvc_exam_records_v6';
+const ANNOUNCE_KEY     = 'tvc_announcements_v6';
+const SPORTS_KEY       = 'tvc_sports_v6';
+const MEDIA_KEY        = 'tvc_media_v6';
+const SESSION_KEY      = 'tvc_session_v6';
 
 const EXAM_OFFICE_PASSWORD = '48684868';   /* hidden — never displayed in UI */
 const YOUTUBE_CHANNEL = 'https://www.youtube.com/@MSAMBWENI-TVC';
+
+/* ════════════════════════════════════════════════════════════════
+   ★★★ COLLEGE PHOTOS — EDIT MANUALLY HERE ★★★
+   ────────────────────────────────────────────────────────────────
+   Add your photo filenames exactly like logo.jpg. Just drop the
+   image files (e.g., campus1.jpg) into the SAME FOLDER as this
+   HTML file, then list them below.
+
+   Format:
+       { src: 'your-file.jpg', caption: 'Caption shown on the slide' },
+
+   You can add as many as you want. Commas matter. If a file is
+   missing, the slide will show a placeholder automatically.
+   ════════════════════════════════════════════════════════════════ */
+const COLLEGE_PHOTOS = [
+    { src: 'campus1.jpg', caption: 'Main Campus — Msambweni TVC' },
+    { src: 'campus2.jpg', caption: 'ICT & Computer Laboratories' },
+    { src: 'campus3.jpg', caption: 'Engineering & Technical Workshops' },
+    { src: 'campus4.jpg', caption: 'Graduation & Award Ceremony' },
+    { src: 'campus5.jpg', caption: 'Sports & Athletics Day' },
+    /* Add more photos below this line — follow the same pattern: */
+    /* { src: 'campus6.jpg', caption: 'Library & Resource Centre' }, */
+];
 
 /* ════════════════════════════════════════════════════════════════
    QUESTION BANKS
@@ -1054,14 +1049,6 @@ const DEFAULT_SPORTS = [
     { id:'s3', title:'Volleyball League', content:'Schedule coming soon.', date:'2026-02-20', photo:'' }
 ];
 
-const DEFAULT_COLLEGE_PHOTOS = [
-    { id:'cp1', src:'https://images.unsplash.com/photo-1562774053-701939374585?w=1600&auto=format', caption:'Main Campus' },
-    { id:'cp2', src:'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1600&auto=format', caption:'ICT & Computer Labs' },
-    { id:'cp3', src:'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=1600&auto=format', caption:'Engineering Workshops' },
-    { id:'cp4', src:'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1600&auto=format', caption:'Graduation & Awards' },
-    { id:'cp5', src:'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1600&auto=format', caption:'Sports & Athletics' }
-];
-
 /* ════════════════════════════════════════════════════════════════
    STORAGE HELPERS
    ════════════════════════════════════════════════════════════════ */
@@ -1073,11 +1060,10 @@ function initData(){
             { fullName:"Exam Office", regNo:"EO001", email:"exam@ict.com", password:EXAM_OFFICE_PASSWORD, role:"examoffice", photo:"" }
         ]));
     }
-    if(!localStorage.getItem(EXAM_RECORDS_KEY))   localStorage.setItem(EXAM_RECORDS_KEY,'{}');
-    if(!localStorage.getItem(ANNOUNCE_KEY))       localStorage.setItem(ANNOUNCE_KEY, JSON.stringify(DEFAULT_ANNOUNCEMENTS));
-    if(!localStorage.getItem(SPORTS_KEY))         localStorage.setItem(SPORTS_KEY, JSON.stringify(DEFAULT_SPORTS));
-    if(!localStorage.getItem(MEDIA_KEY))          localStorage.setItem(MEDIA_KEY, JSON.stringify({ covers:{}, questions:{} }));
-    if(!localStorage.getItem(COLLEGE_PHOTOS_KEY)) localStorage.setItem(COLLEGE_PHOTOS_KEY, JSON.stringify(DEFAULT_COLLEGE_PHOTOS));
+    if(!localStorage.getItem(EXAM_RECORDS_KEY)) localStorage.setItem(EXAM_RECORDS_KEY,'{}');
+    if(!localStorage.getItem(ANNOUNCE_KEY))     localStorage.setItem(ANNOUNCE_KEY, JSON.stringify(DEFAULT_ANNOUNCEMENTS));
+    if(!localStorage.getItem(SPORTS_KEY))       localStorage.setItem(SPORTS_KEY, JSON.stringify(DEFAULT_SPORTS));
+    if(!localStorage.getItem(MEDIA_KEY))        localStorage.setItem(MEDIA_KEY, JSON.stringify({ covers:{}, questions:{} }));
 }
 
 function getUsers(){ return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); }
@@ -1092,9 +1078,6 @@ function setAnnouncements(d){ localStorage.setItem(ANNOUNCE_KEY, JSON.stringify(
 
 function getSports(){ return JSON.parse(localStorage.getItem(SPORTS_KEY) || '[]'); }
 function setSports(d){ localStorage.setItem(SPORTS_KEY, JSON.stringify(d)); }
-
-function getCollegePhotos(){ return JSON.parse(localStorage.getItem(COLLEGE_PHOTOS_KEY) || '[]'); }
-function setCollegePhotos(d){ localStorage.setItem(COLLEGE_PHOTOS_KEY, JSON.stringify(d)); }
 
 function getMedia(){
     const m = JSON.parse(localStorage.getItem(MEDIA_KEY) || '{}');
@@ -1225,7 +1208,6 @@ function ensureExamOfficer(){
 }
 
 function loginUser(email, password, role){
-    /* ── Exam Office: fixed institutional access code (hidden in UI) ── */
     if(role === 'examoffice'){
         const officer = ensureExamOfficer();
         if(password !== EXAM_OFFICE_PASSWORD){
@@ -1297,31 +1279,40 @@ function startClock(){
 }
 
 /* ════════════════════════════════════════════════════════════════
-   COLLEGE PHOTO CAROUSEL
+   COLLEGE PHOTO CAROUSEL (uses manual COLLEGE_PHOTOS array)
    ════════════════════════════════════════════════════════════════ */
 function renderCarousel(){
     const track = document.getElementById('carouselTrack');
     const dots  = document.getElementById('carouselDots');
     if(!track || !dots) return;
-    const photos = getCollegePhotos();
-    if(!photos.length){
+
+    /* If the array is empty, show a friendly placeholder */
+    if(!COLLEGE_PHOTOS.length){
         track.innerHTML = `<div class="carousel-slide">
-            <img src="https://via.placeholder.com/1600x600/0a3b2f/f1c40f?text=No+Photos+Yet" alt="No photos">
-            <div class="slide-caption"><i class="fas fa-image"></i> No college photos uploaded yet</div>
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='600'><rect width='100%25' height='100%25' fill='%230a3b2f'/><text x='50%25' y='50%25' fill='%23f1c40f' font-family='Arial' font-size='36' text-anchor='middle'>Add photos in COLLEGE_PHOTOS array</text></svg>" alt="No photos">
+            <div class="slide-caption"><i class="fas fa-image"></i> No college photos configured yet</div>
         </div>`;
         dots.innerHTML = '';
         return;
     }
-    if(carouselIndex >= photos.length) carouselIndex = 0;
-    if(carouselIndex < 0) carouselIndex = photos.length - 1;
-    track.innerHTML = photos.map(p => `
+
+    if(carouselIndex >= COLLEGE_PHOTOS.length) carouselIndex = 0;
+    if(carouselIndex < 0) carouselIndex = COLLEGE_PHOTOS.length - 1;
+
+    /* Placeholder SVG (used if an image file is missing) */
+    const ph = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='600'><rect width='100%25' height='100%25' fill='%231b6d5e'/><text x='50%25' y='50%25' fill='%23f1c40f' font-family='Arial' font-size='40' text-anchor='middle'>Image not found</text></svg>";
+
+    track.innerHTML = COLLEGE_PHOTOS.map(p => `
         <div class="carousel-slide">
-            <img src="${p.src}" alt="${esc(p.caption||'Campus photo')}" onerror="this.src='https://via.placeholder.com/1600x600/0a3b2f/f1c40f?text=Photo'">
+            <img src="${esc(p.src)}" alt="${esc(p.caption||'Campus photo')}"
+                 onerror="this.onerror=null;this.src='${ph}';">
             ${p.caption ? `<div class="slide-caption"><i class="fas fa-camera-retro"></i> ${esc(p.caption)}</div>` : ''}
         </div>`).join('');
-    dots.innerHTML = photos.map((_,i) =>
+
+    dots.innerHTML = COLLEGE_PHOTOS.map((_,i) =>
         `<button class="dot ${i===carouselIndex?'active':''}" onclick="window.goToSlide(${i})" aria-label="Go to slide ${i+1}"></button>`
     ).join('');
+
     track.style.transform = `translateX(-${carouselIndex * 100}%)`;
 }
 
@@ -1332,87 +1323,20 @@ window.goToSlide = function(i){
 };
 
 function nextSlide(){
-    const photos = getCollegePhotos();
-    if(!photos.length) return;
-    carouselIndex = (carouselIndex + 1) % photos.length;
+    if(!COLLEGE_PHOTOS.length) return;
+    carouselIndex = (carouselIndex + 1) % COLLEGE_PHOTOS.length;
     renderCarousel();
 }
 
 function prevSlide(){
-    const photos = getCollegePhotos();
-    if(!photos.length) return;
-    carouselIndex = (carouselIndex - 1 + photos.length) % photos.length;
+    if(!COLLEGE_PHOTOS.length) return;
+    carouselIndex = (carouselIndex - 1 + COLLEGE_PHOTOS.length) % COLLEGE_PHOTOS.length;
     renderCarousel();
 }
 
 function resetCarouselTimer(){
     if(carouselTimer) clearInterval(carouselTimer);
-    carouselTimer = setInterval(nextSlide, 4500);
-}
-
-/* ════════════════════════════════════════════════════════════════
-   COLLEGE PHOTO MANAGER (Trainer + Exam Office)
-   ════════════════════════════════════════════════════════════════ */
-function renderCollegePhotosManager(containerId){
-    const container = document.getElementById(containerId);
-    if(!container) return;
-    const photos = getCollegePhotos();
-    container.innerHTML = `
-    <div class="form-card">
-        <h4 style="margin-bottom:.4rem;">📸 College Photo Gallery</h4>
-        <p class="text-muted mb-1">Upload photos of the college. They appear in the sliding carousel on the home page.</p>
-        <div class="form-row">
-            <div class="full">
-                <label class="field-label">Caption (optional)</label>
-                <input type="text" id="collegePhotoCaption" placeholder="e.g., Main Campus, ICT Lab, Sports Day, Graduation...">
-            </div>
-            <div class="full">
-                <label class="file-btn"><i class="fas fa-cloud-upload-alt"></i> Upload Photo
-                    <input type="file" accept="image/*" hidden onchange="window.uploadCollegePhoto(this)">
-                </label>
-            </div>
-        </div>
-    </div>
-    <div class="form-card">
-        <h4 style="margin-bottom:.8rem;">Existing Photos (${photos.length})</h4>
-        <div class="photo-grid">
-            ${photos.map(p => `
-                <div class="photo-card">
-                    <img src="${p.src}" alt="${esc(p.caption||'')}" onerror="this.src='https://via.placeholder.com/400x300/0a3b2f/f1c40f?text=Photo'">
-                    ${p.caption ? `<div class="photo-cap">${esc(p.caption)}</div>` : ''}
-                    <button class="del-btn" onclick="window.deleteCollegePhoto('${p.id}')" title="Delete">✕</button>
-                </div>`).join('') || '<p class="text-muted">No photos uploaded yet.</p>'}
-        </div>
-    </div>`;
-}
-
-window.uploadCollegePhoto = async function(input){
-    if(!input.files || !input.files[0]) return;
-    const caption = (document.getElementById('collegePhotoCaption')?.value || '').trim();
-    try{
-        const data = await fileToDataURL(input.files[0], 1600, 900, 0.8);
-        const photos = getCollegePhotos();
-        photos.push({ id:'cp'+Date.now(), src:data, caption });
-        setCollegePhotos(photos);
-        renderCarousel();
-        refreshCollegePhotoManagers();
-        const cap = document.getElementById('collegePhotoCaption');
-        if(cap) cap.value = '';
-        alert('✅ Photo added to carousel.');
-    }catch(e){ alert('❌ Could not read that image.'); }
-    input.value = '';
-};
-
-window.deleteCollegePhoto = function(id){
-    if(!confirm('Remove this photo from the carousel?')) return;
-    setCollegePhotos(getCollegePhotos().filter(p => p.id !== id));
-    renderCarousel();
-    refreshCollegePhotoManagers();
-};
-
-function refreshCollegePhotoManagers(){
-    if(document.getElementById('trainerCollegePhotos')) renderCollegePhotosManager('trainerCollegePhotos');
-    if(document.getElementById('examCollegePhotos'))    renderCollegePhotosManager('examCollegePhotos');
+    if(COLLEGE_PHOTOS.length > 1) carouselTimer = setInterval(nextSlide, 4500);
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -1852,7 +1776,6 @@ function renderTrainerDashboard(){
     renderQuestionMediaPanel('trainerManageQ');
     renderTrainerStudentPerf();
     renderTrainerManageAnnounce();
-    renderCollegePhotosManager('trainerCollegePhotos');
 
     document.querySelectorAll('[data-trainer-tab]').forEach(btn => {
         btn.addEventListener('click', function(){
@@ -1976,7 +1899,6 @@ function renderExamOfficeDashboard(){
     renderQuestionMediaPanel('examExamMedia');
     renderExamManageAnnounce();
     renderExamManageSports();
-    renderCollegePhotosManager('examCollegePhotos');
 
     document.querySelectorAll('[data-exam-tab]').forEach(btn => {
         btn.addEventListener('click', function(){
@@ -2238,11 +2160,9 @@ function checkAutoLogin(){
    ════════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function(){
     initData();
-
-    /* live clock runs always */
     startClock();
 
-    /* carousel */
+    /* carousel (uses manual COLLEGE_PHOTOS array) */
     renderCarousel();
     resetCarouselTimer();
     const prevBtn = document.getElementById('carouselPrev');
@@ -2250,7 +2170,6 @@ document.addEventListener('DOMContentLoaded', function(){
     if(prevBtn) prevBtn.addEventListener('click', function(){ prevSlide(); resetCarouselTimer(); });
     if(nextBtn) nextBtn.addEventListener('click', function(){ nextSlide(); resetCarouselTimer(); });
 
-    /* pause carousel on hover */
     const carousel = document.getElementById('campusCarousel');
     if(carousel){
         carousel.addEventListener('mouseenter', () => { if(carouselTimer) clearInterval(carouselTimer); });
