@@ -144,6 +144,53 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#e8f5e9 0%
 .error-msg{background:#fee2e2;color:#c0392b;}
 .success-msg{background:#e0f5e8;color:#1e7e5c;}
 .info-msg{background:#e0f0ff;color:#1c5f9e;}
+
+/* ═══════════════════════════════════════════════════════
+   MTVC KyU-STYLE AUTH BRANDING
+   ═══════════════════════════════════════════════════════ */
+.glass-auth.kyu-branded{
+    background:#ffffff;border-radius:12px;max-width:720px;margin:2rem auto;padding:0;overflow:hidden;
+    box-shadow:0 20px 50px -20px rgba(0,0,0,.3);border:1px solid #e0e8e3;
+}
+.kyu-header{background:#1a7a3d;padding:2.2rem 1rem 3.5rem;text-align:center;position:relative;}
+.kyu-header h1{color:#fff;font-size:2.1rem;font-weight:400;letter-spacing:.5px;}
+.kyu-header p{color:rgba(255,255,255,.85);font-size:.85rem;margin-top:4px;letter-spacing:.4px;}
+.kyu-logo-wrap{position:relative;margin-top:-75px;display:flex;justify-content:center;margin-bottom:1.5rem;}
+.kyu-logo-circle{width:150px;height:150px;border-radius:50%;background:#fff;box-shadow:0 6px 24px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;overflow:hidden;border:5px solid #fff;}
+.kyu-logo-circle img{width:100%;height:100%;object-fit:cover;}
+.kyu-logo-circle .logo-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a7a3d;color:#fff;font-size:3rem;}
+.kyu-form{padding:0 3rem 2.5rem;max-width:640px;margin:0 auto;}
+.kyu-field{display:flex;align-items:center;margin-bottom:1.1rem;}
+.kyu-field label{width:140px;font-weight:700;font-size:1rem;color:#222;flex-shrink:0;}
+.kyu-field input,.kyu-field select{flex:1;padding:13px 16px;background:#edf3fa;border:1px solid #c9d6e3;border-radius:4px;font-size:1rem;color:#222;font-family:inherit;transition:.2s;}
+.kyu-field input:focus,.kyu-field select:focus{outline:none;border-color:#1a7a3d;background:#fff;box-shadow:0 0 0 3px rgba(26,122,61,.12);}
+.kyu-buttons{display:flex;justify-content:space-between;gap:1rem;margin-top:2rem;flex-wrap:wrap;}
+.kyu-btn-forgot{background:#e8a33d;color:#fff;border:none;padding:13px 36px;border-radius:4px;font-size:1.05rem;font-weight:500;cursor:pointer;transition:.2s;font-family:inherit;}
+.kyu-btn-forgot:hover{background:#d4922f;transform:translateY(-1px);}
+.kyu-btn-signin{background:#1a7a3d;color:#fff;border:none;padding:13px 44px;border-radius:4px;font-size:1.05rem;font-weight:500;cursor:pointer;transition:.2s;font-family:inherit;}
+.kyu-btn-signin:hover{background:#15622f;transform:translateY(-1px);}
+.kyu-links{text-align:center;margin-top:1.5rem;font-size:.9rem;}
+.kyu-links a{color:#1a7a3d;font-weight:600;text-decoration:none;transition:.2s;}
+.kyu-links a:hover{color:#0f4a24;text-decoration:underline;}
+.kyu-demo{font-size:.72rem;text-align:center;margin-top:1.2rem;color:#6b7f78;background:#f5faf7;padding:8px 12px;border-radius:8px;display:inline-block;width:100%;line-height:1.6;}
+.kyu-photo-picker{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;background:#f6fbf9;border:1.5px dashed #b8d8cd;border-radius:12px;padding:.9rem 1.1rem;margin-bottom:1.2rem;}
+.kyu-photo-picker .photo-preview{width:74px;height:74px;border-radius:50%;object-fit:cover;border:3px solid #1a7a3d;background:#e8f5e9;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#7fb3a2;font-size:1.6rem;overflow:hidden;}
+.kyu-photo-picker .photo-preview img{width:100%;height:100%;object-fit:cover;}
+.kyu-photo-picker .pp-text{flex:1;min-width:150px;}
+.kyu-photo-picker .pp-text strong{display:block;font-size:.85rem;color:#0a3b2f;}
+.kyu-photo-picker .pp-text small{font-size:.7rem;color:#5a7a6e;}
+@media (max-width:600px){
+    .kyu-header h1{font-size:1.5rem;}
+    .kyu-logo-circle{width:110px;height:110px;}
+    .kyu-logo-wrap{margin-top:-55px;}
+    .kyu-form{padding:0 1.5rem 2rem;}
+    .kyu-field{flex-direction:column;align-items:flex-start;}
+    .kyu-field label{width:100%;margin-bottom:.35rem;font-size:.9rem;}
+    .kyu-field input,.kyu-field select{width:100%;font-size:.95rem;}
+    .kyu-buttons{flex-direction:column;}
+    .kyu-btn-forgot,.kyu-btn-signin{width:100%;}
+}
+
 .dashboard-modern{display:none;animation:fadeIn .4s;}
 .dashboard-modern.active-dash{display:block;}
 .clock-mega{background:linear-gradient(115deg,#0e4d3e,#1b6d5e);border-radius:32px;padding:1.2rem;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden;}
@@ -276,15 +323,96 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#e8f5e9 0%
 }
 @media (max-width:520px){
     .main-wrapper{padding:0 .8rem;}
-    .glass-auth{padding:1.2rem;border-radius:28px;}
-    .auth-tabs{gap:.3rem;}
-    .auth-tab{padding:6px 12px;font-size:.75rem;}
     .clock-mega{padding:.8rem;}
     .big-clock{font-size:1.5rem;letter-spacing:2px;}
     .exam-header-color h2{font-size:1rem;}
     .profile-strip{padding:.9rem;gap:.9rem;}
     .profile-info h3{font-size:1rem;}
 }
+
+/* ═══════════════════════════════════════════════════════
+   EMAIL NOTIFICATION MODAL
+   ═══════════════════════════════════════════════════════ */
+.email-modal-overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:6000;
+    display:none;align-items:center;justify-content:center;padding:1rem;
+    animation:fadeIn .3s;backdrop-filter:blur(4px);
+}
+.email-modal-overlay.active{display:flex;}
+.email-modal{
+    background:#fff;border-radius:20px;max-width:660px;width:100%;max-height:92vh;
+    overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.45);animation:fadeIn .4s;
+}
+.email-modal-header{
+    background:linear-gradient(135deg,#1a7a3d,#0a3b2f);color:#fff;
+    padding:1.2rem 1.5rem;border-radius:20px 20px 0 0;
+    display:flex;justify-content:space-between;align-items:center;
+    position:sticky;top:0;z-index:2;
+}
+.email-modal-header h3{font-size:1.05rem;display:flex;align-items:center;gap:9px;}
+.email-modal-header h3 i{color:#f1c40f;}
+.email-modal-close{
+    background:rgba(255,255,255,.18);border:none;color:#fff;width:34px;height:34px;
+    border-radius:50%;cursor:pointer;font-size:1rem;transition:.2s;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.email-modal-close:hover{background:rgba(255,255,255,.35);transform:rotate(90deg);}
+.email-success-banner{
+    background:linear-gradient(135deg,#d1fae5,#a7f3d0);padding:1rem 1.5rem;
+    text-align:center;border-bottom:2px solid #2ecc71;
+}
+.email-success-banner .check-icon{
+    font-size:2.6rem;color:#065f46;margin-bottom:6px;
+    animation:pulse-dot 1.8s ease-in-out infinite;
+}
+.email-success-banner h4{color:#065f46;font-size:1.1rem;font-weight:800;}
+.email-success-banner p{color:#0a5c3d;font-size:.85rem;margin-top:3px;}
+.email-body-preview{
+    padding:1.2rem 1.5rem;background:#f9fafb;margin:1rem;
+    border-radius:12px;border:1px solid #e0ece6;font-size:.88rem;line-height:1.6;
+}
+.email-field-row{display:flex;padding:7px 0;border-bottom:1px dashed #e0ece6;font-size:.85rem;}
+.email-field-row:last-of-type{border-bottom:none;}
+.email-field-row .label{font-weight:700;color:#0a3b2f;width:75px;flex-shrink:0;}
+.email-field-row .value{color:#1b3b4f;word-break:break-word;flex:1;}
+.email-score-card{
+    background:linear-gradient(135deg,#0a3b2f,#1b6d5e);color:#fff;
+    padding:1.2rem;border-radius:14px;text-align:center;margin:1rem 0;
+    box-shadow:0 8px 20px rgba(10,59,47,.25);
+}
+.email-score-card .big-percent{
+    font-size:2.8rem;font-weight:900;color:#f1c40f;
+    letter-spacing:2px;line-height:1;
+}
+.email-score-card .score-line{font-size:.95rem;margin-top:6px;opacity:.95;}
+.email-score-card .status-badge{
+    display:inline-block;margin-top:10px;padding:5px 22px;border-radius:40px;
+    font-weight:800;font-size:.85rem;letter-spacing:1px;
+}
+.email-score-card .status-badge.pass{background:#d1fae5;color:#065f46;}
+.email-score-card .status-badge.fail{background:#fee2e2;color:#991b1b;}
+.correct-q-list{list-style:none;padding:0;margin-top:.5rem;max-height:220px;overflow-y:auto;}
+.correct-q-list::-webkit-scrollbar{width:6px;}
+.correct-q-list::-webkit-scrollbar-thumb{background:#cde6dc;border-radius:10px;}
+.correct-q-list li{
+    background:#e8f5e9;border-left:3px solid #2ecc71;padding:7px 11px;
+    border-radius:8px;margin-bottom:6px;font-size:.78rem;color:#1b5e3a;line-height:1.45;
+}
+.correct-q-list li.wrong{
+    background:#fee2e2;border-left-color:#e74c3c;color:#991b1b;
+}
+.correct-q-list li .q-num{
+    display:inline-block;font-weight:900;margin-right:5px;
+    background:rgba(46,204,113,.25);color:#065f46;
+    padding:1px 7px;border-radius:10px;font-size:.7rem;
+}
+.correct-q-list li.wrong .q-num{background:rgba(231,76,60,.2);color:#991b1b;}
+.email-actions{
+    padding:1rem 1.5rem 1.5rem;display:flex;gap:.8rem;flex-wrap:wrap;
+    border-top:1px solid #e0ece6;
+}
+.email-actions .btn-primary{width:auto;flex:1;min-width:180px;text-decoration:none;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:8px;}
+.email-actions .btn-secondary{flex:0 0 auto;}
 </style>
 </head>
 <body>
@@ -371,53 +499,89 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#e8f5e9 0%
 </section>
 
 <div class="main-wrapper">
-    <div id="authContainer" class="glass-auth">
-        <div class="auth-tabs">
-            <button class="auth-tab active" data-tab="loginPanel">🔐 Login</button>
-            <button class="auth-tab" data-tab="registerPanel">📝 Register</button>
-            <button class="auth-tab" data-tab="resetPanel">🔄 Reset</button>
-        </div>
-
+    <div id="authContainer" class="glass-auth kyu-branded">
         <div id="loginPanel" class="auth-panel active-panel">
-            <div class="input-group"><label>Email / Student ID</label><input type="text" id="loginEmail" placeholder="Enter email" value="student@ict.com"></div>
-            <div class="input-group"><label>Password / Access Code</label><input type="password" id="loginPass" placeholder="Enter password" value="pass123"></div>
-            <div class="input-group"><label>Login as</label>
-                <select id="loginRole">
-                    <option value="student">👨‍🎓 Student</option>
-                    <option value="trainer">👨‍🏫 Trainer</option>
-                    <option value="examoffice">📋 Exam Office</option>
-                </select>
+            <div class="kyu-header">
+                <h1>MTVC Student Login</h1>
+                <p>Msambweni Technical &amp; Vocational College</p>
             </div>
-            <button id="doLoginAction" class="btn-primary">🚀 Access Portal</button>
-            <div id="loginErrorMsg" class="message-box"></div>
-            <div style="font-size:.7rem;text-align:center;margin-top:1rem;color:#5a7a6e;line-height:1.7;">
-                <strong>Demo:</strong> student@ict.com / pass123 &bull; trainer@ict.com / pass123<br>
-                <span style="opacity:.75;font-style:italic;"><i class="fas fa-lock" style="color:#b45309;"></i> Exam Office access is restricted to authorised staff.</span>
+            <div class="kyu-logo-wrap">
+                <div class="kyu-logo-circle">
+                    <img src="logo.jpg" alt="MTVC Logo"
+                         onerror="this.onerror=null;this.parentElement.innerHTML='<div class=logo-fallback><i class=fas fa-university></i></div>'">
+                </div>
+            </div>
+            <div class="kyu-form">
+                <div class="kyu-field"><label>Username:</label><input type="text" id="loginEmail" value="student@ict.com" placeholder="Enter username or email"></div>
+                <div class="kyu-field"><label>Password:</label><input type="password" id="loginPass" value="pass123" placeholder="Enter password"></div>
+                <div class="kyu-field"><label>Login as:</label>
+                    <select id="loginRole">
+                        <option value="student">👨‍🎓 Student</option>
+                        <option value="trainer">👨‍🏫 Trainer</option>
+                        <option value="examoffice">📋 Exam Office</option>
+                    </select>
+                </div>
+                <div class="kyu-buttons">
+                    <button type="button" class="kyu-btn-forgot" id="goToResetBtn">Forgot Password</button>
+                    <button type="button" class="kyu-btn-signin" id="doLoginAction">Sign In</button>
+                </div>
+                <div class="kyu-links">Don't have an account? <a href="#" id="goToRegisterLink">Create one</a></div>
+                <div id="loginErrorMsg" class="message-box"></div>
+                <div class="kyu-demo">
+                    <strong>Demo:</strong> student@ict.com / pass123 &bull; trainer@ict.com / pass123<br>
+                    <span style="opacity:.75;font-style:italic;"><i class="fas fa-lock" style="color:#b45309;"></i> Exam Office access is restricted to authorised staff.</span>
+                </div>
             </div>
         </div>
 
         <div id="registerPanel" class="auth-panel">
-            <div class="photo-picker">
-                <div class="photo-preview" id="regPhotoPreview"><i class="fas fa-user"></i></div>
-                <div class="pp-text"><strong>Profile Photo</strong><small>Upload a clear passport-size photo (JPG/PNG)</small></div>
-                <label class="file-btn"><i class="fas fa-camera"></i> Choose Photo<input type="file" id="regPhotoInput" accept="image/*" hidden></label>
+            <div class="kyu-header"><h1>MTVC Register</h1><p>Create your portal account</p></div>
+            <div class="kyu-logo-wrap">
+                <div class="kyu-logo-circle">
+                    <img src="logo.jpg" alt="MTVC Logo"
+                         onerror="this.onerror=null;this.parentElement.innerHTML='<div class=logo-fallback><i class=fas fa-university></i></div>'">
+                </div>
             </div>
-            <div class="input-group"><input type="text" id="regName" placeholder="Full Name"></div>
-            <div class="input-group"><input type="text" id="regNumber" placeholder="Registration No."></div>
-            <div class="input-group"><input type="email" id="regEmailAddr" placeholder="Email"></div>
-            <div class="input-group"><input type="password" id="regPassword" placeholder="Password (min 6)"></div>
-            <div class="input-group"><input type="password" id="regConfirm" placeholder="Confirm Password"></div>
-            <div class="input-group"><select id="regRole"><option value="student">👨‍🎓 Student</option><option value="trainer">👨‍🏫 Trainer</option></select></div>
-            <button id="doRegisterAction" class="btn-primary">📝 Register</button>
-            <div id="regMessageBlock" class="message-box"></div>
+            <div class="kyu-form">
+                <div class="kyu-photo-picker">
+                    <div class="photo-preview" id="regPhotoPreview"><i class="fas fa-user"></i></div>
+                    <div class="pp-text"><strong>Profile Photo</strong><small>Upload a clear passport-size photo (JPG/PNG)</small></div>
+                    <label class="file-btn"><i class="fas fa-camera"></i> Choose Photo<input type="file" id="regPhotoInput" accept="image/*" hidden></label>
+                </div>
+                <div class="kyu-field"><label>Full Name:</label><input type="text" id="regName" placeholder="Enter full name"></div>
+                <div class="kyu-field"><label>Reg No:</label><input type="text" id="regNumber" placeholder="Registration number"></div>
+                <div class="kyu-field"><label>Email:</label><input type="email" id="regEmailAddr" placeholder="Email address"></div>
+                <div class="kyu-field"><label>Password:</label><input type="password" id="regPassword" placeholder="Min 6 characters"></div>
+                <div class="kyu-field"><label>Confirm:</label><input type="password" id="regConfirm" placeholder="Confirm password"></div>
+                <div class="kyu-field"><label>Role:</label>
+                    <select id="regRole"><option value="student">👨‍🎓 Student</option><option value="trainer">👨‍🏫 Trainer</option></select>
+                </div>
+                <div class="kyu-buttons" style="justify-content:center;">
+                    <button type="button" class="kyu-btn-signin" id="doRegisterAction">Register</button>
+                </div>
+                <div class="kyu-links">Already have an account? <a href="#" id="goToLoginFromReg">Sign In</a></div>
+                <div id="regMessageBlock" class="message-box"></div>
+            </div>
         </div>
 
         <div id="resetPanel" class="auth-panel">
-            <div class="input-group"><input type="email" id="resetEmailAddr" placeholder="Registered Email"></div>
-            <div class="input-group"><input type="password" id="resetNewPass" placeholder="New Password"></div>
-            <div class="input-group"><input type="password" id="resetConfirmPass" placeholder="Confirm New Password"></div>
-            <button id="doResetAction" class="btn-primary">🔄 Reset Password</button>
-            <div id="resetMsgBlock" class="message-box"></div>
+            <div class="kyu-header"><h1>MTVC Reset Password</h1><p>Recover access to your portal account</p></div>
+            <div class="kyu-logo-wrap">
+                <div class="kyu-logo-circle">
+                    <img src="logo.jpg" alt="MTVC Logo"
+                         onerror="this.onerror=null;this.parentElement.innerHTML='<div class=logo-fallback><i class=fas fa-university></i></div>'">
+                </div>
+            </div>
+            <div class="kyu-form">
+                <div class="kyu-field"><label>Email:</label><input type="email" id="resetEmailAddr" placeholder="Registered email"></div>
+                <div class="kyu-field"><label>New Password:</label><input type="password" id="resetNewPass" placeholder="New password"></div>
+                <div class="kyu-field"><label>Confirm:</label><input type="password" id="resetConfirmPass" placeholder="Confirm new password"></div>
+                <div class="kyu-buttons">
+                    <button type="button" class="kyu-btn-forgot" id="goToLoginFromReset">Back to Login</button>
+                    <button type="button" class="kyu-btn-signin" id="doResetAction">Reset</button>
+                </div>
+                <div id="resetMsgBlock" class="message-box"></div>
+            </div>
         </div>
     </div>
 
@@ -485,12 +649,14 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#e8f5e9 0%
                 <button class="nav-item" data-exam-tab="examMedia">🖼️ Exam Media</button>
                 <button class="nav-item" data-exam-tab="manageAnnounce">📢 Announcements</button>
                 <button class="nav-item" data-exam-tab="manageSports">⚽ Sports</button>
+                <button class="nav-item" data-exam-tab="emailLog">📧 Email Log</button>
             </div>
             <div id="examAllResults" class="exam-subpanel active-panel"></div>
             <div id="examResetAttempts" class="exam-subpanel"></div>
             <div id="examExamMedia" class="exam-subpanel"></div>
             <div id="examManageAnnounce" class="exam-subpanel"></div>
             <div id="examManageSports" class="exam-subpanel"></div>
+            <div id="examEmailLog" class="exam-subpanel"></div>
         </div>
 
         <div class="designer-credit"><i class="fas fa-user-check"></i> Prepared by <strong>MR SAMSON</strong> – ICT TRAINER</div>
@@ -523,6 +689,28 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#e8f5e9 0%
     </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════
+     EMAIL NOTIFICATION MODAL
+     ═══════════════════════════════════════════════════════ -->
+<div class="email-modal-overlay" id="emailModal">
+    <div class="email-modal">
+        <div class="email-modal-header">
+            <h3><i class="fas fa-envelope-circle-check"></i> Email Notification Sent</h3>
+            <button class="email-modal-close" onclick="window.closeEmailModal()" title="Close">✕</button>
+        </div>
+        <div class="email-success-banner">
+            <div class="check-icon"><i class="fas fa-check-circle"></i></div>
+            <h4>Your Exam Has Been Submitted Successfully!</h4>
+            <p>A confirmation email with your score and answer breakdown has been prepared.</p>
+        </div>
+        <div class="email-body-preview" id="emailPreviewBody"></div>
+        <div class="email-actions">
+            <a class="btn-primary" id="emailSendLink" href="#"><i class="fas fa-paper-plane"></i> Open in Email Client</a>
+            <button class="btn-secondary" onclick="window.closeEmailModal()"><i class="fas fa-times"></i> Close</button>
+        </div>
+    </div>
+</div>
+
 <script>
 /* CONSTANTS */
 const USERS_KEY        = 'tvc_users_v9';
@@ -532,11 +720,11 @@ const SPORTS_KEY       = 'tvc_sports_v9';
 const MEDIA_KEY        = 'tvc_media_v9';
 const NOTES_KEY        = 'tvc_notes_v9';
 const SESSION_KEY      = 'tvc_session_v9';
+const EMAIL_LOG_KEY    = 'tvc_email_log_v9';
 
 const EXAM_OFFICE_PASSWORD = '48684868';
 const MAX_NOTE_SIZE = 3 * 1024 * 1024;
 
-/* ★★★ COLLEGE PHOTOS — EDIT MANUALLY HERE ★★★ */
 const COLLEGE_PHOTOS = [
     { src: 'aaa.jpg', caption: 'Main Campus — Msambweni TVC' },
     { src: 'b8.jpg', caption: 'MTVC' },
@@ -545,13 +733,7 @@ const COLLEGE_PHOTOS = [
     { src: 'eng7.jpg', caption: 'MTVC' },
 ];
 
-/* ════════════════════════════════════════════════════════════════
-   ★★★ NETWORK DESIGN QUESTIONS — UPDATED FROM NOTES ★★★
-   Topic: INTRODUCTION TO COMPUTER NETWORKING
-   Source: "1. INTRODUCTION TO COMPUTER NETWORKING.txt"
-   ════════════════════════════════════════════════════════════════ */
 const NETWORK_QUESTIONS = [
-    /* ─── SECTION 1: INTRO & TERMINOLOGY ─── */
     { text: "What is computer networking?", options: ["The connection of computers and devices for communication and resource sharing","A programming language for web design","A type of computer hardware","A software for editing documents"], correct: 0 },
     { text: "Which of the following is NOT a shared resource in a computer network?", options: ["Internet connection","Printers","Files and folders","CPU cooling fan"], correct: 3 },
     { text: "What is a 'Node' in computer networking?", options: ["A type of cable","Any device connected to a network","A network protocol","A software application"], correct: 1 },
@@ -562,15 +744,11 @@ const NETWORK_QUESTIONS = [
     { text: "Which device connects devices WITHIN a LAN?", options: ["Router","Switch","Modem","Firewall"], correct: 1 },
     { text: "What is an IP Address?", options: ["A unique address assigned to devices on a network","A type of network cable","A wireless protocol","A network topology"], correct: 0 },
     { text: "What does 'Bandwidth' mean in networking?", options: ["The physical length of a cable","The amount of data transmitted over a network","The number of computers in a network","The type of topology used"], correct: 1 },
-
-    /* ─── SECTION 1: TOPOLOGIES ─── */
     { text: "Which network topology uses ONE backbone cable?", options: ["Star","Bus","Ring","Mesh"], correct: 1 },
     { text: "Which network topology uses a central switch or hub?", options: ["Bus","Ring","Star","Mesh"], correct: 2 },
     { text: "Which network topology connects devices in a circle?", options: ["Bus","Star","Ring","Mesh"], correct: 2 },
     { text: "Which network topology interconnects devices using MANY paths for redundancy?", options: ["Bus","Star","Ring","Mesh"], correct: 3 },
     { text: "Which network topology is a COMBINATION of two or more topologies?", options: ["Bus","Star","Hybrid","Mesh"], correct: 2 },
-
-    /* ─── SECTION 2: TYPES OF NETWORKS ─── */
     { text: "Which network covers a PERSONAL space (e.g., Bluetooth)?", options: ["PAN","LAN","MAN","WAN"], correct: 0 },
     { text: "Which network covers an OFFICE, SCHOOL, or BUILDING?", options: ["PAN","LAN","MAN","WAN"], correct: 1 },
     { text: "Which network covers a CITY or TOWN?", options: ["PAN","LAN","MAN","WAN"], correct: 2 },
@@ -578,51 +756,35 @@ const NETWORK_QUESTIONS = [
     { text: "The Internet is an example of which network type?", options: ["PAN","LAN","MAN","WAN"], correct: 3 },
     { text: "Which of the following is a characteristic of a LAN?", options: ["High speed, low cost, privately managed","Covers worldwide","Uses only satellites","Requires no devices"], correct: 0 },
     { text: "A bank branch network connecting to headquarters is an example of:", options: ["PAN","LAN only","WAN","Bluetooth PAN"], correct: 2 },
-
-    /* ─── SECTION 3: IMPORTANCE OF NETWORKS ─── */
     { text: "Which of the following is NOT an importance of computer networks?", options: ["Resource sharing","Communication","Centralized data management","Increasing hardware costs"], correct: 3 },
     { text: "Which benefit of networking allows users to access systems from remote locations?", options: ["Cost reduction","Remote access","Congestion","Cabling"], correct: 1 },
     { text: "Centralized backup and improved security are benefits of:", options: ["Standalone computers","Computer networks","Printers only","USB drives"], correct: 1 },
-
-    /* ─── SECTION 4: USER REQUIREMENTS ANALYSIS ─── */
     { text: "What type of requirement describes WHAT the network should do?", options: ["Performance requirement","Functional requirement","Security requirement","Scalability requirement"], correct: 1 },
     { text: "Which of the following is an example of a FUNCTIONAL requirement?", options: ["High speed","Firewalls","Internet access and file sharing","Adding more users later"], correct: 2 },
     { text: "Which of the following is an example of a PERFORMANCE requirement?", options: ["Internet access","High speed and reliable connectivity","Passwords","File sharing"], correct: 1 },
     { text: "Which of the following is an example of a SECURITY requirement?", options: ["High speed","Firewalls and user authentication","Adding devices","Wireless access"], correct: 1 },
     { text: "Which requirement deals with supporting FUTURE EXPANSION?", options: ["Functional","Performance","Security","Scalability"], correct: 3 },
     { text: "Which of the following is a METHOD of collecting user requirements?", options: ["Interviews and questionnaires","Encrypting","Compiling","Routing"], correct: 0 },
-
-    /* ─── SECTION 5: PHYSICAL NETWORK DESIGN ─── */
     { text: "Which of the following is a GUIDED transmission medium?", options: ["Wi-Fi","Radio waves","UTP cable","Bluetooth"], correct: 2 },
     { text: "Which of the following is an UNGUIDED transmission medium?", options: ["UTP cable","Fiber optic cable","Coaxial cable","Wi-Fi"], correct: 3 },
     { text: "Which component is used in physical network design?", options: ["Switches, routers, and access points","Only software","Only IP addresses","Only VLANs"], correct: 0 },
     { text: "If a HIGH SPEED requirement is needed, which cable is best?", options: ["UTP cable","Fiber optic cable","Telephone wire","Coaxial only"], correct: 1 },
-
-    /* ─── SECTION 6: LOGICAL NETWORK DESIGN ─── */
     { text: "Logical network design includes which of the following?", options: ["Cable placement","IP addressing, VLANs, and routing","Physical device layout","Wall mounting"], correct: 1 },
     { text: "Which layer of hierarchical network design is the HIGH-SPEED BACKBONE?", options: ["Access layer","Distribution layer","Core layer","Edge layer"], correct: 2 },
     { text: "Which layer of hierarchical design CONTROLS departmental traffic?", options: ["Core layer","Distribution layer","Access layer","Backbone layer"], correct: 1 },
     { text: "Which layer of hierarchical design CONNECTS END USERS?", options: ["Core layer","Distribution layer","Access layer","Backbone layer"], correct: 2 },
     { text: "Which of the following is a DISADVANTAGE of a flat network design?", options: ["Simple","Cheap","Congestion and poor scalability","Easy to manage"], correct: 2 },
-
-    /* ─── SECTION 7: VLANs AND SUBNETS ─── */
     { text: "What does VLAN stand for?", options: ["Virtual Local Area Network","Very Large Area Network","Virtual Link Access Node","Verified Local Access Network"], correct: 0 },
     { text: "A VLAN is best described as:", options: ["A logical grouping of users in a network","A physical cable type","A type of router","A wireless protocol"], correct: 0 },
     { text: "Which of the following is an ADVANTAGE of VLANs?", options: ["Increased congestion","Improved security and reduced congestion","Higher cabling costs","Slower performance"], correct: 1 },
     { text: "A subnet is used to:", options: ["Divide a large network into smaller sections","Increase cable length","Connect to the internet only","Encrypt all data"], correct: 0 },
     { text: "Which of the following is a BENEFIT of subnetting?", options: ["Better performance and improved security","Increased broadcast traffic","Higher costs","Fewer IP addresses"], correct: 0 },
     { text: "If Accounts uses VLAN 10, ICT uses VLAN 20, and Students use VLAN 30, this shows:", options: ["Physical cabling","Logical grouping by VLANs","A single flat network","Wireless setup"], correct: 1 },
-
-    /* ─── SECTION 8: SCENARIO ANALYSIS ─── */
     { text: "A small office needs 10 computers, a shared printer, internet, and wireless. What is the correct solution?", options: ["LAN with router, switch, and access point","WAN with modem only","PAN with Bluetooth only","MAN with firewall only"], correct: 0 },
     { text: "A college network with multiple departments, student portal, and secure server room requires:", options: ["VLANs, multiple switches, dedicated servers, and fiber backbone","A single hub","Only wireless access points","No security"], correct: 0 },
-
-    /* ─── SECTION 9: BENEFITS OF GOOD DESIGN ─── */
     { text: "Which of the following is a benefit of good network design?", options: ["Improved performance and security","Increased congestion","Higher costs","Poor scalability"], correct: 0 },
     { text: "Which benefit of good network design makes troubleshooting easier?", options: ["Easier maintenance and troubleshooting","More cables","Fewer users","Larger files"], correct: 0 },
     { text: "Scalability in network design means:", options: ["The ability to support future expansion","Reducing network speed","Using fewer devices","Avoiding security"], correct: 0 },
-
-    /* ─── SECTION 10: SAMPLE EXAM QUESTIONS ─── */
     { text: "State four network types covered in the notes:", options: ["PAN, LAN, MAN, WAN","USB, HDMI, VGA, SATA","HTTP, FTP, SMTP, DNS","Core, Distribution, Access, Edge"], correct: 0 },
     { text: "Two examples of networking devices are:", options: ["Router and Switch","Monitor and Keyboard","Printer and Scanner","Speaker and Microphone"], correct: 0 },
     { text: "Two examples of guided transmission media are:", options: ["Wi-Fi and Radio waves","UTP cable and Fiber optic cable","Bluetooth and Infrared","Satellite and Microwave"], correct: 1 },
@@ -657,7 +819,6 @@ const DEFAULT_SPORTS = [
     { id:'s3', title:'Volleyball League', content:'Schedule coming soon.', date:'2026-02-20', photo:'' }
 ];
 
-/* STORAGE */
 function initData(){
     if(!localStorage.getItem(USERS_KEY)){
         localStorage.setItem(USERS_KEY, JSON.stringify([
@@ -671,6 +832,7 @@ function initData(){
     if(!localStorage.getItem(SPORTS_KEY))       localStorage.setItem(SPORTS_KEY, JSON.stringify(DEFAULT_SPORTS));
     if(!localStorage.getItem(MEDIA_KEY))        localStorage.setItem(MEDIA_KEY, JSON.stringify({ covers:{}, questions:{} }));
     if(!localStorage.getItem(NOTES_KEY))        localStorage.setItem(NOTES_KEY, JSON.stringify([]));
+    if(!localStorage.getItem(EMAIL_LOG_KEY))    localStorage.setItem(EMAIL_LOG_KEY, JSON.stringify([]));
 }
 function getUsers(){ return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); }
 function setUsers(u){ localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
@@ -688,7 +850,6 @@ function setMedia(m){ localStorage.setItem(MEDIA_KEY, JSON.stringify(m)); }
 function getCover(key){ return getMedia().covers[key] || ''; }
 function getQuestionImage(examKey, idx){ const q = getMedia().questions[examKey] || {}; return q[idx] || ''; }
 
-/* EXAM RECORDS */
 function blankRecord(){ return { networkDesign:{attemptsUsed:0,bestScore:0}, websiteApp:{attemptsUsed:0,bestScore:0} }; }
 function getExamRecord(regNo, examKey){
     const all = getExamRecords();
@@ -715,7 +876,6 @@ function resetAttemptsForStudent(regNo, examKey){
     setExamRecords(all);
 }
 
-/* UTILITIES */
 function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function initials(name){ return String(name||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
 function fileToDataURL(file, maxW = 640, maxH = 640, quality = 0.82){
@@ -756,8 +916,166 @@ function showMessage(el, text, isError = true){
     setTimeout(() => { if(el.style.display === 'block') el.style.display = 'none'; }, 4500);
 }
 function clearMessages(){ ['loginErrorMsg','regMessageBlock','resetMsgBlock'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; }); }
+function switchAuthPanel(panelId){
+    document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active-panel'));
+    const target = document.getElementById(panelId);
+    if(target) target.classList.add('active-panel');
+    clearMessages();
+}
 
-/* NOTES HELPERS */
+/* ════════════════════════════════════════════════════════════════
+   ✉️ EMAIL NOTIFICATION SYSTEM
+   ════════════════════════════════════════════════════════════════ */
+function getEmailLog(){ return JSON.parse(localStorage.getItem(EMAIL_LOG_KEY) || '[]'); }
+function logEmail(entry){
+    const log = getEmailLog();
+    log.push({ ...entry, loggedAt: new Date().toISOString() });
+    localStorage.setItem(EMAIL_LOG_KEY, JSON.stringify(log));
+}
+function formatDateReadable(){
+    return new Date().toLocaleString('en-GB', {
+        weekday:'long', year:'numeric', month:'long', day:'numeric',
+        hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+    });
+}
+
+/* Send the exam notification email (opens modal with preview + mailto link) */
+function sendExamEmailNotification(user, examName, score, total, percent, correctQuestions, wrongQuestions){
+    const email = user.email;
+    const name  = user.fullName;
+    const regNo = user.regNo;
+    const when  = formatDateReadable();
+    const passed = percent >= 50;
+    const statusText = passed ? 'PASSED' : 'FAILED';
+
+    /* ── Plain-text email body (for mailto) ── */
+    const correctLines = correctQuestions.length
+        ? correctQuestions.map((q,i) => `  ${i+1}. ${q}`).join('\n')
+        : '  (None)';
+    const wrongLines = wrongQuestions.length
+        ? wrongQuestions.map((q,i) => `  ${i+1}. ${q}`).join('\n')
+        : '  (None)';
+
+    const subject = `MTVC Exam Submission — ${examName} — Score: ${percent}% (${statusText})`;
+
+    const body =
+`Dear ${name},
+
+Your exam has been submitted successfully. Please find your results below.
+
+═══════════════════════════════════════════════
+   MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE
+   ICT DEPARTMENT — EXAM SUBMISSION NOTICE
+═══════════════════════════════════════════════
+
+STUDENT DETAILS
+   Name         : ${name}
+   Reg No       : ${regNo}
+   Email        : ${email}
+
+EXAM DETAILS
+   Exam         : ${examName}
+   Submitted    : ${when}
+   Score        : ${score}/${total}
+   Percentage   : ${percent}%
+   Result       : ${passed ? '✅ PASSED' : '❌ FAILED (need 50%)'}
+
+───────────────────────────────────────────────
+  ✅ QUESTIONS ANSWERED CORRECTLY (${correctQuestions.length})
+───────────────────────────────────────────────
+${correctLines}
+
+───────────────────────────────────────────────
+  ❌ QUESTIONS ANSWERED INCORRECTLY (${wrongQuestions.length})
+───────────────────────────────────────────────
+${wrongLines}
+
+═══════════════════════════════════════════════
+
+For inquiries, contact the ICT Department.
+Msambweni Technical & Vocational College
+P.O. Box 11-80404, Msambweni, Kwale County
+
+This is an automated message from the MTVC ICT Portal.
+Do not reply to this email.`;
+
+    /* ── Build the modal HTML preview ── */
+    const correctHTML = correctQuestions.length
+        ? correctQuestions.map((q,i) => `<li><span class="q-num">Q${i+1}</span>${esc(q)}</li>`).join('')
+        : '<li class="wrong">(No questions answered correctly)</li>';
+    const wrongHTML = wrongQuestions.length
+        ? wrongQuestions.map((q,i) => `<li class="wrong"><span class="q-num">Q${i+1}</span>${esc(q)}</li>`).join('')
+        : '<li>(All questions were answered correctly 🎉)</li>';
+
+    document.getElementById('emailPreviewBody').innerHTML = `
+        <div class="email-field-row"><span class="label">From:</span><span class="value">ICT Portal &lt;ict-portal@msambwenitvc.ac.ke&gt;</span></div>
+        <div class="email-field-row"><span class="label">To:</span><span class="value">${esc(name)} &lt;${esc(email)}&gt;</span></div>
+        <div class="email-field-row"><span class="label">Date:</span><span class="value">${when}</span></div>
+        <div class="email-field-row"><span class="label">Subject:</span><span class="value"><strong>${esc(subject)}</strong></span></div>
+
+        <div class="email-score-card">
+            <div class="big-percent">${percent}%</div>
+            <div class="score-line">Score: <strong>${score} / ${total}</strong> marks</div>
+            <span class="status-badge ${passed ? 'pass' : 'fail'}">
+                ${passed ? '✅ PASSED' : '❌ FAILED — Need 50%'}
+            </span>
+        </div>
+
+        <p style="color:#1b3b4f;font-size:.87rem;line-height:1.6;margin-bottom:.6rem;">
+            Dear <strong>${esc(name)}</strong>,<br>
+            Your <strong>${esc(examName)}</strong> exam was submitted on <em>${when}</em>.
+            Below is the breakdown of your answers.
+        </p>
+
+        <h4 style="color:#1b5e3a;margin:1rem 0 .4rem;font-size:.92rem;">
+            <i class="fas fa-check-circle" style="color:#2ecc71;"></i>
+            Questions Answered Correctly (${correctQuestions.length})
+        </h4>
+        <ul class="correct-q-list">${correctHTML}</ul>
+
+        <h4 style="color:#991b1b;margin:1.2rem 0 .4rem;font-size:.92rem;">
+            <i class="fas fa-times-circle" style="color:#e74c3c;"></i>
+            Questions Answered Incorrectly (${wrongQuestions.length})
+        </h4>
+        <ul class="correct-q-list">${wrongHTML}</ul>
+
+        <p style="color:#5a7a6e;font-size:.75rem;margin-top:1rem;padding-top:.8rem;border-top:1px dashed #cde6dc;">
+            This is an automated notification from the MTVC ICT Portal.
+        </p>
+    `;
+
+    /* mailto link */
+    const mailto = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    document.getElementById('emailSendLink').href = mailto;
+
+    /* Show modal */
+    document.getElementById('emailModal').classList.add('active');
+
+    /* Log to localStorage for Exam Office */
+    logEmail({
+        to: email,
+        name,
+        regNo,
+        exam: examName,
+        score: `${score}/${total}`,
+        percent,
+        result: passed ? 'PASSED' : 'FAILED',
+        correctCount: correctQuestions.length,
+        wrongCount: wrongQuestions.length,
+        submittedAt: when
+    });
+}
+window.closeEmailModal = function(){
+    document.getElementById('emailModal').classList.remove('active');
+};
+/* Allow ESC key to close modal */
+document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') window.closeEmailModal();
+});
+
+/* ════════════════════════════════════════════════════════════════
+   NOTES HELPERS
+   ════════════════════════════════════════════════════════════════ */
 let pendingNoteFile = null;
 function formatFileSize(bytes){
     if(!bytes) return '0 B';
@@ -816,8 +1134,6 @@ window.deleteNote = function(id){
     setNotes(getNotes().filter(n => n.id !== id));
     renderTrainerNotes(); renderStudentNotes();
 };
-
-/* DOWNLOAD AS PDF */
 window.downloadNote = async function(id){
     const note = getNotes().find(n => n.id === id);
     if(!note || !note.fileData){ alert('❌ File not available.'); return; }
@@ -1005,7 +1321,6 @@ function renderStudentNotes(){
     </div>`;
 }
 
-/* AUTH */
 function ensureExamOfficer(){
     let users = getUsers();
     let officer = users.find(u => u.role === 'examoffice');
@@ -1187,12 +1502,24 @@ function renderNetworkExam(regNo){
     container.innerHTML = html;
     document.getElementById('submitNetExam')?.addEventListener('click', () => submitNetworkExam(regNo));
 }
+
+/* ═══════════════════════════════════════════════════════════
+   SUBMIT NETWORK EXAM — triggers email notification
+   ═══════════════════════════════════════════════════════════ */
 function submitNetworkExam(regNo){
     if(!canAttempt(regNo,'networkDesign')){ document.getElementById('netResultArea').innerHTML = `<div class="locked-message">No attempts left.</div>`; return; }
     let score = 0;
+    const correctQs = [];
+    const wrongQs = [];
     for(let i=0;i<NETWORK_QUESTIONS.length;i++){
+        const qText = NETWORK_QUESTIONS[i].text;
         const sel = document.querySelector(`input[name="net_q${i}"]:checked`);
-        if(sel && parseInt(sel.value) === NETWORK_QUESTIONS[i].correct) score++;
+        if(sel && parseInt(sel.value) === NETWORK_QUESTIONS[i].correct){
+            score++;
+            correctQs.push(qText);
+        } else {
+            wrongQs.push(qText);
+        }
     }
     const percent = Math.round((score / NETWORK_QUESTIONS.length) * 100);
     const updated = updateExamRecord(regNo,'networkDesign',percent);
@@ -1202,7 +1529,20 @@ function submitNetworkExam(regNo){
     document.getElementById('netResultArea').innerHTML = `<div class="result-card"><h3>Result</h3><p>Score: ${score}/${NETWORK_QUESTIONS.length} (${percent}%)</p><p>Attempts left: ${3-updated.attemptsUsed} | Best: ${updated.bestScore}%</p>${passMsg}</div>`;
     if(updated.attemptsUsed >= 3) disableExamArea('netExamArea','submitNetExam');
     if(currentUser) renderProfileStrip(currentUser);
+
+    /* ── 📧 TRIGGER EMAIL NOTIFICATION ── */
+    if(currentUser){
+        setTimeout(() => {
+            sendExamEmailNotification(
+                currentUser,
+                'Network Design & Management',
+                score, NETWORK_QUESTIONS.length, percent,
+                correctQs, wrongQs
+            );
+        }, 600);
+    }
 }
+
 function renderWebsiteExam(regNo){
     const container = document.getElementById('webExamArea');
     if(!container) return;
@@ -1215,9 +1555,15 @@ function renderWebsiteExam(regNo){
     container.innerHTML = html;
     document.getElementById('submitWebExam')?.addEventListener('click', () => submitWebsiteExam(regNo));
 }
+
+/* ═══════════════════════════════════════════════════════════
+   SUBMIT WEBSITE EXAM — triggers email notification
+   ═══════════════════════════════════════════════════════════ */
 function submitWebsiteExam(regNo){
     if(!canAttempt(regNo,'websiteApp')){ document.getElementById('webResultArea').innerHTML = `<div class="locked-message">No attempts left.</div>`; return; }
     let totalMarks = 0, maxMarks = 0;
+    const correctQs = [];
+    const wrongQs = [];
     WEBSITE_QUESTIONS.forEach((q, idx) => {
         const answer = (document.getElementById(`web_essay_${idx}`)?.value || '').trim();
         const marks = q.marks || 5; maxMarks += marks;
@@ -1231,6 +1577,9 @@ function submitWebsiteExam(regNo){
             if(earned < 1 && answer.length > 30) earned = 1;
         } else if(answer.length > 10){ earned = 1; }
         totalMarks += earned;
+        /* Consider "correct" if earned at least half the marks */
+        if(earned >= (marks / 2)) correctQs.push(q.text);
+        else wrongQs.push(q.text);
     });
     const percent = Math.round((totalMarks / maxMarks) * 100);
     const updated = updateExamRecord(regNo,'websiteApp',percent);
@@ -1240,7 +1589,20 @@ function submitWebsiteExam(regNo){
     document.getElementById('webResultArea').innerHTML = `<div class="result-card"><h3>Result</h3><p>Score: ${totalMarks}/${maxMarks} (${percent}%)</p><p>Attempts left: ${3-updated.attemptsUsed} | Best: ${updated.bestScore}%</p>${passMsg}</div>`;
     if(updated.attemptsUsed >= 3) disableExamArea('webExamArea','submitWebExam');
     if(currentUser) renderProfileStrip(currentUser);
+
+    /* ── 📧 TRIGGER EMAIL NOTIFICATION ── */
+    if(currentUser){
+        setTimeout(() => {
+            sendExamEmailNotification(
+                currentUser,
+                'Website Applications — User Need Analysis',
+                totalMarks, maxMarks, percent,
+                correctQs, wrongQs
+            );
+        }, 600);
+    }
 }
+
 function disableExamArea(areaId, btnId){
     const area = document.getElementById(areaId);
     if(area) area.querySelectorAll('input, textarea').forEach(i => i.disabled = true);
@@ -1404,6 +1766,7 @@ function renderExamOfficeDashboard(){
     renderQuestionMediaPanel('examExamMedia');
     renderExamManageAnnounce();
     renderExamManageSports();
+    renderExamEmailLog();
     document.querySelectorAll('[data-exam-tab]').forEach(btn => {
         btn.addEventListener('click', function(){
             document.querySelectorAll('[data-exam-tab]').forEach(b => b.classList.remove('active-nav'));
@@ -1457,6 +1820,46 @@ function renderExamManageSports(){
     html += `</tbody></table></div>`;
     container.innerHTML = html;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   EMAIL LOG PANEL (EXAM OFFICE)
+   ═══════════════════════════════════════════════════════════ */
+function renderExamEmailLog(){
+    const container = document.getElementById('examEmailLog');
+    if(!container) return;
+    const log = getEmailLog().slice().reverse();
+    let html = `<div class="form-card">
+        <h4 style="margin-bottom:.4rem;">📧 Email Notification Log</h4>
+        <p class="text-muted mb-1">All exam submission emails sent to students. ${log.length} record(s).</p>
+    </div>
+    <div class="table-wrap">
+        <table><thead><tr>
+            <th>Date</th><th>Student</th><th>Reg No</th><th>Email</th>
+            <th>Exam</th><th>Score</th><th>%</th><th>Result</th>
+            <th>✅</th><th>❌</th>
+        </tr></thead><tbody>`;
+    if(!log.length){
+        html += `<tr><td colspan="10" class="text-muted" style="text-align:center;padding:1.5rem;">📭 No emails sent yet.</td></tr>`;
+    } else {
+        log.forEach(r => {
+            html += `<tr>
+                <td style="font-size:.75rem;white-space:nowrap;">${esc((r.submittedAt||'').split(',')[0] || r.loggedAt || '')}</td>
+                <td>${esc(r.name||'')}</td>
+                <td>${esc(r.regNo||'')}</td>
+                <td style="font-size:.75rem;">${esc(r.to||'')}</td>
+                <td>${esc(r.exam||'')}</td>
+                <td>${esc(r.score||'')}</td>
+                <td><strong>${esc(String(r.percent||''))}%</strong></td>
+                <td>${r.result === 'PASSED' ? '<span class="badge-pass">✅ Passed</span>' : '<span class="badge-fail">❌ Failed</span>'}</td>
+                <td style="color:#065f46;font-weight:700;">${r.correctCount}</td>
+                <td style="color:#991b1b;font-weight:700;">${r.wrongCount}</td>
+            </tr>`;
+        });
+    }
+    html += `</tbody></table></div>`;
+    container.innerHTML = html;
+}
+
 let pendingAnnouncePhoto = { trainer:'', exam:'' };
 let pendingSportsPhoto = '';
 window.pickAnnouncePhoto = async function(prefix, input){
@@ -1544,6 +1947,7 @@ function logout(){
     document.querySelectorAll('.module-panel').forEach(p => p.classList.remove('active-panel'));
     document.querySelectorAll('.trainer-subpanel').forEach(p => p.classList.remove('active-panel'));
     document.querySelectorAll('.exam-subpanel').forEach(p => p.classList.remove('active-panel'));
+    switchAuthPanel('loginPanel');
 }
 function checkAutoLogin(){
     const session = localStorage.getItem(SESSION_KEY);
@@ -1622,7 +2026,7 @@ document.addEventListener('DOMContentLoaded', function(){
         const res = registerNewUser(name, reg, email, pwd, role, regPhotoData);
         if(res.success){
             showMessage(document.getElementById('regMessageBlock'), res.message, false);
-            setTimeout(() => { document.querySelector('[data-tab="loginPanel"]').click(); document.getElementById('loginEmail').value = email; document.getElementById('loginPass').value = ''; document.getElementById('loginRole').value = role; }, 1500);
+            setTimeout(() => { switchAuthPanel('loginPanel'); document.getElementById('loginEmail').value = email; document.getElementById('loginPass').value = ''; document.getElementById('loginRole').value = role; }, 1500);
         } else { showMessage(document.getElementById('regMessageBlock'), res.message, true); }
     });
     document.getElementById('doResetAction').addEventListener('click', function(){
@@ -1630,20 +2034,17 @@ document.addEventListener('DOMContentLoaded', function(){
         const np = document.getElementById('resetNewPass').value.trim();
         const cp = document.getElementById('resetConfirmPass').value.trim();
         const res = resetUserPassword(email, np, cp);
-        if(res.success){ showMessage(document.getElementById('resetMsgBlock'), res.message, false); setTimeout(() => document.querySelector('[data-tab="loginPanel"]').click(), 1500); }
+        if(res.success){ showMessage(document.getElementById('resetMsgBlock'), res.message, false); setTimeout(() => switchAuthPanel('loginPanel'), 1500); }
         else { showMessage(document.getElementById('resetMsgBlock'), res.message, true); }
     });
     document.getElementById('logoutMainBtn').addEventListener('click', logout);
-    document.querySelectorAll('.auth-tab').forEach(tab => {
-        tab.addEventListener('click', function(){
-            const target = this.dataset.tab;
-            document.querySelectorAll('.auth-panel').forEach(p => p.classList.remove('active-panel'));
-            document.getElementById(target).classList.add('active-panel');
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            clearMessages();
-        });
-    });
+
+    /* KyU-style panel switching */
+    document.getElementById('goToResetBtn')?.addEventListener('click', () => switchAuthPanel('resetPanel'));
+    document.getElementById('goToRegisterLink')?.addEventListener('click', (e) => { e.preventDefault(); switchAuthPanel('registerPanel'); });
+    document.getElementById('goToLoginFromReg')?.addEventListener('click', (e) => { e.preventDefault(); switchAuthPanel('loginPanel'); });
+    document.getElementById('goToLoginFromReset')?.addEventListener('click', () => switchAuthPanel('loginPanel'));
+
     const loggedIn = checkAutoLogin();
     if(!loggedIn){
         document.getElementById('authContainer').style.display = 'block';
