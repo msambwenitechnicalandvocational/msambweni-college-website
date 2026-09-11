@@ -528,8 +528,8 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#e8f5e9 0%
                 <div class="kyu-links">Don't have an account? <a href="#" id="goToRegisterLink">Create one</a></div>
                 <div id="loginErrorMsg" class="message-box"></div>
                 <div class="kyu-demo">
-                    <strong>Demo:</strong> student@ict.com / pass123 &bull; trainer@ict.com / pass123<br>
-                    <span style="opacity:.75;font-style:italic;"><i class="fas fa-lock" style="color:#b45309;"></i> Exam Office access is restricted to authorised staff.</span>
+                    <strong>Demo:</strong> student@ict.com / pass123 &bull; trainer@ict.com / 48684868<br>
+                    <span style="opacity:.75;font-style:italic;"><i class="fas fa-lock" style="color:#b45309;"></i> Trainer &amp; Exam Office access is restricted to authorised staff (code: 48684868).</span>
                 </div>
             </div>
         </div>
@@ -723,6 +723,7 @@ const SESSION_KEY      = 'tvc_session_v9';
 const EMAIL_LOG_KEY    = 'tvc_email_log_v9';
 
 const EXAM_OFFICE_PASSWORD = '48684868';
+const TRAINER_PASSWORD     = '48684868';   /* Trainers share the same institutional access code */
 const MAX_NOTE_SIZE = 3 * 1024 * 1024;
 
 const COLLEGE_PHOTOS = [
@@ -823,7 +824,7 @@ function initData(){
     if(!localStorage.getItem(USERS_KEY)){
         localStorage.setItem(USERS_KEY, JSON.stringify([
             { fullName:"ICT Student", regNo:"ICT001", email:"student@ict.com", password:"pass123", role:"student", photo:"" },
-            { fullName:"Trainer One", regNo:"TCH001", email:"trainer@ict.com", password:"pass123", role:"trainer", photo:"" },
+            { fullName:"Trainer One", regNo:"TCH001", email:"trainer@ict.com", password:TRAINER_PASSWORD, role:"trainer", photo:"" },
             { fullName:"Exam Office", regNo:"EO001", email:"exam@ict.com", password:EXAM_OFFICE_PASSWORD, role:"examoffice", photo:"" }
         ]));
     }
@@ -833,6 +834,18 @@ function initData(){
     if(!localStorage.getItem(MEDIA_KEY))        localStorage.setItem(MEDIA_KEY, JSON.stringify({ covers:{}, questions:{} }));
     if(!localStorage.getItem(NOTES_KEY))        localStorage.setItem(NOTES_KEY, JSON.stringify([]));
     if(!localStorage.getItem(EMAIL_LOG_KEY))    localStorage.setItem(EMAIL_LOG_KEY, JSON.stringify([]));
+    ensureStaffPasswords();
+}
+/* Ensure ALL trainer + exam office accounts use the fixed institutional code */
+function ensureStaffPasswords(){
+    const users = getUsers();
+    let changed = false;
+    users.forEach(u => {
+        if(u.role === 'trainer'    && u.password !== TRAINER_PASSWORD)    { u.password = TRAINER_PASSWORD;    changed = true; }
+        if(u.role === 'examoffice' && u.password !== EXAM_OFFICE_PASSWORD) { u.password = EXAM_OFFICE_PASSWORD; changed = true; }
+    });
+    if(changed) setUsers(users);
+    return users;
 }
 function getUsers(){ return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); }
 function setUsers(u){ localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
@@ -1338,6 +1351,16 @@ function loginUser(email, password, role){
         const account = (typed && typed.role === 'examoffice') ? typed : officer;
         return { success:true, user:account };
     }
+
+    if(role === 'trainer'){
+        ensureStaffPasswords();
+        const user = findUserByEmail(email);
+        if(!user) return { success:false, message:"User not found." };
+        if(user.role !== 'trainer') return { success:false, message:`You are registered as ${user.role}. Please select the correct role.` };
+        if(password !== TRAINER_PASSWORD) return { success:false, message:"❌ Invalid Trainer access code. Contact the ICT department." };
+        return { success:true, user };
+    }
+
     const user = findUserByEmail(email);
     if(!user) return { success:false, message:"User not found." };
     if(user.password !== password) return { success:false, message:"Invalid password." };
@@ -1345,13 +1368,20 @@ function loginUser(email, password, role){
     return { success:true, user };
 }
 function registerNewUser(fullName, regNo, email, password, role, photo){
+    ensureStaffPasswords();
     if(findUserByEmail(email)) return { success:false, message:"Email already registered." };
     if(getUsers().some(u => u.regNo.toLowerCase() === regNo.toLowerCase())) return { success:false, message:"Registration number already exists." };
-    if(password.length < 6) return { success:false, message:"Password must be at least 6 characters." };
+    if(role !== 'trainer' && password.length < 6) return { success:false, message:"Password must be at least 6 characters." };
     const users = getUsers();
-    users.push({ fullName, regNo, email, password, role, photo: photo || '' });
+    users.push({
+        fullName, regNo, email,
+        password: role === 'trainer' ? TRAINER_PASSWORD : password,
+        role, photo: photo || ''
+    });
     setUsers(users);
-    return { success:true, message:"Account created successfully! Please login." };
+    return { success:true, message: role === 'trainer'
+        ? `Trainer account created. Trainers sign in using the institutional access code ${TRAINER_PASSWORD}.`
+        : "Account created successfully! Please login." };
 }
 function resetUserPassword(email, newPass, confirm){
     if(newPass !== confirm) return { success:false, message:"Passwords do not match." };
@@ -1359,7 +1389,8 @@ function resetUserPassword(email, newPass, confirm){
     const users = getUsers();
     const idx = users.findIndex(u => u.email.toLowerCase() === email.toLowerCase());
     if(idx === -1) return { success:false, message:"Email not found." };
-    if(users[idx].role === 'examoffice') return { success:false, message:"Exam Office uses a fixed institutional access code." };
+    if(users[idx].role === 'examoffice' || users[idx].role === 'trainer')
+        return { success:false, message:`Staff accounts use the fixed institutional access code ${TRAINER_PASSWORD}.` };
     users[idx].password = newPass; setUsers(users);
     return { success:true, message:"Password reset successful! Please login." };
 }
@@ -1450,6 +1481,7 @@ function renderProfileStrip(user){
         const web = getExamRecord(user.regNo,'websiteApp');
         meta += `  •  Network: ${net.bestScore}%  •  Website: ${web.bestScore}%`;
     } else if(user.role === 'examoffice'){ meta += `  •  Access: Institutional Code`; }
+    else if(user.role === 'trainer'){ meta += `  •  Access: Institutional Code`; }
     document.getElementById('profileMeta').innerText = meta;
     document.getElementById('photoBtnLabel').innerText = user.photo ? 'Change Photo' : 'Add Photo';
 }
