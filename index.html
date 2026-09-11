@@ -528,8 +528,8 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#e8f5e9 0%
                 <div class="kyu-links">Don't have an account? <a href="#" id="goToRegisterLink">Create one</a></div>
                 <div id="loginErrorMsg" class="message-box"></div>
                 <div class="kyu-demo">
-                    <strong>Demo:</strong> student@ict.com / pass123 &bull; trainer@ict.com / 48684868<br>
-                    <span style="opacity:.75;font-style:italic;"><i class="fas fa-lock" style="color:#b45309;"></i> Trainer &amp; Exam Office access is restricted to authorised staff (code: 48684868).</span>
+                    <strong>Demo:</strong> student@ict.com / pass123<br>
+                    <span style="opacity:.75;font-style:italic;"><i class="fas fa-lock" style="color:#b45309;"></i> Trainer &amp; Exam Office access is restricted to authorised staff only.</span>
                 </div>
             </div>
         </div>
@@ -722,8 +722,9 @@ const NOTES_KEY        = 'tvc_notes_v9';
 const SESSION_KEY      = 'tvc_session_v9';
 const EMAIL_LOG_KEY    = 'tvc_email_log_v9';
 
+/* Institutional access codes — hidden from the UI */
 const EXAM_OFFICE_PASSWORD = '48684868';
-const TRAINER_PASSWORD     = '48684868';   /* Trainers share the same institutional access code */
+const TRAINER_PASSWORD     = '48684868';
 const MAX_NOTE_SIZE = 3 * 1024 * 1024;
 
 const COLLEGE_PHOTOS = [
@@ -1019,7 +1020,6 @@ function sendExamEmailNotification(user, examName, score, total, percent, correc
     const passed = percent >= 50;
     const statusText = passed ? 'PASSED' : 'FAILED';
 
-    /* ── Plain-text email body (for mailto) ── */
     const correctLines = correctQuestions.length
         ? correctQuestions.map((q,i) => `  ${i+1}. ${q}`).join('\n')
         : '  (None)';
@@ -1070,7 +1070,6 @@ P.O. Box 11-80404, Msambweni, Kwale County
 This is an automated message from the MTVC ICT Portal.
 Do not reply to this email.`;
 
-    /* ── Build the modal HTML preview ── */
     const correctHTML = correctQuestions.length
         ? correctQuestions.map((q,i) => `<li><span class="q-num">Q${i+1}</span>${esc(q)}</li>`).join('')
         : '<li class="wrong">(No questions answered correctly)</li>';
@@ -1115,14 +1114,11 @@ Do not reply to this email.`;
         </p>
     `;
 
-    /* mailto link */
     const mailto = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     document.getElementById('emailSendLink').href = mailto;
 
-    /* Show modal */
     document.getElementById('emailModal').classList.add('active');
 
-    /* Log to localStorage for Exam Office */
     logEmail({
         to: email,
         name,
@@ -1139,7 +1135,6 @@ Do not reply to this email.`;
 window.closeEmailModal = function(){
     document.getElementById('emailModal').classList.remove('active');
 };
-/* Allow ESC key to close modal */
 document.addEventListener('keydown', function(e){
     if(e.key === 'Escape') window.closeEmailModal();
 });
@@ -1438,7 +1433,7 @@ function registerNewUser(fullName, regNo, email, password, role, photo){
     });
     setUsers(users);
     return { success:true, message: role === 'trainer'
-        ? `Trainer account created. Trainers sign in using the institutional access code ${TRAINER_PASSWORD}.`
+        ? "Trainer account created successfully. Please contact the ICT department for your access code."
         : "Account created successfully! Please login." };
 }
 function resetUserPassword(email, newPass, confirm){
@@ -1448,7 +1443,7 @@ function resetUserPassword(email, newPass, confirm){
     const idx = users.findIndex(u => u.email.toLowerCase() === email.toLowerCase());
     if(idx === -1) return { success:false, message:"Email not found." };
     if(users[idx].role === 'examoffice' || users[idx].role === 'trainer')
-        return { success:false, message:`Staff accounts use the fixed institutional access code ${TRAINER_PASSWORD}.` };
+        return { success:false, message:"Staff accounts cannot be reset here. Please contact the ICT department." };
     users[idx].password = newPass; setUsers(users);
     return { success:true, message:"Password reset successful! Please login." };
 }
@@ -1620,7 +1615,6 @@ function submitNetworkExam(regNo){
     if(updated.attemptsUsed >= 3) disableExamArea('netExamArea','submitNetExam');
     if(currentUser) renderProfileStrip(currentUser);
 
-    /* ── 📧 TRIGGER EMAIL NOTIFICATION ── */
     if(currentUser){
         setTimeout(() => {
             sendExamEmailNotification(
@@ -1633,9 +1627,6 @@ function submitNetworkExam(regNo){
     }
 }
 
-/* ═══════════════════════════════════════════════════════════
-   RENDER WEBSITE EXAM (Multiple Choice)
-   ═══════════════════════════════════════════════════════════ */
 function renderWebsiteExam(regNo){
     const container = document.getElementById('webExamArea');
     if(!container) return;
@@ -1678,7 +1669,6 @@ function submitWebsiteExam(regNo){
     if(updated.attemptsUsed >= 3) disableExamArea('webExamArea','submitWebExam');
     if(currentUser) renderProfileStrip(currentUser);
 
-    /* ── 📧 TRIGGER EMAIL NOTIFICATION ── */
     if(currentUser){
         setTimeout(() => {
             sendExamEmailNotification(
@@ -2127,7 +2117,6 @@ document.addEventListener('DOMContentLoaded', function(){
     });
     document.getElementById('logoutMainBtn').addEventListener('click', logout);
 
-    /* KyU-style panel switching */
     document.getElementById('goToResetBtn')?.addEventListener('click', () => switchAuthPanel('resetPanel'));
     document.getElementById('goToRegisterLink')?.addEventListener('click', (e) => { e.preventDefault(); switchAuthPanel('registerPanel'); });
     document.getElementById('goToLoginFromReg')?.addEventListener('click', (e) => { e.preventDefault(); switchAuthPanel('loginPanel'); });
