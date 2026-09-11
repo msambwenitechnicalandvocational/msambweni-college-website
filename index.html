@@ -6,610 +6,263 @@
 <title>MSAMBWENI TECHNICAL AND VOCATIONAL COLLEGE | ICT WEB BY MR SAMSON</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
-/* ─── RESET & BASE ─── */
 *{margin:0;padding:0;box-sizing:border-box;}
-body{
-    font-family:'Inter',sans-serif;
-    background:linear-gradient(135deg,#e8f5e9 0%,#e0f2f1 100%);
-    color:#1b3b4f;
-    min-height:100vh;
-}
-
-/* ─── COLOR STRIPES ─── */
+body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#e8f5e9 0%,#e0f2f1 100%);color:#1b3b4f;min-height:100vh;}
 .color-stripes{position:fixed;top:0;left:0;width:100%;height:6px;display:flex;z-index:1200;}
 .stripe{flex:1;height:100%;}
-.stripe1{background:#2ecc71;}
-.stripe2{background:#f1c40f;}
-.stripe3{background:#3498db;}
-.stripe4{background:#27ae60;}
-.stripe5{background:#f39c12;}
-
-/* ═══════════ TOP UTILITY BAR ═══════════ */
-.topbar{
-    background:#062b22;
-    color:#cfe9df;
-    font-size:.78rem;
-    margin-top:6px;
-    border-bottom:1px solid rgba(241,196,15,.25);
-}
-.topbar-inner{
-    max-width:1400px;margin:0 auto;
-    padding:7px 1.5rem;
-    display:flex;justify-content:space-between;align-items:center;
-    gap:1rem;flex-wrap:wrap;
-}
+.stripe1{background:#2ecc71;}.stripe2{background:#f1c40f;}.stripe3{background:#3498db;}
+.stripe4{background:#27ae60;}.stripe5{background:#f39c12;}
+.topbar{background:#062b22;color:#cfe9df;font-size:.78rem;margin-top:6px;border-bottom:1px solid rgba(241,196,15,.25);}
+.topbar-inner{max-width:1400px;margin:0 auto;padding:7px 1.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;}
 .topbar-left{display:flex;gap:1.4rem;flex-wrap:wrap;align-items:center;}
 .topbar-left span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
 .topbar-left span i{color:#f1c40f;}
 .topbar-right{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;}
-.top-link{
-    color:#cfe9df;text-decoration:none;padding:4px 14px;border-radius:30px;
-    background:rgba(255,255,255,.08);transition:.25s;font-weight:600;
-    display:inline-flex;align-items:center;gap:6px;
-}
+.top-link{color:#cfe9df;text-decoration:none;padding:4px 14px;border-radius:30px;background:rgba(255,255,255,.08);transition:.25s;font-weight:600;display:inline-flex;align-items:center;gap:6px;}
 .top-link:hover{background:#f1c40f;color:#062b22;transform:translateY(-1px);}
-.yt-btn{
-    background:linear-gradient(135deg,#ff0000,#c40000);color:#fff;text-decoration:none;
-    padding:4px 16px;border-radius:30px;font-weight:700;
-    display:inline-flex;align-items:center;gap:7px;transition:.25s;
-    box-shadow:0 3px 12px rgba(255,0,0,.35);
-}
+.yt-btn{background:linear-gradient(135deg,#ff0000,#c40000);color:#fff;text-decoration:none;padding:4px 16px;border-radius:30px;font-weight:700;display:inline-flex;align-items:center;gap:7px;transition:.25s;box-shadow:0 3px 12px rgba(255,0,0,.35);}
 .yt-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 6px 20px rgba(255,0,0,.5);}
 .yt-btn i{font-size:1rem;}
-
-/* live clock in topbar */
-.topbar-clock{
-    display:inline-flex;align-items:center;gap:7px;
-    background:rgba(241,196,15,.13);padding:4px 14px;border-radius:30px;
-    color:#f1c40f;font-weight:800;font-family:'Courier New',monospace;
-    letter-spacing:1.2px;font-size:.8rem;
-    border:1px solid rgba(241,196,15,.3);
-}
-.topbar-clock i{font-size:.85rem;}
-.topbar-clock .live-dot{
-    width:7px;height:7px;background:#2ecc71;border-radius:50%;
-    animation:pulse-dot 1.5s ease-in-out infinite;
-}
-
-/* ═══════════ MODERN SCHOOL BANNER ═══════════ */
-.school-banner{
-    position:relative;
-    background:linear-gradient(135deg,#0a3b2f 0%,#1b6d5e 50%,#0e4d3e 100%);
-    padding:1rem 2rem 1.1rem;
-    display:flex;align-items:center;justify-content:space-between;
-    flex-wrap:wrap;gap:1rem;
-    box-shadow:0 12px 28px rgba(0,0,0,.18);
-    border-bottom:4px solid #f1c40f;
-    overflow:hidden;
-}
-.school-banner::before{
-    content:'';position:absolute;top:-50%;left:-20%;width:140%;height:200%;
-    background:radial-gradient(ellipse at 30% 50%,rgba(46,204,113,.10) 0%,transparent 70%);
-    pointer-events:none;
-}
-.school-banner::after{
-    content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
-    background:linear-gradient(90deg,#2ecc71,#f1c40f,#3498db,#27ae60,#f39c12);
-    background-size:300% 100%;animation:shimmer 4s ease-in-out infinite;
-}
+.topbar-clock{display:inline-flex;align-items:center;gap:7px;background:rgba(241,196,15,.13);padding:4px 14px;border-radius:30px;color:#f1c40f;font-weight:800;font-family:'Courier New',monospace;letter-spacing:1.2px;font-size:.8rem;border:1px solid rgba(241,196,15,.3);}
+.topbar-clock .live-dot{width:7px;height:7px;background:#2ecc71;border-radius:50%;animation:pulse-dot 1.5s ease-in-out infinite;}
+.school-banner{position:relative;background:linear-gradient(135deg,#0a3b2f 0%,#1b6d5e 50%,#0e4d3e 100%);padding:1rem 2rem 1.1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;box-shadow:0 12px 28px rgba(0,0,0,.18);border-bottom:4px solid #f1c40f;overflow:hidden;}
+.school-banner::before{content:'';position:absolute;top:-50%;left:-20%;width:140%;height:200%;background:radial-gradient(ellipse at 30% 50%,rgba(46,204,113,.10) 0%,transparent 70%);pointer-events:none;}
+.school-banner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#2ecc71,#f1c40f,#3498db,#27ae60,#f39c12);background-size:300% 100%;animation:shimmer 4s ease-in-out infinite;}
 @keyframes shimmer{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
-
 .banner-left,.banner-right{display:flex;align-items:center;gap:14px;z-index:2;flex-shrink:0;}
 .banner-center{text-align:center;z-index:2;flex:1;min-width:240px;padding:0 1rem;}
-.banner-center h1{
-    color:#fff;font-size:1.55rem;font-weight:900;letter-spacing:.5px;
-    line-height:1.2;text-shadow:0 2px 12px rgba(0,0,0,.3);
-}
+.banner-center h1{color:#fff;font-size:1.55rem;font-weight:900;letter-spacing:.5px;line-height:1.2;text-shadow:0 2px 12px rgba(0,0,0,.3);}
 .banner-center h1 .highlight{color:#f1c40f;}
-.banner-motto{
-    color:#a9e6cf;font-size:.78rem;font-weight:600;font-style:italic;
-    margin-top:5px;letter-spacing:.4px;
-}
+.banner-motto{color:#a9e6cf;font-size:.78rem;font-weight:600;font-style:italic;margin-top:5px;letter-spacing:.4px;}
 .banner-motto i{color:#f1c40f;margin-right:4px;}
-.banner-center .sub-title{
-    color:#b8e0d4;font-size:.82rem;font-weight:500;margin-top:6px;letter-spacing:.3px;
-    display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
-}
+.banner-center .sub-title{color:#b8e0d4;font-size:.82rem;font-weight:500;margin-top:6px;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;}
 .banner-center .sub-title i{color:#f1c40f;}
 .sep{opacity:.4;margin:0 4px;}
-
 .banner-badges{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-top:9px;}
-.badge-pill{
-    background:rgba(255,255,255,.10);
-    border:1px solid rgba(241,196,15,.35);
-    color:#e8f8f2;font-size:.63rem;padding:3px 13px;border-radius:30px;
-    font-weight:700;letter-spacing:.4px;backdrop-filter:blur(4px);
-    text-transform:uppercase;white-space:nowrap;
-}
+.badge-pill{background:rgba(255,255,255,.10);border:1px solid rgba(241,196,15,.35);color:#e8f8f2;font-size:.63rem;padding:3px 13px;border-radius:30px;font-weight:700;letter-spacing:.4px;backdrop-filter:blur(4px);text-transform:uppercase;white-space:nowrap;}
 .badge-pill i{color:#f1c40f;margin-right:5px;}
-
-.banner-center .po-box{
-    color:#f9e79f;font-size:.72rem;font-weight:500;margin-top:9px;letter-spacing:.4px;
-    background:rgba(0,0,0,.22);display:inline-block;padding:3px 18px;
-    border-radius:30px;backdrop-filter:blur(4px);
-}
+.banner-center .po-box{color:#f9e79f;font-size:.72rem;font-weight:500;margin-top:9px;letter-spacing:.4px;background:rgba(0,0,0,.22);display:inline-block;padding:3px 18px;border-radius:30px;backdrop-filter:blur(4px);}
 .banner-center .po-box i{margin-right:5px;color:#f1c40f;}
-
-/* logos */
-.logo-img{
-    height:66px;width:auto;max-width:140px;object-fit:contain;border-radius:14px;
-    transition:transform .3s ease;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2));
-    background:rgba(255,255,255,.06);padding:3px;
-}
+.logo-img{height:66px;width:auto;max-width:140px;object-fit:contain;border-radius:14px;transition:transform .3s ease;filter:drop-shadow(0 4px 8px rgba(0,0,0,.2));background:rgba(255,255,255,.06);padding:3px;}
 .logo-img:hover{transform:scale(1.06);}
-.logo-img-placeholder{
-    width:66px;height:66px;background:rgba(255,255,255,.92);border-radius:50%;
-    display:flex;align-items:center;justify-content:center;font-size:1.9rem;
-    color:#1b6d5e;box-shadow:0 4px 12px rgba(0,0,0,.15);
-}
-.logo-label{
-    color:rgba(255,255,255,.72);font-size:.55rem;font-weight:600;
-    letter-spacing:.6px;text-transform:uppercase;text-align:center;
-}
+.logo-img-placeholder{width:66px;height:66px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.9rem;color:#1b6d5e;box-shadow:0 4px 12px rgba(0,0,0,.15);}
+.logo-label{color:rgba(255,255,255,.72);font-size:.55rem;font-weight:600;letter-spacing:.6px;text-transform:uppercase;text-align:center;}
 .logo-side-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;}
-
-/* banner action buttons */
 .banner-actions{display:flex;flex-direction:column;gap:8px;align-items:stretch;}
-.map-btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:8px;
-    background:linear-gradient(135deg,#f1c40f,#f39c12);
-    color:#0a3b2f;padding:8px 20px;border-radius:60px;font-weight:800;
-    font-size:.78rem;text-decoration:none;transition:all .3s ease;
-    box-shadow:0 4px 15px rgba(241,196,15,.35);
-    border:2px solid rgba(255,255,255,.15);letter-spacing:.3px;white-space:nowrap;
-}
+.map-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#f1c40f,#f39c12);color:#0a3b2f;padding:8px 20px;border-radius:60px;font-weight:800;font-size:.78rem;text-decoration:none;transition:all .3s ease;box-shadow:0 4px 15px rgba(241,196,15,.35);border:2px solid rgba(255,255,255,.15);letter-spacing:.3px;white-space:nowrap;}
 .map-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 8px 30px rgba(241,196,15,.5);}
 .map-btn.yt{background:linear-gradient(135deg,#ff0000,#c40000);color:#fff;box-shadow:0 4px 15px rgba(255,0,0,.35);}
 .map-btn.yt:hover{box-shadow:0 8px 30px rgba(255,0,0,.5);}
 .map-btn i{font-size:1rem;}
-.pulse-dot{
-    display:inline-block;width:8px;height:8px;background:#e74c3c;border-radius:50%;
-    animation:pulse-dot 1.5s ease-in-out infinite;
-}
+.pulse-dot{display:inline-block;width:8px;height:8px;background:#e74c3c;border-radius:50%;animation:pulse-dot 1.5s ease-in-out infinite;}
 @keyframes pulse-dot{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.6);opacity:.6;}}
-
-/* ═══════════ TICKER ═══════════ */
-.ticker{
-    display:flex;align-items:center;background:#fff8e1;
-    border-bottom:2px solid #f1c40f;overflow:hidden;position:relative;z-index:5;
-}
-.ticker-label{
-    background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;
-    font-size:.68rem;font-weight:900;padding:8px 16px;letter-spacing:1.2px;
-    white-space:nowrap;display:flex;align-items:center;gap:6px;
-}
+.ticker{display:flex;align-items:center;background:#fff8e1;border-bottom:2px solid #f1c40f;overflow:hidden;position:relative;z-index:5;}
+.ticker-label{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;font-size:.68rem;font-weight:900;padding:8px 16px;letter-spacing:1.2px;white-space:nowrap;display:flex;align-items:center;gap:6px;}
 .ticker-track{flex:1;overflow:hidden;white-space:nowrap;}
-.ticker-track span{
-    display:inline-block;padding-left:100%;animation:ticker 30s linear infinite;
-    font-size:.78rem;font-weight:600;color:#7a5c00;
-}
+.ticker-track span{display:inline-block;padding-left:100%;animation:ticker 30s linear infinite;font-size:.78rem;font-weight:600;color:#7a5c00;}
 .ticker-track span:hover{animation-play-state:paused;}
 @keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-100%);}}
-
-/* ═══════════ CAMPUS PHOTO CAROUSEL ═══════════ */
-.campus-showcase{
-    max-width:1400px;margin:1.6rem auto 0;padding:0 1.8rem;
-}
+.campus-showcase{max-width:1400px;margin:1.6rem auto 0;padding:0 1.8rem;}
 .showcase-head{text-align:center;margin-bottom:1rem;}
-.showcase-head h2{
-    color:#0a3b2f;font-size:1.3rem;font-weight:900;
-    display:inline-flex;align-items:center;gap:10px;
-}
+.showcase-head h2{color:#0a3b2f;font-size:1.3rem;font-weight:900;display:inline-flex;align-items:center;gap:10px;}
 .showcase-head h2 i{color:#f1c40f;}
 .showcase-head p{color:#5a7a6e;font-size:.82rem;margin-top:5px;}
-
-.carousel{
-    position:relative;border-radius:28px;overflow:hidden;
-    box-shadow:0 22px 45px -18px rgba(0,0,0,.3);
-    background:#0a3b2f;height:440px;
-    border:3px solid #fff;
-}
-.carousel::after{
-    content:'';position:absolute;bottom:0;left:0;right:0;height:4px;z-index:6;
-    background:linear-gradient(90deg,#2ecc71,#f1c40f,#3498db,#27ae60,#f39c12);
-    background-size:300% 100%;animation:shimmer 4s ease-in-out infinite;
-}
-.carousel-track{
-    display:flex;height:100%;
-    transition:transform .75s cubic-bezier(.65,.05,.36,1);
-}
-.carousel-slide{
-    min-width:100%;height:100%;position:relative;
-}
-.carousel-slide img{
-    width:100%;height:100%;object-fit:cover;display:block;
-}
-.carousel-slide .slide-caption{
-    position:absolute;left:0;right:0;bottom:0;
-    background:linear-gradient(to top,rgba(0,0,0,.82) 0%,rgba(0,0,0,.35) 55%,transparent 100%);
-    color:#fff;padding:3rem 1.6rem 1.4rem;font-weight:700;font-size:1.05rem;
-    letter-spacing:.4px;text-shadow:0 2px 8px rgba(0,0,0,.5);
-    display:flex;align-items:center;gap:10px;
-}
+.carousel{position:relative;border-radius:28px;overflow:hidden;box-shadow:0 22px 45px -18px rgba(0,0,0,.3);background:#0a3b2f;height:440px;border:3px solid #fff;}
+.carousel::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;z-index:6;background:linear-gradient(90deg,#2ecc71,#f1c40f,#3498db,#27ae60,#f39c12);background-size:300% 100%;animation:shimmer 4s ease-in-out infinite;}
+.carousel-track{display:flex;height:100%;transition:transform .75s cubic-bezier(.65,.05,.36,1);}
+.carousel-slide{min-width:100%;height:100%;position:relative;}
+.carousel-slide img{width:100%;height:100%;object-fit:cover;display:block;}
+.carousel-slide .slide-caption{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(to top,rgba(0,0,0,.82) 0%,rgba(0,0,0,.35) 55%,transparent 100%);color:#fff;padding:3rem 1.6rem 1.4rem;font-weight:700;font-size:1.05rem;letter-spacing:.4px;text-shadow:0 2px 8px rgba(0,0,0,.5);display:flex;align-items:center;gap:10px;}
 .carousel-slide .slide-caption i{color:#f1c40f;font-size:1.1rem;}
-.carousel-arrow{
-    position:absolute;top:50%;transform:translateY(-50%);
-    background:rgba(255,255,255,.9);border:none;width:46px;height:46px;
-    border-radius:50%;cursor:pointer;font-size:1.05rem;color:#0a3b2f;
-    display:flex;align-items:center;justify-content:center;transition:.25s;z-index:5;
-    box-shadow:0 4px 14px rgba(0,0,0,.25);
-}
+.carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.9);border:none;width:46px;height:46px;border-radius:50%;cursor:pointer;font-size:1.05rem;color:#0a3b2f;display:flex;align-items:center;justify-content:center;transition:.25s;z-index:5;box-shadow:0 4px 14px rgba(0,0,0,.25);}
 .carousel-arrow:hover{background:#f1c40f;transform:translateY(-50%) scale(1.1);}
 .carousel-arrow.prev{left:16px;}
 .carousel-arrow.next{right:16px;}
-.carousel-dots{
-    position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
-    display:flex;gap:8px;z-index:6;
-}
-.carousel-dots .dot{
-    width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.55);
-    cursor:pointer;transition:.25s;border:none;padding:0;
-}
+.carousel-dots{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:6;}
+.carousel-dots .dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.55);cursor:pointer;transition:.25s;border:none;padding:0;}
 .carousel-dots .dot:hover{background:rgba(255,255,255,.9);}
 .carousel-dots .dot.active{background:#f1c40f;width:30px;border-radius:10px;}
-
-/* ═══════════ RESPONSIVE BANNER ═══════════ */
-@media (max-width:1100px){
-    .banner-center h1{font-size:1.25rem;}
-    .logo-img{height:56px;}
-    .logo-img-placeholder{width:56px;height:56px;font-size:1.6rem;}
-}
+@media (max-width:1100px){.banner-center h1{font-size:1.25rem;}.logo-img{height:56px;}.logo-img-placeholder{width:56px;height:56px;font-size:1.6rem;}}
 @media (max-width:900px){
     .school-banner{padding:.9rem 1rem;flex-direction:column;gap:.6rem;align-items:center;}
     .banner-left,.banner-right{flex-shrink:1;justify-content:center;}
-    .banner-center h1{font-size:1.05rem;}
-    .banner-center .sub-title{font-size:.68rem;}
+    .banner-center h1{font-size:1.05rem;}.banner-center .sub-title{font-size:.68rem;}
     .banner-center .po-box{font-size:.62rem;padding:2px 12px;}
     .banner-badges .badge-pill{font-size:.55rem;padding:2px 10px;}
     .banner-actions{flex-direction:row;justify-content:center;}
     .map-btn{padding:6px 14px;font-size:.68rem;}
-    .logo-img{height:44px;max-width:95px;}
-    .logo-img-placeholder{width:44px;height:44px;font-size:1.3rem;}
-    .logo-label{font-size:.48rem;}
-    .topbar-inner{justify-content:center;text-align:center;}
+    .logo-img{height:44px;max-width:95px;}.logo-img-placeholder{width:44px;height:44px;font-size:1.3rem;}
+    .logo-label{font-size:.48rem;}.topbar-inner{justify-content:center;text-align:center;}
     .topbar-left{gap:.9rem;justify-content:center;}
-    .carousel{height:300px;}
-    .campus-showcase{padding:0 1rem;}
+    .carousel{height:300px;}.campus-showcase{padding:0 1rem;}
 }
 @media (max-width:520px){
-    .banner-center h1{font-size:.85rem;}
-    .banner-motto{font-size:.62rem;}
+    .banner-center h1{font-size:.85rem;}.banner-motto{font-size:.62rem;}
     .banner-center .sub-title{font-size:.58rem;gap:4px;}
     .badge-pill{font-size:.5rem;padding:2px 8px;}
-    .logo-img{height:36px;max-width:72px;}
-    .logo-img-placeholder{width:36px;height:36px;font-size:1.1rem;}
+    .logo-img{height:36px;max-width:72px;}.logo-img-placeholder{width:36px;height:36px;font-size:1.1rem;}
     .map-btn{padding:5px 11px;font-size:.6rem;gap:5px;}
-    .topbar-left span{font-size:.68rem;}
-    .topbar-left span.hide-sm{display:none;}
+    .topbar-left span{font-size:.68rem;}.topbar-left span.hide-sm{display:none;}
     .carousel{height:220px;border-radius:20px;}
     .carousel-slide .slide-caption{font-size:.82rem;padding:2rem 1rem 1rem;}
     .carousel-arrow{width:36px;height:36px;font-size:.85rem;}
     .topbar-clock{font-size:.7rem;padding:3px 10px;}
 }
-
-/* ═══════════ MAIN / AUTH ═══════════ */
 .main-wrapper{max-width:1400px;margin:2rem auto;padding:0 1.8rem;}
-.glass-auth{
-    background:#fff;border-radius:42px;max-width:540px;margin:0 auto 2rem;padding:2rem;
-    box-shadow:0 25px 40px -15px rgba(0,0,0,.2);
-}
+.glass-auth{background:#fff;border-radius:42px;max-width:540px;margin:0 auto 2rem;padding:2rem;box-shadow:0 25px 40px -15px rgba(0,0,0,.2);}
 .auth-tabs{display:flex;gap:.6rem;margin-bottom:1.8rem;border-bottom:2px solid #c8e6df;flex-wrap:wrap;}
-.auth-tab{
-    background:none;border:none;padding:8px 18px;font-weight:600;border-radius:40px;
-    cursor:pointer;color:#2c7a5e;transition:.2s;font-size:.85rem;
-}
+.auth-tab{background:none;border:none;padding:8px 18px;font-weight:600;border-radius:40px;cursor:pointer;color:#2c7a5e;transition:.2s;font-size:.85rem;}
 .auth-tab.active{background:#2ecc71;color:#fff;}
 .auth-tab:hover:not(.active){background:#e8f5e9;}
 .auth-panel{display:none;animation:fadeIn .25s;}
 .auth-panel.active-panel{display:block;}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
-
 .input-group{margin-bottom:1.2rem;}
-.input-group input,.input-group select{
-    width:100%;padding:12px 18px;border:1.5px solid #cde6dc;border-radius:60px;
-    font-size:.95rem;background:#fafffe;transition:.2s;font-family:inherit;
-}
-.input-group input:focus,.input-group select:focus{
-    outline:none;border-color:#2ecc71;box-shadow:0 0 0 4px rgba(46,204,113,.15);
-}
+.input-group input,.input-group select{width:100%;padding:12px 18px;border:1.5px solid #cde6dc;border-radius:60px;font-size:.95rem;background:#fafffe;transition:.2s;font-family:inherit;}
+.input-group input:focus,.input-group select:focus{outline:none;border-color:#2ecc71;box-shadow:0 0 0 4px rgba(46,204,113,.15);}
 .input-group label{font-weight:600;font-size:.85rem;display:block;margin-bottom:.3rem;color:#0a3b2f;}
-
-.photo-picker{
-    display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
-    background:#f6fbf9;border:1.5px dashed #b8d8cd;border-radius:24px;
-    padding:.9rem 1.1rem;margin-bottom:1.2rem;
-}
-.photo-preview{
-    width:74px;height:74px;border-radius:50%;object-fit:cover;
-    border:3px solid #2ecc71;background:#e8f5e9;flex-shrink:0;
-    display:flex;align-items:center;justify-content:center;
-    color:#7fb3a2;font-size:1.6rem;overflow:hidden;
-}
+.photo-picker{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;background:#f6fbf9;border:1.5px dashed #b8d8cd;border-radius:24px;padding:.9rem 1.1rem;margin-bottom:1.2rem;}
+.photo-preview{width:74px;height:74px;border-radius:50%;object-fit:cover;border:3px solid #2ecc71;background:#e8f5e9;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#7fb3a2;font-size:1.6rem;overflow:hidden;}
 .photo-preview img{width:100%;height:100%;object-fit:cover;}
 .photo-picker .pp-text{flex:1;min-width:150px;}
 .photo-picker .pp-text strong{display:block;font-size:.85rem;color:#0a3b2f;}
 .photo-picker .pp-text small{font-size:.7rem;color:#5a7a6e;}
-
-.btn-primary{
-    background:linear-gradient(95deg,#2ecc71,#27ae60);width:100%;padding:12px;
-    border-radius:60px;font-weight:bold;border:none;color:#fff;cursor:pointer;
-    transition:.2s;font-size:1rem;font-family:inherit;
-}
+.btn-primary{background:linear-gradient(95deg,#2ecc71,#27ae60);width:100%;padding:12px;border-radius:60px;font-weight:bold;border:none;color:#fff;cursor:pointer;transition:.2s;font-size:1rem;font-family:inherit;}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(46,204,113,.3);}
-.btn-secondary{
-    background:#e8f5e9;color:#0a3b2f;padding:10px 24px;border-radius:60px;
-    border:none;font-weight:600;cursor:pointer;transition:.2s;font-family:inherit;
-    display:inline-flex;align-items:center;gap:7px;justify-content:center;
-}
+.btn-secondary{background:#e8f5e9;color:#0a3b2f;padding:10px 24px;border-radius:60px;border:none;font-weight:600;cursor:pointer;transition:.2s;font-family:inherit;display:inline-flex;align-items:center;gap:7px;justify-content:center;}
 .btn-secondary:hover{background:#c8e6df;}
-.btn-danger{
-    background:#e74c3c;color:#fff;padding:8px 18px;border-radius:60px;border:none;
-    font-weight:600;cursor:pointer;transition:.2s;font-family:inherit;
-    display:inline-flex;align-items:center;gap:6px;
-}
+.btn-danger{background:#e74c3c;color:#fff;padding:8px 18px;border-radius:60px;border:none;font-weight:600;cursor:pointer;transition:.2s;font-family:inherit;display:inline-flex;align-items:center;gap:6px;}
 .btn-danger:hover{background:#c0392b;}
 .btn-sm{padding:6px 16px;font-size:.78rem;}
-.file-btn{
-    background:linear-gradient(135deg,#3498db,#2980b9);color:#fff;padding:8px 18px;
-    border-radius:60px;font-weight:700;font-size:.78rem;cursor:pointer;
-    display:inline-flex;align-items:center;gap:7px;transition:.2s;border:none;
-    font-family:inherit;
-}
+.file-btn{background:linear-gradient(135deg,#3498db,#2980b9);color:#fff;padding:8px 18px;border-radius:60px;font-weight:700;font-size:.78rem;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:.2s;border:none;font-family:inherit;}
 .file-btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(52,152,219,.35);}
-
 .message-box{border-radius:40px;padding:10px;margin-top:1rem;text-align:center;font-size:.85rem;display:none;}
 .error-msg{background:#fee2e2;color:#c0392b;}
 .success-msg{background:#e0f5e8;color:#1e7e5c;}
 .info-msg{background:#e0f0ff;color:#1c5f9e;}
-
-/* ═══════════ DASHBOARD ═══════════ */
 .dashboard-modern{display:none;animation:fadeIn .4s;}
 .dashboard-modern.active-dash{display:block;}
-
-.clock-mega{
-    background:linear-gradient(115deg,#0e4d3e,#1b6d5e);border-radius:32px;
-    padding:1.2rem;text-align:center;margin-bottom:1.5rem;position:relative;
-    overflow:hidden;
-}
-.clock-mega::after{
-    content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
-    background:linear-gradient(90deg,#2ecc71,#f1c40f,#3498db,#27ae60,#f39c12);
-    background-size:300% 100%;animation:shimmer 4s ease-in-out infinite;
-}
-.big-clock{
-    font-family:monospace;font-size:4rem;font-weight:800;background:#02261e;
-    display:inline-block;padding:.3rem 2rem;border-radius:70px;color:#f1c40f;
-    letter-spacing:4px;
-}
+.clock-mega{background:linear-gradient(115deg,#0e4d3e,#1b6d5e);border-radius:32px;padding:1.2rem;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden;}
+.clock-mega::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#2ecc71,#f1c40f,#3498db,#27ae60,#f39c12);background-size:300% 100%;animation:shimmer 4s ease-in-out infinite;}
+.big-clock{font-family:monospace;font-size:4rem;font-weight:800;background:#02261e;display:inline-block;padding:.3rem 2rem;border-radius:70px;color:#f1c40f;letter-spacing:4px;}
 .date-large{color:#f9e79f;margin-top:8px;font-size:1.1rem;}
-.logout-top-btn{
-    position:absolute;right:20px;top:20px;background:#f1c40f;border:none;
-    padding:8px 24px;border-radius:40px;font-weight:bold;cursor:pointer;
-    transition:.2s;font-family:inherit;color:#0a3b2f;z-index:3;
-}
+.logout-top-btn{position:absolute;right:20px;top:20px;background:#f1c40f;border:none;padding:8px 24px;border-radius:40px;font-weight:bold;cursor:pointer;transition:.2s;font-family:inherit;color:#0a3b2f;z-index:3;}
 .logout-top-btn:hover{transform:scale(1.04);}
 .user-welcome{color:#fff;font-size:1.1rem;margin-top:6px;}
 .user-welcome span{color:#f1c40f;font-weight:700;}
-
-/* PROFILE STRIP */
-.profile-strip{
-    display:flex;align-items:center;gap:1.2rem;background:#fff;border-radius:28px;
-    padding:1rem 1.4rem;margin-bottom:1.6rem;box-shadow:0 8px 20px rgba(0,0,0,.05);
-    flex-wrap:wrap;border-left:6px solid #2ecc71;
-}
-.avatar-xl{
-    width:88px;height:88px;border-radius:50%;object-fit:cover;border:4px solid #f1c40f;
-    background:linear-gradient(135deg,#2ecc71,#1b6d5e);display:flex;align-items:center;
-    justify-content:center;color:#fff;font-weight:900;font-size:1.8rem;flex-shrink:0;
-    overflow:hidden;box-shadow:0 6px 16px rgba(0,0,0,.15);
-}
+.profile-strip{display:flex;align-items:center;gap:1.2rem;background:#fff;border-radius:28px;padding:1rem 1.4rem;margin-bottom:1.6rem;box-shadow:0 8px 20px rgba(0,0,0,.05);flex-wrap:wrap;border-left:6px solid #2ecc71;}
+.avatar-xl{width:88px;height:88px;border-radius:50%;object-fit:cover;border:4px solid #f1c40f;background:linear-gradient(135deg,#2ecc71,#1b6d5e);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.8rem;flex-shrink:0;overflow:hidden;box-shadow:0 6px 16px rgba(0,0,0,.15);}
 .avatar-xl img{width:100%;height:100%;object-fit:cover;}
 .profile-info{flex:1;min-width:180px;}
 .profile-info h3{color:#0a3b2f;font-size:1.15rem;font-weight:800;}
 .profile-info p{color:#5a7a6e;font-size:.82rem;margin-top:3px;}
-.profile-info .chip{
-    display:inline-block;background:#e8f5e9;color:#1b6d5e;font-size:.7rem;
-    font-weight:700;padding:3px 12px;border-radius:30px;margin-top:6px;margin-right:6px;
-}
+.profile-info .chip{display:inline-block;background:#e8f5e9;color:#1b6d5e;font-size:.7rem;font-weight:700;padding:3px 12px;border-radius:30px;margin-top:6px;margin-right:6px;}
 .profile-info .chip.gold{background:#fff4d6;color:#8a6100;}
-
-/* avatars in tables */
-.avatar-sm{
-    width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #cde6dc;
-    background:#e8f5e9;display:inline-flex;align-items:center;justify-content:center;
-    font-weight:800;font-size:.72rem;color:#1b6d5e;vertical-align:middle;overflow:hidden;
-    flex-shrink:0;
-}
+.avatar-sm{width:34px;height:34px;border-radius:50%;object-fit:cover;border:2px solid #cde6dc;background:#e8f5e9;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:.72rem;color:#1b6d5e;vertical-align:middle;overflow:hidden;flex-shrink:0;}
 .avatar-sm img{width:100%;height:100%;object-fit:cover;}
 .user-cell{display:flex;align-items:center;gap:9px;}
-
-/* module nav */
-.module-nav{
-    display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:2rem;background:#fff;
-    padding:.8rem 1.5rem;border-radius:60px;box-shadow:0 4px 12px rgba(0,0,0,.04);
-}
-.module-nav .nav-item{
-    background:none;border:none;padding:8px 22px;border-radius:40px;font-weight:600;
-    cursor:pointer;color:#1b3b4f;transition:.2s;font-size:.9rem;font-family:inherit;
-}
+.module-nav{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:2rem;background:#fff;padding:.8rem 1.5rem;border-radius:60px;box-shadow:0 4px 12px rgba(0,0,0,.04);}
+.module-nav .nav-item{background:none;border:none;padding:8px 22px;border-radius:40px;font-weight:600;cursor:pointer;color:#1b3b4f;transition:.2s;font-size:.9rem;font-family:inherit;}
 .module-nav .nav-item.active-nav{background:#2ecc71;color:#fff;}
 .module-nav .nav-item:hover:not(.active-nav){background:#e8f5e9;}
-
 .module-panel{display:none;animation:fadeIn .3s;}
 .module-panel.active-panel{display:block;}
-
 .info-row{display:grid;grid-template-columns:1fr 1fr;gap:1.8rem;margin-bottom:2rem;}
-.announce-card,.sports-card{
-    background:#fff;border-radius:28px;padding:1.2rem 1.5rem;
-    box-shadow:0 10px 20px rgba(0,0,0,.05);border-left:6px solid #f1c40f;
-}
+.announce-card,.sports-card{background:#fff;border-radius:28px;padding:1.2rem 1.5rem;box-shadow:0 10px 20px rgba(0,0,0,.05);border-left:6px solid #f1c40f;}
 .sports-card{border-left-color:#2ecc71;}
-.section-title{
-    font-weight:800;margin-bottom:1rem;display:flex;gap:8px;color:#0e4d3e;align-items:center;
-}
-.announce-list li,.sports-list li{
-    margin-bottom:12px;border-bottom:1px dashed #d0e6dd;padding-bottom:9px;list-style:none;
-}
+.section-title{font-weight:800;margin-bottom:1rem;display:flex;gap:8px;color:#0e4d3e;align-items:center;}
+.announce-list li,.sports-list li{margin-bottom:12px;border-bottom:1px dashed #d0e6dd;padding-bottom:9px;list-style:none;}
 .announce-list li:last-child,.sports-list li:last-child{border-bottom:none;}
-.announce-thumb{
-    width:100%;max-height:150px;object-fit:cover;border-radius:14px;margin-top:8px;
-}
-
-/* exams */
+.announce-thumb{width:100%;max-height:150px;object-fit:cover;border-radius:14px;margin-top:8px;}
 .exams-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(450px,1fr));gap:2rem;margin:2rem 0;}
-.exam-card{
-    background:#fff;border-radius:32px;overflow:hidden;
-    box-shadow:0 12px 24px -10px rgba(0,0,0,.1);transition:.2s;
-}
+.exam-card{background:#fff;border-radius:32px;overflow:hidden;box-shadow:0 12px 24px -10px rgba(0,0,0,.1);transition:.2s;}
 .exam-card:hover{transform:translateY(-3px);box-shadow:0 18px 32px -12px rgba(0,0,0,.15);}
-.exam-header-color{
-    background:linear-gradient(115deg,#eefbe6,#ffffff);padding:1.2rem 1.5rem;
-    border-bottom:3px solid #f1c40f;text-align:center;
-}
-.exam-header-color h2{
-    color:#1b6d5e;display:flex;align-items:center;justify-content:center;gap:12px;font-size:1.25rem;
-}
+.exam-header-color{background:linear-gradient(115deg,#eefbe6,#ffffff);padding:1.2rem 1.5rem;border-bottom:3px solid #f1c40f;text-align:center;}
+.exam-header-color h2{color:#1b6d5e;display:flex;align-items:center;justify-content:center;gap:12px;font-size:1.25rem;}
 .exam-photo{width:100%;height:180px;object-fit:cover;background:#e0f2f1;}
 .exam-body{padding:1.5rem;}
-.attempt-badge{
-    background:#ffedd5;border-left:5px solid #b45309;padding:.8rem;border-radius:12px;
-    margin-bottom:1.2rem;display:flex;justify-content:space-between;flex-wrap:wrap;
-    font-weight:bold;gap:.5rem;font-size:.85rem;
-}
-.question-block{
-    background:#f9fafb;margin-bottom:1rem;padding:.8rem;border-radius:16px;
-    border-left:4px solid #b45309;
-}
+.attempt-badge{background:#ffedd5;border-left:5px solid #b45309;padding:.8rem;border-radius:12px;margin-bottom:1.2rem;display:flex;justify-content:space-between;flex-wrap:wrap;font-weight:bold;gap:.5rem;font-size:.85rem;}
+.question-block{background:#f9fafb;margin-bottom:1rem;padding:.8rem;border-radius:16px;border-left:4px solid #b45309;}
 .question-text{font-weight:700;margin-bottom:.5rem;font-size:.9rem;}
-.q-image{
-    width:100%;max-height:220px;object-fit:contain;border-radius:12px;
-    background:#fff;border:1px solid #e0ece6;margin:.5rem 0;display:block;
-}
+.q-image{width:100%;max-height:220px;object-fit:contain;border-radius:12px;background:#fff;border:1px solid #e0ece6;margin:.5rem 0;display:block;}
 .options{display:flex;flex-wrap:wrap;gap:1rem;margin:.5rem 0;}
 .options label{display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.85rem;}
-.btn-submit-exam{
-    background:#2ecc71;border:none;padding:9px 22px;border-radius:40px;font-weight:bold;
-    color:#fff;cursor:pointer;margin-top:10px;margin-right:10px;transition:.2s;
-    font-family:inherit;font-size:.85rem;
-}
+.btn-submit-exam{background:#2ecc71;border:none;padding:9px 22px;border-radius:40px;font-weight:bold;color:#fff;cursor:pointer;margin-top:10px;margin-right:10px;transition:.2s;font-family:inherit;font-size:.85rem;}
 .btn-submit-exam:hover{transform:translateY(-2px);}
 .btn-submit-exam:disabled{background:#95a5a6;cursor:not-allowed;transform:none;}
 .result-card{background:#e6f7e6;padding:1rem;border-radius:16px;margin-top:1rem;text-align:center;}
 .locked-message{background:#fee2e2;padding:1rem;border-radius:20px;text-align:center;color:#991b1b;font-weight:600;}
-
-/* tables */
-.table-wrap{
-    overflow-x:auto;background:#fff;border-radius:24px;padding:1.2rem;
-    box-shadow:0 8px 20px rgba(0,0,0,.04);margin-bottom:1.5rem;
-}
+.table-wrap{overflow-x:auto;background:#fff;border-radius:24px;padding:1.2rem;box-shadow:0 8px 20px rgba(0,0,0,.04);margin-bottom:1.5rem;}
 .table-wrap table{width:100%;border-collapse:collapse;font-size:.88rem;}
-.table-wrap th{
-    background:#0a3b2f;color:#fff;padding:10px 14px;text-align:left;
-    border-radius:12px 12px 0 0;font-size:.8rem;white-space:nowrap;
-}
+.table-wrap th{background:#0a3b2f;color:#fff;padding:10px 14px;text-align:left;border-radius:12px 12px 0 0;font-size:.8rem;white-space:nowrap;}
 .table-wrap td{padding:10px 14px;border-bottom:1px solid #e8f0ec;vertical-align:middle;}
 .table-wrap tr:hover td{background:#f6fbf9;}
 .badge-pass{background:#d1fae5;color:#065f46;padding:2px 12px;border-radius:40px;font-weight:600;font-size:.75rem;}
 .badge-fail{background:#fee2e2;color:#991b1b;padding:2px 12px;border-radius:40px;font-weight:600;font-size:.75rem;}
-
 .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1.2rem;margin-bottom:2rem;}
-.stat-card{
-    background:#fff;border-radius:24px;padding:1.2rem;text-align:center;
-    box-shadow:0 4px 12px rgba(0,0,0,.04);border-top:4px solid #2ecc71;
-}
+.stat-card{background:#fff;border-radius:24px;padding:1.2rem;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.04);border-top:4px solid #2ecc71;}
 .stat-card .number{font-size:2.2rem;font-weight:800;color:#0a3b2f;}
 .stat-card .label{font-size:.8rem;color:#5a7a6e;}
-
-/* forms */
-.form-card{
-    background:#fff;border-radius:28px;padding:1.5rem;
-    box-shadow:0 8px 20px rgba(0,0,0,.04);margin-bottom:1.5rem;
-}
+.form-card{background:#fff;border-radius:28px;padding:1.5rem;box-shadow:0 8px 20px rgba(0,0,0,.04);margin-bottom:1.5rem;}
 .form-card h4{color:#0a3b2f;font-weight:800;}
 .form-card .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
 .form-card .form-row .full{grid-column:1 / -1;}
-.form-card textarea{
-    width:100%;padding:12px;border:1.5px solid #cde6dc;border-radius:16px;
-    font-family:inherit;resize:vertical;
-}
-.form-card input,.form-card select{
-    width:100%;padding:10px 16px;border:1.5px solid #cde6dc;border-radius:60px;
-    font-family:inherit;background:#fafffe;
-}
-.form-card input:focus,.form-card select:focus,.form-card textarea:focus{
-    outline:none;border-color:#2ecc71;box-shadow:0 0 0 4px rgba(46,204,113,.12);
-}
-.field-label{
-    display:block;font-size:.78rem;font-weight:700;color:#0a3b2f;margin-bottom:.35rem;
-}
-
-/* question media manager */
+.form-card textarea{width:100%;padding:12px;border:1.5px solid #cde6dc;border-radius:16px;font-family:inherit;resize:vertical;}
+.form-card input,.form-card select{width:100%;padding:10px 16px;border:1.5px solid #cde6dc;border-radius:60px;font-family:inherit;background:#fafffe;}
+.form-card input:focus,.form-card select:focus,.form-card textarea:focus{outline:none;border-color:#2ecc71;box-shadow:0 0 0 4px rgba(46,204,113,.12);}
+.field-label{display:block;font-size:.78rem;font-weight:700;color:#0a3b2f;margin-bottom:.35rem;}
 .q-media-list{max-height:460px;overflow-y:auto;padding-right:6px;}
 .q-media-list::-webkit-scrollbar{width:8px;}
 .q-media-list::-webkit-scrollbar-thumb{background:#c8e6df;border-radius:10px;}
-.q-section-head{
-    background:#0a3b2f;color:#fff;padding:8px 16px;border-radius:30px;
-    font-size:.78rem;font-weight:800;margin:1rem 0 .8rem;display:inline-flex;
-    align-items:center;gap:8px;letter-spacing:.5px;
-}
-.q-media-row{
-    display:flex;align-items:center;gap:.8rem;padding:.6rem .8rem;border-radius:16px;
-    background:#f9fafb;margin-bottom:.6rem;border-left:4px solid #cde6dc;flex-wrap:wrap;
-}
+.q-section-head{background:#0a3b2f;color:#fff;padding:8px 16px;border-radius:30px;font-size:.78rem;font-weight:800;margin:1rem 0 .8rem;display:inline-flex;align-items:center;gap:8px;letter-spacing:.5px;}
+.q-media-row{display:flex;align-items:center;gap:.8rem;padding:.6rem .8rem;border-radius:16px;background:#f9fafb;margin-bottom:.6rem;border-left:4px solid #cde6dc;flex-wrap:wrap;}
 .q-media-text{flex:1;min-width:180px;font-size:.8rem;font-weight:600;color:#1b3b4f;}
 .q-media-text small{display:block;color:#7b9a8e;font-weight:500;font-size:.7rem;margin-top:2px;}
-.q-media-thumb{
-    width:56px;height:56px;border-radius:12px;object-fit:cover;border:2px solid #cde6dc;
-    background:#eef7f3;display:flex;align-items:center;justify-content:center;
-    color:#9dc0b3;font-size:1.1rem;flex-shrink:0;overflow:hidden;
-}
+.q-media-thumb{width:56px;height:56px;border-radius:12px;object-fit:cover;border:2px solid #cde6dc;background:#eef7f3;display:flex;align-items:center;justify-content:center;color:#9dc0b3;font-size:1.1rem;flex-shrink:0;overflow:hidden;}
 .q-media-thumb img{width:100%;height:100%;object-fit:cover;}
-
 .media-preview-row{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:.6rem;}
-.media-preview{
-    width:120px;height:70px;border-radius:14px;object-fit:cover;border:2px solid #cde6dc;
-    background:#f2faf7;display:flex;align-items:center;justify-content:center;
-    color:#9dc0b3;font-size:1.3rem;overflow:hidden;
-}
+.media-preview{width:120px;height:70px;border-radius:14px;object-fit:cover;border:2px solid #cde6dc;background:#f2faf7;display:flex;align-items:center;justify-content:center;color:#9dc0b3;font-size:1.3rem;overflow:hidden;}
 .media-preview img{width:100%;height:100%;object-fit:cover;}
-
-/* misc */
-.designer-credit{
-    text-align:center;margin:1rem 0;padding:.9rem;
-    background:linear-gradient(95deg,#f1c40f,#f39c12);border-radius:60px;
-    color:#0a3b2f;font-weight:bold;
-}
-.modern-footer{
-    background:#0a3b2f;border-radius:2rem 2rem 0 0;margin-top:2.5rem;
-    padding:2rem 2rem 1rem;color:#e0f2e9;
-}
+.notes-section{background:#fff;border-radius:28px;padding:1.4rem 1.5rem;box-shadow:0 10px 20px rgba(0,0,0,.05);border-left:6px solid #3498db;margin-bottom:2rem;}
+.notes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.2rem;margin-top:1rem;}
+.note-card{background:#fbfdfc;border-radius:22px;padding:1.1rem;box-shadow:0 4px 14px rgba(0,0,0,.05);border:1.5px solid #e0ece6;transition:.25s;display:flex;flex-direction:column;gap:.6rem;}
+.note-card:hover{transform:translateY(-4px);box-shadow:0 14px 28px -8px rgba(0,0,0,.15);border-color:#3498db;}
+.note-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#fff;background:linear-gradient(135deg,#3498db,#2980b9);flex-shrink:0;box-shadow:0 4px 12px rgba(52,152,219,.3);}
+.note-icon.pdf{background:linear-gradient(135deg,#e74c3c,#c0392b);box-shadow:0 4px 12px rgba(231,76,60,.3);}
+.note-icon.doc{background:linear-gradient(135deg,#2980b9,#1c5f9e);box-shadow:0 4px 12px rgba(41,128,185,.3);}
+.note-icon.ppt{background:linear-gradient(135deg,#e67e22,#d35400);box-shadow:0 4px 12px rgba(230,126,34,.3);}
+.note-icon.img{background:linear-gradient(135deg,#27ae60,#1e8449);box-shadow:0 4px 12px rgba(39,174,96,.3);}
+.note-icon.txt{background:linear-gradient(135deg,#7f8c8d,#566573);box-shadow:0 4px 12px rgba(127,140,141,.3);}
+.note-icon.zip{background:linear-gradient(135deg,#9b59b6,#8e44ad);box-shadow:0 4px 12px rgba(155,89,182,.3);}
+.note-card h5{color:#0a3b2f;font-weight:800;font-size:.95rem;line-height:1.3;}
+.note-card .note-sub{color:#3498db;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+.note-card .note-desc{color:#3b5a4e;font-size:.82rem;line-height:1.5;}
+.note-meta{display:flex;flex-wrap:wrap;gap:.4rem;font-size:.68rem;color:#7b9a8e;margin-top:.3rem;}
+.note-meta span{background:#f0f7f4;padding:3px 9px;border-radius:20px;font-weight:600;}
+.note-actions{display:flex;gap:.5rem;margin-top:auto;padding-top:.6rem;}
+.note-dl-btn{flex:1;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;text-decoration:none;padding:9px 14px;border-radius:40px;font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:.2s;border:none;cursor:pointer;font-family:inherit;}
+.note-dl-btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(231,76,60,.35);}
+.note-dl-btn i{font-size:.9rem;}
+.note-del-btn{background:#fee2e2;color:#c0392b;border:none;padding:9px 14px;border-radius:40px;font-weight:700;font-size:.78rem;cursor:pointer;transition:.2s;font-family:inherit;display:inline-flex;align-items:center;gap:5px;}
+.note-del-btn:hover{background:#e74c3c;color:#fff;}
+.note-empty{text-align:center;padding:2.5rem 1rem;color:#7b9a8e;font-size:.88rem;background:#f9fafb;border-radius:20px;border:2px dashed #cde6dc;margin-top:1rem;}
+.designer-credit{text-align:center;margin:1rem 0;padding:.9rem;background:linear-gradient(95deg,#f1c40f,#f39c12);border-radius:60px;color:#0a3b2f;font-weight:bold;}
+.modern-footer{background:#0a3b2f;border-radius:2rem 2rem 0 0;margin-top:2.5rem;padding:2rem 2rem 1rem;color:#e0f2e9;}
 .footer-flex{display:flex;justify-content:space-between;flex-wrap:wrap;gap:2rem;}
 .footer-flex h5{color:#f1c40f;font-size:.8rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:.7rem;}
 .footer-flex p,.footer-flex a{font-size:.82rem;color:#c9e6db;line-height:1.7;}
-.footer-logo{
-    width:70px;height:70px;object-fit:contain;border-radius:12px;
-    background:rgba(255,255,255,.08);padding:4px;margin-bottom:.6rem;
-    filter:drop-shadow(0 3px 8px rgba(0,0,0,.3));
-}
+.footer-logo{width:70px;height:70px;object-fit:contain;border-radius:12px;background:rgba(255,255,255,.08);padding:4px;margin-bottom:.6rem;filter:drop-shadow(0 3px 8px rgba(0,0,0,.3));}
 .social-icons{margin-top:.6rem;}
-.social-icons a{
-    background:rgba(255,255,255,.12);width:45px;height:45px;display:inline-flex;
-    align-items:center;justify-content:center;border-radius:50%;margin-right:12px;
-    color:#fff;font-size:1.3rem;transition:.2s;text-decoration:none;
-}
+.social-icons a{background:rgba(255,255,255,.12);width:45px;height:45px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;margin-right:12px;color:#fff;font-size:1.3rem;transition:.2s;text-decoration:none;}
 .social-icons a:hover{background:#f1c40f;color:#0a3b2f;transform:translateY(-4px);}
 .social-icons a.yt:hover{background:#ff0000;color:#fff;}
-.footer-bottom{
-    text-align:center;margin-top:1.8rem;padding-top:1rem;
-    border-top:1px solid #2c7a5e;font-size:.82rem;
-}
+.footer-bottom{text-align:center;margin-top:1.8rem;padding-top:1rem;border-top:1px solid #2c7a5e;font-size:.82rem;}
 .text-muted{color:#5a7a6e;font-size:.85rem;}
 .mb-1{margin-bottom:1rem;}
-
 @media (max-width:900px){
     .info-row{grid-template-columns:1fr;}
     .big-clock{font-size:2rem;padding:.2rem 1rem;}
@@ -619,6 +272,7 @@ body{
     .module-nav{border-radius:28px;justify-content:center;padding:.6rem 1rem;}
     .module-nav .nav-item{padding:6px 14px;font-size:.8rem;}
     .avatar-xl{width:70px;height:70px;font-size:1.4rem;}
+    .notes-grid{grid-template-columns:1fr;}
 }
 @media (max-width:520px){
     .main-wrapper{padding:0 .8rem;}
@@ -635,16 +289,11 @@ body{
 </head>
 <body>
 
-<!-- COLOR STRIPES -->
 <div class="color-stripes">
-    <div class="stripe stripe1"></div>
-    <div class="stripe stripe2"></div>
-    <div class="stripe stripe3"></div>
-    <div class="stripe stripe4"></div>
-    <div class="stripe stripe5"></div>
+    <div class="stripe stripe1"></div><div class="stripe stripe2"></div><div class="stripe stripe3"></div>
+    <div class="stripe stripe4"></div><div class="stripe stripe5"></div>
 </div>
 
-<!-- ══════════ TOP UTILITY BAR (with live clock) ══════════ -->
 <div class="topbar">
     <div class="topbar-inner">
         <div class="topbar-left">
@@ -654,19 +303,13 @@ body{
             <span class="hide-sm"><i class="fas fa-location-dot"></i> P.O. Box 11-80404, Msambweni, Kwale</span>
         </div>
         <div class="topbar-right">
-            <a class="yt-btn" href="https://www.youtube.com/@MSAMBWENI-TVC" target="_blank" rel="noopener">
-                <i class="fab fa-youtube"></i> YouTube Channel
-            </a>
-            <a class="top-link" href="https://www.google.com/maps/search/?api=1&query=Msambweni+Technical+and+Vocational+College" target="_blank" rel="noopener">
-                <i class="fas fa-diamond-turn-right"></i> Directions
-            </a>
+            <a class="yt-btn" href="https://www.youtube.com/@MSAMBWENI-TVC" target="_blank" rel="noopener"><i class="fab fa-youtube"></i> YouTube Channel</a>
+            <a class="top-link" href="https://www.google.com/maps/search/?api=1&query=Msambweni+Technical+and+Vocational+College" target="_blank" rel="noopener"><i class="fas fa-diamond-turn-right"></i> Directions</a>
         </div>
     </div>
 </div>
 
-<!-- ══════════ MODERN COLLEGE BANNER (logo.jpg) ══════════ -->
 <header class="school-banner">
-    <!-- LEFT: College Logo — logo.jpg -->
     <div class="banner-left">
         <div class="logo-side-wrap">
             <img src="logo.jpg" alt="Msambweni TVC Logo" class="logo-img"
@@ -674,8 +317,6 @@ body{
             <span class="logo-label">College Logo</span>
         </div>
     </div>
-
-    <!-- CENTER: Identity -->
     <div class="banner-center">
         <h1>MSAMBWENI <span class="highlight">TECHNICAL</span> AND <span class="highlight">VOCATIONAL</span> COLLEGE</h1>
         <div class="banner-motto"><i class="fas fa-quote-left"></i> Skills for Self-Reliance, Innovation &amp; Industrialisation</div>
@@ -698,8 +339,6 @@ body{
             <i class="fas fa-location-dot"></i> Msambweni, Kwale County, Kenya
         </div>
     </div>
-
-    <!-- RIGHT: Govt Logo + Actions -->
     <div class="banner-right">
         <div class="logo-side-wrap">
             <img src="gvt.png" alt="Government of Kenya Logo" class="logo-img"
@@ -707,28 +346,17 @@ body{
             <span class="logo-label">Govt of Kenya</span>
         </div>
         <div class="banner-actions">
-            <a href="https://www.google.com/maps/search/?api=1&query=Msambweni+Technical+and+Vocational+College"
-               target="_blank" rel="noopener" class="map-btn" title="Get directions on Google Maps">
-                <i class="fas fa-location-dot"></i>
-                <span>Directions</span>
-                <span class="pulse-dot"></span>
-            </a>
-            <a href="https://www.youtube.com/@MSAMBWENI-TVC" target="_blank" rel="noopener"
-               class="map-btn yt" title="Subscribe to our YouTube channel">
-                <i class="fab fa-youtube"></i>
-                <span>@MSAMBWENI-TVC</span>
-            </a>
+            <a href="https://www.google.com/maps/search/?api=1&query=Msambweni+Technical+and+Vocational+College" target="_blank" rel="noopener" class="map-btn"><i class="fas fa-location-dot"></i><span>Directions</span><span class="pulse-dot"></span></a>
+            <a href="https://www.youtube.com/@MSAMBWENI-TVC" target="_blank" rel="noopener" class="map-btn yt"><i class="fab fa-youtube"></i><span>@MSAMBWENI-TVC</span></a>
         </div>
     </div>
 </header>
 
-<!-- ══════════ NEWS TICKER ══════════ -->
 <div class="ticker">
     <div class="ticker-label"><i class="fas fa-bullhorn"></i> LATEST</div>
     <div class="ticker-track" id="tickerTrack"><span>Welcome to Msambweni Technical &amp; Vocational College — ICT Centre of Excellence</span></div>
 </div>
 
-<!-- ══════════ COLLEGE PHOTO CAROUSEL (SLIDING) ══════════ -->
 <section class="campus-showcase">
     <div class="showcase-head">
         <h2><i class="fas fa-images"></i> Life at Msambweni TVC</h2>
@@ -742,10 +370,7 @@ body{
     </div>
 </section>
 
-<!-- ══════════ MAIN ══════════ -->
 <div class="main-wrapper">
-
-    <!-- AUTH -->
     <div id="authContainer" class="glass-auth">
         <div class="auth-tabs">
             <button class="auth-tab active" data-tab="loginPanel">🔐 Login</button>
@@ -753,18 +378,10 @@ body{
             <button class="auth-tab" data-tab="resetPanel">🔄 Reset</button>
         </div>
 
-        <!-- LOGIN -->
         <div id="loginPanel" class="auth-panel active-panel">
-            <div class="input-group">
-                <label>Email / Student ID</label>
-                <input type="text" id="loginEmail" placeholder="Enter email" value="student@ict.com">
-            </div>
-            <div class="input-group">
-                <label>Password / Access Code</label>
-                <input type="password" id="loginPass" placeholder="Enter password" value="pass123">
-            </div>
-            <div class="input-group">
-                <label>Login as</label>
+            <div class="input-group"><label>Email / Student ID</label><input type="text" id="loginEmail" placeholder="Enter email" value="student@ict.com"></div>
+            <div class="input-group"><label>Password / Access Code</label><input type="password" id="loginPass" placeholder="Enter password" value="pass123"></div>
+            <div class="input-group"><label>Login as</label>
                 <select id="loginRole">
                     <option value="student">👨‍🎓 Student</option>
                     <option value="trainer">👨‍🏫 Trainer</option>
@@ -775,45 +392,26 @@ body{
             <div id="loginErrorMsg" class="message-box"></div>
             <div style="font-size:.7rem;text-align:center;margin-top:1rem;color:#5a7a6e;line-height:1.7;">
                 <strong>Demo:</strong> student@ict.com / pass123 &bull; trainer@ict.com / pass123<br>
-                <span style="opacity:.75;font-style:italic;">
-                    <i class="fas fa-lock" style="color:#b45309;"></i>
-                    Exam Office access is restricted to authorised staff.
-                </span>
+                <span style="opacity:.75;font-style:italic;"><i class="fas fa-lock" style="color:#b45309;"></i> Exam Office access is restricted to authorised staff.</span>
             </div>
         </div>
 
-        <!-- REGISTER -->
         <div id="registerPanel" class="auth-panel">
             <div class="photo-picker">
                 <div class="photo-preview" id="regPhotoPreview"><i class="fas fa-user"></i></div>
-                <div class="pp-text">
-                    <strong>Profile Photo</strong>
-                    <small>Upload a clear passport-size photo (JPG/PNG)</small>
-                </div>
-                <label class="file-btn">
-                    <i class="fas fa-camera"></i> Choose Photo
-                    <input type="file" id="regPhotoInput" accept="image/*" hidden>
-                </label>
+                <div class="pp-text"><strong>Profile Photo</strong><small>Upload a clear passport-size photo (JPG/PNG)</small></div>
+                <label class="file-btn"><i class="fas fa-camera"></i> Choose Photo<input type="file" id="regPhotoInput" accept="image/*" hidden></label>
             </div>
             <div class="input-group"><input type="text" id="regName" placeholder="Full Name"></div>
             <div class="input-group"><input type="text" id="regNumber" placeholder="Registration No."></div>
             <div class="input-group"><input type="email" id="regEmailAddr" placeholder="Email"></div>
             <div class="input-group"><input type="password" id="regPassword" placeholder="Password (min 6)"></div>
             <div class="input-group"><input type="password" id="regConfirm" placeholder="Confirm Password"></div>
-            <div class="input-group">
-                <select id="regRole">
-                    <option value="student">👨‍🎓 Student</option>
-                    <option value="trainer">👨‍🏫 Trainer</option>
-                </select>
-            </div>
+            <div class="input-group"><select id="regRole"><option value="student">👨‍🎓 Student</option><option value="trainer">👨‍🏫 Trainer</option></select></div>
             <button id="doRegisterAction" class="btn-primary">📝 Register</button>
             <div id="regMessageBlock" class="message-box"></div>
-            <div style="font-size:.7rem;text-align:center;margin-top:1rem;color:#5a7a6e;">
-                ℹ️ Exam Office accounts are issued by the ICT department.
-            </div>
         </div>
 
-        <!-- RESET -->
         <div id="resetPanel" class="auth-panel">
             <div class="input-group"><input type="email" id="resetEmailAddr" placeholder="Registered Email"></div>
             <div class="input-group"><input type="password" id="resetNewPass" placeholder="New Password"></div>
@@ -823,21 +421,14 @@ body{
         </div>
     </div>
 
-    <!-- DASHBOARD -->
     <div id="studentDashboard" class="dashboard-modern">
-
-        <!-- CLOCK + USER -->
         <div class="clock-mega">
             <div class="big-clock" id="giantClockDisplay">--:--:--</div>
             <div class="date-large" id="fullDateText"></div>
-            <div class="user-welcome">
-                👋 Welcome, <span id="dashUserName">User</span> &bull;
-                <span id="dashUserRole" style="background:#f1c40f;color:#0a3b2f;padding:2px 14px;border-radius:40px;font-weight:700;">Student</span>
-            </div>
+            <div class="user-welcome">👋 Welcome, <span id="dashUserName">User</span> &bull; <span id="dashUserRole" style="background:#f1c40f;color:#0a3b2f;padding:2px 14px;border-radius:40px;font-weight:700;">Student</span></div>
             <button id="logoutMainBtn" class="logout-top-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
         </div>
 
-        <!-- PROFILE STRIP -->
         <div class="profile-strip" id="profileStrip" style="display:none;">
             <div class="avatar-xl" id="profileAvatarBig">U</div>
             <div class="profile-info">
@@ -846,16 +437,11 @@ body{
                 <span class="chip" id="profileRoleChip">Student</span>
                 <span class="chip gold" id="profileRegChip">REG-000</span>
             </div>
-            <label class="file-btn">
-                <i class="fas fa-camera"></i> <span id="photoBtnLabel">Change Photo</span>
-                <input type="file" id="profilePhotoInput" accept="image/*" hidden>
-            </label>
+            <label class="file-btn"><i class="fas fa-camera"></i> <span id="photoBtnLabel">Change Photo</span><input type="file" id="profilePhotoInput" accept="image/*" hidden></label>
         </div>
 
-        <!-- MODULE NAV -->
         <div class="module-nav" id="moduleNav"></div>
 
-        <!-- ====== STUDENT MODULE ====== -->
         <div id="moduleStudent" class="module-panel active-panel">
             <div class="info-row">
                 <div class="announce-card">
@@ -867,23 +453,30 @@ body{
                     <ul class="sports-list" id="studentSportsList"></ul>
                 </div>
             </div>
+
+            <div class="notes-section">
+                <div class="section-title"><i class="fas fa-book-open" style="color:#3498db;"></i> 📚 Learning Notes &amp; Resources</div>
+                <p class="text-muted" style="font-size:.78rem;">All notes are delivered as <strong>PDF files</strong> — click Download to get the PDF version.</p>
+                <div id="studentNotesList"></div>
+            </div>
+
             <div class="exams-grid" id="examsContainer"></div>
         </div>
 
-        <!-- ====== TRAINER MODULE ====== -->
         <div id="moduleTrainer" class="module-panel">
             <div class="stat-grid" id="trainerStats"></div>
             <div class="module-nav" style="background:transparent;padding:0;margin-bottom:1.2rem;gap:.6rem;border-radius:0;box-shadow:none;">
                 <button class="nav-item active-nav" data-trainer-tab="manageQ">🖼️ Exam Media &amp; Questions</button>
                 <button class="nav-item" data-trainer-tab="studentPerf">📊 Student Performance</button>
+                <button class="nav-item" data-trainer-tab="notes">📚 Notes</button>
                 <button class="nav-item" data-trainer-tab="manageAnnounce">📢 Announcements</button>
             </div>
             <div id="trainerManageQ" class="trainer-subpanel active-panel"></div>
             <div id="trainerStudentPerf" class="trainer-subpanel"></div>
+            <div id="trainerNotes" class="trainer-subpanel"></div>
             <div id="trainerManageAnnounce" class="trainer-subpanel"></div>
         </div>
 
-        <!-- ====== EXAM OFFICE MODULE ====== -->
         <div id="moduleExamOffice" class="module-panel">
             <div class="stat-grid" id="examOfficeStats"></div>
             <div class="module-nav" style="background:transparent;padding:0;margin-bottom:1.2rem;gap:.6rem;border-radius:0;box-shadow:none;">
@@ -900,126 +493,141 @@ body{
             <div id="examManageSports" class="exam-subpanel"></div>
         </div>
 
-        <!-- DESIGNER CREDIT -->
         <div class="designer-credit"><i class="fas fa-user-check"></i> Prepared by <strong>MR SAMSON</strong> – ICT TRAINER</div>
 
-        <!-- FOOTER -->
         <footer class="modern-footer">
             <div class="footer-flex">
                 <div>
-                    <img src="logo.jpg" alt="Msambweni TVC" class="footer-logo"
-                         onerror="this.style.display='none'">
+                    <img src="logo.jpg" alt="Msambweni TVC" class="footer-logo" onerror="this.style.display='none'">
                     <h5><i class="fas fa-school"></i> ICT Department</h5>
-                    <p>
-                        Msambweni Technical &amp; Vocational College<br>
-                        Kwale County, Kenya<br>
-                        P.O. Box 11-80404, Msambweni<br>
-                        <i class="fas fa-phone"></i> +254 700 123 456
-                    </p>
+                    <p>Msambweni Technical &amp; Vocational College<br>Kwale County, Kenya<br>P.O. Box 11-80404, Msambweni<br><i class="fas fa-phone"></i> +254 700 123 456</p>
                 </div>
                 <div>
                     <h5><i class="fas fa-share-nodes"></i> Connect With Us</h5>
                     <div class="social-icons">
-                        <a class="yt" href="https://www.youtube.com/@MSAMBWENI-TVC" target="_blank" rel="noopener" title="YouTube: @MSAMBWENI-TVC"><i class="fab fa-youtube"></i></a>
-                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" title="Twitter / X"><i class="fab fa-twitter"></i></a>
-                        <a href="#" title="TikTok"><i class="fab fa-tiktok"></i></a>
-                        <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a class="yt" href="https://www.youtube.com/@MSAMBWENI-TVC" target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
                     </div>
-                    <p style="margin-top:.8rem;">
-                        <a href="https://www.youtube.com/@MSAMBWENI-TVC" target="_blank" rel="noopener"
-                           style="color:#f1c40f;text-decoration:none;font-weight:700;">
-                           <i class="fab fa-youtube"></i> youtube.com/@MSAMBWENI-TVC
-                        </a>
-                    </p>
+                    <p style="margin-top:.8rem;"><a href="https://www.youtube.com/@MSAMBWENI-TVC" target="_blank" rel="noopener" style="color:#f1c40f;text-decoration:none;font-weight:700;"><i class="fab fa-youtube"></i> youtube.com/@MSAMBWENI-TVC</a></p>
                 </div>
                 <div>
                     <h5><i class="fas fa-futbol"></i> Sports &amp; Co-curricular</h5>
-                    <p>
-                        Football &bull; Volleyball &bull; Athletics<br>
-                        Drama &bull; Music &bull; ICT Club<br>
-                        <i class="fas fa-calendar-alt"></i> Schedules communicated via portal
-                    </p>
+                    <p>Football &bull; Volleyball &bull; Athletics<br>Drama &bull; Music &bull; ICT Club<br><i class="fas fa-calendar-alt"></i> Schedules communicated via portal</p>
                 </div>
             </div>
-            <div class="footer-bottom">
-                © 2026 Msambweni Technical &amp; Vocational College | Designed by <strong>MR SAMSON RUMBA</strong> – ICT TRAINER
-            </div>
+            <div class="footer-bottom">© 2026 Msambweni Technical &amp; Vocational College | Designed by <strong>MR SAMSON RUMBA</strong> – ICT TRAINER</div>
         </footer>
     </div>
 </div>
 
 <script>
-/* ════════════════════════════════════════════════════════════════
-   CONSTANTS
-   ════════════════════════════════════════════════════════════════ */
-const USERS_KEY        = 'tvc_users_v6';
-const EXAM_RECORDS_KEY = 'tvc_exam_records_v6';
-const ANNOUNCE_KEY     = 'tvc_announcements_v6';
-const SPORTS_KEY       = 'tvc_sports_v6';
-const MEDIA_KEY        = 'tvc_media_v6';
-const SESSION_KEY      = 'tvc_session_v6';
+/* CONSTANTS */
+const USERS_KEY        = 'tvc_users_v9';
+const EXAM_RECORDS_KEY = 'tvc_exam_records_v9';
+const ANNOUNCE_KEY     = 'tvc_announcements_v9';
+const SPORTS_KEY       = 'tvc_sports_v9';
+const MEDIA_KEY        = 'tvc_media_v9';
+const NOTES_KEY        = 'tvc_notes_v9';
+const SESSION_KEY      = 'tvc_session_v9';
 
-const EXAM_OFFICE_PASSWORD = '48684868';   /* hidden — never displayed in UI */
-const YOUTUBE_CHANNEL = 'https://www.youtube.com/@MSAMBWENI-TVC';
+const EXAM_OFFICE_PASSWORD = '48684868';
+const MAX_NOTE_SIZE = 3 * 1024 * 1024;
 
-/* ════════════════════════════════════════════════════════════════
-   ★★★ COLLEGE PHOTOS — EDIT MANUALLY HERE ★★★
-   ────────────────────────────────────────────────────────────────
-   Add your photo filenames exactly like logo.jpg. Just drop the
-   image files (e.g., campus1.jpg) into the SAME FOLDER as this
-   HTML file, then list them below.
-
-   Format:
-       { src: 'your-file.jpg', caption: 'Caption shown on the slide' },
-
-   You can add as many as you want. Commas matter. If a file is
-   missing, the slide will show a placeholder automatically.
-   ════════════════════════════════════════════════════════════════ */
+/* ★★★ COLLEGE PHOTOS — EDIT MANUALLY HERE ★★★ */
 const COLLEGE_PHOTOS = [
     { src: 'aaa.jpg', caption: 'Main Campus — Msambweni TVC' },
     { src: 'b8.jpg', caption: 'MTVC' },
     { src: 'com.jpg', caption: 'MTVC' },
     { src: '.food', caption: 'MTVC' },
     { src: 'eng7.jpg', caption: 'MTVC' },
-    /* Add more photos below this line — follow the same pattern: */
-    /* { src: 'campus6.jpg', caption: 'Library & Resource Centre' }, */
 ];
 
 /* ════════════════════════════════════════════════════════════════
-   QUESTION BANKS
+   ★★★ NETWORK DESIGN QUESTIONS — UPDATED FROM NOTES ★★★
+   Topic: INTRODUCTION TO COMPUTER NETWORKING
+   Source: "1. INTRODUCTION TO COMPUTER NETWORKING.txt"
    ════════════════════════════════════════════════════════════════ */
 const NETWORK_QUESTIONS = [
-    { text: "What does LAN stand for?", options: ["Local Area Network","Large Area Network","Long Access Node","Link Adaptation Network"], correct: 0 },
-    { text: "Which device connects multiple networks and forwards packets?", options: ["Switch","Router","Hub","Bridge"], correct: 1 },
-    { text: "Which topology uses a central hub/switch?", options: ["Ring","Bus","Star","Mesh"], correct: 2 },
-    { text: "What is the default subnet mask for Class C?", options: ["255.0.0.0","255.255.0.0","255.255.255.0","255.255.255.255"], correct: 2 },
-    { text: "Which protocol is used for web browsing?", options: ["HTTP","FTP","SMTP","Telnet"], correct: 0 },
-    { text: "What does WAN stand for?", options: ["Wide Area Network","Wireless Area Network","Wired Access Node","Web Access Network"], correct: 0 },
-    { text: "Which cable is immune to EMI?", options: ["Coaxial","UTP","Fiber optic","STP"], correct: 2 },
-    { text: "What does DNS do?", options: ["Converts domain to IP","Assigns IP automatically","Blocks threats","Encrypts data"], correct: 0 },
-    { text: "Which device broadcasts data to all ports?", options: ["Switch","Router","Hub","Modem"], correct: 2 },
-    { text: "What is the purpose of a firewall?", options: ["Block unauthorized access","Increase speed","Store data","Route packets"], correct: 0 },
-    { text: "What does DHCP do?", options: ["Assigns IP addresses automatically","Encrypts files","Routes traffic","Manages cables"], correct: 0 },
-    { text: "Which wireless standard uses 5GHz?", options: ["802.11b","802.11g","802.11ac","802.11n"], correct: 2 },
-    { text: "What does MAC address represent?", options: ["Physical hardware address","Logical IP","Network ID","Subnet mask"], correct: 0 },
-    { text: "Which topology provides highest redundancy?", options: ["Star","Ring","Mesh","Bus"], correct: 2 },
-    { text: "What does VLAN stand for?", options: ["Virtual Local Area Network","Very Large Area Network","Visual LAN","Voice LAN"], correct: 0 },
-    { text: "Which OSI layer does a switch operate on?", options: ["Physical","Data Link","Network","Transport"], correct: 1 },
-    { text: "What is the purpose of STP?", options: ["Prevent network loops","Increase speed","Encrypt data","Manage cables"], correct: 0 },
-    { text: "What does NAT do?", options: ["Translates network addresses","Filters packets","Encrypts traffic","Assigns IPs"], correct: 0 },
-    { text: "Which cable type uses light signals?", options: ["Coaxial","UTP","Fiber optic","STP"], correct: 2 },
-    { text: "What is a greenfield site?", options: ["New network installation","Existing network","Damaged network","Wireless network"], correct: 0 },
-    { text: "Which network covers a city?", options: ["LAN","MAN","WAN","PAN"], correct: 1 },
-    { text: "What does QoS stand for?", options: ["Quality of Service","Quick Output Signal","Query of Server","Queue System"], correct: 0 },
-    { text: "Which device connects computers within same LAN?", options: ["Router","Modem","Switch","Gateway"], correct: 2 },
-    { text: "What is the purpose of SSID?", options: ["Wireless network name","IP address","MAC address","Password"], correct: 0 },
-    { text: "Which protocol is used for email sending?", options: ["SMTP","POP3","IMAP","HTTP"], correct: 0 },
-    { text: "What does SNMP manage?", options: ["Network devices","User accounts","Files","Printers"], correct: 0 },
-    { text: "What is subnetting used for?", options: ["Divide networks","Increase speed","Encrypt data","Backup data"], correct: 0 },
-    { text: "Which device amplifies signals?", options: ["Repeater","Switch","Router","Bridge"], correct: 0 },
-    { text: "What does ISP stand for?", options: ["Internet Service Provider","Internal Service Protocol","International Server Provider","Integrated Service Point"], correct: 0 },
-    { text: "Which topology connects devices in a closed loop?", options: ["Star","Bus","Ring","Mesh"], correct: 2 }
+    /* ─── SECTION 1: INTRO & TERMINOLOGY ─── */
+    { text: "What is computer networking?", options: ["The connection of computers and devices for communication and resource sharing","A programming language for web design","A type of computer hardware","A software for editing documents"], correct: 0 },
+    { text: "Which of the following is NOT a shared resource in a computer network?", options: ["Internet connection","Printers","Files and folders","CPU cooling fan"], correct: 3 },
+    { text: "What is a 'Node' in computer networking?", options: ["A type of cable","Any device connected to a network","A network protocol","A software application"], correct: 1 },
+    { text: "What does 'Topology' refer to in networking?", options: ["The speed of data transmission","The arrangement of devices in a network","The cost of network installation","The type of internet provider"], correct: 1 },
+    { text: "A computer that provides services to other computers on a network is called a:", options: ["Client","Server","Node","Router"], correct: 1 },
+    { text: "A computer that receives services from a server is called a:", options: ["Client","Server","Host","Switch"], correct: 0 },
+    { text: "Which device is used to connect DIFFERENT networks together?", options: ["Switch","Hub","Router","Repeater"], correct: 2 },
+    { text: "Which device connects devices WITHIN a LAN?", options: ["Router","Switch","Modem","Firewall"], correct: 1 },
+    { text: "What is an IP Address?", options: ["A unique address assigned to devices on a network","A type of network cable","A wireless protocol","A network topology"], correct: 0 },
+    { text: "What does 'Bandwidth' mean in networking?", options: ["The physical length of a cable","The amount of data transmitted over a network","The number of computers in a network","The type of topology used"], correct: 1 },
+
+    /* ─── SECTION 1: TOPOLOGIES ─── */
+    { text: "Which network topology uses ONE backbone cable?", options: ["Star","Bus","Ring","Mesh"], correct: 1 },
+    { text: "Which network topology uses a central switch or hub?", options: ["Bus","Ring","Star","Mesh"], correct: 2 },
+    { text: "Which network topology connects devices in a circle?", options: ["Bus","Star","Ring","Mesh"], correct: 2 },
+    { text: "Which network topology interconnects devices using MANY paths for redundancy?", options: ["Bus","Star","Ring","Mesh"], correct: 3 },
+    { text: "Which network topology is a COMBINATION of two or more topologies?", options: ["Bus","Star","Hybrid","Mesh"], correct: 2 },
+
+    /* ─── SECTION 2: TYPES OF NETWORKS ─── */
+    { text: "Which network covers a PERSONAL space (e.g., Bluetooth)?", options: ["PAN","LAN","MAN","WAN"], correct: 0 },
+    { text: "Which network covers an OFFICE, SCHOOL, or BUILDING?", options: ["PAN","LAN","MAN","WAN"], correct: 1 },
+    { text: "Which network covers a CITY or TOWN?", options: ["PAN","LAN","MAN","WAN"], correct: 2 },
+    { text: "Which network covers COUNTRIES or the WORLDWIDE area?", options: ["PAN","LAN","MAN","WAN"], correct: 3 },
+    { text: "The Internet is an example of which network type?", options: ["PAN","LAN","MAN","WAN"], correct: 3 },
+    { text: "Which of the following is a characteristic of a LAN?", options: ["High speed, low cost, privately managed","Covers worldwide","Uses only satellites","Requires no devices"], correct: 0 },
+    { text: "A bank branch network connecting to headquarters is an example of:", options: ["PAN","LAN only","WAN","Bluetooth PAN"], correct: 2 },
+
+    /* ─── SECTION 3: IMPORTANCE OF NETWORKS ─── */
+    { text: "Which of the following is NOT an importance of computer networks?", options: ["Resource sharing","Communication","Centralized data management","Increasing hardware costs"], correct: 3 },
+    { text: "Which benefit of networking allows users to access systems from remote locations?", options: ["Cost reduction","Remote access","Congestion","Cabling"], correct: 1 },
+    { text: "Centralized backup and improved security are benefits of:", options: ["Standalone computers","Computer networks","Printers only","USB drives"], correct: 1 },
+
+    /* ─── SECTION 4: USER REQUIREMENTS ANALYSIS ─── */
+    { text: "What type of requirement describes WHAT the network should do?", options: ["Performance requirement","Functional requirement","Security requirement","Scalability requirement"], correct: 1 },
+    { text: "Which of the following is an example of a FUNCTIONAL requirement?", options: ["High speed","Firewalls","Internet access and file sharing","Adding more users later"], correct: 2 },
+    { text: "Which of the following is an example of a PERFORMANCE requirement?", options: ["Internet access","High speed and reliable connectivity","Passwords","File sharing"], correct: 1 },
+    { text: "Which of the following is an example of a SECURITY requirement?", options: ["High speed","Firewalls and user authentication","Adding devices","Wireless access"], correct: 1 },
+    { text: "Which requirement deals with supporting FUTURE EXPANSION?", options: ["Functional","Performance","Security","Scalability"], correct: 3 },
+    { text: "Which of the following is a METHOD of collecting user requirements?", options: ["Interviews and questionnaires","Encrypting","Compiling","Routing"], correct: 0 },
+
+    /* ─── SECTION 5: PHYSICAL NETWORK DESIGN ─── */
+    { text: "Which of the following is a GUIDED transmission medium?", options: ["Wi-Fi","Radio waves","UTP cable","Bluetooth"], correct: 2 },
+    { text: "Which of the following is an UNGUIDED transmission medium?", options: ["UTP cable","Fiber optic cable","Coaxial cable","Wi-Fi"], correct: 3 },
+    { text: "Which component is used in physical network design?", options: ["Switches, routers, and access points","Only software","Only IP addresses","Only VLANs"], correct: 0 },
+    { text: "If a HIGH SPEED requirement is needed, which cable is best?", options: ["UTP cable","Fiber optic cable","Telephone wire","Coaxial only"], correct: 1 },
+
+    /* ─── SECTION 6: LOGICAL NETWORK DESIGN ─── */
+    { text: "Logical network design includes which of the following?", options: ["Cable placement","IP addressing, VLANs, and routing","Physical device layout","Wall mounting"], correct: 1 },
+    { text: "Which layer of hierarchical network design is the HIGH-SPEED BACKBONE?", options: ["Access layer","Distribution layer","Core layer","Edge layer"], correct: 2 },
+    { text: "Which layer of hierarchical design CONTROLS departmental traffic?", options: ["Core layer","Distribution layer","Access layer","Backbone layer"], correct: 1 },
+    { text: "Which layer of hierarchical design CONNECTS END USERS?", options: ["Core layer","Distribution layer","Access layer","Backbone layer"], correct: 2 },
+    { text: "Which of the following is a DISADVANTAGE of a flat network design?", options: ["Simple","Cheap","Congestion and poor scalability","Easy to manage"], correct: 2 },
+
+    /* ─── SECTION 7: VLANs AND SUBNETS ─── */
+    { text: "What does VLAN stand for?", options: ["Virtual Local Area Network","Very Large Area Network","Virtual Link Access Node","Verified Local Access Network"], correct: 0 },
+    { text: "A VLAN is best described as:", options: ["A logical grouping of users in a network","A physical cable type","A type of router","A wireless protocol"], correct: 0 },
+    { text: "Which of the following is an ADVANTAGE of VLANs?", options: ["Increased congestion","Improved security and reduced congestion","Higher cabling costs","Slower performance"], correct: 1 },
+    { text: "A subnet is used to:", options: ["Divide a large network into smaller sections","Increase cable length","Connect to the internet only","Encrypt all data"], correct: 0 },
+    { text: "Which of the following is a BENEFIT of subnetting?", options: ["Better performance and improved security","Increased broadcast traffic","Higher costs","Fewer IP addresses"], correct: 0 },
+    { text: "If Accounts uses VLAN 10, ICT uses VLAN 20, and Students use VLAN 30, this shows:", options: ["Physical cabling","Logical grouping by VLANs","A single flat network","Wireless setup"], correct: 1 },
+
+    /* ─── SECTION 8: SCENARIO ANALYSIS ─── */
+    { text: "A small office needs 10 computers, a shared printer, internet, and wireless. What is the correct solution?", options: ["LAN with router, switch, and access point","WAN with modem only","PAN with Bluetooth only","MAN with firewall only"], correct: 0 },
+    { text: "A college network with multiple departments, student portal, and secure server room requires:", options: ["VLANs, multiple switches, dedicated servers, and fiber backbone","A single hub","Only wireless access points","No security"], correct: 0 },
+
+    /* ─── SECTION 9: BENEFITS OF GOOD DESIGN ─── */
+    { text: "Which of the following is a benefit of good network design?", options: ["Improved performance and security","Increased congestion","Higher costs","Poor scalability"], correct: 0 },
+    { text: "Which benefit of good network design makes troubleshooting easier?", options: ["Easier maintenance and troubleshooting","More cables","Fewer users","Larger files"], correct: 0 },
+    { text: "Scalability in network design means:", options: ["The ability to support future expansion","Reducing network speed","Using fewer devices","Avoiding security"], correct: 0 },
+
+    /* ─── SECTION 10: SAMPLE EXAM QUESTIONS ─── */
+    { text: "State four network types covered in the notes:", options: ["PAN, LAN, MAN, WAN","USB, HDMI, VGA, SATA","HTTP, FTP, SMTP, DNS","Core, Distribution, Access, Edge"], correct: 0 },
+    { text: "Two examples of networking devices are:", options: ["Router and Switch","Monitor and Keyboard","Printer and Scanner","Speaker and Microphone"], correct: 0 },
+    { text: "Two examples of guided transmission media are:", options: ["Wi-Fi and Radio waves","UTP cable and Fiber optic cable","Bluetooth and Infrared","Satellite and Microwave"], correct: 1 },
+    { text: "Define 'Topology':", options: ["The arrangement of devices in a network","The speed of the network","The cost of cabling","The number of users"], correct: 0 },
+    { text: "State advantages of computer networking:", options: ["Resource sharing, communication, cost reduction, remote access","Cable cutting, slow speed, high cost","Isolation, downtime, single user","Disconnection, encryption only"], correct: 0 }
 ];
 
 const WEBSITE_QUESTIONS = [
@@ -1043,16 +651,13 @@ const DEFAULT_ANNOUNCEMENTS = [
     { id:'a2', title:'Industrial Attachment Opportunities', content:'Attachment opportunities will be communicated per department.', author:'Trainer', date:'2026-01-20', role:'all', photo:'' },
     { id:'a3', title:'Guest Lecture Series', content:'Upcoming guest lectures and workshops dates will be posted here.', author:'ICT Dept', date:'2026-02-01', role:'student', photo:'' }
 ];
-
 const DEFAULT_SPORTS = [
     { id:'s1', title:'Inter-Campus Football', content:'Fixtures to be communicated soon.', date:'2026-02-10', photo:'' },
     { id:'s2', title:'Athletics Championship', content:'Dates will be announced.', date:'2026-02-15', photo:'' },
     { id:'s3', title:'Volleyball League', content:'Schedule coming soon.', date:'2026-02-20', photo:'' }
 ];
 
-/* ════════════════════════════════════════════════════════════════
-   STORAGE HELPERS
-   ════════════════════════════════════════════════════════════════ */
+/* STORAGE */
 function initData(){
     if(!localStorage.getItem(USERS_KEY)){
         localStorage.setItem(USERS_KEY, JSON.stringify([
@@ -1065,44 +670,32 @@ function initData(){
     if(!localStorage.getItem(ANNOUNCE_KEY))     localStorage.setItem(ANNOUNCE_KEY, JSON.stringify(DEFAULT_ANNOUNCEMENTS));
     if(!localStorage.getItem(SPORTS_KEY))       localStorage.setItem(SPORTS_KEY, JSON.stringify(DEFAULT_SPORTS));
     if(!localStorage.getItem(MEDIA_KEY))        localStorage.setItem(MEDIA_KEY, JSON.stringify({ covers:{}, questions:{} }));
+    if(!localStorage.getItem(NOTES_KEY))        localStorage.setItem(NOTES_KEY, JSON.stringify([]));
 }
-
 function getUsers(){ return JSON.parse(localStorage.getItem(USERS_KEY) || '[]'); }
 function setUsers(u){ localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
 function findUserByEmail(email){ return getUsers().find(u => u.email.toLowerCase() === String(email||'').toLowerCase()); }
-
 function getExamRecords(){ return JSON.parse(localStorage.getItem(EXAM_RECORDS_KEY) || '{}'); }
 function setExamRecords(d){ localStorage.setItem(EXAM_RECORDS_KEY, JSON.stringify(d)); }
-
 function getAnnouncements(){ return JSON.parse(localStorage.getItem(ANNOUNCE_KEY) || '[]'); }
 function setAnnouncements(d){ localStorage.setItem(ANNOUNCE_KEY, JSON.stringify(d)); }
-
 function getSports(){ return JSON.parse(localStorage.getItem(SPORTS_KEY) || '[]'); }
 function setSports(d){ localStorage.setItem(SPORTS_KEY, JSON.stringify(d)); }
-
-function getMedia(){
-    const m = JSON.parse(localStorage.getItem(MEDIA_KEY) || '{}');
-    return { covers: m.covers || {}, questions: m.questions || {} };
-}
+function getNotes(){ return JSON.parse(localStorage.getItem(NOTES_KEY) || '[]'); }
+function setNotes(d){ localStorage.setItem(NOTES_KEY, JSON.stringify(d)); }
+function getMedia(){ const m = JSON.parse(localStorage.getItem(MEDIA_KEY) || '{}'); return { covers: m.covers || {}, questions: m.questions || {} }; }
 function setMedia(m){ localStorage.setItem(MEDIA_KEY, JSON.stringify(m)); }
 function getCover(key){ return getMedia().covers[key] || ''; }
-function getQuestionImage(examKey, idx){
-    const q = getMedia().questions[examKey] || {};
-    return q[idx] || '';
-}
+function getQuestionImage(examKey, idx){ const q = getMedia().questions[examKey] || {}; return q[idx] || ''; }
 
-/* ════════════════════════════════════════════════════════════════
-   EXAM RECORD HELPERS
-   ════════════════════════════════════════════════════════════════ */
+/* EXAM RECORDS */
 function blankRecord(){ return { networkDesign:{attemptsUsed:0,bestScore:0}, websiteApp:{attemptsUsed:0,bestScore:0} }; }
-
 function getExamRecord(regNo, examKey){
     const all = getExamRecords();
     if(!all[regNo]) all[regNo] = blankRecord();
     if(!all[regNo][examKey]) all[regNo][examKey] = { attemptsUsed:0, bestScore:0 };
     return all[regNo][examKey];
 }
-
 function updateExamRecord(regNo, examKey, scorePercent){
     const all = getExamRecords();
     if(!all[regNo]) all[regNo] = blankRecord();
@@ -1111,34 +704,20 @@ function updateExamRecord(regNo, examKey, scorePercent){
     setExamRecords(all);
     return all[regNo][examKey];
 }
-
 function canAttempt(regNo, examKey){ return getExamRecord(regNo, examKey).attemptsUsed < 3; }
-
 function resetAttemptsForStudent(regNo, examKey){
     const all = getExamRecords();
     if(!all[regNo]) all[regNo] = blankRecord();
     if(examKey === 'all'){
         all[regNo].networkDesign = { attemptsUsed:0, bestScore:0 };
         all[regNo].websiteApp    = { attemptsUsed:0, bestScore:0 };
-    } else {
-        all[regNo][examKey] = { attemptsUsed:0, bestScore:0 };
-    }
+    } else { all[regNo][examKey] = { attemptsUsed:0, bestScore:0 }; }
     setExamRecords(all);
 }
 
-/* ════════════════════════════════════════════════════════════════
-   UTILITIES
-   ════════════════════════════════════════════════════════════════ */
-function esc(s){
-    return String(s == null ? '' : s).replace(/[&<>"']/g, c => (
-        {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]
-    ));
-}
-
-function initials(name){
-    return String(name||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
-}
-
+/* UTILITIES */
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function initials(name){ return String(name||'?').trim().split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
 function fileToDataURL(file, maxW = 640, maxH = 640, quality = 0.82){
     return new Promise((resolve, reject) => {
         if(!file) return reject('No file');
@@ -1153,8 +732,7 @@ function fileToDataURL(file, maxW = 640, maxH = 640, quality = 0.82){
                 const canvas = document.createElement('canvas');
                 canvas.width = w; canvas.height = h;
                 const ctx = canvas.getContext('2d');
-                ctx.fillStyle = '#ffffff';
-                ctx.fillRect(0,0,w,h);
+                ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,w,h);
                 ctx.drawImage(img, 0, 0, w, h);
                 try { resolve(canvas.toDataURL('image/jpeg', quality)); }
                 catch(err){ resolve(e.target.result); }
@@ -1166,183 +744,353 @@ function fileToDataURL(file, maxW = 640, maxH = 640, quality = 0.82){
         reader.readAsDataURL(file);
     });
 }
-
 function avatarHTML(user, size){
     const cls = size === 'lg' ? 'avatar-xl' : 'avatar-sm';
-    if(user && user.photo){
-        return `<div class="${cls}"><img src="${user.photo}" alt="${esc(user.fullName)}"></div>`;
-    }
+    if(user && user.photo) return `<div class="${cls}"><img src="${user.photo}" alt="${esc(user.fullName)}"></div>`;
     return `<div class="${cls}">${esc(initials(user ? user.fullName : '?'))}</div>`;
 }
-
 function showMessage(el, text, isError = true){
     if(!el) return;
-    el.innerText = text;
-    el.style.display = 'block';
+    el.innerText = text; el.style.display = 'block';
     el.className = `message-box ${isError ? 'error-msg' : 'success-msg'}`;
     setTimeout(() => { if(el.style.display === 'block') el.style.display = 'none'; }, 4500);
 }
+function clearMessages(){ ['loginErrorMsg','regMessageBlock','resetMsgBlock'].forEach(id => { const el = document.getElementById(id); if(el) el.style.display = 'none'; }); }
 
-function clearMessages(){
-    ['loginErrorMsg','regMessageBlock','resetMsgBlock'].forEach(id => {
-        const el = document.getElementById(id);
-        if(el) el.style.display = 'none';
-    });
+/* NOTES HELPERS */
+let pendingNoteFile = null;
+function formatFileSize(bytes){
+    if(!bytes) return '0 B';
+    if(bytes < 1024) return bytes + ' B';
+    if(bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+    return (bytes/(1024*1024)).toFixed(2) + ' MB';
+}
+function getFileIcon(type, name){
+    const t = (type || '').toLowerCase();
+    const n = (name || '').toLowerCase();
+    if(t.includes('pdf') || n.endsWith('.pdf')) return {cls:'pdf', icon:'fas fa-file-pdf'};
+    if(t.includes('word') || /\.docx?$/.test(n)) return {cls:'doc', icon:'fas fa-file-word'};
+    if(t.includes('presentation') || t.includes('powerpoint') || /\.pptx?$/.test(n)) return {cls:'ppt', icon:'fas fa-file-powerpoint'};
+    if(t.includes('image') || /\.(jpe?g|png|gif|webp)$/.test(n)) return {cls:'img', icon:'fas fa-file-image'};
+    if(t.includes('excel') || t.includes('spreadsheet') || /\.xlsx?$/.test(n)) return {cls:'doc', icon:'fas fa-file-excel'};
+    if(t.includes('zip') || t.includes('compressed') || /\.(zip|rar|7z)$/.test(n)) return {cls:'zip', icon:'fas fa-file-archive'};
+    if(t.includes('text') || n.endsWith('.txt')) return {cls:'txt', icon:'fas fa-file-alt'};
+    return {cls:'txt', icon:'fas fa-file-alt'};
+}
+window.pickNoteFile = function(input){
+    if(!input.files || !input.files[0]) return;
+    const file = input.files[0];
+    if(file.size > MAX_NOTE_SIZE){
+        alert(`❌ File is too large (${formatFileSize(file.size)}). Maximum allowed is ${formatFileSize(MAX_NOTE_SIZE)}.`);
+        input.value = ''; return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e){
+        pendingNoteFile = { data: e.target.result, name: file.name, type: file.type, size: file.size };
+        const box = document.getElementById('noteFilePreview');
+        if(box){
+            const fi = getFileIcon(file.type, file.name);
+            box.innerHTML = `<i class="${fi.icon}" style="color:#3498db;"></i> <strong>${esc(file.name)}</strong> <span style="color:#7b9a8e;">(${formatFileSize(file.size)})</span>`;
+        }
+    };
+    reader.onerror = function(){ alert('❌ Could not read that file.'); };
+    reader.readAsDataURL(file);
+};
+window.createNote = function(){
+    const title = document.getElementById('noteTitle')?.value.trim();
+    const subject = document.getElementById('noteSubject')?.value.trim() || 'General';
+    const description = document.getElementById('noteDescription')?.value.trim() || '';
+    if(!title){ alert('Please enter a title.'); return; }
+    if(!pendingNoteFile){ alert('Please attach a file.'); return; }
+    const notes = getNotes();
+    notes.push({ id: 'n' + Date.now(), title, subject, description,
+        fileName: pendingNoteFile.name, fileType: pendingNoteFile.type, fileSize: pendingNoteFile.size,
+        fileData: pendingNoteFile.data, uploadedBy: currentUser?.fullName || 'Trainer',
+        date: new Date().toISOString().slice(0,10) });
+    setNotes(notes); pendingNoteFile = null;
+    renderTrainerNotes(); renderStudentNotes();
+    alert('✅ Note uploaded successfully. Students will download it as PDF.');
+};
+window.deleteNote = function(id){
+    if(!confirm('Delete this note?')) return;
+    setNotes(getNotes().filter(n => n.id !== id));
+    renderTrainerNotes(); renderStudentNotes();
+};
+
+/* DOWNLOAD AS PDF */
+window.downloadNote = async function(id){
+    const note = getNotes().find(n => n.id === id);
+    if(!note || !note.fileData){ alert('❌ File not available.'); return; }
+    const fileType = (note.fileType || '').toLowerCase();
+    const fileName = (note.fileName || '').toLowerCase();
+    const baseName = (note.title || 'note').replace(/[^\w\s-]/g, '').trim().replace(/\s+/g, '_') || 'note';
+    if(fileType.includes('pdf') || fileName.endsWith('.pdf')){
+        const a = document.createElement('a');
+        a.href = note.fileData; a.download = baseName + '.pdf';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        return;
+    }
+    if(!window.jspdf || !window.jspdf.jsPDF){ alert('❌ PDF library not loaded. Please check your internet connection and refresh.'); return; }
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+    const pageW = doc.internal.pageSize.getWidth();
+    const pageH = doc.internal.pageSize.getHeight();
+    const margin = 50;
+    let y = 0;
+    doc.setFillColor(10, 59, 47); doc.rect(0, 0, pageW, 90, 'F');
+    doc.setFillColor(241, 196, 15); doc.rect(0, 90, pageW, 4, 'F');
+    doc.setTextColor(241, 196, 15); doc.setFont('helvetica', 'bold'); doc.setFontSize(15);
+    doc.text('MSAMBWENI TECHNICAL & VOCATIONAL COLLEGE', margin, 40);
+    doc.setTextColor(200, 240, 220); doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+    doc.text('ICT Centre of Excellence  •  Kwale County, Kenya', margin, 60);
+    doc.setFontSize(9); doc.text('Learning Notes & Resources', margin, 76);
+    y = 130;
+    doc.setTextColor(10, 59, 47); doc.setFont('helvetica', 'bold'); doc.setFontSize(22);
+    const titleLines = doc.splitTextToSize(note.title || 'Untitled Note', pageW - margin*2);
+    doc.text(titleLines, margin, y); y += titleLines.length * 26 + 8;
+    const subjectText = (note.subject || 'General').toUpperCase();
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+    const chipW = doc.getTextWidth(subjectText) + 22;
+    doc.setFillColor(232, 245, 233); doc.roundedRect(margin, y, chipW, 22, 11, 11, 'F');
+    doc.setTextColor(27, 109, 94); doc.text(subjectText, margin + 11, y + 15);
+    y += 40;
+    doc.setTextColor(90, 122, 110); doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+    doc.text(`Uploaded by: ${note.uploadedBy || 'Trainer'}`, margin, y);
+    doc.text(`Date: ${note.date || ''}`, pageW - margin, y, { align: 'right' });
+    y += 15;
+    doc.text(`Original file: ${note.fileName || 'file'}`, margin, y);
+    doc.text(`Size: ${formatFileSize(note.fileSize || 0)}`, pageW - margin, y, { align: 'right' });
+    y += 24;
+    doc.setDrawColor(200, 230, 223); doc.line(margin, y, pageW - margin, y); y += 24;
+    if(note.description){
+        doc.setTextColor(10, 59, 47); doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
+        doc.text('Description', margin, y); y += 18;
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(11); doc.setTextColor(60, 90, 80);
+        const descLines = doc.splitTextToSize(note.description, pageW - margin*2);
+        descLines.forEach(line => { if(y + 15 > pageH - margin){ doc.addPage(); y = margin; } doc.text(line, margin, y); y += 15; });
+        y += 15;
+    }
+    if(fileType.startsWith('image/')){
+        doc.setTextColor(10, 59, 47); doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
+        doc.text('Attached Image', margin, y); y += 18;
+        try {
+            const img = new Image();
+            await new Promise((res, rej) => { img.onload = res; img.onerror = rej; img.src = note.fileData; });
+            let fmt = 'JPEG';
+            if(fileType.includes('png')) fmt = 'PNG';
+            else if(fileType.includes('webp')) fmt = 'WEBP';
+            else if(fileType.includes('gif')) fmt = 'GIF';
+            const availW = pageW - margin*2, availH = pageH - y - margin - 20;
+            let w = img.width, h = img.height;
+            const scale = Math.min(availW/w, availH/h, 1);
+            w = w * scale; h = h * scale;
+            const x = (pageW - w) / 2;
+            try { doc.addImage(note.fileData, fmt, x, y, w, h, undefined, 'FAST'); }
+            catch(e1){ doc.addImage(note.fileData, 'JPEG', x, y, w, h, undefined, 'FAST'); }
+        } catch(e){
+            doc.setTextColor(150, 50, 50); doc.setFont('helvetica', 'italic'); doc.setFontSize(10);
+            doc.text('(Could not embed image in this PDF)', margin, y + 15);
+        }
+    } else if(fileType.startsWith('text/') || fileName.endsWith('.txt')){
+        doc.setTextColor(10, 59, 47); doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
+        doc.text('Content', margin, y); y += 18;
+        try {
+            const base64 = note.fileData.split(',')[1] || '';
+            const binary = atob(base64);
+            const bytes = new Uint8Array(binary.length);
+            for(let i=0;i<binary.length;i++) bytes[i] = binary.charCodeAt(i);
+            let text;
+            try { text = new TextDecoder('utf-8').decode(bytes); } catch(e){ text = binary; }
+            doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(40, 60, 50);
+            const lines = doc.splitTextToSize(text, pageW - margin*2);
+            const lineHeight = 14;
+            lines.forEach(line => { if(y + lineHeight > pageH - margin){ doc.addPage(); y = margin; } doc.text(line, margin, y); y += lineHeight; });
+        } catch(e){
+            doc.setFont('helvetica', 'italic'); doc.setFontSize(10); doc.setTextColor(150, 50, 50);
+            doc.text('(Could not read text content)', margin, y);
+        }
+    } else {
+        doc.setFillColor(255, 244, 214); doc.roundedRect(margin, y, pageW - margin*2, 100, 10, 10, 'F');
+        doc.setTextColor(138, 97, 0); doc.setFont('helvetica', 'bold'); doc.setFontSize(12);
+        doc.text('NOTE', margin + 16, y + 24);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.setTextColor(120, 80, 0);
+        const msg = `The original file (${note.fileName}) is in a non-PDF format (${fileType || 'unknown'}). For best results, please ask the trainer to re-upload as a PDF or image.`;
+        const msgLines = doc.splitTextToSize(msg, pageW - margin*2 - 32);
+        doc.text(msgLines, margin + 16, y + 48); y += 120;
+    }
+    doc.setFillColor(10, 59, 47); doc.rect(0, pageH - 30, pageW, 30, 'F');
+    doc.setTextColor(200, 240, 220); doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+    doc.text('© 2026 Msambweni Technical & Vocational College  |  PDF generated by ICT Portal', pageW/2, pageH - 12, { align: 'center' });
+    doc.save(baseName + '.pdf');
+};
+
+function renderTrainerNotes(){
+    const container = document.getElementById('trainerNotes');
+    if(!container) return;
+    const notes = getNotes();
+    const totalSize = notes.reduce((sum, n) => sum + (n.fileSize || 0), 0);
+    container.innerHTML = `
+        <div class="form-card">
+            <h4 style="margin-bottom:.4rem;">📚 Upload Learning Notes</h4>
+            <p class="text-muted mb-1"><strong>Tip:</strong> Upload as <strong>PDF</strong>, image (JPG/PNG), or TXT for best results — these will always download as a clean PDF for students. Max: ${formatFileSize(MAX_NOTE_SIZE)} per file.</p>
+            <div class="form-row">
+                <div><label class="field-label">Title *</label><input type="text" id="noteTitle" placeholder="e.g., Introduction to Networking"></div>
+                <div><label class="field-label">Subject / Unit</label><input type="text" id="noteSubject" placeholder="e.g., Network Design"></div>
+                <div class="full"><label class="field-label">Description (optional)</label><textarea id="noteDescription" rows="2" placeholder="Brief description..."></textarea></div>
+                <div class="full"><label class="field-label">Attach File * (PDF recommended)</label>
+                    <div class="media-preview-row">
+                        <label class="file-btn"><i class="fas fa-paperclip"></i> Choose File<input type="file" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.txt,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.rar,.7z" hidden onchange="window.pickNoteFile(this)"></label>
+                        <span id="noteFilePreview" class="text-muted" style="font-size:.8rem;">No file selected</span>
+                    </div>
+                </div>
+                <div class="full"><button class="btn-primary btn-sm" onclick="window.createNote()"><i class="fas fa-cloud-upload-alt"></i> Upload Note</button></div>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <h4 style="margin-bottom:.8rem;">📁 Uploaded Notes (${notes.length}) — Total: ${formatFileSize(totalSize)}</h4>
+            ${notes.length ? `
+                <table>
+                    <thead><tr><th>Title</th><th>Subject</th><th>File</th><th>Size</th><th>Uploaded</th><th>Action</th></tr></thead>
+                    <tbody>
+                        ${notes.map(n => {
+                            const fi = getFileIcon(n.fileType, n.fileName);
+                            return `<tr>
+                                <td><strong>${esc(n.title)}</strong>${n.description ? `<br><small class="text-muted">${esc(n.description)}</small>` : ''}</td>
+                                <td>${esc(n.subject)}</td>
+                                <td><i class="${fi.icon}" style="color:#3498db;"></i> ${esc(n.fileName)}</td>
+                                <td>${formatFileSize(n.fileSize)}</td>
+                                <td>${esc(n.date)}</td>
+                                <td>
+                                    <button class="btn-secondary btn-sm" onclick="window.downloadNote('${n.id}')" title="Download PDF"><i class="fas fa-file-pdf"></i> PDF</button>
+                                    <button class="btn-danger btn-sm" onclick="window.deleteNote('${n.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>`;
+                        }).join('')}
+                    </tbody>
+                </table>` : '<div class="note-empty">📭 No notes uploaded yet. Upload your first note above.</div>'}
+        </div>`;
+}
+function renderStudentNotes(){
+    const container = document.getElementById('studentNotesList');
+    if(!container) return;
+    const notes = getNotes();
+    if(!notes.length){
+        container.innerHTML = '<div class="note-empty">📭 No notes have been uploaded yet. Please check back later.</div>';
+        return;
+    }
+    container.innerHTML = `<div class="notes-grid">
+        ${notes.map(n => {
+            const fi = getFileIcon(n.fileType, n.fileName);
+            return `<div class="note-card">
+                <div style="display:flex;align-items:center;gap:.9rem;">
+                    <div class="note-icon ${fi.cls}"><i class="${fi.icon}"></i></div>
+                    <div style="flex:1;min-width:0;">
+                        <h5>${esc(n.title)}</h5>
+                        <div class="note-sub">${esc(n.subject)}</div>
+                    </div>
+                </div>
+                ${n.description ? `<div class="note-desc">${esc(n.description)}</div>` : ''}
+                <div class="note-meta">
+                    <span>📎 ${esc(n.fileName)}</span>
+                    <span>💾 ${formatFileSize(n.fileSize)}</span>
+                    <span>📅 ${esc(n.date)}</span>
+                </div>
+                <div class="note-actions">
+                    <button class="note-dl-btn" onclick="window.downloadNote('${n.id}')">
+                        <i class="fas fa-file-pdf"></i> Download PDF
+                    </button>
+                </div>
+            </div>`;
+        }).join('')}
+    </div>`;
 }
 
-/* ════════════════════════════════════════════════════════════════
-   AUTH
-   ════════════════════════════════════════════════════════════════ */
+/* AUTH */
 function ensureExamOfficer(){
     let users = getUsers();
     let officer = users.find(u => u.role === 'examoffice');
     if(!officer){
-        officer = { fullName:"Exam Office", regNo:"EO001", email:"exam@ict.com",
-                    password:EXAM_OFFICE_PASSWORD, role:"examoffice", photo:"" };
-        users.push(officer);
-        setUsers(users);
-    } else if(officer.password !== EXAM_OFFICE_PASSWORD){
-        officer.password = EXAM_OFFICE_PASSWORD;
-        setUsers(users);
-    }
+        officer = { fullName:"Exam Office", regNo:"EO001", email:"exam@ict.com", password:EXAM_OFFICE_PASSWORD, role:"examoffice", photo:"" };
+        users.push(officer); setUsers(users);
+    } else if(officer.password !== EXAM_OFFICE_PASSWORD){ officer.password = EXAM_OFFICE_PASSWORD; setUsers(users); }
     return officer;
 }
-
 function loginUser(email, password, role){
     if(role === 'examoffice'){
         const officer = ensureExamOfficer();
-        if(password !== EXAM_OFFICE_PASSWORD){
-            return { success:false, message:"❌ Invalid Exam Office access code. Contact the ICT department." };
-        }
+        if(password !== EXAM_OFFICE_PASSWORD) return { success:false, message:"❌ Invalid Exam Office access code. Contact the ICT department." };
         const typed = findUserByEmail(email);
         const account = (typed && typed.role === 'examoffice') ? typed : officer;
         return { success:true, user:account };
     }
-
     const user = findUserByEmail(email);
     if(!user) return { success:false, message:"User not found." };
     if(user.password !== password) return { success:false, message:"Invalid password." };
     if(user.role !== role) return { success:false, message:`You are registered as ${user.role}. Please select the correct role.` };
     return { success:true, user };
 }
-
 function registerNewUser(fullName, regNo, email, password, role, photo){
     if(findUserByEmail(email)) return { success:false, message:"Email already registered." };
-    if(getUsers().some(u => u.regNo.toLowerCase() === regNo.toLowerCase()))
-        return { success:false, message:"Registration number already exists." };
+    if(getUsers().some(u => u.regNo.toLowerCase() === regNo.toLowerCase())) return { success:false, message:"Registration number already exists." };
     if(password.length < 6) return { success:false, message:"Password must be at least 6 characters." };
     const users = getUsers();
     users.push({ fullName, regNo, email, password, role, photo: photo || '' });
     setUsers(users);
     return { success:true, message:"Account created successfully! Please login." };
 }
-
 function resetUserPassword(email, newPass, confirm){
     if(newPass !== confirm) return { success:false, message:"Passwords do not match." };
     if(newPass.length < 6) return { success:false, message:"Password too short (min 6)." };
     const users = getUsers();
     const idx = users.findIndex(u => u.email.toLowerCase() === email.toLowerCase());
     if(idx === -1) return { success:false, message:"Email not found." };
-    if(users[idx].role === 'examoffice')
-        return { success:false, message:"Exam Office uses a fixed institutional access code." };
-    users[idx].password = newPass;
-    setUsers(users);
+    if(users[idx].role === 'examoffice') return { success:false, message:"Exam Office uses a fixed institutional access code." };
+    users[idx].password = newPass; setUsers(users);
     return { success:true, message:"Password reset successful! Please login." };
 }
 
-/* ════════════════════════════════════════════════════════════════
-   SESSION STATE
-   ════════════════════════════════════════════════════════════════ */
 let currentUser = null;
 let clockInterval = null;
 let regPhotoData = '';
 let carouselIndex = 0;
 let carouselTimer = null;
 
-/* ════════════════════════════════════════════════════════════════
-   LIVE CLOCK (topbar + dashboard)
-   ════════════════════════════════════════════════════════════════ */
 function startClock(){
     if(clockInterval) clearInterval(clockInterval);
     function update(){
         const now = new Date();
         const timeStr = now.toLocaleTimeString('en-GB',{hour12:false});
         const dateStr = now.toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-        const c  = document.getElementById('giantClockDisplay');
-        const d  = document.getElementById('fullDateText');
+        const c = document.getElementById('giantClockDisplay');
+        const d = document.getElementById('fullDateText');
         const tc = document.getElementById('topbarClock');
-        if(c)  c.innerText = timeStr;
-        if(d)  d.innerText = dateStr;
+        if(c) c.innerText = timeStr;
+        if(d) d.innerText = dateStr;
         if(tc) tc.innerHTML = `<span class="live-dot"></span> ${timeStr}`;
     }
     update();
     clockInterval = setInterval(update, 1000);
 }
-
-/* ════════════════════════════════════════════════════════════════
-   COLLEGE PHOTO CAROUSEL (uses manual COLLEGE_PHOTOS array)
-   ════════════════════════════════════════════════════════════════ */
 function renderCarousel(){
     const track = document.getElementById('carouselTrack');
-    const dots  = document.getElementById('carouselDots');
+    const dots = document.getElementById('carouselDots');
     if(!track || !dots) return;
-
-    /* If the array is empty, show a friendly placeholder */
     if(!COLLEGE_PHOTOS.length){
-        track.innerHTML = `<div class="carousel-slide">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='600'><rect width='100%25' height='100%25' fill='%230a3b2f'/><text x='50%25' y='50%25' fill='%23f1c40f' font-family='Arial' font-size='36' text-anchor='middle'>Add photos in COLLEGE_PHOTOS array</text></svg>" alt="No photos">
-            <div class="slide-caption"><i class="fas fa-image"></i> No college photos configured yet</div>
-        </div>`;
-        dots.innerHTML = '';
-        return;
+        track.innerHTML = `<div class="carousel-slide"><img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='600'><rect width='100%25' height='100%25' fill='%230a3b2f'/><text x='50%25' y='50%25' fill='%23f1c40f' font-family='Arial' font-size='36' text-anchor='middle'>Add photos in COLLEGE_PHOTOS array</text></svg>" alt="No photos"><div class="slide-caption"><i class="fas fa-image"></i> No college photos configured yet</div></div>`;
+        dots.innerHTML = ''; return;
     }
-
     if(carouselIndex >= COLLEGE_PHOTOS.length) carouselIndex = 0;
     if(carouselIndex < 0) carouselIndex = COLLEGE_PHOTOS.length - 1;
-
-    /* Placeholder SVG (used if an image file is missing) */
     const ph = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1600' height='600'><rect width='100%25' height='100%25' fill='%231b6d5e'/><text x='50%25' y='50%25' fill='%23f1c40f' font-family='Arial' font-size='40' text-anchor='middle'>Image not found</text></svg>";
-
-    track.innerHTML = COLLEGE_PHOTOS.map(p => `
-        <div class="carousel-slide">
-            <img src="${esc(p.src)}" alt="${esc(p.caption||'Campus photo')}"
-                 onerror="this.onerror=null;this.src='${ph}';">
-            ${p.caption ? `<div class="slide-caption"><i class="fas fa-camera-retro"></i> ${esc(p.caption)}</div>` : ''}
-        </div>`).join('');
-
-    dots.innerHTML = COLLEGE_PHOTOS.map((_,i) =>
-        `<button class="dot ${i===carouselIndex?'active':''}" onclick="window.goToSlide(${i})" aria-label="Go to slide ${i+1}"></button>`
-    ).join('');
-
+    track.innerHTML = COLLEGE_PHOTOS.map(p => `<div class="carousel-slide"><img src="${esc(p.src)}" alt="${esc(p.caption||'Campus photo')}" onerror="this.onerror=null;this.src='${ph}';"><div class="slide-caption"><i class="fas fa-camera-retro"></i> ${esc(p.caption||'')}</div></div>`).join('');
+    dots.innerHTML = COLLEGE_PHOTOS.map((_,i) => `<button class="dot ${i===carouselIndex?'active':''}" onclick="window.goToSlide(${i})"></button>`).join('');
     track.style.transform = `translateX(-${carouselIndex * 100}%)`;
 }
+window.goToSlide = function(i){ carouselIndex = i; renderCarousel(); resetCarouselTimer(); };
+function nextSlide(){ if(!COLLEGE_PHOTOS.length) return; carouselIndex = (carouselIndex + 1) % COLLEGE_PHOTOS.length; renderCarousel(); }
+function prevSlide(){ if(!COLLEGE_PHOTOS.length) return; carouselIndex = (carouselIndex - 1 + COLLEGE_PHOTOS.length) % COLLEGE_PHOTOS.length; renderCarousel(); }
+function resetCarouselTimer(){ if(carouselTimer) clearInterval(carouselTimer); if(COLLEGE_PHOTOS.length > 1) carouselTimer = setInterval(nextSlide, 4500); }
 
-window.goToSlide = function(i){
-    carouselIndex = i;
-    renderCarousel();
-    resetCarouselTimer();
-};
-
-function nextSlide(){
-    if(!COLLEGE_PHOTOS.length) return;
-    carouselIndex = (carouselIndex + 1) % COLLEGE_PHOTOS.length;
-    renderCarousel();
-}
-
-function prevSlide(){
-    if(!COLLEGE_PHOTOS.length) return;
-    carouselIndex = (carouselIndex - 1 + COLLEGE_PHOTOS.length) % COLLEGE_PHOTOS.length;
-    renderCarousel();
-}
-
-function resetCarouselTimer(){
-    if(carouselTimer) clearInterval(carouselTimer);
-    if(COLLEGE_PHOTOS.length > 1) carouselTimer = setInterval(nextSlide, 4500);
-}
-
-/* ════════════════════════════════════════════════════════════════
-   MODULE NAV
-   ════════════════════════════════════════════════════════════════ */
 function buildModuleNav(role){
     const nav = document.getElementById('moduleNav');
     const items = {
@@ -1351,9 +1099,7 @@ function buildModuleNav(role){
         examoffice: [{ key:'moduleExamOffice', label:'📋 Exam Office' }]
     };
     const list = items[role] || items.student;
-    nav.innerHTML = list.map((item, idx) =>
-        `<button class="nav-item ${idx===0?'active-nav':''}" data-module="${item.key}">${item.label}</button>`
-    ).join('');
+    nav.innerHTML = list.map((item, idx) => `<button class="nav-item ${idx===0?'active-nav':''}" data-module="${item.key}">${item.label}</button>`).join('');
     nav.querySelectorAll('.nav-item').forEach(btn => {
         btn.addEventListener('click', function(){
             nav.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active-nav'));
@@ -1367,157 +1113,82 @@ function buildModuleNav(role){
     const first = document.getElementById(list[0].key);
     if(first) first.classList.add('active-panel');
 }
-
-/* ════════════════════════════════════════════════════════════════
-   TICKER
-   ════════════════════════════════════════════════════════════════ */
 function updateTicker(){
     const el = document.getElementById('tickerTrack');
     if(!el) return;
     const anns = getAnnouncements().slice(-4).reverse();
-    const text = anns.length
-        ? anns.map(a => `📢 ${a.title}: ${a.content}`).join('     •     ')
-        : 'Welcome to Msambweni Technical & Vocational College — ICT Centre of Excellence';
+    const text = anns.length ? anns.map(a => `📢 ${a.title}: ${a.content}`).join('     •     ') : 'Welcome to Msambweni Technical & Vocational College — ICT Centre of Excellence';
     el.innerHTML = `<span>${esc(text)}</span>`;
 }
-
-/* ════════════════════════════════════════════════════════════════
-   PROFILE STRIP
-   ════════════════════════════════════════════════════════════════ */
 function renderProfileStrip(user){
     const strip = document.getElementById('profileStrip');
     if(!strip || !user) return;
     strip.style.display = 'flex';
-
     const big = document.getElementById('profileAvatarBig');
-    big.innerHTML = user.photo
-        ? `<img src="${user.photo}" alt="${esc(user.fullName)}">`
-        : esc(initials(user.fullName));
-
+    big.innerHTML = user.photo ? `<img src="${user.photo}" alt="${esc(user.fullName)}">` : esc(initials(user.fullName));
     document.getElementById('profileName').innerText = user.fullName;
-    document.getElementById('profileRoleChip').innerText =
-        user.role === 'examoffice' ? 'Exam Office' : user.role.charAt(0).toUpperCase() + user.role.slice(1);
+    document.getElementById('profileRoleChip').innerText = user.role === 'examoffice' ? 'Exam Office' : user.role.charAt(0).toUpperCase() + user.role.slice(1);
     document.getElementById('profileRegChip').innerText = user.regNo || '—';
-
     let meta = `${user.email}`;
     if(user.role === 'student'){
         const net = getExamRecord(user.regNo,'networkDesign');
         const web = getExamRecord(user.regNo,'websiteApp');
         meta += `  •  Network: ${net.bestScore}%  •  Website: ${web.bestScore}%`;
-    } else if(user.role === 'examoffice'){
-        meta += `  •  Access: Institutional Code`;
-    }
+    } else if(user.role === 'examoffice'){ meta += `  •  Access: Institutional Code`; }
     document.getElementById('profileMeta').innerText = meta;
     document.getElementById('photoBtnLabel').innerText = user.photo ? 'Change Photo' : 'Add Photo';
 }
-
-/* ════════════════════════════════════════════════════════════════
-   STUDENT DASHBOARD
-   ════════════════════════════════════════════════════════════════ */
 function renderStudentDashboard(user){
     renderProfileStrip(user);
     renderAnnouncements('studentAnnounceList', 'all');
     renderSports('studentSportsList');
+    renderStudentNotes();
     renderStudentExams(user.regNo);
     updateTicker();
 }
-
 function renderAnnouncements(containerId, filterRole = 'all'){
     const container = document.getElementById(containerId);
     if(!container) return;
     const all = getAnnouncements();
     const filtered = all.filter(a => filterRole === 'all' || a.role === 'all' || a.role === filterRole);
-    container.innerHTML = filtered.map(a => `
-        <li>
-            <strong>${esc(a.title)}</strong> — ${esc(a.content)}
-            ${a.photo ? `<img src="${a.photo}" class="announce-thumb" alt="${esc(a.title)}">` : ''}
-            <span class="text-muted" style="display:block;font-size:.75rem;margin-top:4px;">
-                📅 ${esc(a.date)} &bull; ${esc(a.author)}
-            </span>
-        </li>`).join('') || '<li class="text-muted">No announcements yet.</li>';
+    container.innerHTML = filtered.map(a => `<li><strong>${esc(a.title)}</strong> — ${esc(a.content)}${a.photo ? `<img src="${a.photo}" class="announce-thumb" alt="${esc(a.title)}">` : ''}<span class="text-muted" style="display:block;font-size:.75rem;margin-top:4px;">📅 ${esc(a.date)} &bull; ${esc(a.author)}</span></li>`).join('') || '<li class="text-muted">No announcements yet.</li>';
 }
-
 function renderSports(containerId){
     const container = document.getElementById(containerId);
     if(!container) return;
     const all = getSports();
-    container.innerHTML = all.map(s => `
-        <li>
-            <strong>${esc(s.title)}</strong> — ${esc(s.content)}
-            ${s.photo ? `<img src="${s.photo}" class="announce-thumb" alt="${esc(s.title)}">` : ''}
-            <span class="text-muted" style="display:block;font-size:.75rem;margin-top:4px;">📅 ${esc(s.date)}</span>
-        </li>`).join('') || '<li class="text-muted">No sports updates yet.</li>';
+    container.innerHTML = all.map(s => `<li><strong>${esc(s.title)}</strong> — ${esc(s.content)}${s.photo ? `<img src="${s.photo}" class="announce-thumb" alt="${esc(s.title)}">` : ''}<span class="text-muted" style="display:block;font-size:.75rem;margin-top:4px;">📅 ${esc(s.date)}</span></li>`).join('') || '<li class="text-muted">No sports updates yet.</li>';
 }
-
 function renderStudentExams(regNo){
     const container = document.getElementById('examsContainer');
     if(!container) return;
     const net = getExamRecord(regNo, 'networkDesign');
     const web = getExamRecord(regNo, 'websiteApp');
-
     const netCover = getCover('networkDesign') || 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format';
     const webCover = getCover('websiteApp') || 'https://images.unsplash.com/photo-1547658719-9e7c7f5f46f0?w=800&auto=format';
-
     container.innerHTML = `
-        <div class="exam-card">
-            <div class="exam-header-color"><h2><i class="fas fa-network-wired"></i> Network Design &amp; Management</h2></div>
-            <img src="${netCover}" class="exam-photo" alt="Network Design" onerror="this.style.display='none'">
-            <div class="exam-body">
-                <div class="attempt-badge">
-                    <span>📊 Attempts left: <strong id="netAttemptsLeft">${3-net.attemptsUsed}</strong>/3</span>
-                    <span>🏆 Best Score: <strong id="netBestScore">${net.bestScore}</strong>%</span>
-                </div>
-                <div id="netExamArea"></div>
-                <div id="netResultArea"></div>
-            </div>
-        </div>
-        <div class="exam-card">
-            <div class="exam-header-color"><h2><i class="fas fa-globe"></i> Website Applications – User Need Analysis</h2></div>
-            <img src="${webCover}" class="exam-photo" alt="Website Applications" onerror="this.style.display='none'">
-            <div class="exam-body">
-                <div class="attempt-badge">
-                    <span>📊 Attempts left: <strong id="webAttemptsLeft">${3-web.attemptsUsed}</strong>/3</span>
-                    <span>🏆 Best Score: <strong id="webBestScore">${web.bestScore}</strong>%</span>
-                </div>
-                <div id="webExamArea"></div>
-                <div id="webResultArea"></div>
-            </div>
-        </div>`;
-
-    renderNetworkExam(regNo);
-    renderWebsiteExam(regNo);
+        <div class="exam-card"><div class="exam-header-color"><h2><i class="fas fa-network-wired"></i> Network Design &amp; Management</h2></div><img src="${netCover}" class="exam-photo" alt="Network Design" onerror="this.style.display='none'"><div class="exam-body"><div class="attempt-badge"><span>📊 Attempts left: <strong id="netAttemptsLeft">${3-net.attemptsUsed}</strong>/3</span><span>🏆 Best Score: <strong id="netBestScore">${net.bestScore}</strong>%</span></div><div id="netExamArea"></div><div id="netResultArea"></div></div></div>
+        <div class="exam-card"><div class="exam-header-color"><h2><i class="fas fa-globe"></i> Website Applications – User Need Analysis</h2></div><img src="${webCover}" class="exam-photo" alt="Website Applications" onerror="this.style.display='none'"><div class="exam-body"><div class="attempt-badge"><span>📊 Attempts left: <strong id="webAttemptsLeft">${3-web.attemptsUsed}</strong>/3</span><span>🏆 Best Score: <strong id="webBestScore">${web.bestScore}</strong>%</span></div><div id="webExamArea"></div><div id="webResultArea"></div></div></div>`;
+    renderNetworkExam(regNo); renderWebsiteExam(regNo);
     if(net.attemptsUsed >= 3) disableExamArea('netExamArea','submitNetExam');
     if(web.attemptsUsed >= 3) disableExamArea('webExamArea','submitWebExam');
 }
-
-/* ── NETWORK EXAM ── */
 function renderNetworkExam(regNo){
     const container = document.getElementById('netExamArea');
     if(!container) return;
     let html = `<form id="netForm">`;
     NETWORK_QUESTIONS.forEach((q, idx) => {
         const img = getQuestionImage('networkDesign', idx);
-        html += `<div class="question-block">
-                    <div class="question-text">${idx+1}. ${esc(q.text)}</div>
-                    ${img ? `<img src="${img}" class="q-image" alt="Diagram for question ${idx+1}">` : ''}
-                    <div class="options">`;
-        q.options.forEach((opt, oi) => {
-            html += `<label><input type="radio" name="net_q${idx}" value="${oi}"> ${String.fromCharCode(65+oi)}. ${esc(opt)}</label>`;
-        });
+        html += `<div class="question-block"><div class="question-text">${idx+1}. ${esc(q.text)}</div>${img ? `<img src="${img}" class="q-image" alt="Diagram">` : ''}<div class="options">`;
+        q.options.forEach((opt, oi) => { html += `<label><input type="radio" name="net_q${idx}" value="${oi}"> ${String.fromCharCode(65+oi)}. ${esc(opt)}</label>`; });
         html += `</div></div>`;
     });
-    html += `<button type="button" id="submitNetExam" class="btn-submit-exam">✅ Submit Exam</button>
-             <button type="button" class="btn-submit-exam" style="background:#95a5a6;" onclick="window.clearExamAnswers('netForm')">🗑️ Clear All</button></form>`;
+    html += `<button type="button" id="submitNetExam" class="btn-submit-exam">✅ Submit Exam</button><button type="button" class="btn-submit-exam" style="background:#95a5a6;" onclick="window.clearExamAnswers('netForm')">🗑️ Clear All</button></form>`;
     container.innerHTML = html;
-    const btn = document.getElementById('submitNetExam');
-    if(btn) btn.addEventListener('click', () => submitNetworkExam(regNo));
+    document.getElementById('submitNetExam')?.addEventListener('click', () => submitNetworkExam(regNo));
 }
-
 function submitNetworkExam(regNo){
-    if(!canAttempt(regNo,'networkDesign')){
-        document.getElementById('netResultArea').innerHTML = `<div class="locked-message">No attempts left.</div>`;
-        return;
-    }
+    if(!canAttempt(regNo,'networkDesign')){ document.getElementById('netResultArea').innerHTML = `<div class="locked-message">No attempts left.</div>`; return; }
     let score = 0;
     for(let i=0;i<NETWORK_QUESTIONS.length;i++){
         const sel = document.querySelector(`input[name="net_q${i}"]:checked`);
@@ -1525,56 +1196,31 @@ function submitNetworkExam(regNo){
     }
     const percent = Math.round((score / NETWORK_QUESTIONS.length) * 100);
     const updated = updateExamRecord(regNo,'networkDesign',percent);
-
     document.getElementById('netAttemptsLeft').innerText = 3 - updated.attemptsUsed;
     document.getElementById('netBestScore').innerText = updated.bestScore;
-
-    const passMsg = percent >= 50
-        ? `<div style="color:#065f46;background:#d1fae5;padding:.8rem;border-radius:16px;">🎉 PASSED! ${percent}%</div>`
-        : `<div style="color:#991b1b;background:#fee2e2;padding:.8rem;border-radius:16px;">❌ FAILED: ${percent}%. Need 50%.</div>`;
-
-    document.getElementById('netResultArea').innerHTML =
-        `<div class="result-card">
-            <h3>Result</h3>
-            <p>Score: ${score}/${NETWORK_QUESTIONS.length} (${percent}%)</p>
-            <p>Attempts left: ${3-updated.attemptsUsed} | Best: ${updated.bestScore}%</p>
-            ${passMsg}
-         </div>`;
+    const passMsg = percent >= 50 ? `<div style="color:#065f46;background:#d1fae5;padding:.8rem;border-radius:16px;">🎉 PASSED! ${percent}%</div>` : `<div style="color:#991b1b;background:#fee2e2;padding:.8rem;border-radius:16px;">❌ FAILED: ${percent}%. Need 50%.</div>`;
+    document.getElementById('netResultArea').innerHTML = `<div class="result-card"><h3>Result</h3><p>Score: ${score}/${NETWORK_QUESTIONS.length} (${percent}%)</p><p>Attempts left: ${3-updated.attemptsUsed} | Best: ${updated.bestScore}%</p>${passMsg}</div>`;
     if(updated.attemptsUsed >= 3) disableExamArea('netExamArea','submitNetExam');
     if(currentUser) renderProfileStrip(currentUser);
 }
-
-/* ── WEBSITE EXAM ── */
 function renderWebsiteExam(regNo){
     const container = document.getElementById('webExamArea');
     if(!container) return;
     let html = `<form id="webForm">`;
     WEBSITE_QUESTIONS.forEach((q, idx) => {
         const img = getQuestionImage('websiteApp', idx);
-        html += `<div class="question-block">
-                    <div class="question-text">${esc(q.text)}</div>
-                    ${img ? `<img src="${img}" class="q-image" alt="Diagram for question ${idx+1}">` : ''}
-                    <textarea rows="4" id="web_essay_${idx}" style="width:100%;padding:10px;border-radius:12px;border:1px solid #cde6dc;font-family:inherit;" placeholder="Write your answer in detail..."></textarea>
-                    <div class="text-muted" style="font-size:.7rem;margin-top:4px;">Max marks: ${q.marks}</div>
-                 </div>`;
+        html += `<div class="question-block"><div class="question-text">${esc(q.text)}</div>${img ? `<img src="${img}" class="q-image" alt="Diagram">` : ''}<textarea rows="4" id="web_essay_${idx}" style="width:100%;padding:10px;border-radius:12px;border:1px solid #cde6dc;font-family:inherit;" placeholder="Write your answer in detail..."></textarea><div class="text-muted" style="font-size:.7rem;margin-top:4px;">Max marks: ${q.marks}</div></div>`;
     });
-    html += `<button type="button" id="submitWebExam" class="btn-submit-exam">✅ Submit Website Exam</button>
-             <button type="button" class="btn-submit-exam" style="background:#95a5a6;" onclick="window.clearExamAnswers('webForm')">🗑️ Clear All</button></form>`;
+    html += `<button type="button" id="submitWebExam" class="btn-submit-exam">✅ Submit Website Exam</button><button type="button" class="btn-submit-exam" style="background:#95a5a6;" onclick="window.clearExamAnswers('webForm')">🗑️ Clear All</button></form>`;
     container.innerHTML = html;
-    const btn = document.getElementById('submitWebExam');
-    if(btn) btn.addEventListener('click', () => submitWebsiteExam(regNo));
+    document.getElementById('submitWebExam')?.addEventListener('click', () => submitWebsiteExam(regNo));
 }
-
 function submitWebsiteExam(regNo){
-    if(!canAttempt(regNo,'websiteApp')){
-        document.getElementById('webResultArea').innerHTML = `<div class="locked-message">No attempts left.</div>`;
-        return;
-    }
+    if(!canAttempt(regNo,'websiteApp')){ document.getElementById('webResultArea').innerHTML = `<div class="locked-message">No attempts left.</div>`; return; }
     let totalMarks = 0, maxMarks = 0;
     WEBSITE_QUESTIONS.forEach((q, idx) => {
         const answer = (document.getElementById(`web_essay_${idx}`)?.value || '').trim();
-        const marks = q.marks || 5;
-        maxMarks += marks;
+        const marks = q.marks || 5; maxMarks += marks;
         let earned = 0;
         if(answer.length > 20){
             const keywords = q.expectedKeywords || [];
@@ -1583,170 +1229,99 @@ function submitWebsiteExam(regNo){
             const ratio = keywords.length ? matchCount / keywords.length : 0;
             earned = Math.min(marks, Math.round(ratio * marks));
             if(earned < 1 && answer.length > 30) earned = 1;
-        } else if(answer.length > 10){
-            earned = 1;
-        }
+        } else if(answer.length > 10){ earned = 1; }
         totalMarks += earned;
     });
     const percent = Math.round((totalMarks / maxMarks) * 100);
     const updated = updateExamRecord(regNo,'websiteApp',percent);
-
     document.getElementById('webAttemptsLeft').innerText = 3 - updated.attemptsUsed;
     document.getElementById('webBestScore').innerText = updated.bestScore;
-
-    const passMsg = percent >= 50
-        ? `<div style="color:#065f46;background:#d1fae5;padding:.8rem;border-radius:16px;">🎉 PASSED! ${percent}%</div>`
-        : `<div style="color:#991b1b;background:#fee2e2;padding:.8rem;border-radius:16px;">❌ FAILED: ${percent}%. Need 50%.</div>`;
-
-    document.getElementById('webResultArea').innerHTML =
-        `<div class="result-card">
-            <h3>Result</h3>
-            <p>Score: ${totalMarks}/${maxMarks} (${percent}%)</p>
-            <p>Attempts left: ${3-updated.attemptsUsed} | Best: ${updated.bestScore}%</p>
-            ${passMsg}
-         </div>`;
+    const passMsg = percent >= 50 ? `<div style="color:#065f46;background:#d1fae5;padding:.8rem;border-radius:16px;">🎉 PASSED! ${percent}%</div>` : `<div style="color:#991b1b;background:#fee2e2;padding:.8rem;border-radius:16px;">❌ FAILED: ${percent}%. Need 50%.</div>`;
+    document.getElementById('webResultArea').innerHTML = `<div class="result-card"><h3>Result</h3><p>Score: ${totalMarks}/${maxMarks} (${percent}%)</p><p>Attempts left: ${3-updated.attemptsUsed} | Best: ${updated.bestScore}%</p>${passMsg}</div>`;
     if(updated.attemptsUsed >= 3) disableExamArea('webExamArea','submitWebExam');
     if(currentUser) renderProfileStrip(currentUser);
 }
-
 function disableExamArea(areaId, btnId){
     const area = document.getElementById(areaId);
     if(area) area.querySelectorAll('input, textarea').forEach(i => i.disabled = true);
     const btn = document.getElementById(btnId);
     if(btn) btn.disabled = true;
 }
-
 window.clearExamAnswers = function(formId){
     const form = document.getElementById(formId);
     if(!form) return;
     form.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
     form.querySelectorAll('textarea').forEach(t => t.value = '');
 };
-
-/* ════════════════════════════════════════════════════════════════
-   QUESTION MEDIA MANAGER (Trainer + Exam Office)
-   ════════════════════════════════════════════════════════════════ */
-function mediaPreviewBox(src, label){
-    return `<div class="media-preview">${src ? `<img src="${src}" alt="${esc(label)}">` : '<i class="fas fa-image"></i>'}</div>`;
-}
-
+function mediaPreviewBox(src, label){ return `<div class="media-preview">${src ? `<img src="${src}" alt="${esc(label)}">` : '<i class="fas fa-image"></i>'}</div>`; }
 function renderQuestionMediaPanel(containerId){
     const container = document.getElementById(containerId);
     if(!container) return;
-
     const netCover = getCover('networkDesign');
     const webCover = getCover('websiteApp');
-
-    let html = `
+    container.innerHTML = `
     <div class="form-card">
         <h4 style="margin-bottom:.4rem;">🖼️ Exam Cover Photos</h4>
-        <p class="text-muted mb-1">These photos appear at the top of each exam paper for students.</p>
+        <p class="text-muted mb-1">These photos appear at the top of each exam paper.</p>
         <div class="form-row">
-            <div>
-                <label class="field-label">📶 Network Design &amp; Management — Cover</label>
-                <div class="media-preview-row">
-                    ${mediaPreviewBox(netCover,'Network cover')}
-                    <label class="file-btn"><i class="fas fa-upload"></i> Upload
-                        <input type="file" accept="image/*" hidden onchange="window.uploadCover('networkDesign', this)">
-                    </label>
-                    ${netCover ? `<button class="btn-danger btn-sm" onclick="window.removeCover('networkDesign')">🗑️ Remove</button>` : ''}
-                </div>
-            </div>
-            <div>
-                <label class="field-label">🌐 Website Applications — Cover</label>
-                <div class="media-preview-row">
-                    ${mediaPreviewBox(webCover,'Website cover')}
-                    <label class="file-btn"><i class="fas fa-upload"></i> Upload
-                        <input type="file" accept="image/*" hidden onchange="window.uploadCover('websiteApp', this)">
-                    </label>
-                    ${webCover ? `<button class="btn-danger btn-sm" onclick="window.removeCover('websiteApp')">🗑️ Remove</button>` : ''}
-                </div>
-            </div>
+            <div><label class="field-label">📶 Network Design — Cover</label><div class="media-preview-row">${mediaPreviewBox(netCover,'Network cover')}<label class="file-btn"><i class="fas fa-upload"></i> Upload<input type="file" accept="image/*" hidden onchange="window.uploadCover('networkDesign', this)"></label>${netCover ? `<button class="btn-danger btn-sm" onclick="window.removeCover('networkDesign')">🗑️ Remove</button>` : ''}</div></div>
+            <div><label class="field-label">🌐 Website Applications — Cover</label><div class="media-preview-row">${mediaPreviewBox(webCover,'Website cover')}<label class="file-btn"><i class="fas fa-upload"></i> Upload<input type="file" accept="image/*" hidden onchange="window.uploadCover('websiteApp', this)"></label>${webCover ? `<button class="btn-danger btn-sm" onclick="window.removeCover('websiteApp')">🗑️ Remove</button>` : ''}</div></div>
         </div>
     </div>
-
     <div class="form-card">
         <h4 style="margin-bottom:.4rem;">📝 Question Images</h4>
-        <p class="text-muted mb-1">Attach a diagram / photo to any question. It is displayed on the student exam paper.</p>
+        <p class="text-muted mb-1">Attach a diagram / photo to any question.</p>
         <div class="q-media-list">
-            <div class="q-section-head"><i class="fas fa-network-wired"></i> NETWORK DESIGN (${NETWORK_QUESTIONS.length} questions)</div>
+            <div class="q-section-head"><i class="fas fa-network-wired"></i> NETWORK DESIGN (${NETWORK_QUESTIONS.length})</div>
             ${NETWORK_QUESTIONS.map((q,i) => questionRow('networkDesign', i, q.text)).join('')}
-            <div class="q-section-head"><i class="fas fa-globe"></i> WEBSITE APPLICATIONS (${WEBSITE_QUESTIONS.length} questions)</div>
+            <div class="q-section-head"><i class="fas fa-globe"></i> WEBSITE APPLICATIONS (${WEBSITE_QUESTIONS.length})</div>
             ${WEBSITE_QUESTIONS.map((q,i) => questionRow('websiteApp', i, q.text)).join('')}
         </div>
     </div>`;
-
-    container.innerHTML = html;
 }
-
 function questionRow(examKey, idx, text){
     const img = getQuestionImage(examKey, idx);
     const short = text.length > 85 ? text.slice(0,85) + '…' : text;
-    return `
-    <div class="q-media-row">
-        <div class="q-media-text">Q${idx+1}. ${esc(short)}
-            <small>${img ? '✅ Image attached' : 'No image attached'}</small>
-        </div>
-        <div class="q-media-thumb">${img ? `<img src="${img}" alt="Q${idx+1}">` : '<i class="fas fa-image"></i>'}</div>
-        <label class="file-btn"><i class="fas fa-upload"></i> Upload
-            <input type="file" accept="image/*" hidden onchange="window.uploadQuestionImage('${examKey}', ${idx}, this)">
-        </label>
-        ${img ? `<button class="btn-danger btn-sm" onclick="window.removeQuestionImage('${examKey}', ${idx})">🗑️</button>` : ''}
-    </div>`;
+    return `<div class="q-media-row"><div class="q-media-text">Q${idx+1}. ${esc(short)}<small>${img ? '✅ Image attached' : 'No image attached'}</small></div><div class="q-media-thumb">${img ? `<img src="${img}" alt="Q${idx+1}">` : '<i class="fas fa-image"></i>'}</div><label class="file-btn"><i class="fas fa-upload"></i> Upload<input type="file" accept="image/*" hidden onchange="window.uploadQuestionImage('${examKey}', ${idx}, this)"></label>${img ? `<button class="btn-danger btn-sm" onclick="window.removeQuestionImage('${examKey}', ${idx})">🗑️</button>` : ''}</div>`;
 }
-
 window.uploadCover = async function(examKey, input){
     if(!input.files || !input.files[0]) return;
     try{
         const data = await fileToDataURL(input.files[0], 1000, 600, 0.85);
-        const m = getMedia();
-        m.covers[examKey] = data;
-        setMedia(m);
+        const m = getMedia(); m.covers[examKey] = data; setMedia(m);
         refreshMediaPanels();
         if(currentUser && currentUser.role === 'student') renderStudentExams(currentUser.regNo);
         alert('✅ Cover photo saved.');
     }catch(e){ alert('❌ Could not read that image.'); }
     input.value = '';
 };
-
 window.removeCover = function(examKey){
     if(!confirm('Remove this cover photo?')) return;
-    const m = getMedia();
-    delete m.covers[examKey];
-    setMedia(m);
+    const m = getMedia(); delete m.covers[examKey]; setMedia(m);
     refreshMediaPanels();
 };
-
 window.uploadQuestionImage = async function(examKey, idx, input){
     if(!input.files || !input.files[0]) return;
     try{
         const data = await fileToDataURL(input.files[0], 900, 700, 0.82);
         const m = getMedia();
         if(!m.questions[examKey]) m.questions[examKey] = {};
-        m.questions[examKey][idx] = data;
-        setMedia(m);
+        m.questions[examKey][idx] = data; setMedia(m);
         refreshMediaPanels();
         alert('✅ Question image saved.');
     }catch(e){ alert('❌ Could not read that image.'); }
     input.value = '';
 };
-
 window.removeQuestionImage = function(examKey, idx){
     if(!confirm('Remove this question image?')) return;
     const m = getMedia();
     if(m.questions[examKey]) delete m.questions[examKey][idx];
-    setMedia(m);
-    refreshMediaPanels();
+    setMedia(m); refreshMediaPanels();
 };
-
 function refreshMediaPanels(){
     if(document.getElementById('trainerManageQ')) renderQuestionMediaPanel('trainerManageQ');
     if(document.getElementById('examExamMedia'))   renderQuestionMediaPanel('examExamMedia');
 }
-
-/* ════════════════════════════════════════════════════════════════
-   TRAINER DASHBOARD
-   ════════════════════════════════════════════════════════════════ */
 function computeStats(){
     const users = getUsers();
     const students = users.filter(u => u.role === 'student');
@@ -1754,18 +1329,10 @@ function computeStats(){
     let totalExams = 0, passed = 0, failed = 0;
     students.forEach(s => {
         const r = records[s.regNo];
-        if(r){
-            ['networkDesign','websiteApp'].forEach(k => {
-                if(r[k] && r[k].attemptsUsed > 0){
-                    totalExams++;
-                    if(r[k].bestScore >= 50) passed++; else failed++;
-                }
-            });
-        }
+        if(r){ ['networkDesign','websiteApp'].forEach(k => { if(r[k] && r[k].attemptsUsed > 0){ totalExams++; if(r[k].bestScore >= 50) passed++; else failed++; } }); }
     });
     return { students, totalExams, passed, failed };
 }
-
 function renderTrainerDashboard(){
     const { students, totalExams, passed, failed } = computeStats();
     document.getElementById('trainerStats').innerHTML = `
@@ -1773,11 +1340,10 @@ function renderTrainerDashboard(){
         <div class="stat-card"><div class="number">${totalExams}</div><div class="label">📝 Exams Taken</div></div>
         <div class="stat-card"><div class="number" style="color:#27ae60;">${passed}</div><div class="label">✅ Passed</div></div>
         <div class="stat-card"><div class="number" style="color:#e74c3c;">${failed}</div><div class="label">❌ Failed</div></div>`;
-
     renderQuestionMediaPanel('trainerManageQ');
     renderTrainerStudentPerf();
+    renderTrainerNotes();
     renderTrainerManageAnnounce();
-
     document.querySelectorAll('[data-trainer-tab]').forEach(btn => {
         btn.addEventListener('click', function(){
             document.querySelectorAll('[data-trainer-tab]').forEach(b => b.classList.remove('active-nav'));
@@ -1789,7 +1355,6 @@ function renderTrainerDashboard(){
         });
     });
 }
-
 function studentTableRows(students, records, showAvg){
     return students.map(s => {
         const r = records[s.regNo] || {};
@@ -1797,110 +1362,48 @@ function studentTableRows(students, records, showAvg){
         const web = r.websiteApp    || { bestScore:0, attemptsUsed:0 };
         const avg = (net.bestScore + web.bestScore) / 2;
         const status = avg >= 50 ? '<span class="badge-pass">✅ Pass</span>' : '<span class="badge-fail">❌ Fail</span>';
-        return `<tr>
-            <td><div class="user-cell">${avatarHTML(s,'sm')}<span>${esc(s.regNo)}</span></div></td>
-            <td>${esc(s.fullName)}</td>
-            <td>${net.bestScore}% (${net.attemptsUsed}/3)</td>
-            <td>${web.bestScore}% (${web.attemptsUsed}/3)</td>
-            ${showAvg ? `<td>${avg.toFixed(0)}%</td>` : ''}
-            <td>${status}</td>
-        </tr>`;
+        return `<tr><td><div class="user-cell">${avatarHTML(s,'sm')}<span>${esc(s.regNo)}</span></div></td><td>${esc(s.fullName)}</td><td>${net.bestScore}% (${net.attemptsUsed}/3)</td><td>${web.bestScore}% (${web.attemptsUsed}/3)</td>${showAvg ? `<td>${avg.toFixed(0)}%</td>` : ''}<td>${status}</td></tr>`;
     }).join('');
 }
-
 function renderTrainerStudentPerf(){
     const container = document.getElementById('trainerStudentPerf');
     if(!container) return;
-    const users = getUsers();
-    const students = users.filter(u => u.role === 'student');
+    const students = getUsers().filter(u => u.role === 'student');
     const records = getExamRecords();
-    container.innerHTML = `
-        <div class="table-wrap">
-            <h4 style="margin-bottom:.8rem;">📊 Student Performance</h4>
-            <table>
-                <thead><tr><th>Reg No</th><th>Name</th><th>Network %</th><th>Website %</th><th>Status</th></tr></thead>
-                <tbody>${studentTableRows(students, records, false) || '<tr><td colspan="5" class="text-muted">No students registered.</td></tr>'}</tbody>
-            </table>
-        </div>`;
+    container.innerHTML = `<div class="table-wrap"><h4 style="margin-bottom:.8rem;">📊 Student Performance</h4><table><thead><tr><th>Reg No</th><th>Name</th><th>Network %</th><th>Website %</th><th>Status</th></tr></thead><tbody>${studentTableRows(students, records, false) || '<tr><td colspan="5" class="text-muted">No students registered.</td></tr>'}</tbody></table></div>`;
 }
-
 function announcementForm(prefix){
-    return `
-    <div class="form-card">
-        <h4 style="margin-bottom:1rem;">📢 Create Announcement</h4>
-        <div class="form-row">
-            <div class="full"><input type="text" id="${prefix}AnnTitle" placeholder="Announcement title"></div>
-            <div class="full"><textarea id="${prefix}AnnContent" rows="3" placeholder="Announcement content..."></textarea></div>
-            <div>
-                <label class="field-label">Photo / Poster (optional)</label>
-                <div class="media-preview-row">
-                    <div class="media-preview" id="${prefix}AnnPreview"><i class="fas fa-image"></i></div>
-                    <label class="file-btn"><i class="fas fa-camera"></i> Attach Photo
-                        <input type="file" accept="image/*" hidden onchange="window.pickAnnouncePhoto('${prefix}', this)">
-                    </label>
-                </div>
-            </div>
-            <div>
-                <label class="field-label">Audience</label>
-                <select id="${prefix}AnnRole">
-                    <option value="all">👥 All Users</option>
-                    <option value="student">👨‍🎓 Students</option>
-                    <option value="trainer">👨‍🏫 Trainers</option>
-                    <option value="examoffice">📋 Exam Office</option>
-                </select>
-                <div style="margin-top:1rem;">
-                    <button class="btn-primary btn-sm" onclick="window.createAnnouncement('${prefix}')">➕ Publish Announcement</button>
-                </div>
-            </div>
-        </div>
-    </div>`;
+    return `<div class="form-card"><h4 style="margin-bottom:1rem;">📢 Create Announcement</h4><div class="form-row"><div class="full"><input type="text" id="${prefix}AnnTitle" placeholder="Announcement title"></div><div class="full"><textarea id="${prefix}AnnContent" rows="3" placeholder="Announcement content..."></textarea></div><div><label class="field-label">Photo (optional)</label><div class="media-preview-row"><div class="media-preview" id="${prefix}AnnPreview"><i class="fas fa-image"></i></div><label class="file-btn"><i class="fas fa-camera"></i> Attach Photo<input type="file" accept="image/*" hidden onchange="window.pickAnnouncePhoto('${prefix}', this)"></label></div></div><div><label class="field-label">Audience</label><select id="${prefix}AnnRole"><option value="all">👥 All Users</option><option value="student">👨‍🎓 Students</option><option value="trainer">👨‍🏫 Trainers</option><option value="examoffice">📋 Exam Office</option></select><div style="margin-top:1rem;"><button class="btn-primary btn-sm" onclick="window.createAnnouncement('${prefix}')">➕ Publish</button></div></div></div></div>`;
 }
-
 function announcementTable(title){
     const all = getAnnouncements();
-    let html = `<div class="table-wrap"><h4 style="margin-bottom:.8rem;">${title}</h4>
-        <table><thead><tr><th>Photo</th><th>Title</th><th>Content</th><th>Audience</th><th>Date</th><th>Action</th></tr></thead><tbody>`;
+    let html = `<div class="table-wrap"><h4 style="margin-bottom:.8rem;">${title}</h4><table><thead><tr><th>Photo</th><th>Title</th><th>Content</th><th>Audience</th><th>Date</th><th>Action</th></tr></thead><tbody>`;
     if(!all.length) html += `<tr><td colspan="6" class="text-muted">No announcements yet.</td></tr>`;
     all.forEach(a => {
-        html += `<tr>
-            <td><div class="q-media-thumb">${a.photo ? `<img src="${a.photo}" alt="">` : '<i class="fas fa-image"></i>'}</div></td>
-            <td>${esc(a.title)}</td>
-            <td>${esc(a.content)}</td>
-            <td>${esc(a.role)}</td>
-            <td>${esc(a.date)}</td>
-            <td><button class="btn-danger btn-sm" onclick="window.deleteAnnouncement('${a.id}')">🗑️</button></td>
-        </tr>`;
+        html += `<tr><td><div class="q-media-thumb">${a.photo ? `<img src="${a.photo}" alt="">` : '<i class="fas fa-image"></i>'}</div></td><td>${esc(a.title)}</td><td>${esc(a.content)}</td><td>${esc(a.role)}</td><td>${esc(a.date)}</td><td><button class="btn-danger btn-sm" onclick="window.deleteAnnouncement('${a.id}')">🗑️</button></td></tr>`;
     });
     html += `</tbody></table></div>`;
     return html;
 }
-
 function renderTrainerManageAnnounce(){
     const container = document.getElementById('trainerManageAnnounce');
     if(!container) return;
     container.innerHTML = announcementForm('trainer') + announcementTable('Existing Announcements');
 }
-
-/* ════════════════════════════════════════════════════════════════
-   EXAM OFFICE DASHBOARD
-   ════════════════════════════════════════════════════════════════ */
 function renderExamOfficeDashboard(){
     const { students, totalExams, passed, failed } = computeStats();
     const passRate = totalExams ? Math.round((passed/totalExams)*100) : 0;
-
     document.getElementById('examOfficeStats').innerHTML = `
         <div class="stat-card"><div class="number">${students.length}</div><div class="label">👨‍🎓 Total Students</div></div>
         <div class="stat-card"><div class="number">${totalExams}</div><div class="label">📝 Exams Taken</div></div>
         <div class="stat-card"><div class="number" style="color:#27ae60;">${passed}</div><div class="label">✅ Passed</div></div>
         <div class="stat-card"><div class="number" style="color:#e74c3c;">${failed}</div><div class="label">❌ Failed</div></div>
         <div class="stat-card"><div class="number">${passRate}%</div><div class="label">📈 Pass Rate</div></div>`;
-
     renderExamAllResults();
     renderExamResetAttempts();
     renderQuestionMediaPanel('examExamMedia');
     renderExamManageAnnounce();
     renderExamManageSports();
-
     document.querySelectorAll('[data-exam-tab]').forEach(btn => {
         btn.addEventListener('click', function(){
             document.querySelectorAll('[data-exam-tab]').forEach(b => b.classList.remove('active-nav'));
@@ -1912,54 +1415,22 @@ function renderExamOfficeDashboard(){
         });
     });
 }
-
 function renderExamAllResults(){
     const container = document.getElementById('examAllResults');
     if(!container) return;
-    const users = getUsers();
-    const students = users.filter(u => u.role === 'student');
+    const students = getUsers().filter(u => u.role === 'student');
     const records = getExamRecords();
-    container.innerHTML = `
-        <div class="table-wrap">
-            <h4 style="margin-bottom:.8rem;">📋 All Student Results</h4>
-            <table>
-                <thead><tr><th>Reg No</th><th>Name</th><th>Network % (Attempts)</th><th>Website % (Attempts)</th><th>Avg %</th><th>Status</th></tr></thead>
-                <tbody>${studentTableRows(students, records, true) || '<tr><td colspan="6" class="text-muted">No students registered.</td></tr>'}</tbody>
-            </table>
-        </div>`;
+    container.innerHTML = `<div class="table-wrap"><h4 style="margin-bottom:.8rem;">📋 All Student Results</h4><table><thead><tr><th>Reg No</th><th>Name</th><th>Network % (Attempts)</th><th>Website % (Attempts)</th><th>Avg %</th><th>Status</th></tr></thead><tbody>${studentTableRows(students, records, true) || '<tr><td colspan="6" class="text-muted">No students registered.</td></tr>'}</tbody></table></div>`;
 }
-
 function renderExamResetAttempts(){
     const container = document.getElementById('examResetAttempts');
     if(!container) return;
     const students = getUsers().filter(u => u.role === 'student');
-    let html = `
-        <div class="form-card">
-            <h4 style="margin-bottom:.4rem;">🔄 Reset Student Attempts</h4>
-            <p class="text-muted mb-1">Select a student and an exam to reset their attempts back to 0.</p>
-            <div class="form-row">
-                <div>
-                    <label class="field-label">Student</label>
-                    <select id="resetStudentSelect"><option value="">— Select Student —</option>`;
+    let html = `<div class="form-card"><h4 style="margin-bottom:.4rem;">🔄 Reset Student Attempts</h4><p class="text-muted mb-1">Select a student and an exam to reset their attempts to 0.</p><div class="form-row"><div><label class="field-label">Student</label><select id="resetStudentSelect"><option value="">— Select Student —</option>`;
     students.forEach(s => { html += `<option value="${esc(s.regNo)}">${esc(s.regNo)} — ${esc(s.fullName)}</option>`; });
-    html += `</select></div>
-                <div>
-                    <label class="field-label">Exam</label>
-                    <select id="resetExamSelect">
-                        <option value="networkDesign">📶 Network Design</option>
-                        <option value="websiteApp">🌐 Website Applications</option>
-                        <option value="all">🔄 Both Exams</option>
-                    </select>
-                </div>
-                <div class="full">
-                    <button class="btn-danger" onclick="window.resetStudentAttempts()">🔄 Reset Attempts</button>
-                </div>
-            </div>
-            <div id="resetResultMsg" class="message-box"></div>
-        </div>`;
+    html += `</select></div><div><label class="field-label">Exam</label><select id="resetExamSelect"><option value="networkDesign">📶 Network Design</option><option value="websiteApp">🌐 Website Applications</option><option value="all">🔄 Both Exams</option></select></div><div class="full"><button class="btn-danger" onclick="window.resetStudentAttempts()">🔄 Reset Attempts</button></div></div><div id="resetResultMsg" class="message-box"></div></div>`;
     container.innerHTML = html;
 }
-
 window.resetStudentAttempts = function(){
     const regNo = document.getElementById('resetStudentSelect')?.value;
     const examKey = document.getElementById('resetExamSelect')?.value;
@@ -1969,64 +1440,25 @@ window.resetStudentAttempts = function(){
     showMessage(msg, `✅ Attempts reset successfully for ${examKey === 'all' ? 'both exams' : examKey}.`, false);
     renderExamAllResults();
 };
-
 function renderExamManageAnnounce(){
     const container = document.getElementById('examManageAnnounce');
     if(!container) return;
     container.innerHTML = announcementForm('exam') + announcementTable('All Announcements');
 }
-
 function renderExamManageSports(){
     const container = document.getElementById('examManageSports');
     if(!container) return;
     const all = getSports();
-    let html = `
-        <div class="form-card">
-            <h4 style="margin-bottom:1rem;">⚽ Manage Sports Updates</h4>
-            <div class="form-row">
-                <div class="full"><input type="text" id="sportsTitle" placeholder="Event title"></div>
-                <div class="full"><textarea id="sportsContent" rows="3" placeholder="Description..."></textarea></div>
-                <div>
-                    <label class="field-label">Event Photo (optional)</label>
-                    <div class="media-preview-row">
-                        <div class="media-preview" id="sportsPreview"><i class="fas fa-image"></i></div>
-                        <label class="file-btn"><i class="fas fa-camera"></i> Attach Photo
-                            <input type="file" accept="image/*" hidden onchange="window.pickSportsPhoto(this)">
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <label class="field-label">Event Date</label>
-                    <input type="date" id="sportsDate">
-                    <div style="margin-top:1rem;">
-                        <button class="btn-primary btn-sm" onclick="window.createSportsUpdate()">➕ Add Sports Update</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="table-wrap">
-            <h4 style="margin-bottom:.8rem;">Sports Updates</h4>
-            <table><thead><tr><th>Photo</th><th>Title</th><th>Content</th><th>Date</th><th>Action</th></tr></thead><tbody>`;
+    let html = `<div class="form-card"><h4 style="margin-bottom:1rem;">⚽ Manage Sports Updates</h4><div class="form-row"><div class="full"><input type="text" id="sportsTitle" placeholder="Event title"></div><div class="full"><textarea id="sportsContent" rows="3" placeholder="Description..."></textarea></div><div><label class="field-label">Event Photo (optional)</label><div class="media-preview-row"><div class="media-preview" id="sportsPreview"><i class="fas fa-image"></i></div><label class="file-btn"><i class="fas fa-camera"></i> Attach Photo<input type="file" accept="image/*" hidden onchange="window.pickSportsPhoto(this)"></label></div></div><div><label class="field-label">Event Date</label><input type="date" id="sportsDate"><div style="margin-top:1rem;"><button class="btn-primary btn-sm" onclick="window.createSportsUpdate()">➕ Add</button></div></div></div></div><div class="table-wrap"><h4 style="margin-bottom:.8rem;">Sports Updates</h4><table><thead><tr><th>Photo</th><th>Title</th><th>Content</th><th>Date</th><th>Action</th></tr></thead><tbody>`;
     if(!all.length) html += `<tr><td colspan="5" class="text-muted">No sports updates yet.</td></tr>`;
     all.forEach(s => {
-        html += `<tr>
-            <td><div class="q-media-thumb">${s.photo ? `<img src="${s.photo}" alt="">` : '<i class="fas fa-image"></i>'}</div></td>
-            <td>${esc(s.title)}</td>
-            <td>${esc(s.content)}</td>
-            <td>${esc(s.date)}</td>
-            <td><button class="btn-danger btn-sm" onclick="window.deleteSports('${s.id}')">🗑️</button></td>
-        </tr>`;
+        html += `<tr><td><div class="q-media-thumb">${s.photo ? `<img src="${s.photo}" alt="">` : '<i class="fas fa-image"></i>'}</div></td><td>${esc(s.title)}</td><td>${esc(s.content)}</td><td>${esc(s.date)}</td><td><button class="btn-danger btn-sm" onclick="window.deleteSports('${s.id}')">🗑️</button></td></tr>`;
     });
     html += `</tbody></table></div>`;
     container.innerHTML = html;
 }
-
-/* ════════════════════════════════════════════════════════════════
-   CRUD (announcements / sports)
-   ════════════════════════════════════════════════════════════════ */
 let pendingAnnouncePhoto = { trainer:'', exam:'' };
 let pendingSportsPhoto = '';
-
 window.pickAnnouncePhoto = async function(prefix, input){
     if(!input.files || !input.files[0]) return;
     try{
@@ -2037,7 +1469,6 @@ window.pickAnnouncePhoto = async function(prefix, input){
     }catch(e){ alert('❌ Could not read that image.'); }
     input.value = '';
 };
-
 window.pickSportsPhoto = async function(input){
     if(!input.files || !input.files[0]) return;
     try{
@@ -2048,47 +1479,31 @@ window.pickSportsPhoto = async function(input){
     }catch(e){ alert('❌ Could not read that image.'); }
     input.value = '';
 };
-
 window.createAnnouncement = function(prefix){
     const title   = document.getElementById(`${prefix}AnnTitle`)?.value.trim();
     const content = document.getElementById(`${prefix}AnnContent`)?.value.trim();
     const audience= document.getElementById(`${prefix}AnnRole`)?.value || 'all';
     if(!title || !content){ alert('Please fill in the title and content.'); return; }
-
     const all = getAnnouncements();
-    all.push({
-        id: 'a' + Date.now(),
-        title, content,
-        author: currentUser?.fullName || 'System',
-        date: new Date().toISOString().slice(0,10),
-        role: audience,
-        photo: pendingAnnouncePhoto[prefix] || ''
-    });
+    all.push({ id: 'a' + Date.now(), title, content, author: currentUser?.fullName || 'System', date: new Date().toISOString().slice(0,10), role: audience, photo: pendingAnnouncePhoto[prefix] || '' });
     setAnnouncements(all);
     pendingAnnouncePhoto[prefix] = '';
-
-    if(currentUser?.role === 'trainer') renderTrainerManageAnnounce();
-    else renderExamManageAnnounce();
-
+    if(currentUser?.role === 'trainer') renderTrainerManageAnnounce(); else renderExamManageAnnounce();
     renderAnnouncements('studentAnnounceList','all');
     updateTicker();
 };
-
 window.deleteAnnouncement = function(id){
     if(!confirm('Delete this announcement?')) return;
     setAnnouncements(getAnnouncements().filter(a => a.id !== id));
-    if(currentUser?.role === 'trainer') renderTrainerManageAnnounce();
-    else renderExamManageAnnounce();
+    if(currentUser?.role === 'trainer') renderTrainerManageAnnounce(); else renderExamManageAnnounce();
     renderAnnouncements('studentAnnounceList','all');
     updateTicker();
 };
-
 window.createSportsUpdate = function(){
     const title   = document.getElementById('sportsTitle')?.value.trim();
     const content = document.getElementById('sportsContent')?.value.trim();
     const date    = document.getElementById('sportsDate')?.value || new Date().toISOString().slice(0,10);
     if(!title || !content){ alert('Please fill in the title and content.'); return; }
-
     const all = getSports();
     all.push({ id:'s'+Date.now(), title, content, date, photo: pendingSportsPhoto || '' });
     setSports(all);
@@ -2096,46 +1511,33 @@ window.createSportsUpdate = function(){
     renderExamManageSports();
     renderSports('studentSportsList');
 };
-
 window.deleteSports = function(id){
     if(!confirm('Delete this sports update?')) return;
     setSports(getSports().filter(s => s.id !== id));
     renderExamManageSports();
     renderSports('studentSportsList');
 };
-
-/* ════════════════════════════════════════════════════════════════
-   SESSION
-   ════════════════════════════════════════════════════════════════ */
 function showDashboard(user){
     currentUser = user;
     document.getElementById('authContainer').style.display = 'none';
     const dash = document.getElementById('studentDashboard');
     dash.style.display = 'block';
     dash.classList.add('active-dash');
-
     document.getElementById('dashUserName').innerText = user.fullName;
-    document.getElementById('dashUserRole').innerText =
-        user.role === 'examoffice' ? 'Exam Office' : user.role.charAt(0).toUpperCase() + user.role.slice(1);
-
+    document.getElementById('dashUserRole').innerText = user.role === 'examoffice' ? 'Exam Office' : user.role.charAt(0).toUpperCase() + user.role.slice(1);
     buildModuleNav(user.role);
-
-    if(user.role === 'student')        renderStudentDashboard(user);
-    else if(user.role === 'trainer')   renderTrainerDashboard();
-    else if(user.role === 'examoffice')renderExamOfficeDashboard();
-
+    if(user.role === 'student')         renderStudentDashboard(user);
+    else if(user.role === 'trainer')    renderTrainerDashboard();
+    else if(user.role === 'examoffice') renderExamOfficeDashboard();
     renderProfileStrip(user);
     updateTicker();
-
     localStorage.setItem(SESSION_KEY, JSON.stringify({ email:user.email, regNo:user.regNo, role:user.role }));
 }
-
 function logout(){
     localStorage.removeItem(SESSION_KEY);
     document.getElementById('authContainer').style.display = 'block';
     const dash = document.getElementById('studentDashboard');
-    dash.style.display = 'none';
-    dash.classList.remove('active-dash');
+    dash.style.display = 'none'; dash.classList.remove('active-dash');
     document.getElementById('profileStrip').style.display = 'none';
     clearMessages();
     currentUser = null;
@@ -2143,7 +1545,6 @@ function logout(){
     document.querySelectorAll('.trainer-subpanel').forEach(p => p.classList.remove('active-panel'));
     document.querySelectorAll('.exam-subpanel').forEach(p => p.classList.remove('active-panel'));
 }
-
 function checkAutoLogin(){
     const session = localStorage.getItem(SESSION_KEY);
     if(!session) return false;
@@ -2155,31 +1556,21 @@ function checkAutoLogin(){
         logout(); return false;
     }catch(e){ logout(); return false; }
 }
-
-/* ════════════════════════════════════════════════════════════════
-   EVENT BINDINGS
-   ════════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', function(){
     initData();
     startClock();
-
-    /* carousel (uses manual COLLEGE_PHOTOS array) */
     renderCarousel();
     resetCarouselTimer();
     const prevBtn = document.getElementById('carouselPrev');
     const nextBtn = document.getElementById('carouselNext');
     if(prevBtn) prevBtn.addEventListener('click', function(){ prevSlide(); resetCarouselTimer(); });
     if(nextBtn) nextBtn.addEventListener('click', function(){ nextSlide(); resetCarouselTimer(); });
-
     const carousel = document.getElementById('campusCarousel');
     if(carousel){
         carousel.addEventListener('mouseenter', () => { if(carouselTimer) clearInterval(carouselTimer); });
         carousel.addEventListener('mouseleave', resetCarouselTimer);
     }
-
     updateTicker();
-
-    /* Registration photo picker */
     const regPhotoInput = document.getElementById('regPhotoInput');
     if(regPhotoInput){
         regPhotoInput.addEventListener('change', async function(){
@@ -2191,8 +1582,6 @@ document.addEventListener('DOMContentLoaded', function(){
             this.value = '';
         });
     }
-
-    /* Profile photo update */
     const profilePhotoInput = document.getElementById('profilePhotoInput');
     if(profilePhotoInput){
         profilePhotoInput.addEventListener('change', async function(){
@@ -2202,8 +1591,7 @@ document.addEventListener('DOMContentLoaded', function(){
                 const users = getUsers();
                 const idx = users.findIndex(u => u.email.toLowerCase() === currentUser.email.toLowerCase());
                 if(idx > -1){
-                    users[idx].photo = data;
-                    setUsers(users);
+                    users[idx].photo = data; setUsers(users);
                     currentUser = users[idx];
                     renderProfileStrip(currentUser);
                     if(currentUser.role === 'trainer') renderTrainerStudentPerf();
@@ -2214,8 +1602,6 @@ document.addEventListener('DOMContentLoaded', function(){
             this.value = '';
         });
     }
-
-    /* LOGIN */
     document.getElementById('doLoginAction').addEventListener('click', function(){
         const email = document.getElementById('loginEmail').value.trim();
         const pass  = document.getElementById('loginPass').value.trim();
@@ -2224,8 +1610,6 @@ document.addEventListener('DOMContentLoaded', function(){
         if(res.success) showDashboard(res.user);
         else showMessage(document.getElementById('loginErrorMsg'), res.message, true);
     });
-
-    /* REGISTER */
     document.getElementById('doRegisterAction').addEventListener('click', function(){
         const name  = document.getElementById('regName').value.trim();
         const reg   = document.getElementById('regNumber').value.trim();
@@ -2233,47 +1617,23 @@ document.addEventListener('DOMContentLoaded', function(){
         const pwd   = document.getElementById('regPassword').value.trim();
         const conf  = document.getElementById('regConfirm').value.trim();
         const role  = document.getElementById('regRole').value;
-
-        if(!name || !reg || !email){
-            showMessage(document.getElementById('regMessageBlock'), "All fields are required.", true);
-            return;
-        }
-        if(pwd !== conf){
-            showMessage(document.getElementById('regMessageBlock'), "Passwords do not match.", true);
-            return;
-        }
+        if(!name || !reg || !email){ showMessage(document.getElementById('regMessageBlock'), "All fields are required.", true); return; }
+        if(pwd !== conf){ showMessage(document.getElementById('regMessageBlock'), "Passwords do not match.", true); return; }
         const res = registerNewUser(name, reg, email, pwd, role, regPhotoData);
         if(res.success){
             showMessage(document.getElementById('regMessageBlock'), res.message, false);
-            setTimeout(() => {
-                document.querySelector('[data-tab="loginPanel"]').click();
-                document.getElementById('loginEmail').value = email;
-                document.getElementById('loginPass').value = '';
-                document.getElementById('loginRole').value = role;
-            }, 1500);
-        } else {
-            showMessage(document.getElementById('regMessageBlock'), res.message, true);
-        }
+            setTimeout(() => { document.querySelector('[data-tab="loginPanel"]').click(); document.getElementById('loginEmail').value = email; document.getElementById('loginPass').value = ''; document.getElementById('loginRole').value = role; }, 1500);
+        } else { showMessage(document.getElementById('regMessageBlock'), res.message, true); }
     });
-
-    /* RESET */
     document.getElementById('doResetAction').addEventListener('click', function(){
         const email = document.getElementById('resetEmailAddr').value.trim();
         const np = document.getElementById('resetNewPass').value.trim();
         const cp = document.getElementById('resetConfirmPass').value.trim();
         const res = resetUserPassword(email, np, cp);
-        if(res.success){
-            showMessage(document.getElementById('resetMsgBlock'), res.message, false);
-            setTimeout(() => document.querySelector('[data-tab="loginPanel"]').click(), 1500);
-        } else {
-            showMessage(document.getElementById('resetMsgBlock'), res.message, true);
-        }
+        if(res.success){ showMessage(document.getElementById('resetMsgBlock'), res.message, false); setTimeout(() => document.querySelector('[data-tab="loginPanel"]').click(), 1500); }
+        else { showMessage(document.getElementById('resetMsgBlock'), res.message, true); }
     });
-
-    /* LOGOUT */
     document.getElementById('logoutMainBtn').addEventListener('click', logout);
-
-    /* AUTH TABS */
     document.querySelectorAll('.auth-tab').forEach(tab => {
         tab.addEventListener('click', function(){
             const target = this.dataset.tab;
@@ -2284,8 +1644,6 @@ document.addEventListener('DOMContentLoaded', function(){
             clearMessages();
         });
     });
-
-    /* AUTO LOGIN */
     const loggedIn = checkAutoLogin();
     if(!loggedIn){
         document.getElementById('authContainer').style.display = 'block';
