@@ -243,6 +243,30 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#e8f5e9 0%
 .btn-submit-exam:disabled{background:#95a5a6;cursor:not-allowed;transform:none;}
 .result-card{background:#e6f7e6;padding:1rem;border-radius:16px;margin-top:1rem;text-align:center;}
 .locked-message{background:#fee2e2;padding:1rem;border-radius:20px;text-align:center;color:#991b1b;font-weight:600;}
+
+/* ═══════════════════════════════════════════════════════
+   WEBSITE Q&A (READ-ONLY STUDY MODULE)
+   ═══════════════════════════════════════════════════════ */
+.qa-part-head{background:#0a3b2f;color:#fff;padding:9px 20px;border-radius:30px;font-size:.78rem;font-weight:800;margin:1.4rem 0 .9rem;display:inline-flex;align-items:center;gap:8px;letter-spacing:.6px;}
+.qa-part-head:first-child{margin-top:0;}
+.qa-card{background:#fbfdfc;border:1.5px solid #e0ece6;border-left:5px solid #3498db;border-radius:18px;padding:1rem 1.2rem;margin-bottom:1rem;}
+.qa-q{font-weight:800;color:#0a3b2f;font-size:.92rem;line-height:1.5;display:flex;gap:9px;align-items:flex-start;}
+.qa-num{background:#0a3b2f;color:#f1c40f;font-size:.68rem;font-weight:900;padding:3px 10px;border-radius:20px;flex-shrink:0;letter-spacing:.5px;white-space:nowrap;}
+.qa-intro{background:#fff8e1;border-left:3px solid #f1c40f;padding:.55rem .8rem;border-radius:10px;font-size:.8rem;color:#7a5c00;margin-top:.6rem;font-style:italic;line-height:1.55;}
+.qa-intro i{margin-right:5px;}
+.qa-a{background:#e8f5e9;border-left:3px solid #2ecc71;padding:.7rem .9rem;border-radius:12px;font-size:.84rem;color:#1b5e3a;margin-top:.7rem;line-height:1.6;}
+.qa-ans-text i.fa-check-circle{color:#27ae60;margin-right:6px;}
+.qa-list-label{font-weight:800;color:#0a3b2f;margin-bottom:.35rem;font-size:.82rem;}
+.qa-list{margin:.2rem 0 0 1.1rem;padding:0;}
+.qa-list li{margin-bottom:.3rem;line-height:1.55;}
+.qa-part{margin-bottom:.85rem;}
+.qa-part:last-child{margin-bottom:0;}
+.qa-part-label{font-weight:800;color:#0a3b2f;font-size:.83rem;margin-bottom:.25rem;}
+.qa-part-text{font-size:.83rem;line-height:1.6;}
+.qa-pre{background:#02261e;color:#a9e6cf;padding:.9rem 1rem;border-radius:12px;font-family:'Courier New',monospace;font-size:.74rem;line-height:1.45;overflow-x:auto;margin-top:.45rem;white-space:pre;border:1px solid #0a3b2f;}
+.qa-note{background:#e0f0ff;border-left:3px solid #3498db;padding:.6rem .85rem;border-radius:10px;font-size:.8rem;color:#1c5f9e;margin-top:.7rem;line-height:1.55;}
+.qa-note i{margin-right:5px;}
+
 .table-wrap{overflow-x:auto;background:#fff;border-radius:24px;padding:1.2rem;box-shadow:0 8px 20px rgba(0,0,0,.04);margin-bottom:1.5rem;}
 .table-wrap table{width:100%;border-collapse:collapse;font-size:.88rem;}
 .table-wrap th{background:#0a3b2f;color:#fff;padding:10px 14px;text-align:left;border-radius:12px 12px 0 0;font-size:.8rem;white-space:nowrap;}
@@ -328,6 +352,8 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#e8f5e9 0%
     .exam-header-color h2{font-size:1rem;}
     .profile-strip{padding:.9rem;gap:.9rem;}
     .profile-info h3{font-size:1rem;}
+    .qa-pre{font-size:.62rem;}
+    .qa-q{font-size:.84rem;}
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -802,70 +828,213 @@ const NETWORK_QUESTIONS = [
 ];
 
 /* ════════════════════════════════════════════════════════════════
-   WEBSITE APPLICATION DESIGN — 20 MULTIPLE-CHOICE QUESTIONS
-   (Design Tools • Design Methods • Visual Hierarchy • Site Map)
+   WEBSITE APPLICATION DESIGN — QUESTIONS & ANSWERS (READ-ONLY)
+   Students read each question together with its correct answer(s).
    ════════════════════════════════════════════════════════════════ */
-const WEBSITE_QUESTIONS = [
-    { text: "What is a website application design tool?",
-      options: ["Software used to plan, design, create, prototype or develop a website application","A programming language for writing server-side scripts","A type of computer hardware used for networking","A method of backing up website databases"],
-      correct: 0 },
-    { text: "Which of the following is an example of a website application design tool?",
-      options: ["Figma","Router","Motherboard","Compiler"],
-      correct: 0 },
-    { text: "Which of the following is NOT a factor to consider when selecting a website application design tool?",
-      options: ["Cost and licensing","Ease of use","Compatibility with other software","Colour of the designer's office walls"],
-      correct: 3 },
-    { text: "Why should website application design tools be selected according to user needs?",
-      options: ["So that the tools support the required website features and fit the available budget","So that the website becomes expensive to maintain","So that users are prevented from accessing the website","So that the design team avoids prototyping"],
-      correct: 0 },
-    { text: "What is meant by a website application design method?",
-      options: ["A systematic approach used to plan, organize, design, develop and improve a website according to user requirements","A software tool used to edit images","A type of computer network","A programming language for databases"],
-      correct: 0 },
-    { text: "Which of the following is a website application design method?",
-      options: ["User-centered design","Binary search","Database normalization","Code compilation"],
-      correct: 0 },
-    { text: "Which design method focuses on the needs, preferences, abilities and expectations of the intended users?",
-      options: ["User-centered design","Responsive design","Mobile-first design","Prototyping"],
-      correct: 0 },
-    { text: "Which design method makes a website automatically adjust its layout and content to different screen sizes?",
-      options: ["Responsive design","User-centered design","Agile design","Iterative design"],
-      correct: 0 },
-    { text: "Which design approach involves designing the website for mobile devices first before adapting it to larger screens?",
-      options: ["Mobile-first design","Responsive design","Prototyping","User-centered design"],
-      correct: 0 },
-    { text: "What is prototyping in website application design?",
-      options: ["Creating an early model or sample of a website to test its layout, navigation and functionality before final development","Writing the final production code of the website","Registering the website domain name","Hosting the website on a web server"],
-      correct: 0 },
-    { text: "What is website application visual hierarchy?",
-      options: ["The arrangement of website elements in a way that guides users' attention and helps them understand which information is most important","The order in which website files are uploaded to a server","The list of colours used in the website stylesheet","The arrangement of tables in the website database"],
-      correct: 0 },
-    { text: "Which of the following is an element used to create visual hierarchy on a website?",
-      options: ["Size, colour, contrast, spacing and typography","Compilation, linking and debugging","Routing, switching and bridging","Encryption, hashing and salting"],
-      correct: 0 },
-    { text: "How can SIZE be used to create visual hierarchy on a website?",
-      options: ["Important elements such as headings are made larger than normal text so users notice them first","All elements are made the same size so the page looks uniform","Text is hidden from users by using very small fonts","Images are removed from the page completely"],
-      correct: 0 },
-    { text: "How can COLOUR be used to create visual hierarchy on a website?",
-      options: ["Bright or contrasting colours draw attention to important elements such as buttons, warnings or links","All elements use the same colour as the background","Colours are chosen randomly without considering importance","Colour is only used for the website footer"],
-      correct: 0 },
-    { text: "A college website has: college logo, \"Apply Now\" button, course information, contact information and navigation menu. Which element should appear FIRST in the visual hierarchy?",
-      options: ["College logo / name","Contact information","Course information","Navigation menu"],
-      correct: 0 },
-    { text: "What is a website application site map?",
-      options: ["A visual or structured representation of the pages and sections of a website showing how they are connected","A list of all the images used on a website","A map showing the physical location of the web server","A list of passwords for website administrators"],
-      correct: 0 },
-    { text: "Which of the following is a benefit of creating a site map?",
-      options: ["It helps organize website content and shows the relationship between different pages","It increases the number of broken links on the website","It replaces the need for user testing","It automatically writes the website code"],
-      correct: 0 },
-    { text: "In a college website site map, which section would contain ICT, Engineering and Business as sub-pages?",
-      options: ["Courses","Home","News","Contact Us"],
-      correct: 0 },
-    { text: "In the model answer for a technical and vocational college website, which tool is recommended for interface design and prototyping?",
-      options: ["Figma","Microsoft Excel","Notepad","Windows Media Player"],
-      correct: 0 },
-    { text: "Which combination of design methods is recommended in the model answer for the college website?",
-      options: ["User-centered design and responsive design","Binary design and linear design","Random design and static design","Manual design and offline design"],
-      correct: 0 }
+const WEBSITE_QA = [
+    /* ─────────────── PART A — SHORT ANSWER QUESTIONS ─────────────── */
+    {
+        part: 'PART A — SHORT ANSWER QUESTIONS',
+        num: 1,
+        question: 'What is a website application design tool?',
+        answer: 'A website application design tool is software used to plan, design, create, prototype, or develop a website application.',
+        listLabel: 'Examples:',
+        list: ['Figma','Adobe XD','Canva','Adobe Photoshop','Visual Studio Code','Dreamweaver']
+    },
+    {
+        part: 'PART A — SHORT ANSWER QUESTIONS',
+        num: 2,
+        question: 'State four factors to consider when selecting a website application design tool.',
+        listLabel: 'Answer:',
+        list: [
+            'User requirements',
+            'Type of website / application',
+            'Cost and licensing',
+            'Ease of use',
+            'Available features',
+            'Compatibility with other software',
+            'Level of technical expertise'
+        ]
+    },
+    {
+        part: 'PART A — SHORT ANSWER QUESTIONS',
+        num: 3,
+        question: 'Give four examples of website application design tools.',
+        listLabel: 'Answer:',
+        list: ['Figma','Adobe XD','Canva','Adobe Photoshop']
+    },
+    {
+        part: 'PART A — SHORT ANSWER QUESTIONS',
+        num: 4,
+        question: 'What is meant by a website application design method?',
+        answer: 'A website application design method is a systematic approach used to plan, organize, design, develop, and improve a website according to user requirements.'
+    },
+    {
+        part: 'PART A — SHORT ANSWER QUESTIONS',
+        num: 5,
+        question: 'State four website application design methods.',
+        listLabel: 'Answer:',
+        list: ['User-centered design','Responsive design','Mobile-first design','Agile design','Prototyping','Iterative design']
+    },
+
+    /* ─────────────── PART B — STRUCTURED QUESTIONS ─────────────── */
+    {
+        part: 'PART B — STRUCTURED QUESTIONS',
+        num: 6,
+        intro: 'A college wants to develop a website that allows students to view courses, access admission information, and contact the college.',
+        question: 'a) Identify three design tools that could be used.  b) State three reasons why the tools should be selected according to user needs.',
+        parts: [
+            { label: 'a) Design tools:', list: ['Figma','Adobe XD','Canva'] },
+            { label: 'b) Reasons:', list: [
+                'The tools should support the required website features.',
+                'They should be easy for the design team to use.',
+                'They should support collaboration and prototyping.',
+                'They should be compatible with the required development workflow.',
+                'The cost should fit the available budget.'
+            ]}
+        ]
+    },
+    {
+        part: 'PART B — STRUCTURED QUESTIONS',
+        num: 7,
+        question: 'Explain the following website application design methods:  a) User-centered design   b) Responsive design   c) Mobile-first design   d) Prototyping',
+        parts: [
+            { label: 'a) User-centered design:', text: 'A design approach that focuses on the needs, preferences, abilities, and expectations of the intended users.' },
+            { label: 'b) Responsive design:', text: 'A design approach where a website automatically adjusts its layout and content to different screen sizes such as phones, tablets, and computers.' },
+            { label: 'c) Mobile-first design:', text: 'A design approach where the website is first designed for mobile devices before being adapted to larger screens.' },
+            { label: 'd) Prototyping:', text: 'Creating an early model or sample of a website to test its layout, navigation, and functionality before final development.' }
+        ]
+    },
+
+    /* ─────────────── PART C — VISUAL HIERARCHY ─────────────── */
+    {
+        part: 'PART C — VISUAL HIERARCHY',
+        num: 8,
+        question: 'What is website application visual hierarchy?',
+        answer: 'Visual hierarchy is the arrangement of website elements in a way that guides users\' attention and helps them understand which information is most important.'
+    },
+    {
+        part: 'PART C — VISUAL HIERARCHY',
+        num: 9,
+        question: 'State five elements used to create visual hierarchy on a website.',
+        listLabel: 'Answer:',
+        list: ['Size','Colour','Contrast','Spacing','Typography','Position','Images and graphics']
+    },
+    {
+        part: 'PART C — VISUAL HIERARCHY',
+        num: 10,
+        question: 'Explain how size and colour can be used to create visual hierarchy.',
+        parts: [
+            { label: 'Size:', text: 'Important elements such as headings can be made larger than normal text so that users notice them first.' },
+            { label: 'Colour:', text: 'Bright or contrasting colours can be used to draw attention to important elements such as buttons, warnings, or links.' }
+        ]
+    },
+    {
+        part: 'PART C — VISUAL HIERARCHY',
+        num: 11,
+        intro: 'A college website has the following elements: College logo • "Apply Now" button • Course information • Contact information • Navigation menu.',
+        question: 'Arrange these elements according to a suitable visual hierarchy and explain your choice.',
+        listLabel: 'A possible hierarchy is:',
+        list: [
+            'College logo / name — identifies the institution.',
+            'Main heading / message — communicates the main purpose of the page.',
+            'Apply Now button — provides an important action for prospective students.',
+            'Course information — provides detailed information.',
+            'Contact information — provides additional assistance.'
+        ],
+        note: 'The hierarchy helps users quickly identify the college, understand the purpose of the page, and find important actions and information.'
+    },
+
+    /* ─────────────── PART D — SITE MAP ─────────────── */
+    {
+        part: 'PART D — SITE MAP',
+        num: 12,
+        question: 'What is a website application site map?',
+        answer: 'A site map is a visual or structured representation of the pages and sections of a website and shows how they are connected.'
+    },
+    {
+        part: 'PART D — SITE MAP',
+        num: 13,
+        question: 'State four benefits of creating a site map.',
+        listLabel: 'Answer:',
+        list: [
+            'Helps organize website content.',
+            'Shows the relationship between different pages.',
+            'Improves website navigation planning.',
+            'Helps developers understand the website structure.',
+            'Helps identify missing or unnecessary pages.',
+            'Makes website planning easier.'
+        ]
+    },
+    {
+        part: 'PART D — SITE MAP',
+        num: 14,
+        question: 'Create a simple site map for a college website containing the following sections: Home, About Us, Courses, Admissions, News, Contact Us.',
+        listLabel: 'Answer — a better hierarchical representation is:',
+        pre:
+`College Website
+│
+├── Home
+│
+├── About Us
+│
+├── Courses
+│   ├── ICT
+│   ├── Engineering
+│   └── Business
+│
+├── Admissions
+│   ├── Requirements
+│   ├── Application
+│   └── Fees
+│
+├── News
+│
+└── Contact Us`
+    },
+
+    /* ─────────────── PRACTICAL EXAM QUESTION ─────────────── */
+    {
+        part: 'PRACTICAL EXAM QUESTION',
+        num: 15,
+        intro: 'You have been assigned to design a website for a technical and vocational college. Perform the following tasks:',
+        question: 'a) Select suitable website application design tools according to the user requirements.  b) Select and implement an appropriate website design method.  c) Develop a visual hierarchy for the home page.  d) Create a site map for the website.',
+        parts: [
+            { label: 'a) Design tools — suitable tools may include:', list: [
+                'Figma — interface design and prototyping',
+                'Canva — graphics and visual content',
+                'Visual Studio Code — website coding',
+                'Adobe Photoshop — image editing'
+            ]},
+            { label: 'b) Design method:', text: 'Use user-centered and responsive design. The design should consider students, staff, applicants, and other website visitors. The website should also work properly on computers, tablets, and mobile phones.' },
+            { label: 'c) Visual hierarchy — the home page can be organized as:', pre:
+`COLLEGE LOGO / NAME
+        ↓
+MAIN HEADING
+        ↓
+SHORT INTRODUCTION
+        ↓
+[ APPLY NOW ]
+        ↓
+POPULAR COURSES
+        ↓
+COLLEGE INFORMATION
+        ↓
+NEWS & ANNOUNCEMENTS
+        ↓
+CONTACT INFORMATION` },
+            { label: 'd) Site map:', pre:
+`                    HOME
+                      |
+      --------------------------------
+      |       |       |       |      |
+    About   Courses Admissions News Contact
+              |
+       -----------------
+       |       |       |
+      ICT  Engineering Business` }
+        ]
+    }
 ];
 
 const DEFAULT_ANNOUNCEMENTS = [
@@ -1531,8 +1700,7 @@ function renderProfileStrip(user){
     let meta = `${user.email}`;
     if(user.role === 'student'){
         const net = getExamRecord(user.regNo,'networkDesign');
-        const web = getExamRecord(user.regNo,'websiteApp');
-        meta += `  •  Network: ${net.bestScore}%  •  Website: ${web.bestScore}%`;
+        meta += `  •  Network Design: ${net.bestScore}%  •  Website: Study Module`;
     } else if(user.role === 'examoffice'){ meta += `  •  Access: Institutional Code`; }
     else if(user.role === 'trainer'){ meta += `  •  Access: Institutional Code`; }
     document.getElementById('profileMeta').innerText = meta;
@@ -1563,15 +1731,14 @@ function renderStudentExams(regNo){
     const container = document.getElementById('examsContainer');
     if(!container) return;
     const net = getExamRecord(regNo, 'networkDesign');
-    const web = getExamRecord(regNo, 'websiteApp');
     const netCover = getCover('networkDesign') || 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&auto=format';
     const webCover = getCover('websiteApp') || 'https://images.unsplash.com/photo-1547658719-9e7c7f5f46f0?w=800&auto=format';
     container.innerHTML = `
         <div class="exam-card"><div class="exam-header-color"><h2><i class="fas fa-network-wired"></i> Network Design &amp; Management</h2></div><img src="${netCover}" class="exam-photo" alt="Network Design" onerror="this.style.display='none'"><div class="exam-body"><div class="attempt-badge"><span>📊 Attempts left: <strong id="netAttemptsLeft">${3-net.attemptsUsed}</strong>/3</span><span>🏆 Best Score: <strong id="netBestScore">${net.bestScore}</strong>%</span></div><div id="netExamArea"></div><div id="netResultArea"></div></div></div>
-        <div class="exam-card"><div class="exam-header-color"><h2><i class="fas fa-globe"></i> Website Application Design</h2></div><img src="${webCover}" class="exam-photo" alt="Website Application Design" onerror="this.style.display='none'"><div class="exam-body"><div class="attempt-badge"><span>📊 Attempts left: <strong id="webAttemptsLeft">${3-web.attemptsUsed}</strong>/3</span><span>🏆 Best Score: <strong id="webBestScore">${web.bestScore}</strong>%</span></div><div id="webExamArea"></div><div id="webResultArea"></div></div></div>`;
-    renderNetworkExam(regNo); renderWebsiteExam(regNo);
+        <div class="exam-card"><div class="exam-header-color"><h2><i class="fas fa-globe"></i> Website Application Design — Questions &amp; Answers</h2></div><img src="${webCover}" class="exam-photo" alt="Website Application Design" onerror="this.style.display='none'"><div class="exam-body"><div class="attempt-badge" style="background:#e0f0ff;border-left-color:#1c5f9e;"><span>📖 <strong>Study &amp; Revision Module</strong> — read each question together with its correct answer(s). No submission required.</span></div><div id="webExamArea"></div></div></div>`;
+    renderNetworkExam(regNo);
+    renderWebsiteQA(regNo);
     if(net.attemptsUsed >= 3) disableExamArea('netExamArea','submitNetExam');
-    if(web.attemptsUsed >= 3) disableExamArea('webExamArea','submitWebExam');
 }
 function renderNetworkExam(regNo){
     const container = document.getElementById('netExamArea');
@@ -1627,58 +1794,58 @@ function submitNetworkExam(regNo){
     }
 }
 
-function renderWebsiteExam(regNo){
+/* ═══════════════════════════════════════════════════════════
+   RENDER WEBSITE Q&A (READ-ONLY STUDY MODULE)
+   ═══════════════════════════════════════════════════════════ */
+function renderWebsiteQA(regNo){
     const container = document.getElementById('webExamArea');
     if(!container) return;
-    let html = `<form id="webForm">`;
-    WEBSITE_QUESTIONS.forEach((q, idx) => {
-        const img = getQuestionImage('websiteApp', idx);
-        html += `<div class="question-block"><div class="question-text">${idx+1}. ${esc(q.text)}</div>${img ? `<img src="${img}" class="q-image" alt="Diagram">` : ''}<div class="options">`;
-        q.options.forEach((opt, oi) => { html += `<label><input type="radio" name="web_q${idx}" value="${oi}"> ${String.fromCharCode(65+oi)}. ${esc(opt)}</label>`; });
-        html += `</div></div>`;
-    });
-    html += `<button type="button" id="submitWebExam" class="btn-submit-exam">✅ Submit Website Exam</button><button type="button" class="btn-submit-exam" style="background:#95a5a6;" onclick="window.clearExamAnswers('webForm')">🗑️ Clear All</button></form>`;
-    container.innerHTML = html;
-    document.getElementById('submitWebExam')?.addEventListener('click', () => submitWebsiteExam(regNo));
-}
-
-/* ═══════════════════════════════════════════════════════════
-   SUBMIT WEBSITE EXAM — triggers email notification
-   ═══════════════════════════════════════════════════════════ */
-function submitWebsiteExam(regNo){
-    if(!canAttempt(regNo,'websiteApp')){ document.getElementById('webResultArea').innerHTML = `<div class="locked-message">No attempts left.</div>`; return; }
-    let score = 0;
-    const correctQs = [];
-    const wrongQs = [];
-    for(let i=0;i<WEBSITE_QUESTIONS.length;i++){
-        const qText = WEBSITE_QUESTIONS[i].text;
-        const sel = document.querySelector(`input[name="web_q${i}"]:checked`);
-        if(sel && parseInt(sel.value) === WEBSITE_QUESTIONS[i].correct){
-            score++;
-            correctQs.push(qText);
-        } else {
-            wrongQs.push(qText);
+    let html = '';
+    let lastPart = '';
+    WEBSITE_QA.forEach(item => {
+        if(item.part !== lastPart){
+            html += `<div class="qa-part-head"><i class="fas fa-layer-group"></i> ${esc(item.part)}</div>`;
+            lastPart = item.part;
         }
-    }
-    const percent = Math.round((score / WEBSITE_QUESTIONS.length) * 100);
-    const updated = updateExamRecord(regNo,'websiteApp',percent);
-    document.getElementById('webAttemptsLeft').innerText = 3 - updated.attemptsUsed;
-    document.getElementById('webBestScore').innerText = updated.bestScore;
-    const passMsg = percent >= 50 ? `<div style="color:#065f46;background:#d1fae5;padding:.8rem;border-radius:16px;">🎉 PASSED! ${percent}%</div>` : `<div style="color:#991b1b;background:#fee2e2;padding:.8rem;border-radius:16px;">❌ FAILED: ${percent}%. Need 50%.</div>`;
-    document.getElementById('webResultArea').innerHTML = `<div class="result-card"><h3>Result</h3><p>Score: ${score}/${WEBSITE_QUESTIONS.length} (${percent}%)</p><p>Attempts left: ${3-updated.attemptsUsed} | Best: ${updated.bestScore}%</p>${passMsg}</div>`;
-    if(updated.attemptsUsed >= 3) disableExamArea('webExamArea','submitWebExam');
-    if(currentUser) renderProfileStrip(currentUser);
-
-    if(currentUser){
-        setTimeout(() => {
-            sendExamEmailNotification(
-                currentUser,
-                'Website Application Design',
-                score, WEBSITE_QUESTIONS.length, percent,
-                correctQs, wrongQs
-            );
-        }, 600);
-    }
+        html += `<div class="qa-card">`;
+        html += `<div class="qa-q"><span class="qa-num">Q${item.num}</span><span>${esc(item.question)}</span></div>`;
+        if(item.intro){
+            html += `<div class="qa-intro"><i class="fas fa-info-circle"></i>${esc(item.intro)}</div>`;
+        }
+        if(item.answer || item.list || item.pre){
+            html += `<div class="qa-a">`;
+            if(item.answer){
+                html += `<div class="qa-ans-text"><i class="fas fa-check-circle"></i>${esc(item.answer)}</div>`;
+            }
+            if(item.listLabel){
+                html += `<div class="qa-list-label">${esc(item.listLabel)}</div>`;
+            }
+            if(item.list){
+                html += `<ul class="qa-list">${item.list.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+            }
+            if(item.pre){
+                html += `<pre class="qa-pre">${esc(item.pre)}</pre>`;
+            }
+            html += `</div>`;
+        }
+        if(item.parts){
+            html += `<div class="qa-a">`;
+            item.parts.forEach(p => {
+                html += `<div class="qa-part">`;
+                if(p.label) html += `<div class="qa-part-label">${esc(p.label)}</div>`;
+                if(p.text)  html += `<div class="qa-part-text">${esc(p.text)}</div>`;
+                if(p.list)  html += `<ul class="qa-list">${p.list.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+                if(p.pre)   html += `<pre class="qa-pre">${esc(p.pre)}</pre>`;
+                html += `</div>`;
+            });
+            html += `</div>`;
+        }
+        if(item.note){
+            html += `<div class="qa-note"><i class="fas fa-lightbulb"></i>${esc(item.note)}</div>`;
+        }
+        html += `</div>`;
+    });
+    container.innerHTML = html;
 }
 
 function disableExamArea(areaId, btnId){
@@ -1702,7 +1869,7 @@ function renderQuestionMediaPanel(containerId){
     container.innerHTML = `
     <div class="form-card">
         <h4 style="margin-bottom:.4rem;">🖼️ Exam Cover Photos</h4>
-        <p class="text-muted mb-1">These photos appear at the top of each exam paper.</p>
+        <p class="text-muted mb-1">These photos appear at the top of each exam / study module.</p>
         <div class="form-row">
             <div><label class="field-label">📶 Network Design — Cover</label><div class="media-preview-row">${mediaPreviewBox(netCover,'Network cover')}<label class="file-btn"><i class="fas fa-upload"></i> Upload<input type="file" accept="image/*" hidden onchange="window.uploadCover('networkDesign', this)"></label>${netCover ? `<button class="btn-danger btn-sm" onclick="window.removeCover('networkDesign')">🗑️ Remove</button>` : ''}</div></div>
             <div><label class="field-label">🌐 Website Application Design — Cover</label><div class="media-preview-row">${mediaPreviewBox(webCover,'Website cover')}<label class="file-btn"><i class="fas fa-upload"></i> Upload<input type="file" accept="image/*" hidden onchange="window.uploadCover('websiteApp', this)"></label>${webCover ? `<button class="btn-danger btn-sm" onclick="window.removeCover('websiteApp')">🗑️ Remove</button>` : ''}</div></div>
@@ -1714,8 +1881,8 @@ function renderQuestionMediaPanel(containerId){
         <div class="q-media-list">
             <div class="q-section-head"><i class="fas fa-network-wired"></i> NETWORK DESIGN (${NETWORK_QUESTIONS.length})</div>
             ${NETWORK_QUESTIONS.map((q,i) => questionRow('networkDesign', i, q.text)).join('')}
-            <div class="q-section-head"><i class="fas fa-globe"></i> WEBSITE APPLICATION DESIGN (${WEBSITE_QUESTIONS.length})</div>
-            ${WEBSITE_QUESTIONS.map((q,i) => questionRow('websiteApp', i, q.text)).join('')}
+            <div class="q-section-head"><i class="fas fa-globe"></i> WEBSITE APPLICATION DESIGN — Q&amp;A (${WEBSITE_QA.length})</div>
+            ${WEBSITE_QA.map((q,i) => questionRow('websiteApp', i, `Q${q.num}: ${q.question}`)).join('')}
         </div>
     </div>`;
 }
@@ -1769,7 +1936,10 @@ function computeStats(){
     let totalExams = 0, passed = 0, failed = 0;
     students.forEach(s => {
         const r = records[s.regNo];
-        if(r){ ['networkDesign','websiteApp'].forEach(k => { if(r[k] && r[k].attemptsUsed > 0){ totalExams++; if(r[k].bestScore >= 50) passed++; else failed++; } }); }
+        if(r && r.networkDesign && r.networkDesign.attemptsUsed > 0){
+            totalExams++;
+            if(r.networkDesign.bestScore >= 50) passed++; else failed++;
+        }
     });
     return { students, totalExams, passed, failed };
 }
@@ -1799,10 +1969,11 @@ function studentTableRows(students, records, showAvg){
     return students.map(s => {
         const r = records[s.regNo] || {};
         const net = r.networkDesign || { bestScore:0, attemptsUsed:0 };
-        const web = r.websiteApp    || { bestScore:0, attemptsUsed:0 };
-        const avg = (net.bestScore + web.bestScore) / 2;
-        const status = avg >= 50 ? '<span class="badge-pass">✅ Pass</span>' : '<span class="badge-fail">❌ Fail</span>';
-        return `<tr><td><div class="user-cell">${avatarHTML(s,'sm')}<span>${esc(s.regNo)}</span></div></td><td>${esc(s.fullName)}</td><td>${net.bestScore}% (${net.attemptsUsed}/3)</td><td>${web.bestScore}% (${web.attemptsUsed}/3)</td>${showAvg ? `<td>${avg.toFixed(0)}%</td>` : ''}<td>${status}</td></tr>`;
+        const avg = net.bestScore;
+        const status = net.attemptsUsed === 0
+            ? '<span class="badge-pass" style="background:#e0f0ff;color:#1c5f9e;">⏳ Not Attempted</span>'
+            : (avg >= 50 ? '<span class="badge-pass">✅ Pass</span>' : '<span class="badge-fail">❌ Fail</span>');
+        return `<tr><td><div class="user-cell">${avatarHTML(s,'sm')}<span>${esc(s.regNo)}</span></div></td><td>${esc(s.fullName)}</td><td>${net.bestScore}% (${net.attemptsUsed}/3)</td><td><span style="color:#3498db;font-weight:700;">📖 Study Module</span></td>${showAvg ? `<td>${avg}%</td>` : ''}<td>${status}</td></tr>`;
     }).join('');
 }
 function renderTrainerStudentPerf(){
@@ -1810,7 +1981,7 @@ function renderTrainerStudentPerf(){
     if(!container) return;
     const students = getUsers().filter(u => u.role === 'student');
     const records = getExamRecords();
-    container.innerHTML = `<div class="table-wrap"><h4 style="margin-bottom:.8rem;">📊 Student Performance</h4><table><thead><tr><th>Reg No</th><th>Name</th><th>Network %</th><th>Website %</th><th>Status</th></tr></thead><tbody>${studentTableRows(students, records, false) || '<tr><td colspan="5" class="text-muted">No students registered.</td></tr>'}</tbody></table></div>`;
+    container.innerHTML = `<div class="table-wrap"><h4 style="margin-bottom:.8rem;">📊 Student Performance</h4><table><thead><tr><th>Reg No</th><th>Name</th><th>Network %</th><th>Website Module</th><th>Status</th></tr></thead><tbody>${studentTableRows(students, records, false) || '<tr><td colspan="5" class="text-muted">No students registered.</td></tr>'}</tbody></table></div>`;
 }
 function announcementForm(prefix){
     return `<div class="form-card"><h4 style="margin-bottom:1rem;">📢 Create Announcement</h4><div class="form-row"><div class="full"><input type="text" id="${prefix}AnnTitle" placeholder="Announcement title"></div><div class="full"><textarea id="${prefix}AnnContent" rows="3" placeholder="Announcement content..."></textarea></div><div><label class="field-label">Photo (optional)</label><div class="media-preview-row"><div class="media-preview" id="${prefix}AnnPreview"><i class="fas fa-image"></i></div><label class="file-btn"><i class="fas fa-camera"></i> Attach Photo<input type="file" accept="image/*" hidden onchange="window.pickAnnouncePhoto('${prefix}', this)"></label></div></div><div><label class="field-label">Audience</label><select id="${prefix}AnnRole"><option value="all">👥 All Users</option><option value="student">👨‍🎓 Students</option><option value="trainer">👨‍🏫 Trainers</option><option value="examoffice">📋 Exam Office</option></select><div style="margin-top:1rem;"><button class="btn-primary btn-sm" onclick="window.createAnnouncement('${prefix}')">➕ Publish</button></div></div></div></div>`;
@@ -1861,24 +2032,24 @@ function renderExamAllResults(){
     if(!container) return;
     const students = getUsers().filter(u => u.role === 'student');
     const records = getExamRecords();
-    container.innerHTML = `<div class="table-wrap"><h4 style="margin-bottom:.8rem;">📋 All Student Results</h4><table><thead><tr><th>Reg No</th><th>Name</th><th>Network % (Attempts)</th><th>Website % (Attempts)</th><th>Avg %</th><th>Status</th></tr></thead><tbody>${studentTableRows(students, records, true) || '<tr><td colspan="6" class="text-muted">No students registered.</td></tr>'}</tbody></table></div>`;
+    container.innerHTML = `<div class="table-wrap"><h4 style="margin-bottom:.8rem;">📋 All Student Results</h4><table><thead><tr><th>Reg No</th><th>Name</th><th>Network % (Attempts)</th><th>Website Module</th><th>Avg %</th><th>Status</th></tr></thead><tbody>${studentTableRows(students, records, true) || '<tr><td colspan="6" class="text-muted">No students registered.</td></tr>'}</tbody></table></div>`;
 }
 function renderExamResetAttempts(){
     const container = document.getElementById('examResetAttempts');
     if(!container) return;
     const students = getUsers().filter(u => u.role === 'student');
-    let html = `<div class="form-card"><h4 style="margin-bottom:.4rem;">🔄 Reset Student Attempts</h4><p class="text-muted mb-1">Select a student and an exam to reset their attempts to 0.</p><div class="form-row"><div><label class="field-label">Student</label><select id="resetStudentSelect"><option value="">— Select Student —</option>`;
+    let html = `<div class="form-card"><h4 style="margin-bottom:.4rem;">🔄 Reset Student Attempts</h4><p class="text-muted mb-1">Select a student to reset their Network Design attempts to 0. (Website Application Design is a read-only study module.)</p><div class="form-row"><div><label class="field-label">Student</label><select id="resetStudentSelect"><option value="">— Select Student —</option>`;
     students.forEach(s => { html += `<option value="${esc(s.regNo)}">${esc(s.regNo)} — ${esc(s.fullName)}</option>`; });
-    html += `</select></div><div><label class="field-label">Exam</label><select id="resetExamSelect"><option value="networkDesign">📶 Network Design</option><option value="websiteApp">🌐 Website Application Design</option><option value="all">🔄 Both Exams</option></select></div><div class="full"><button class="btn-danger" onclick="window.resetStudentAttempts()">🔄 Reset Attempts</button></div></div><div id="resetResultMsg" class="message-box"></div></div>`;
+    html += `</select></div><div><label class="field-label">Exam</label><select id="resetExamSelect"><option value="networkDesign">📶 Network Design &amp; Management</option></select></div><div class="full"><button class="btn-danger" onclick="window.resetStudentAttempts()">🔄 Reset Attempts</button></div></div><div id="resetResultMsg" class="message-box"></div></div>`;
     container.innerHTML = html;
 }
 window.resetStudentAttempts = function(){
     const regNo = document.getElementById('resetStudentSelect')?.value;
-    const examKey = document.getElementById('resetExamSelect')?.value;
+    const examKey = document.getElementById('resetExamSelect')?.value || 'networkDesign';
     const msg = document.getElementById('resetResultMsg');
     if(!regNo){ showMessage(msg, "Please select a student.", true); return; }
     resetAttemptsForStudent(regNo, examKey);
-    showMessage(msg, `✅ Attempts reset successfully for ${examKey === 'all' ? 'both exams' : examKey}.`, false);
+    showMessage(msg, `✅ Attempts reset successfully for Network Design & Management.`, false);
     renderExamAllResults();
 };
 function renderExamManageAnnounce(){
